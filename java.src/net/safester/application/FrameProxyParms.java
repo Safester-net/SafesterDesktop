@@ -50,6 +50,7 @@ import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.UserPrefManager;
 
 import com.swing.util.SwingUtil;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -312,16 +313,22 @@ public class FrameProxyParms extends javax.swing.JFrame {
             proxyType = UserPrefManager.PROXY_TYPE_DIRECT;
         }        
 
-        UserPrefManager.setPreference(UserPrefManager.PROXY_TYPE, proxyType);
 
         if(proxyType == UserPrefManager.PROXY_TYPE_USER_DEF)
         {
             String proxyAddress = jTextFieldProxyAddress.getText();
             String proxyPort = jTextFieldProxyPort.getText();
+         
+            if (proxyAddress == null || proxyAddress.length() <=1 ) {
+                JOptionPane.showMessageDialog(null, MessagesManager.get("proxy_address_cannot_be_empty"), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             UserPrefManager.setPreference(UserPrefManager.PROXY_ADDRESS, proxyAddress);
             UserPrefManager.setPreference(UserPrefManager.PROXY_PORT, proxyPort);
         }
 
+        UserPrefManager.setPreference(UserPrefManager.PROXY_TYPE, proxyType);
         UserPrefManager.setPreference(UserPrefManager.PROXY_AUTH_NTLM, jCheckBoxNtlmProxy.isSelected());
         UserPrefManager.setPreference(UserPrefManager.NTLM_WORKSTATION, jTextFieldWorkstation.getText());
         UserPrefManager.setPreference(UserPrefManager.NTLM_DOMAIN, jTextFieldDomain.getText());

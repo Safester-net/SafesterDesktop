@@ -37,7 +37,9 @@ import javax.swing.JOptionPane;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.UserPrefManager;
+import net.safester.application.util.proxy.ProxyDetector;
 import net.safester.clientserver.ServerParms;
+import org.awakefw.commons.api.client.HttpProxy;
 
 /**
  *
@@ -113,15 +115,52 @@ public class NewVersionInstaller {
 
     }
 
+    public static HttpProxy getAwakeProxyFromUserPreference()
+    {
+        String proxyAddress = null;
+        int proxyPort = 0;
+        
+        int proxyType= UserPrefManager.getIntegerPreference(UserPrefManager.PROXY_TYPE);
+
+        if (proxyType == UserPrefManager.PROXY_TYPE_BROWSER_DEF)
+        {
+            ProxyDetector proxyDetector = new ProxyDetector();
+            proxyAddress = proxyDetector.getHostName();
+            proxyPort = proxyDetector.getPort();
+        }
+        else if (proxyType == UserPrefManager.PROXY_TYPE_USER_DEF)
+        {
+            proxyAddress = UserPrefManager.getPreference(UserPrefManager.PROXY_ADDRESS);
+            proxyPort = UserPrefManager.getIntegerPreference(UserPrefManager.PROXY_PORT);
+        }
+        else if (proxyType == UserPrefManager.PROXY_TYPE_DIRECT)
+        {
+            // Do nothing. We use direct connection!
+        }
+        else
+        {
+            throw new IllegalArgumentException("Proxy Type is invalid: " + proxyType);
+        }
+        
+        HttpProxy httpProxy = null;
+        
+        // We van now set the values into HttpNetworkParameters
+        if (proxyAddress != null)
+        {
+            httpProxy = new HttpProxy(proxyAddress, proxyPort);
+        }
+
+        return httpProxy;
+    }
+        
     public static Proxy getProxy() {
         
-        String proxyHostname = UserPrefManager.getPreference(UserPrefManager.PROXY_ADDRESS);
-        int proxyPort = UserPrefManager.getIntegerPreference(UserPrefManager.PROXY_PORT); 
-        
+        HttpProxy httpProxy = getAwakeProxyFromUserPreference();
+              
 	Proxy proxy = null;
-	if (proxyHostname != null) {
+	if (httpProxy != null) {
 	    proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
-		    proxyHostname, proxyPort));
+		    httpProxy.getAddress(), httpProxy.getPort()));
 	}
 	return proxy;
     }
