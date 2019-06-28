@@ -1,0 +1,11 @@
+Hello {0},
+
+To confirm your Safester account creation please click on the following link:
+
+ {1} 
+
+
+Best Regards,
+
+The Safester Team
+contact@safester.net

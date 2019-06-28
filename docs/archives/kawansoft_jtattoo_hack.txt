@@ -1,0 +1,65 @@
+ AbstractLookAndFeel class
+ -------------------------
+    
+    /**
+     * KAWANSOFT.
+     * Decorate only if we are not Windows > 10.0
+     * @return true if we arre on Widnows > 10.0
+     */
+    private static Boolean decorateIfNotWindows10() {
+        String os = System.getProperty("os.name");
+        String version = System.getProperty("os.version");
+        
+        // is Windows  10?
+        if (os != null && os.toLowerCase().contains("windows") && version != null && version.compareTo("10.0") >= 0 ) {
+            return false;
+        }
+        else {
+            return true;
+        }
+        
+    }   
+	
+    public static void setTheme(AbstractTheme theme) {
+        if (theme == null) {
+            return;
+        }
+
+        MetalLookAndFeel.setCurrentTheme(theme);
+        myTheme = theme;
+        
+        if (isWindowDecorationOn()) {
+            
+            // OLD CODE - JTATOO
+            //DecorationHelper.decorateWindows(Boolean.TRUE);
+
+            // NEW CODE - KAWANSOFT
+            Boolean doDecorate = decorateIfNotWindows10();
+            DecorationHelper.decorateWindows(doDecorate);
+            
+        } else {
+            DecorationHelper.decorateWindows(Boolean.FALSE);
+        }
+    }
+    
+ AcrylLookAndFeel class
+ ----------------------
+ 
+        public static void setTheme(Properties themesProps) {
+        
+        // KAWANSOFT 
+        themesProps.put("logoString", "");
+                
+        currentThemeName = "acrylTheme";
+        if (myTheme == null) {
+            myTheme = new AcrylDefaultTheme();
+        }
+        if ((myTheme != null) && (themesProps != null)) {
+            myTheme.setUpColor();
+            myTheme.setProperties(themesProps);
+            myTheme.setUpColorArrs();
+            AbstractLookAndFeel.setTheme(myTheme);
+        }
+    }
+    
+    

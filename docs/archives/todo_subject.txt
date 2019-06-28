@@ -1,0 +1,48 @@
+Subject conversion
+------------------
+
+net.safester.server.SubjectDecryptionMigrator
+- getEncryptedSubjects
+- setDecryptedSubjects
+
+MessageStoreExtractor.isSubjectEncrypted()
+
+net.safester.noobs.clientserver.MessageLocal
+
+Server 
+------
+
+message_user
+
+ user_number | integer |           | not null |
+ message_id  | integer |           | not null |
+ folder_id   | integer |           | not null |
+ is_read     | boolean |           |          | false
+ 
+SQL
+
+select message.message_id, sender_user_number, date_message from message, message_user where message.message_id = message_user.message_id and message_user.user_number = ?
+
+for all messages:
+ get if encrypted --BEGIN--
+ add to list
+ json 
+ 
+ MessageLocalStoreTransfer.toGson
+ 
+        Set<Integer> messageIdSet = messageLocalStore.keySet();
+        
+        MessageDecryptor messageDecryptor = new MessageDecryptor(userNumber,
+                passphrase, connection);
+                
+        for (Integer messageId : messageIdSet) {
+        }
+
+
+Client
+------
+
+for each downloaded message
+	create Message
+ 	decrypt
+ 	send back        

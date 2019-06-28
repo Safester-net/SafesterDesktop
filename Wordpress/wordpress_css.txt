@@ -1,0 +1,63 @@
+/*
+Bienvenue dans l'éditeur de CSS !
+
+Pour en savoir plus sur le fonctionnement de l'éditeur, vous pouvez vous
+rendre sur cette page :
+http://wp.me/PEmnE-Bt
+*/
+a {
+	border-bottom: 0;
+}
+
+.hentry .entry-content a:not(.primary-button) {
+	border-bottom: 0;
+}
+
+a:hover, #page a:hover {
+	text-decoration: underline;
+}
+
+a:active {
+	text-decoration: underline;
+}
+
+#hero.has-background .overlay {
+	opacity: 0;
+}
+
+.pricing-table th {
+	border-bottom: 1px solid #cccccc;
+	font-family: arial;
+	font-size: 14pt;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	color: #333;
+	background: #fff;
+}
+
+/* background: #666666 url('img/bg-table.png') top center repeat-x; */
+.trial-text {
+	color: #027298;
+}
+
+.pricing-table td {
+	border-bottom: 1px solid #cccccc;
+	padding: 10px;
+	text-align: center;
+}
+
+#lefty {
+	text-align: left;
+	font-weight: bold;
+	background: #EEE;
+}
+
+.above-table td {
+	border: 0;
+}
+
+.site-info::after {
+	content: "Copyright © 2019 KawanSoft";
+	padding-left: 0;
+}

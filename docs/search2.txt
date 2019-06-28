@@ -1,0 +1,16 @@
+
+List searchOnContent
+==> List
+
+if (searchOnSender is true) {
+
+  searchOnContent.retainAll(searchOnSender)
+}
+
+if (searchOnRecipient is true) {
+
+  searchOnContent.retainAll(searchOnRecipient)
+}
+
+
+

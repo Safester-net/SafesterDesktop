@@ -1,0 +1,78 @@
+TODO
+----
+
+- Add copy/paste new logos
+- Build JTatoo for no decoration for Windows.
+
+- Regenerate version 2.1!
+
+DONE:
+----
+
+Boby & Subject optimizer
+- Server : Create server method BodiesAndSubjectsCreator(userNumber, folderId, limitClause)
+  try to transfer using MessageLocalStore.
+  if value subject / body is in file ==> get value in file, otw get value in database
+  Use Google GSon to transfer values.
+
+Client: use MessageLocalStore to fetch values.
+
+
+Done:
+----
+
+create table last_message_in_display (
+  user_number      integer         not null,
+  last_message_id  integer         not null,
+        primary key (user_number)
+);
+
+create table message_user (
+  user_number           integer         not null,
+  message_id            integer         not null,
+  folder_id             integer         not null,
+  is_read               boolean         default false,
+        primary key (user_number, message_id, folder_id)
+);
+
+  
+Display:
+- Display all 
+- if on server (last_message_id < max(message_id))
+   update last_message_in_display
+   return  max(message_id)
+   notify max(message_id)
+ 
+- Loop:
+   if on server (last_message_id < max(message_id)
+     display all
+  
+
+- for all messages read : store max(message_id, new_last_message_in_display) in new_last_message_in_display
+
+Every minute thread
+Thread after message display:
+- Read last_message_in_display from server 
+- if (new_last_message_in_display > last_message_in_display)
+    - Display notification!
+    - update last_message_in_display
+    
+
+
+26/03/18
+Address Book Encryption 
+
+- Create table address_book_key
+
+- In addr book section: 
+    if key not exists : 
+        generate UUID ==> PgpEncrypt ==> Store server
+    else
+        get key ==> decrypt and store in static memory
+        
+Encryption/Decryption done only in AddressBookListTransfer.
+
+ 
+        
+       
+

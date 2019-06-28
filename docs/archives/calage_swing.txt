@@ -1,0 +1,57 @@
+
+v1.0 - 03/12/10 
+
+Calage Swing commun Windows et Mac
+----------------------------------
+
+- Cas général : 
+Poser les Panel sans taille, dans un *même* panel en FlowLayout, faire suivre en flow les objets, 
+sans toucher flow height, ni fixer aucune taille.
+APRES, on peut fixer la height max/min/preferred à 31 du panel conteneur ==> Ok pour Windows et Mac.
+Cf. dans SafesterItLogin.
+
+- Ne jamais fixer la taille des objets à l'intérieur du panel : exemple pour une JTextArea dans un jScrollPane 
+==> C'est uniquement le panel conteneur dont la taille sera fixée. (Sauf cas très particuliers ci-dessous).
+
+- Pas de calage relatif en hauteur entre partie gauche et droite d'un panel par vspace *absolu* en grid layout : 
+cas de la status bar SafesterItMain.jPanelStatusBar :
+==> utiliser BoxLayout qui centre automatiquement en relatif en vspace, sans avoir à donner donner de valeur.
+
+- Objets sur plusieurs lignes (hors JTable qui gère auto) : 
+==> JTextArea : la taille heigth max/min/pref par défaut Windows est 30, ce qui correspond à 2 lignes de text area. 
+Un facteur d'expansion fixe est appliqué par algorithme pour Mac OS.
+Cf. MessageReader.setPanelWithTextAreaHeightForMac().
+==> JList, principe identique mais il faut appliquer un Empty Border [3, 5, 3, 5] au JscrollPane pour espacer 
+les objets des marges. 
+La taille heigth par défaut Windows du panel conteneur est alors de 38.
+Même facteur d'expansion pour Mac, évidemment, que text area.
+
+- JEditorPane HTML de help/consignes :
+Forcer sous NB une margin de [4, 4, 4, 4]. (Les valeurs par défaut ne sont pas appliquées à Mac OS X).
+
+- Calage horizontal des champs :  
+Exemple: SafesterItLogin. 
+On cale les label en fixant une taille width min/max/pref au label lui même, 
+et on cale alignement gauche/droite avec JLabel.horizontalAlignment.
+
+- URL en JButton :
+a) BorderNone.
+b) Appliquer dans le code init SafeLogic un jButtonMyButton.putClientProperty( "JButton.buttonType", "square" );
+c) Margin [2, 14, 2, 14] ou [2, 0, 2, 0] cas de jButtonLostPassphrase pour aligner sur ligne previous.
+d) Ne pas oublier les MouseEntered/Exited.
+
+- JSeparator:
+==> Taille min/max/pref heigth du JPanel Box conteneur : 6.
+==> Taille min/max/pref heigth du JSeparator : 6.
+
+- Effet "Expansion naturelle" d'un JTextField en horizontal quand on étire à droite la form :
+Exemple : SafesterPassphraseRecoverySettings.
+==> Conteneur commun Box Horizontal.
+==> Le label doit être dans son panel en Grid avec aucune valeur en V gap.
+==> Le field doit être dans son panel en Box, height min/max/pref à 20.
+==> Il faut panel séparateur en width min/max/pref à 5 pour les "décoller".
+
+- Note : SafesterPassphraseRecoverySettings est un cas général qui reprend presque tous les cas.
+
+
+

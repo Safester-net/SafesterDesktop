@@ -1,0 +1,21 @@
+
+API: getAwakeFileToken(String username) : 
+- Returns new DefaultFwakeCommonsConfigurator().computeAuthToken(username)
+
+AwakeFile 1.1.1d:
+
+- org.awakefw.file.api.client.AwakeFileSession
+- Make constructor public:
+    private AwakeFileSession(String url, String username, String authenticationToken, HttpProxy httpProxy,
+	    HttpProtocolParameters httpProtocolParameters)
+
+
+- add javax.json-1.0.4.jar
+
+
+-org.awakefw.sql.api.client.AwakeConnection
+: AwakeConnection(AwakeFileSession)
+
+public class ConnectionEmulator extends AbstractConnection implements Connection
+   ConnectionEmulator(AwakeFileSession) 
+   

@@ -1,0 +1,32 @@
+select doctor.login, lastname, firstname, centerid from doctor, voice_reco_doctor where doctor.login = voice_reco_doctor.login order by lastname;
+
+insert into voice_reco_doctor values ('931071427',  '*', '*');
+insert into voice_reco_doctor values ('931846596',  '*', '*');
+insert into voice_reco_doctor values ('931073654',  '*', '*');
+insert into voice_reco_doctor values ('931702203',  '*', '*');
+insert into voice_reco_doctor values ('931023667',  '*', '*');
+insert into voice_reco_doctor values ('931103220',  '*', '*');
+insert into voice_reco_doctor values ('931846844',  '*', '*');
+insert into voice_reco_doctor values ('931105787',  '*', '*');
+insert into voice_reco_doctor values ('931068969',  '*', '*');
+insert into voice_reco_doctor values ('931058846',  '*', '*');
+insert into voice_reco_doctor values ('931091292',  '*', '*');
+insert into voice_reco_doctor values ('931105829',  '*', '*');
+insert into voice_reco_doctor values ('931097075',  '*', '*');
+insert into voice_reco_doctor values ('931030142',  '*', '*');
+insert into voice_reco_doctor values ('931115653',  '*', '*');
+insert into voice_reco_doctor values ('931702369',  '*', '*');
+insert into voice_reco_doctor values ('931097653',  '*', '*');
+insert into voice_reco_doctor values ('931089304',  '*', '*');
+insert into voice_reco_doctor values ('019032135',  '*', '*');
+insert into voice_reco_doctor values ('931063671',  '*', '*');
+insert into voice_reco_doctor values ('931702567',  '*', '*');
+insert into voice_reco_doctor values ('931702583',  '*', '*');
+insert into voice_reco_doctor values ('931702781',  '*', '*');
+insert into voice_reco_doctor values ('931702972',  '*', '*');
+insert into voice_reco_doctor values ('931848584',  '*', '*');
+insert into voice_reco_doctor values ('931702880',  '*', '*');
+insert into voice_reco_doctor values ('998877665',  '*', '*');
+insert into voice_reco_doctor values ('099121878',  '*', '*');
+ 
+

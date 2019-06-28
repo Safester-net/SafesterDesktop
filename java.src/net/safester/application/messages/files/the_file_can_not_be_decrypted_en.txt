@@ -1,0 +1,7 @@
+The file can not be downloaded and decrypted because
+there is not enough free space on the device of {0}.
+
+Free space required: {1} Mb.
+Available free space: {2} Mb.
+
+Please free space and try again.

@@ -1,0 +1,18 @@
+			
+			CipherKeyGenerator keyGen = GeneratorUtilities.GetKeyGenerator(encryptionOid); //GeneratorUtilities.GetKeyGenerator("AES");
+			keyGen.Init(new KeyGenerationParameters(rand, keyGen.DefaultStrength));
+			return Open(outStr, encryptionOid, keyGen);
+			byte[] encKeyBytes = keyGen.GenerateKey();
+
+API
+putAesKey()
+getAesKey()
+
+AesEncryptionUtil()
+String hexAesKey generateAesKey()
+
+AesEncryption(String hexAesKey)
+string encrypt(string text)
+string decrypt(string text)
+
+			

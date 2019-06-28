@@ -1,0 +1,62 @@
+Gestion des photos howto
+------------------------
+
+Les photos sont stockées dans la table SQl user_photo:
+
+CREATE TABLE user_photo (
+  user_email        	varchar(254)    not null,  
+  thumbnail	           	text			not null,
+  photo	           		text			not null,
+        primary key (user_email)  
+);
+
+LA TABLE EST DEJA CREEE SUR SAFESTER.NET
+
+Tout le code est dans les package net.safester.application.photo & net.safester.application.photo.images.files, sauf :
+- com.safelogic.sql.tablesgen.UserPhoto conservé dans tablegen par cohérence.
+- Les nouveaux messages en fin de ce fichier sont à reprendre net.safester.application.messages.files.Messages_fr.properties
+
+On utilise le même principe pour accéder aux photos qu'avec l'Adress Book et les objets wrappers
+spécialisés ont été créés:
+- PhotoAddressBookUpdater qui annule & remplace AddressBookUpdater.
+- Les containers/wrappers PhotoAddressBookLocal & PhotoAddressBookListTransfer qui annulent et remplacent AddressBookLocal 
+  et AddressBookListTransfer. Pour le SQL de lecture, cf  PhotoAddressBookListTransfer.get() qui fait une jointure.
+- PhotoAddressBookTableCreator remplace AddressBookTableCreator pour créer la JTable.
+
+Au lieu de 2 colonnes name/email on 3 colonnes photo/name/email avec:
+- photo contient le thumbnail en String base64.
+- PhotoAddresBookTableCellRenderer se charge de récupérer le thumbnail base64 et l'afficher comme setIcon().
+- on réduit au max la taille de la colonne photo largeur/hauteur avec les: 
+        columnModel.getColumn(0).setMinWidth(ImageResizer.getStickerHeight() + 4);
+        columnModel.getColumn(0).setMaxWidth(ImageResizer.getStickerHeight() + 4);
+        columnModel.getColumn(0).setPreferredWidth(ImageResizer.getStickerHeight() + 4);
+  et
+        table.setRowHeight(ImageResizer.getStickerHeight() + 2);
+
+L'adapatation est donc très simple pour une nouvelle JTable dans Vault :
+- Rajouter une colonne photo.
+- La remplire avec la colonne thumbnail en string base64 de la table user_photo.
+- Utiliser un renderer avec le code de PhotoAddresBookTableCellRenderer pour tranformer en image la string base64
+  de la colonne photo.
+
+Un double click sur la colonne photo doit afficher la grande photo avec l'appel à la classe
+PhotoDisplayer; Cf. le code PhotoAddressBookUpdater.displayPhoto();
+
+Ajout/Suppression de photo :
+- La fênêtre qui permet d'ajouter sa photo est PhotoAdder.java.
+- Il n'y a pas de fenêtre pour supprimer la photo, il faut créer une sous-menu avec confirmation qui lancera un :
+  delete from user_photo where user_number = ?
+
+Messages_fr.properties
+#
+# Photo part
+#
+photo=Photo
+add_photo=Add Photo to your Account
+drap_and_drop_or_select_photo=Drag & Drop or Select a JPEG File:
+select_file=Select File
+photo_added=Photo added!
+cannot_display_photo=Can not display photo.
+select_a_jpgeg_file=Select a JPEG File
+double_click_to_enlarge=Double click to enlarge.
+only_jpeg_images_are_supported=Only JPEG images are supported. 

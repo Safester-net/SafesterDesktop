@@ -1,0 +1,3 @@
+A simple to use OpenPGP encryption email app.
+Encryption & decryption are automatic. 
+No keys management or encryption parameters - Safester does all that for you.

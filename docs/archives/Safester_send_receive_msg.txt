@@ -1,0 +1,144 @@
+
+Server 
+------
+
+net.safester.server.hosts.pending:
+- Call final Awake Http File Server
+- Tests all on Main Server.
+- Create a secondary Http File Server and test it.
+
+Client
+------
+
+- Limit subject size to 80 (?).
+- Check date & hour of message.
+
+shop_silver.html ==> shop_v3_silver.html
+shop_gold.html ==> shop_v3_gold.html
+shop_platinum.html ==> shop_v3_platinum.html
+
+New Servlets
+
+- net.safester.application.parms.StoreParms:
+- UserBuilderHost.createDefaultSubscription()
+
+Offer		Storage		Price / Year €	Attach Size
+-----		-------		--------------	-----------
+Free		500 Mb		Free			    50 Mb
+Silver		  2 Gb		 29 €			   200 Mb
+Gold		  5 Gb		 49 €			  	 1 Gb
+Platinum	 25 Gb		199 €			Unlimited
+
+
+- Modify subscription categories in :
+	==> Buy Subscription.
+	==> "Your Subscription has Expired" Panel
+
+
+DONE
+----
+
+ON Server:
+- To get the host of the user: HttpFileServer.getHost()
+
+BodyHostStore(userNumber)
+
+storeBody(MessageBodyLocal)
+readBody()
+
+Store: 
+1) To put the body on the file system:
+   -- MessageCreatorHost.putMessageBodyOnly(int userNumber, String jsonString)  jsonString = MessageBodyLocal
+
+2) To put the body on remote file system
+   httpFileServerSession.call("net.safester.server.hosts.MessageCreatorHost.putMessageBodyOnly", userNumber, jsonStringBody);
+
+Read:
+1) To read the body on the file system:
+   -- MessageReaderHost.getMessageBodyOnly(int userNumber, String jsonString)  jsonString = MessageBodyLocal
+
+2) To read the body on remote file system
+	jsonBody = httpFileServerSession.call("net.safester.server.hosts.MessageReaderHost.getMessageBodyOnly", userNumber, jsonStringBody);
+
+
+User creation:
+- net.safester.server.AccountMerger
+- net.safester.server.UserBuilder
+- net.safester.server.PendingMessagesHandler
+
+==> 
+- net.safester.server.hosts.pending.AccountMergerHost
+- net.safester.server.hosts.pending.UserBuilderHost
+- net.safester.server.hosts.pending.PendingMessagesHandlerHost
+
+	
+Client
+------
+
+Get HttpFileServer AwakeFileSession:
+
+1) Download http_file_servers.ini content to Properties:
+1311=https://www.safester.net
+99999999=http://www2.safester.net
+
+2) Algo to get host from userNumber: see net.safester.server.HttpFileServer.java
+3) Algo to get AwakeFileSession from host & store in static memory
+	Existing client net.safester.application.parms.HttpFileServerStore allows to get AwakeFileSession from host.
+
+
+net.safester.server.MessageDeletor.deleteMessages:
+- Fix error no delete activation.
+
+Do not forget to modify the client Main.deleteMessages()
+
+___________________________________________________________________________________________________________________
+
+Login.java
+AwakeFileSession awakeFileSession = new AwakeFileSession(ServerParms.getAwakeSqlServerUrl(), null, null, httpProxy);
+https://www.safester.net/AwakeFileServer
+		
+1) Download : Message List / Bodies and Subjects
+
+- Main 	==> createTableAsThread(boolean reset)
+		==> MessageStoreExtractor.getStore()
+		==> selectAndBuildStore()
+		==> MessageSelectCaller.selectMessages()
+		
+		==> String jsonString = awakeFileSession.call(
+				"net.safester.server.MessageSelect.selectMessages", userNumber,
+				folderId, limitClause.toString(), connection);
+				
+	String jsonString = awakeFileSession.call(
+		"net.safester.server.MessageSelect.selectSubjects", userNumber,
+		folderId, limitClause.toString(), connection);
+
+	String jsonString = awakeFileSession.call(
+		"net.safester.server.MessageSelect.selectBodies", userNumber,
+		folderId, limitClause.toString(), connection);
+		
+2) Download : Attach
+
+AttachmentHandler attachmentHandler = new AttachmentHandler(connection, this.parent, fileName);
+attachmentHandler.downloadDecryptAndOpen(null);
+			
+fileDownloaderEngine = new FileDownloaderEngine(serverCallerNew,defaultAwakeProgressManager,
+		filesToDownload, 
+		localFiles);
+			
+3) Upload : message creation - Body and Subject
+
+MessageTransfer:
+
+	newMessageIdStr = awakeFileSession.call("net.safester.server.MessageCreator.putMessage", 
+										 jsonString,
+										 userNumber,
+										 keyId,
+										 isDraft,
+										 connection);
+
+
+4) Upload 
+
+AttachmentListTransfer ==> FileUploaderEngine	
+	 
+							 

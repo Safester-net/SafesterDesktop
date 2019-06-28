@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="java.src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/awake-file-1.1.1e"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/awake-file-1.1.1e.jar"/>
+	<classpathentry kind="lib" path="lib/cgeep_api.jar"/>
+	<classpathentry kind="lib" path="lib/cgeep_crypto.jar"/>
+	<classpathentry kind="lib" path="lib/cgeep_provider.jar"/>
+	<classpathentry kind="lib" path="lib/filedrop.jar"/>
+	<classpathentry kind="lib" path="lib/joc-v3.0.4-basic.jar"/>
+	<classpathentry kind="lib" path="lib/JTattooKawan.jar"/>
+	<classpathentry kind="lib" path="lib/moyocore.jar"/>
+	<classpathentry kind="lib" path="lib/novaworx-syntax-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/RapidSpell.jar"/>
+	<classpathentry kind="lib" path="lib/RapidSpellMDict.jar"/>
+	<classpathentry kind="lib" path="lib/sam.jar"/>
+	<classpathentry kind="lib" path="lib/SHEF.jar"/>
+	<classpathentry kind="lib" path="lib/swing-layout-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/jtidy-8.0.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

@@ -1,0 +1,62 @@
+safeshareit_todo.txt
+--------------------
+
+TODO 
+----
+
+- Passphrase Recover: 
+Mode 1) Store Hint.
+Mode 2) Store encrypted passphrase to resend to alternative email address.
+
+- [OK] button pour adder les recipients.
+- Bouton Import dans Contacts.
+
+Applet & Server
+- Applet: SSL + "loading..." au lieu de "starting..."
+- Pass all html + applet login & merge pages to https://www.safeshareit.com
+
+
+DEFERRED:
+---------
+
+- New Import Contact interface.
+ 
+DONE!
+-----
+
+- MessageDeletor: add UserEmail deletion.
+- Reorganise UserSettings.
+- Virer < 1024 et < 256.
+- Check your Settings as Administrator ==> Faire un lien vers une page d'explication.
+- See message as encrypted / see decrypted.
+- Icon Installer 32*32.
+- No more account import.
+- Bug: when a send with attach is cancelled ==> The last file is not deletable (or readable ?)
+- Bug first empty line. ==> Dispatch new version.
+- Add SQL security controls!
+- Add File security controls!
+
+SafesterIt Security:
+- Nico: Store all SQL Statements on server.
+- Nico: Implement Security controls in UserAwakeFileConfigurator.allowExecuteAfterAnalysis
+- Nico: Implement Security controls in UserAwakeSqlConfigurator.allowExecuteAfterAnalysis
+
+ 
+Dans keyListenerAdder() overrider la fonction keyPressed du KeyAdapter en 
+appelant la methode ci-dessous: 
+
+private void this_keyPressed(KeyEvent e) { 
+             if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) { 
+   ClipboardModifier.modifyClipboardString(); 
+  } 
+ } 
+ 
+SafesterIt Crypto:
+- Alex/Nico: Add an about Crypto menu (key parameters extraction).
+
+SafesterIt Crypto
+- Nico: pass on 256 bits/2048 RSA.
+
+Performance:
+- Nico: FolderListTransfer.getList() must be done on the server
+- Nico: Log all times for login and display for SafesterItMain
