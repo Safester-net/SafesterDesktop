@@ -1,7 +1,0 @@
-The file {0} can not be encrypted because
-there is not enough free space on the device of {1}.
-
-Free space required: {2} Mb.
-Available free space: {3} Mb.
-
-Please free space and try again.

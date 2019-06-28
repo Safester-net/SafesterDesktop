@@ -1,4 +1,0 @@
-Please confirm your registration in order to log in.
-
-Check your inbox for {0} address:
-You must click on a confirmation link on a incoming email sent by Safester.

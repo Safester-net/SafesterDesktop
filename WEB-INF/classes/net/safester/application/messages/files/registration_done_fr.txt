@@ -1,4 +1,0 @@
-You will receive within few minutes on {0} an email with a link to confirm your registration.
-Important: you will be authorized to log in after your confirmation.
-
-Thank you for your Account Creation.
