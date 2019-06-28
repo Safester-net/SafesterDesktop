@@ -16,13 +16,13 @@ It contains all source code of both [Safester for Windows](https://safester.net/
 
 SafesterDesktop text and file encryptions are made with the [OpenPGP](https://www.openpgp.org/)  cryptography protocol. 
 
-The cryptographic calls a are all encapsulated in the dedicated Java `cgeep_api.jar` wrapper library  located in the `/lib/` subdirectory.
+The cryptographic calls a are all encapsulated in the dedicated Java `cgeep_api.jar` wrapper library  located in the `/lib` subdirectory.
 
 The underlying OpenPGP crypto library used is [Bouncy Castle](http://www.bouncycastle.org). 
 
-`cgeep_api.jar` cryptography source code is available in the `/lib_src/` subdirectory. 
+`cgeep_api.jar` cryptography source code is available in the `/lib_src` subdirectory. 
 
-Note that Safester binary libraries are not obfuscated, this allows to verify and check the runtime code art any moment.
+Note that Safester binary libraries are not obfuscated, this allows to verify and check the runtime code at any moment.
 
 ## License
 
