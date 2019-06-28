@@ -21,6 +21,7 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
+
 package net.safester.application.version;
 
 public class Version
