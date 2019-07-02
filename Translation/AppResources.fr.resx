@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NewUser" xml:space="preserve">
+    <value>Nouvel utilisateur? Créer un compte</value>
+  </data>
+  <data name="Rememberme" xml:space="preserve">
+    <value>Se souvenir de moi</value>
+  </data>
+  <data name="Pleasewait" xml:space="preserve">
+    <value>Veuillez patienter...</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Succès</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Sauver</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="Compose" xml:space="preserve">
+    <value>Composer</value>
+  </data>
+  <data name="Inbox" xml:space="preserve">
+    <value>Inbox</value>
+  </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Envoyé</value>
+  </data>
+  <data name="Drafts" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="NewMail" xml:space="preserve">
+    <value>Nouveau Mail</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="SearchTitle" xml:space="preserve">
+    <value>Rechercher des messages</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Rechercher</value>
+  </data>
+  <data name="ErrorInputUserName" xml:space="preserve">
+    <value>Veuillez saisir votre identifiant (adresse email)</value>
+  </data>
+  <data name="ErrorInputUserPassPhrase" xml:space="preserve">
+    <value>Veuillez saisir la Passphrase</value>
+  </data>
+  <data name="ErrorInputUserPassPhrase1" xml:space="preserve">
+    <value>La Passphrase ne correspond pas. Veuillez vérifier à nouveau</value>
+  </data>
+  <data name="ErrorInputUserPassPhrase2" xml:space="preserve">
+    <value>La Passphrase doit comporter au moins 10 caractères.</value>
+  </data>
+  <data name="ErrorInputUserEmail" xml:space="preserve">
+    <value>Veuillez saisir l'adresse e-mail</value>
+  </data>
+  <data name="ErrorInputUserEmail1" xml:space="preserve">
+    <value>L'adresse email ne doit pas contenir d'espaces</value>
+  </data>
+  <data name="ErrorInputTwoFactorCode" xml:space="preserve">
+    <value>Veuillez saisir le code de validation</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version : </value>
+  </data>
+  <data name="SentFromAndroid" xml:space="preserve">
+    <value>Envoyé depuis Android</value>
+  </data>
+  <data name="SentFromiOS" xml:space="preserve">
+    <value>Envoyé depuis IOS</value>
+  </data>
+  <data name="CANNOT_CONNECT_SERVER" xml:space="preserve">
+    <value>Impossible de se connecter au serveur. Veuillez réessayer</value>
+  </data>
+  <data name="ALERT_CONFIRM_EMAIL" xml:space="preserve">
+    <value>Veuillez confirmer votre inscription pour pouvoir vous connecter. \n\n Vérifiez votre adresse de messagerie pour l'adresse {0} : \ nVous devez cliquer sur le lien de confirmation d'un email envoyé par Safester.</value>
+  </data>
+  <data name="ALERT_INVALID_2FACODE" xml:space="preserve">
+    <value>Code 2FA invalide. Veuillez réessayer</value>
+  </data>
+  <data name="ALERT_ACCOUNT_EXIST" xml:space="preserve">
+    <value>Cet email est déjà lié à un compte Safester.</value>
+  </data>
+  <data name="ALERT_EMAIL_INVALID" xml:space="preserve">
+    <value>L'adresse email n'est pas valide.</value>
+  </data>
+  <data name="ALERT_REGISTER_SUCCESS" xml:space="preserve">
+    <value>Vous recevrez dans quelques minutes sur {0} un e-mail contenant un lien confirmant votre inscription. \n\nImportant: vous serez autorisé à vous connecter après votre confirmation. \n\nMerci pour votre création de compte.</value>
+  </data>
+  <data name="ALERT_COUPON_INVALID" xml:space="preserve">
+    <value>Le coupon est invalide. Veuillez entrer un coupon valide.</value>
+  </data>
+  <data name="ALERT_NOEMAILAPP" xml:space="preserve">
+    <value>Aucune application pour envoyer un mail</value>
+  </data>
+  <data name="ALERT_NODEFAULTAPP" xml:space="preserve">
+    <value>Pas de gestionnaire pour ce type de fichier</value>
+  </data>
+  <data name="TwoFactorCodeRequired" xml:space="preserve">
+    <value>Code de validation obligatoire</value>
+  </data>
+  <data name="TwoFactorCodeRequiredDetail" xml:space="preserve">
+    <value>Veuillez utiliser votre application mobile 2FA pour obtenir le code de validation à 6 chiffres requis.</value>
+  </data>
+  <data name="ValidationCode" xml:space="preserve">
+    <value>Code de validation</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>A propos</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>Copyright© KawanSoft 2019</value>
+  </data>
+  <data name="SupportReportBug" xml:space="preserve">
+    <value>Support / Signaler un Bug: </value>
+  </data>
+  <data name="MailFrom" xml:space="preserve">
+    <value>De :</value>
+  </data>
+  <data name="MailTo" xml:space="preserve">
+    <value>A:</value>
+  </data>
+  <data name="MailCc" xml:space="preserve">
+    <value>Cc:</value>
+  </data>
+  <data name="MailBcc" xml:space="preserve">
+    <value>Bcc:</value>
+  </data>
+  <data name="MailSubject" xml:space="preserve">
+    <value>Sujet:</value>
+  </data>
+  <data name="MailDate" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="MailDisplayMsgAsStored" xml:space="preserve">
+    <value>Afficher le message tel que stocké</value>
+  </data>
+  <data name="DownloadFile" xml:space="preserve">
+    <value>Télécharger le fichier</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Ouvrir le fichier</value>
+  </data>
+  <data name="ClipboardSuccess" xml:space="preserve">
+    <value>Texte copié dans le presse-papier</value>
+  </data>
+  <data name="FileDownloadFailure" xml:space="preserve">
+    <value>Lé téléchargement a échoué</value>
+  </data>
+  <data name="FileDownloadToFolderAndroid" xml:space="preserve">
+    <value>Fichier correctement \ntéléchargé et déchiffré \ndans votre dossier de téléchargement</value>
+  </data>
+  <data name="FileDownloadToFolderiOS" xml:space="preserve">
+    <value>Fichier correctement \ntéléchargé et déchiffré \ndans le dossier Sur mon iPhone /Downloads Téléchargements</value>
+  </data>
+  <data name="DeleteMail" xml:space="preserve">
+    <value>Voulez-vous supprimer ce mail ?</value>
+  </data>
+  <data name="TryAgain" xml:space="preserve">
+    <value>Veuillez réessayer</value>
+  </data>
+  <data name="AvailableSoon" xml:space="preserve">
+    <value>Bientôt disponible...</value>
+  </data>
+  <data name="ChangePass" xml:space="preserve">
+    <value>Changer la Passphrase</value>
+  </data>
+  <data name="ChangePassHint" xml:space="preserve">
+    <value>Téléchargez Safester Desktop pour modifier la passphrase (www.safester.net).</value>
+  </data>
+  <data name="ConfirmLogout" xml:space="preserve">
+    <value>Voulez-vous vous déconnecter?</value>
+  </data>
+  <data name="ImportContacts" xml:space="preserve">
+    <value>Importer les Contacts depuis votre mobile</value>
+  </data>
+  <data name="ImportContactsHint" xml:space="preserve">
+    <value>Veuillez patienter, l'mportation peut prendre quelques minutes ...</value>
+  </data>
+  <data name="ImportContactsSuccess" xml:space="preserve">
+    <value>Vos contacts ont été importés!</value>
+  </data>
+  <data name="SaveAsDraft" xml:space="preserve">
+    <value>Sauver comme Brouillon</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Envoyer</value>
+  </data>
+  <data name="TypeText" xml:space="preserve">
+    <value>Ecrivez votre texte ici</value>
+  </data>
+  <data name="RemoveAttachment" xml:space="preserve">
+    <value>Souhaitez supprimer supprimer cette pièce jointe?</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Message enregistré avec succès</value>
+  </data>
+  <data name="InputReceiverEmail" xml:space="preserve">
+    <value>Veuillez entrer l'adresse email du destinataire</value>
+  </data>
+  <data name="InputSubject" xml:space="preserve">
+    <value>Veuillez entrer le Sujet</value>
+  </data>
+  <data name="FileAdded" xml:space="preserve">
+    <value>Le fichier est déjà ajouté</value>
+  </data>
+  <data name="MessageEncrypted" xml:space="preserve">
+    <value>Le message est crypté et va être envoyé!</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>Il y a une erreur</value>
+  </data>
+  <data name="RegisterUser" xml:space="preserve">
+    <value>Créer un Compte</value>
+  </data>
+  <data name="RegisterUserHint" xml:space="preserve">
+    <value>Utilisez une adresse e-mail existante comme identifiant Safester.</value>
+  </data>
+  <data name="RegisterUserHint1" xml:space="preserve">
+    <value>Email (Utiliser adresse existante)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom:</value>
+  </data>
+  <data name="Name1" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="Email1" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Passphrase" xml:space="preserve">
+    <value>Passphrase</value>
+  </data>
+  <data name="ConfirmPassphrase" xml:space="preserve">
+    <value>Confirmer la  Passphrase</value>
+  </data>
+  <data name="Coupon" xml:space="preserve">
+    <value>Coupon Optionnel</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Produit :</value>
+  </data>
+  <data name="CryptographySettings" xml:space="preserve">
+    <value>Paramètres de cryptographie :</value>
+  </data>
+  <data name="MailboxSize" xml:space="preserve">
+    <value>Taille BAL::</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Notification :</value>
+  </data>
+  <data name="AllowNotification" xml:space="preserve">
+    <value>Autoriser Notifications:</value>
+  </data>
+  <data name="MessagePerScroll" xml:space="preserve">
+    <value>Messages affichés par scroll:</value>
+  </data>
+  <data name="Signature" xml:space="preserve">
+    <value>Signature :</value>
+  </data>
+  <data name="AddSignatureHint" xml:space="preserve">
+    <value>Ajouter une signature aux messages</value>
+  </data>
+  <data name="AddSignature" xml:space="preserve">
+    <value>Signature</value>
+  </data>
+  <data name="SettingsSaved" xml:space="preserve">
+    <value>Paramètres enregistrés avec succès</value>
+  </data>
+  <data name="TakePhoto" xml:space="preserve">
+    <value>Take a Photo</value>
+  </data>
+  <data name="SelectPhoto" xml:space="preserve">
+    <value>Sélectionner une photo</value>
+  </data>
+  <data name="PickFile" xml:space="preserve">
+    <value>Sélectionner un fichier</value>
+  </data>
+  <data name="TwoFactor" xml:space="preserve">
+    <value>Authentification 2FA</value>
+  </data>
+  <data name="TwoFactorAuthentication" xml:space="preserve">
+    <value>Activation 2FA</value>
+  </data>
+  <data name="TwoFactorStatus" xml:space="preserve">
+    <value>Statut de l'activation 2FA</value>
+  </data>
+  <data name="TwoFactorAlert" xml:space="preserve">
+    <value>Téléchargez Safester Desktop Edition pour configurer l’activation 2FA (www.safester.net).</value>
+  </data>
+  <data name="SearchIn" xml:space="preserve">
+    <value>Rechercherdans</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Dossier</value>
+  </data>
+  <data name="MessageSentBetween" xml:space="preserve">
+    <value>Entre</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Emetteur</value>
+  </data>
+  <data name="Recipient" xml:space="preserve">
+    <value>Destinataire</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Sujet / Body</value>
+  </data>
+  <data name="SearchTo" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="SearchFrom" xml:space="preserve">
+    <value>De</value>
+  </data>
+  <data name="InputSearchText" xml:space="preserve">
+    <value>Le texte de recherche doit comporter plus de 5 caractères.</value>
+  </data>
+  <data name="FileAttachNameError" xml:space="preserve">
+    <value>Le fichier ne peut pas être joint. Veuillez supprimer tout caractère spécial du nom de fichier et réessayer.</value>
+  </data>
+  <data name="FileAttachSizeError" xml:space="preserve">
+    <value>La taille des pièces jointes dépasse la limite autorisée de 200 Mo. Veuillez réessayer.</value>
+  </data>
+  <data name="ErrorGetUserKey" xml:space="preserve">
+    <value>L'application ne peut pas obtenir la clé d'utilisateur. Veuillez réessayer.</value>
+  </data>
+  <data name="ErrorAddAttachment" xml:space="preserve">
+    <value>Il y a une erreur qui empêche d'ajouter ce fichier en pièce jointe:</value>
+  </data>
+  <data name="ErrorUnknownException" xml:space="preserve">
+    <value>Il y a une erreur. \nRaison: </value>
+  </data>
+</root>
