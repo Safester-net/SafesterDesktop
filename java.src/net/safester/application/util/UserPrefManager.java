@@ -98,6 +98,8 @@ public class UserPrefManager {
     
     public static String FOLDER_SECTION_IS_INACTIVE = "FOLDER_SECTION_IS_INACTIVE";
 
+    public static String ACCOUNTS_LIST= "ACCOUNTS_LIST";
+    
     /**
       * Get a  preference
       * @param prefName  the preference name

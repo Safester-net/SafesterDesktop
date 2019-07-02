@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Frame;
 import java.sql.Connection;
@@ -31,20 +32,21 @@ import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
-import net.safester.application.parms.Parms;
-import net.safester.application.parms.StoreParms;
-import net.safester.application.tool.ButtonResizer;
-import net.safester.application.tool.DesktopWrapper;
-import net.safester.application.util.HtmlTextUtil;
-import net.safester.application.util.JOptionPaneNewCustom;
-
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.swing.util.SwingUtil;
-import java.awt.Color;
+
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
+import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
+import net.safester.application.tool.ButtonResizer;
+import net.safester.application.tool.ClipboardManager;
+import net.safester.application.tool.DesktopWrapper;
+import net.safester.application.util.HtmlTextUtil;
+import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.clientserver.SubscriptionLocal;
 
 /**
  * This dialog is displayed on connection when active subscription is expired
@@ -58,7 +60,9 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
     private MessagesManager messages = new MessagesManager();
     short newSubscription = StoreParms.PRODUCT_FREE;
 
-    Frame caller;
+    private ClipboardManager clipboardManager;
+    
+    Frame parent;
 
     /** Creates new form ExpiredSubscriptionDialog */
     public ActivateSubscriptionDialog(java.awt.Frame parent, boolean modal) {
@@ -72,7 +76,7 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
 
     public ActivateSubscriptionDialog(java.awt.Frame parent, int user_number, boolean modal, Connection theConnection) {
         this(parent, modal);
-        caller = parent;
+        this.parent = parent;
         userNumber = user_number;
 
         // Use a dedicated Connection to avoid overlap of result files
@@ -93,6 +97,8 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
             e1.printStackTrace();
         }
         
+        clipboardManager = new ClipboardManager(rootPane);
+               
         this.setTitle(messages.getMessage("subscription_activation"));
         this.jLabelTitle.setText(messages.getMessage("subscription_activation"));
 
@@ -122,7 +128,7 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
         br.setWidthToMax();
         SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
 
-        this.setSize(400, 400);
+        this.setSize(500, 500);
 
         this.jTextFieldVoucherCode.requestFocus();
     }
@@ -149,7 +155,11 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
                 short subscription = Short.parseShort(subscriptionCode);
                 //Store new subscription in memory
                 newSubscription = subscription;
-                ConnectionParms.setSubscription(subscription);
+                   
+                SubscriptionLocalStore.setSubscription(subscription, userNumber);
+                if (parent instanceof Main) {
+                    ((Main)parent).updateBottomPlan(MainStatusBarUpdater.getAccount());
+                }
             }
             catch(NumberFormatException nfe){
                 displayError(subscriptionCode);
@@ -257,7 +267,7 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
 
         jTextFieldVoucherCode.setText("jTextFieldVoucherCode");
         jTextFieldVoucherCode.setMinimumSize(new java.awt.Dimension(220, 22));
-        jTextFieldVoucherCode.setPreferredSize(new java.awt.Dimension(220, 22));
+        jTextFieldVoucherCode.setPreferredSize(new java.awt.Dimension(320, 22));
         jPanelVoucher.add(jTextFieldVoucherCode);
 
         jPanelCenter.add(jPanelVoucher);

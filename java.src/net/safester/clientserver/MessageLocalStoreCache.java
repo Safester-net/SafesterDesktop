@@ -43,6 +43,8 @@ public class MessageLocalStoreCache
        
     /** The map that will store the total messages number per folder */    
     private static Map <Integer, Integer> mapTotalMessages = new HashMap<Integer, Integer>();    
+
+
     
     
     /**
@@ -52,9 +54,7 @@ public class MessageLocalStoreCache
     {
         
     }
-    
-    
-    
+        
     /**
      * @param folderId      the folder id
      * @return  true if the cache exists for the folder

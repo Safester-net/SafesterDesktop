@@ -28,17 +28,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.util.TestAwakeConnection;
-
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * This dialog is displayed when user try to access
@@ -139,7 +139,7 @@ public class UnavailableFeatureDialog extends javax.swing.JDialog {
 
             if (buyDialog.getNewSubscription() != StoreParms.PRODUCT_FREE) {
                 short userSubscription = buyDialog.getNewSubscription();
-                ConnectionParms.setSubscription(userSubscription);
+                SubscriptionLocalStore.setSubscription(userSubscription, userNumber);
             }
             
             this.dispose();

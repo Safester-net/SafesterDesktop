@@ -45,9 +45,9 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.clientserver.MessageTransfer;
 
 /**
@@ -137,7 +137,7 @@ public class MainStatusBarUpdater {
     public static String getAccount()
     {
         MessagesManager messages = new MessagesManager();
-        short subscription = ConnectionParms.getSubscription();
+        short subscription = SubscriptionLocalStore.getSubscription();
         String account = StoreParms.getProductNameForSubscription(subscription) + " " + messages.getMessage("account");                
         return account;
     }
@@ -152,7 +152,7 @@ public class MainStatusBarUpdater {
     public String getStorageInfo() throws SQLException
     {
         long actualStore = MessageTransfer.getTotalMailboxSize(connection, userNumber);
-        long maxStore = StoreParms.getStorageForSubscription(ConnectionParms.getSubscription());
+        long maxStore = StoreParms.getStorageForSubscription(SubscriptionLocalStore.getSubscription());
 
         actualStore = actualStore / Parms.MO;
         maxStore = maxStore / Parms.MO;

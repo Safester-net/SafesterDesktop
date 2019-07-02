@@ -114,7 +114,6 @@ public class Safester {
 	}
         */
         
-
 	Login login = new Login();
 	login.setVisible(true);
 

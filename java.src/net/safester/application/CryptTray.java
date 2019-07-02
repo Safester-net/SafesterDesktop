@@ -44,11 +44,8 @@ import com.safelogic.utilx.Debug;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Window;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;
 import net.safester.application.version.Version;
 
@@ -211,7 +208,10 @@ public class CryptTray {
        
     }
 
-
+    void remove() {
+        tray.remove(trayIcon);
+    }
+        
     /**
      * For Advanced Installer
      *
@@ -238,4 +238,6 @@ public class CryptTray {
     public TrayIcon getTrayIcon() {
         return trayIcon;
     }
+
+
 }

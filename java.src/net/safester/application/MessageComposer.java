@@ -96,6 +96,7 @@ import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.photo.GroupListNew;
 import net.safester.application.tool.AttachmentListHandler;
 import net.safester.application.tool.ButtonResizer;
@@ -1442,13 +1443,13 @@ public class MessageComposer extends javax.swing.JFrame {
 
             //Does user authorized to send a message because of total folders size
             long actualStorage = MessageTransfer.getTotalMailboxSize(connection, userNumber);
-            long maximumStorage = StoreParms.getStorageForSubscription(ConnectionParms.getSubscription());
+            long maximumStorage = StoreParms.getStorageForSubscription(SubscriptionLocalStore.getSubscription());
 
             if (actualStorage > maximumStorage) {
                 this.setCursor(Cursor.getDefaultCursor());
 
-                if (ConnectionParms.getSubscription() != StoreParms.PRODUCT_PLATINUM) {
-                    String productName = StoreParms.getProductNameForSubscription(ConnectionParms.getSubscription());
+                if (SubscriptionLocalStore.getSubscription() != StoreParms.PRODUCT_PLATINUM) {
+                    String productName = StoreParms.getProductNameForSubscription(SubscriptionLocalStore.getSubscription());
                     String htmlMessage = HtmlTextUtil.getHtmlHelpContent("upgrade_storage_capacity_exceeded");
                     String displayMaximumStorage = MessageTableCellRenderer.getDisplaySize(maximumStorage);
 
@@ -1605,7 +1606,7 @@ public class MessageComposer extends javax.swing.JFrame {
         message.setAnonymousNotification(jToggleButtonSendAnonymousNotification.isSelected());
 
         long sizeMessage = message.getBody().length();
-        short userSubscription = ConnectionParms.getSubscription();
+        short userSubscription = SubscriptionLocalStore.getSubscription();
 
         if (sizeMessage > StoreParms.getBodyLimitForSubscription(userSubscription)) {
             if (userSubscription == StoreParms.PRODUCT_FREE) {
@@ -1687,7 +1688,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         if (recipientStatus == MessageComposer.RECIPIENT_OK) {
 
-            int recipientsLimit = StoreParms.getRecipientsLimitForSubscription(ConnectionParms.getSubscription());
+            int recipientsLimit = StoreParms.getRecipientsLimitForSubscription(SubscriptionLocalStore.getSubscription());
 
             if (recipients.size() > recipientsLimit) {
 

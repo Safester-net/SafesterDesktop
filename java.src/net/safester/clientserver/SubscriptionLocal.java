@@ -49,6 +49,11 @@ public class SubscriptionLocal {
     public void setEnddate(Timestamp enddate) {
         this.enddate = enddate;
     }
+
+    @Override
+    public String toString() {
+        return "SubscriptionLocal{" + "userNumber=" + userNumber + ", typeSubscription=" + typeSubscription + ", enddate=" + enddate + '}';
+    }
   
     
 }

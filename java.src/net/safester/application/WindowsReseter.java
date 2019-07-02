@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.WindowSettingManager;
+import net.safester.application.util.UserPrefManager;
 
 /**
  *
@@ -44,6 +45,10 @@ public class WindowsReseter {
         if (response != JOptionPane.OK_OPTION) {
             return;
         }
+        
+        UserPrefManager.removePreference(UserPrefManager.USER_LOGIN);
+        UserPrefManager.removePreference(UserPrefManager.ACCOUNTS_LIST);
+        
         try {
             WindowSettingManager.resetAll();
         } catch (BackingStoreException ex) {

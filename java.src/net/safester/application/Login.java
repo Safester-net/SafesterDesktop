@@ -45,11 +45,15 @@ import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -58,6 +62,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.commons.api.client.HttpProxy;
+import org.awakefw.commons.api.client.Invalid2faCodeException;
 import org.awakefw.commons.api.client.InvalidLoginException;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.client.AwakeUrl;
@@ -65,7 +70,6 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
-import javax.swing.JFrame;
 
 import net.safester.application.install.AskForDownloadJframe;
 import net.safester.application.messages.LanguageManager;
@@ -73,6 +77,9 @@ import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalGetterClient;
+import net.safester.application.parms.SubscriptionLocalManager;
+import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.register.Register;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
@@ -86,7 +93,7 @@ import net.safester.application.util.UserPrefManager;
 import net.safester.application.util.proxy.ProxySessionCheckerNew;
 import net.safester.application.wait.tools.CmWaitDialog;
 import net.safester.clientserver.ServerParms;
-import org.awakefw.commons.api.client.Invalid2faCodeException;
+import net.safester.clientserver.SubscriptionLocal;
 
 /**
  * Login window
@@ -117,28 +124,40 @@ public class Login extends javax.swing.JFrame {
     //Optional pendingEmail for merging pending account with current
     //private String pendingEmail = null;
     private JFrame thisOne;
+    
+    Main main = null;
+    /* The Set that contains all accounts when multi accounts usage */
+    private Set<UserAccount> userAccounts = new TreeSet<>();
 
     /**
-     * Creates new form
+     * Creates new form at first login time
      */
     public Login() {
         this.thisOne = this;
         initComponents();
-        initCompany(null);
+        initCompany(null, null);
 
     }
 
-    /* Not used anymore: merge
-    public Login(String host, String email, String thePendingEmail) {
-        this(host, email);
-        this.pendingEmail = thePendingEmail;
-    }
+    /**
+     * To be used when multi login
+     * @param main 
+     * @param defaultAddAccount the account chosen by user in Main Window
      */
-//    public Login(String host, String email, char[] thePasspharse) {
-//        this(host, email);
-//        this.jPasswordField.setText(new String(thePasspharse));
-//    }
-    private void initCompany(String email) {
+    public Login(Main main, String defaultAddAccount) {
+	
+	if (main == null) {
+	    throw new NullPointerException("main cannot be null!");
+	}
+	
+        this.main = main;
+        this.userAccounts = main.getUserAccounts();
+        this.thisOne = this;
+        initComponents();
+        initCompany(null, defaultAddAccount);
+    }
+
+    private void initCompany(String email, String defaultAddAccount) {
 
         //org.awakefm.file.http.HttpTransferOne.DEBUG = false;
         clipboardManager = new ClipboardManager(rootPane);
@@ -164,7 +183,16 @@ public class Login extends javax.swing.JFrame {
         this.jMenuItemAbout.setText(messages.getMessage("about"));
         this.jMenuItemWhatsNew.setText(messages.getMessage("whats_new"));
 
-        this.jTextFieldLogin.setText(email);
+        // First time, display the defaults last login
+        if (this.main == null) {
+            this.jTextFieldLogin.setText(email);
+        }
+        else {
+            this.jTextFieldLogin.setText(null);
+            if (defaultAddAccount != null) {
+                this.jTextFieldLogin.setText(defaultAddAccount);
+            }
+        }
 
         this.jLabelErrorMessage.setText(" ");
         this.jLabelLogin.setText(messages.getMessage("email"));
@@ -188,8 +216,6 @@ public class Login extends javax.swing.JFrame {
         jCheckBoxHideTyping.setText(messages.getMessage("hide_typing"));
 
         jLabelKeyboardWarning.setText(null);
-
-        //jCheckBoxRememberPassphrase.setText(messages.getMessage("remember_passphrase"));
         keyListenerAdder();
 
         this.setTitle(messages.getMessage("login_title"));
@@ -201,66 +227,13 @@ public class Login extends javax.swing.JFrame {
             this.jPasswordField.requestFocus();
         }
 
-        /*
-        if (Parms.FEATURE_CACHE_PASSPHRASE)
-        {
-        //Try to get passphrase from socket server
-        SocketClient socketClient = new SocketClient();
-        try{
-        char [] passphrase = socketClient.getRemotePassphrase(); // No Exception
-        
-        if (passphrase != null){
-        jPasswordField.setText(new String(passphrase));
-        }
-        }catch(IOException e){
-        //Silent catch
-        e.printStackTrace(System.err);
-        }
-        
-        if(UserPrefManager.getBooleanPreference(UserPrefManager.DO_CACHE_PASSPHRASE)){
-        jCheckBoxRememberPassphrase.setSelected(true);
-        }
-        }
-        else
-        {
-        jCheckBoxRememberPassphrase.setVisible(false);
-        }
-         * 
-         */
-        testCapsOn();
+              testCapsOn();
 
-        /*
-        if (UI_Util.isNimbus()) {
-            jTextFieldLogin.setMaximumSize(new Dimension(jTextFieldLogin.getMaximumSize().width, 28));
-            jTextFieldLogin.setMinimumSize(new Dimension(jTextFieldLogin.getMinimumSize().width, 28));
-            jTextFieldLogin.setPreferredSize(new Dimension(jTextFieldLogin.getPreferredSize().width, 28));
-            
-            jPasswordField.setMaximumSize(new Dimension(jPasswordField.getMaximumSize().width, 28));
-            jPasswordField.setMinimumSize(new Dimension(jPasswordField.getMinimumSize().width, 28));
-            jPasswordField.setPreferredSize(new Dimension(jPasswordField.getPreferredSize().width, 28));          
-                
-        }
-         */
-        //     WindowSettingManager.load(this);
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);
         buttonResizer.setWidthToMax();
 
         SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
 
-//        //if (SystemUtils.IS_OS_LINUX)
-//        if (UIManager.getLookAndFeel().getName().contains("Nimbus"))
-//        {
-//            //Linux version specific
-//            jPanelMain.setPreferredSize(new Dimension(395, 263));
-//            this.jButtonLostPassphrase.setMargin(new Insets(3, 0, 2, 0));
-//            Dimension dim = this.jButtonLostPassphrase.getPreferredSize();
-//            dim.setSize(dim.getWidth(), dim.getHeight() + 1);
-//            this.jButtonLostPassphrase.setPreferredSize(dim);
-//            //this.setSize(new Dimension(445, 440));
-//        }else{
-//            //this.setSize(new Dimension(445, 440));
-//        }
-        //if (SystemUtils.IS_OS_LINUX)
         if (UI_Util.isNimbus()) {
             //Linux version specific
             //jPanelMain.setPreferredSize(new Dimension(395, 263));
@@ -278,13 +251,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-//        this.addComponentListener(new ComponentAdapter() {
-//
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                resizeToMax();
-//            }
-//        });
         this.addComponentListener(new ComponentAdapter() {
 
             @Override
@@ -299,7 +265,6 @@ public class Login extends javax.swing.JFrame {
 
         });
 
-        //11/09/06 ABE: No more passphrase recovery
         jPanelRememberPassphrase.remove(jButtonLostPassphrase);
 
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -337,7 +302,10 @@ public class Login extends javax.swing.JFrame {
 
     private void close() {
         save();
-        System.exit(0);
+        this.dispose();
+        if (main == null) {
+            System.exit(0);
+        }
     }
 
     /**
@@ -445,14 +413,8 @@ public class Login extends javax.swing.JFrame {
      */
     private void doIt() {
 
-        // To be done BEFORE proxy tests (because we crypt the line)
-//        if (!Safester.testPolicyFile()) {
-//            System.exit(0);
-//        }
-
-
-        System.out.println();
-        System.out.println(new Date() + " Do it begin...");
+        debug("");
+        debug(new Date() + " Do it begin...");
 
         PolicyInstaller.setCryptographyRestrictions();
                 
@@ -474,7 +436,7 @@ public class Login extends javax.swing.JFrame {
         jButtonCreateAccount.setVisible(false);
         update(getGraphics());
 
-        System.out.println(new Date() + " Before in Progress...");
+        debug(new Date() + " Before in Progress...");
         
         // Start wait dialog with "server contacted" message
         cmWaitDialog = new CmWaitDialog(this,
@@ -485,8 +447,8 @@ public class Login extends javax.swing.JFrame {
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        System.out.println();
-        System.out.println(new Date() + " Login... Detecting Proxy...");
+        debug("");
+        debug(new Date() + " Login... Detecting Proxy...");
 
         ProxySessionCheckerNew proxySessionCheckerNew = new ProxySessionCheckerNew(this, cmWaitDialog, email, passphrase);
         try {
@@ -527,7 +489,7 @@ public class Login extends javax.swing.JFrame {
                 passphrase,
                 httpProxy, null);
 
-        System.out.println(new Date() + " Login... Getting Connection begin...");
+        debug(new Date() + " Login... Getting Connection begin...");
         boolean askForValidationCode = false;
 
         try {
@@ -660,56 +622,64 @@ public class Login extends javax.swing.JFrame {
         }
                    
         //DONE LOGIN & 2FA OK!
-        System.out.println(new Date() + " Login... Getting Connection end...");
-        int userNumber = connectionParms.getUserNumber();
+        debug(new Date() + " Login... Getting Connection end...");
+        //int userNumber = connectionParms.getUserNumber();
 
         UserPrefManager.setPreference(UserPrefManager.USER_LOGIN, jTextFieldLogin.getText());
-
+        
+        String accountLists = UserPrefManager.getPreference(UserPrefManager.ACCOUNTS_LIST);
+        if (accountLists == null) {
+            accountLists = jTextFieldLogin.getText();
+        } else {
+            if (!accountLists.contains(jTextFieldLogin.getText())) {
+                accountLists += "," + jTextFieldLogin.getText();
+            }
+        }
+        UserPrefManager.setPreference(UserPrefManager.ACCOUNTS_LIST, accountLists);
+        
         // Notify the user if expired & allow him to buy
-        allowUserToBuyIfExpired(userNumber);
-
-        System.out.println("Final ConnectionParms.getSubscription(): " + ConnectionParms.getSubscription());
-
-        /* FUTURE USAGE
+        SubscriptionLocal subscriptionLocal =  null;
         try {
-            mergeAccounts(httpProxy, connection, userNumber);
-        } catch (Exception e) {
+	    subscriptionLocal  = SubscriptionLocalGetterClient.get(jTextFieldLogin.getText(), connection);
+	} catch (SQLException e) {
             cmWaitDialog.stopWaiting();
             jButtonCreateAccount.setVisible(true);
             this.setCursor(Cursor.getDefaultCursor());
-            JOptionPaneNewCustom.showException(this, e, messages.getMessage("merge_account_failed"));
-        }
-         */
+            JOptionPaneNewCustom.showException(this, e, messages.getMessage("unable_to_connect"));
+            return;
+	}
+        
+        int userNumber = subscriptionLocal.getUserNumber();
+        allowUserToBuyIfExpired(subscriptionLocal);
+
+        SubscriptionLocalStore.put(subscriptionLocal);
+        
+        //debug("Final ConnectionParms.getSubscription(): " + ConnectionParms.getSubscription());
+
         cmWaitDialog.changeText(this.messages.getMessage("login_success"));
 
-        /*
-        if (Parms.FEATURE_CACHE_PASSPHRASE)
-        {
-        UserPrefManager.setPreference(UserPrefManager.DO_CACHE_PASSPHRASE, jCheckBoxRememberPassphrase.isSelected());
-        SocketClient socketClient = new SocketClient();
+        System.out.println(new Date() + " Login... Launching Safester Main..");
+        System.out.println(new Date() + " subscriptionLocal: " + subscriptionLocal);
+
+        // Create a new account to add to existing accounts
+        UserAccount userAccount = new UserAccount(connection, lowerCaseLogin, userNumber, passphrase, subscriptionLocal.getTypeSubscription());
+        userAccounts.add(userAccount);
         
-        if(jCheckBoxRememberPassphrase.isSelected()){
-        socketClient.setRemotePassphrase(passphrase);
-        }else{
-        socketClient.closeServerSilent();
+        Main mainNew = new Main(connection, lowerCaseLogin, userNumber, passphrase, subscriptionLocal.getTypeSubscription(), userAccounts);
+        mainNew.setVisible(true);
+            
+        if (main != null) {
+            main.dispose();
         }
-        }
-         */
-        System.out.println(new Date() + " Login... Launching SafeShareItMain..");
-
-        //HACK NDP TRAY
-        //new Main(connection, lowerCaseLogin, userNumber, passphrase, useOtp).setVisible(true);
-        Main main = new Main(connection, lowerCaseLogin, userNumber, passphrase);
-        main.setVisible(true);
-
-        //CryptTray cryptTray = new CryptTray();
-        //cryptTray.startAsTray(main);
+        
         this.setCursor(Cursor.getDefaultCursor());
         cmWaitDialog.stopWaiting();
 
         this.dispose();
 
     }
+
+
 
     public static char[] getPassphraseFromFile(char[] passphrase) {
         File file = new File(System.getProperty("user.home") + File.separator + "password.txt");
@@ -749,47 +719,83 @@ public class Login extends javax.swing.JFrame {
         return content;
     }
 
-    /**
-     * Allow the use
-     *
-     * @param userNumber
-     */
-    private void allowUserToBuyIfExpired(int userNumber) {
+//    /**
+//     * Allow the use
+//     *
+//     * @param userNumber
+//     */
+//    @SuppressWarnings("unused")
+//    private void allowUserToBuyIfExpired(int userNumber) {
+//
+//        //Get current user subscription & the expired one
+//        short userSubscription = ConnectionParms.getSubscription();
+//        short userExpiredSubscription = ConnectionParms.getExpiredSubscription();
+//
+//        System.out.println("isExpired              : " + ConnectionParms.isExpired());
+//        System.out.println("userSubscription       : " + userSubscription);
+//        System.out.println("userExpiredSubscription: " + userExpiredSubscription);
+//
+//        // Accept free 
+//        if (userSubscription == StoreParms.PRODUCT_FREE && userExpiredSubscription == StoreParms.PRODUCT_FREE) {
+//            return; // FREE! Always OK
+//        }
+//
+//        // If expired 
+//        if (!ConnectionParms.isExpired()) {
+//            return; // User is OK and subscription up to date
+//        }
+//
+//        // Case paid subscription is expired
+//        boolean doDiscard = UserPrefManager.getBooleanPreference(UserPrefManager.EXPIRED_SUBSCRIPTION_DIALOG_DISCARD);
+//
+//        if (!doDiscard) {
+//            ExpiredSubscriptionDialog expiredSubscriptionDialog = new ExpiredSubscriptionDialog(this, connection,
+//                    userNumber, userExpiredSubscription, true);
+//            expiredSubscriptionDialog.setVisible(true);
+//
+//            if (expiredSubscriptionDialog.getNewSubscription() != StoreParms.PRODUCT_FREE) {
+//                userSubscription = (short) expiredSubscriptionDialog.getNewSubscription();
+//                ConnectionParms.setSubscription(userSubscription);
+//            }
+//        }
+//
+//    }
 
-        //Get current user subscription & the expired one
-        short userSubscription = ConnectionParms.getSubscription();
-        short userExpiredSubscription = ConnectionParms.getExpiredSubscription();
-
-        System.out.println("isExpired              : " + ConnectionParms.isExpired());
+    private void allowUserToBuyIfExpired(SubscriptionLocal subscriptionLocal) {
+	
+        int userSubscription = subscriptionLocal.getTypeSubscription();
+        boolean isExpired = SubscriptionLocalManager.isEsxpired(subscriptionLocal);
+        
+        System.out.println("isExpired              : " + isExpired);
         System.out.println("userSubscription       : " + userSubscription);
-        System.out.println("userExpiredSubscription: " + userExpiredSubscription);
-
-        // Accept free 
-        if (userSubscription == StoreParms.PRODUCT_FREE && userExpiredSubscription == StoreParms.PRODUCT_FREE) {
-            return; // FREE! Always OK
+        
+        // Always accept FREE
+        if (userSubscription == StoreParms.PRODUCT_FREE) {
+            return;
         }
-
-        // If expired 
-        if (!ConnectionParms.isExpired()) {
+        
+        // If not expired , no buy
+        if (!isExpired) {
             return; // User is OK and subscription up to date
         }
 
+        int userNumber = subscriptionLocal.getUserNumber();
+        
         // Case paid subscription is expired
         boolean doDiscard = UserPrefManager.getBooleanPreference(UserPrefManager.EXPIRED_SUBSCRIPTION_DIALOG_DISCARD);
 
         if (!doDiscard) {
             ExpiredSubscriptionDialog expiredSubscriptionDialog = new ExpiredSubscriptionDialog(this, connection,
-                    userNumber, userExpiredSubscription, true);
+                    userNumber, StoreParms.PRODUCT_FREE, true);
             expiredSubscriptionDialog.setVisible(true);
 
-            if (expiredSubscriptionDialog.getNewSubscription() != StoreParms.PRODUCT_FREE) {
-                userSubscription = expiredSubscriptionDialog.getNewSubscription();
-                ConnectionParms.setSubscription(userSubscription);
-            }
+            userSubscription = expiredSubscriptionDialog.getNewSubscription();
+            subscriptionLocal.setTypeSubscription(userSubscription);
+           
         }
-
+        
     }
-
+    
     /**
      * Merge account
      *
@@ -1324,12 +1330,6 @@ public class Login extends javax.swing.JFrame {
 
     private void jButtonLostPassphraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLostPassphraseActionPerformed
 
-//	// 11/09/06 ABE: No more passphrase recovery
-//	if (true) {
-//	    return;
-//	}
-//	login = jTextFieldLogin.getText();
-//	new PassphraseRecovery(this, host, login).setVisible(true);
     }//GEN-LAST:event_jButtonLostPassphraseActionPerformed
 
     private void jButtonLostPassphraseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLostPassphraseMouseExited

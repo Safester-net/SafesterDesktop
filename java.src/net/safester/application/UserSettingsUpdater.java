@@ -45,25 +45,12 @@ import java.util.prefs.Preferences;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
-import net.safester.application.parms.Parms;
-import net.safester.application.parms.StoreParms;
-import net.safester.application.tool.ButtonResizer;
-import net.safester.application.tool.ClipboardManager;
-import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.JOptionPaneNewCustom;
-import net.safester.application.util.UserPrefManager;
-import net.safester.clientserver.MessageTransfer;
-import net.safester.clientserver.PgpKeyPairLocal;
-import net.safester.clientserver.UserSettingsExtractor;
-import net.safester.noobs.clientserver.UserSettingsLocal;
-import net.safester.clientserver.holder.PgpKeyPairHolder;
-import net.safester.clientserver.holder.TheUserSettingsHolder;
-
 import org.apache.commons.lang3.SystemUtils;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
 import org.bouncycastle.openpgp.PGPException;
@@ -74,10 +61,24 @@ import com.safelogic.pgp.api.PgeepPrivateKey;
 import com.safelogic.pgp.api.util.crypto.Sha1;
 import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
-import javax.swing.SwingUtilities;
+
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.ConnectionParms;
+import net.safester.application.parms.Parms;
+import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
+import net.safester.application.tool.ButtonResizer;
+import net.safester.application.tool.ClipboardManager;
+import net.safester.application.tool.WindowSettingManager;
+import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.application.util.UserPrefManager;
+import net.safester.clientserver.MessageTransfer;
+import net.safester.clientserver.PgpKeyPairLocal;
+import net.safester.clientserver.UserSettingsExtractor;
+import net.safester.clientserver.holder.PgpKeyPairHolder;
+import net.safester.clientserver.holder.TheUserSettingsHolder;
 import net.safester.noobs.clientserver.GsonUtil;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.file.api.util.HtmlConverter;
+import net.safester.noobs.clientserver.UserSettingsLocal;
 
 public class UserSettingsUpdater extends javax.swing.JFrame {
 
@@ -275,7 +276,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private void setStorageInfo() throws SQLException
     {
         long actualStore = MessageTransfer.getTotalMailboxSize(connection, userNumber);        
-        long maxStore = StoreParms.getStorageForSubscription(ConnectionParms.getSubscription());
+        long maxStore = StoreParms.getStorageForSubscription(SubscriptionLocalStore.getSubscription());
         
 //        if (maxStore == 0)
 //        {
@@ -327,7 +328,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
             UserSettingsExtractor userSettingsExtractor = new UserSettingsExtractor(connection, userNumber);
             UserSettingsLocal userSettingsLocal = userSettingsExtractor.get();
 
-            accountTypeName = StoreParms.getProductNameForSubscription(ConnectionParms.getSubscription());
+            accountTypeName = StoreParms.getProductNameForSubscription(SubscriptionLocalStore.getSubscription());
             accountTypeName = " (" + accountTypeName + ")";
         
             jTextFieldAccount.setText(keyId + accountTypeName);

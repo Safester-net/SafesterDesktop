@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
@@ -35,28 +36,24 @@ import java.awt.event.WindowEvent;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JEditorPaneLinkDetector;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
-
-import com.swing.util.SwingUtil;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.Painter;
 
 /**
  *
@@ -169,7 +166,7 @@ public class About extends javax.swing.JFrame {
                 + Version.getVersionWithCopyright();
 
         if (displayEdition) {
-            short currentSubscription = ConnectionParms.getSubscription();
+            short currentSubscription = SubscriptionLocalStore.getSubscription();
             System.out.println("currentSubscription: " + currentSubscription);
             String subscription = StoreParms.getProductNameForSubscription(currentSubscription);
             aboutText += "<br><i>" + subscription + " " + this.messages.getMessage("account") + "</i>";

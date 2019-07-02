@@ -34,6 +34,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,12 +56,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -96,9 +100,9 @@ import net.safester.application.engines.BackgroundDownloaderEngine;
 import net.safester.application.install.AskForDownloadJframe;
 import net.safester.application.install.NewVersionInstaller;
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
+import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.photo.PhotoAdder;
 import net.safester.application.photo.PhotoAddressBookUpdaterNew;
 import net.safester.application.photo.PhotoUtil;
@@ -174,7 +178,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * Called windows instances
      */
-    //private SystemPropDisplayer systemPropDisplayer = null;
+    // private SystemPropDisplayer systemPropDisplayer = null;
     /**
      * The limit to display per page
      */
@@ -189,7 +193,7 @@ public class Main extends javax.swing.JFrame {
     int totalMessages = 0;
     ClipboardManager clipboardManager;
 
-    private CryptTray cryptTray = null;
+    private static CryptTray cryptTray = null;
 
     /**
      * The symmetric to use to encrypt address book
@@ -213,24 +217,41 @@ public class Main extends javax.swing.JFrame {
     private final boolean DO_DELETE_MESSAGE_FILES = false;
     private NewsFrame newsFrame;
 
+    /* The Set that contains all accounts when multi-accounts usage */
+    private Set<UserAccount> userAccounts = new TreeSet<>();
+
+    private int typeSubscription;
+
     /**
      * Creates new form SafeShareMain
+     *
+     * @param connection
+     * @param keyId
+     * @param userNumber
+     * @param passphrase
+     * @param userAccounts
      */
-    public Main(Connection connection, String keyId, int userNumber, char[] passphrase) {
+    public Main(Connection connection, String keyId, int userNumber, char[] passphrase, int typeSubscription, Set<UserAccount> userAccounts) {
         if (connection == null) {
             throw new IllegalArgumentException("Connection can\'t be null");
         }
         if (userNumber == -1) {
             throw new IllegalArgumentException("Invalid user number: " + userNumber);
         }
+
+        if (userAccounts == null) {
+            throw new NullPointerException("userAccounts cannot be null!");
+        }
+
         this.connection = connection;
         this.keyId = keyId;
         this.userNumber = userNumber;
         this.passphrase = passphrase;
+        this.typeSubscription = typeSubscription;
+        this.userAccounts = userAccounts;
         initComponents();
         initCompany();
         thisOne = this;
-
     }
 
     /* Init a secondary connection for list messages */
@@ -239,15 +260,20 @@ public class Main extends javax.swing.JFrame {
      */
     public void initCompany() {
 
-        System.out.println(new Date() + " SafeShareItMain... initCompany begin...");
+        // Set subscription static valud because of mono account Legacy code...
+        SubscriptionLocalStore.setSubscription((short) typeSubscription, userNumber);
 
-        //clipboardManager = new ClipboardManager(rootPane);
+        MessageLocalStoreCache.clear();
+
+        System.out.println(new Date() + "Safester... initCompany begin...");
+
+        // clipboardManager = new ClipboardManager(rootPane);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
         this.setTitle(Version.NAME + " " + this.getKeyId());
 
-        //Be sure messagePane is clear
+        // Be sure messagePane is clear
         resetMessagePane();
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -275,15 +301,16 @@ public class Main extends javax.swing.JFrame {
         jLabelTo.setForeground(Main.COLOR_MSG_INFO);
         jLabelCc.setForeground(Main.COLOR_MSG_INFO);
 
-        jMenuItemQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        jMenuItemQuit.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         if (SystemUtils.IS_OS_MAC_OSX) {
             jMenuItemQuit.setVisible(false); // Quit is already in default left menu
-            jMenuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            jMenuItemClose.setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         } else {
-            jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+            jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4,
+                    java.awt.event.InputEvent.ALT_MASK));
         }
 
         this.jMenuFile.setText(messages.getMessage("file"));
@@ -317,7 +344,7 @@ public class Main extends javax.swing.JFrame {
 
         this.jMenuItemActivateSubscription.setText(messages.getMessage("activate_subscription"));
 
-        if (ConnectionParms.getSubscription() == StoreParms.PRODUCT_FREE) {
+        if (SubscriptionLocalStore.getSubscription() == StoreParms.PRODUCT_FREE) {
             this.jMenuItemUpgrade.setText(messages.getMessage("buy_subscription"));
             jSeparatorButtonBuy.setVisible(true);
             jButtonBuy.setVisible(true);
@@ -327,7 +354,7 @@ public class Main extends javax.swing.JFrame {
             jButtonBuy.setVisible(false);
         }
 
-        if (ConnectionParms.getSubscription() == StoreParms.PRODUCT_PLATINUM) {
+        if (SubscriptionLocalStore.getSubscription() == StoreParms.PRODUCT_PLATINUM) {
             this.jMenuSettings.remove(this.jMenuItemUpgrade);
         }
 
@@ -344,9 +371,9 @@ public class Main extends javax.swing.JFrame {
 
         this.jMenuItemDouble2FaAccountQRcode.setText(messages.getMessage("double_2fa_account_qr_code"));
         this.jMenuItemDouble2FaActivation.setText(messages.getMessage("double_2fa_activation"));
-                
+
         this.jMenuItemDouble2faHelp.setText(messages.getMessage("double_2fa_help"));
-        
+
         jMenuWindow.setText(messages.getMessage("window"));
         jMenuOrientation.setText(messages.getMessage("reading_pane"));
         jRadioButtonMenuItemBottom.setText(messages.getMessage("bottom"));
@@ -364,6 +391,10 @@ public class Main extends javax.swing.JFrame {
         jRadioButtonMenuItemNormal.setText(messages.getMessage("normal"));
         jRadioButtonMenuItemFolderInactive.setText(messages.getMessage("inactive"));
         jMenuItemReset.setText(messages.getMessage("reset_windows"));
+
+        this.jMenuAccounts.setText(messages.getMessage("accounts"));
+        this.jMenuConnectToAccount.setText(messages.getMessage("connect_to_account"));
+        buildAccountsMenu();
 
         this.jButtonAddressBook.setToolTipText(messages.getMessage("address_book"));
         this.jButtonDeleteSelectedMessage.setToolTipText(messages.getMessage("delete"));
@@ -401,9 +432,9 @@ public class Main extends javax.swing.JFrame {
 
         this.jButtonHostLock.setToolTipText(messages.getMessage("ssl_certificate_info"));
 
-        //this.jButtonLogout.setText(messages.getMessage("logout"));
-        //this.jButtonLogout.setToolTipText(messages.getMessage("logout_tooltip"));
-        //this.jButtonLogout.setVisible(false);
+        // this.jButtonLogout.setText(messages.getMessage("logout"));
+        // this.jButtonLogout.setToolTipText(messages.getMessage("logout_tooltip"));
+        // this.jButtonLogout.setVisible(false);
         this.jButtonSearch.setText(messages.getMessage("search_message"));
         this.jButtonPrev.setForeground(Parms.COLOR_URL);
         this.jButtonNext.setForeground(Parms.COLOR_URL);
@@ -440,10 +471,10 @@ public class Main extends javax.swing.JFrame {
 
         jProgressBar1.setString(messages.getMessage("downloading_and_decrypting"));
 
-        //Load Folders
+        // Load Folders
         foldersHandler = new FoldersHandler(this.getConnection(), userNumber);
 
-        //Init tree containing folders
+        // Init tree containing folders
         try {
             customJtree = CustomJTree.initJTree(this, connection, foldersHandler, userNumber);
         } catch (Exception e) {
@@ -454,8 +485,8 @@ public class Main extends javax.swing.JFrame {
         this.customJtree.setBorder(new EmptyBorder(2, 5, 2, 2));
         this.customJtree.setBackground(Color.WHITE);
 
-        //this.jPanelFolders.add(customJtree, BorderLayout.CENTER);
-        //  this.jPanelFoldersTree.add(customJtree);
+        // this.jPanelFolders.add(customJtree, BorderLayout.CENTER);
+        // this.jPanelFoldersTree.add(customJtree);
         this.jScrollPane2.setViewportView(customJtree);
         jSplitPaneFolders.setOneTouchExpandable(false);
         jSplitPaneMessage.setOneTouchExpandable(false);
@@ -481,7 +512,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPaneNewCustom.showException(rootPane, ex);
         }
 
-        //Build table
+        // Build table
         Color tableBackground = null;
         tableBackground = jTable1.getBackground();
 
@@ -496,7 +527,7 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
                 createTable();
-                //setAddressBookEncryptionKey();
+                // setAddressBookEncryptionKey();
             }
         });
 
@@ -507,6 +538,20 @@ public class Main extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e) {
                 close();
             }
+        });
+
+        this.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                WindowSettingManager.save(thisOne);
+            }
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                WindowSettingManager.save(thisOne);
+            }
+
         });
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -528,7 +573,8 @@ public class Main extends javax.swing.JFrame {
             jRadioButtonMenuItemPaneInactive.setSelected(true);
         }
 
-        boolean folderSectionInactive = UserPrefManager.getBooleanPreference(UserPrefManager.FOLDER_SECTION_IS_INACTIVE);
+        boolean folderSectionInactive = UserPrefManager
+                .getBooleanPreference(UserPrefManager.FOLDER_SECTION_IS_INACTIVE);
         if (folderSectionInactive) {
             jRadioButtonMenuItemFolderInactive.setSelected(true);
             jSplitPaneFolders.setDividerSize(0);
@@ -539,42 +585,39 @@ public class Main extends javax.swing.JFrame {
 
         WindowSettingManager.load(this);
 
-        jSplitPaneMessage.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
-                new PropertyChangeListener() {
+        jSplitPaneMessage.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                //System.out.println("propertyChange: " + pce.toString());
+                // System.out.println("propertyChange: " + pce.toString());
                 if (jSplitPaneMessage.getOrientation() == JSplitPane.VERTICAL_SPLIT) {
 
-                    //System.out.println("jSplitPaneMessage.getUI().getDividerLocation(jSplitPaneMessage): " + jSplitPaneMessage.getUI().getDividerLocation(jSplitPaneMessage));
+                    // System.out.println("jSplitPaneMessage.getUI().getDividerLocation(jSplitPaneMessage):
+                    // " + jSplitPaneMessage.getUI().getDividerLocation(jSplitPaneMessage));
                     // Do not remember if we have expanded for ,no more message display
                     if (!jRadioButtonMenuItemPaneInactive.isSelected()) {
-                        UserPrefManager.setPreference(
-                                UserPrefManager.SPLIT_PANE_MESSAGE_LOC_VERTICAL_SPLIT, (Integer) pce.getNewValue());
+                        UserPrefManager.setPreference(UserPrefManager.SPLIT_PANE_MESSAGE_LOC_VERTICAL_SPLIT,
+                                (Integer) pce.getNewValue());
                     }
 
                 } else {
 
-                    UserPrefManager.setPreference(
-                            UserPrefManager.SPLIT_PANE_MESSAGE_LOC_HORIZONTAL_SPLIT, (Integer) pce.getNewValue());
-                }
-            }
-        });
-
-        jSplitPaneFolders.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
-                new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent pce) {
-
-                if (!jRadioButtonMenuItemPaneInactive.isSelected()) {
-                    UserPrefManager.setPreference(
-                            UserPrefManager.SPLIT_PANE_FOLDERS_LOC,
+                    UserPrefManager.setPreference(UserPrefManager.SPLIT_PANE_MESSAGE_LOC_HORIZONTAL_SPLIT,
                             (Integer) pce.getNewValue());
                 }
             }
         });
 
-        //pack();
+        jSplitPaneFolders.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+
+                if (!jRadioButtonMenuItemPaneInactive.isSelected()) {
+                    UserPrefManager.setPreference(UserPrefManager.SPLIT_PANE_FOLDERS_LOC, (Integer) pce.getNewValue());
+                }
+            }
+        });
+
+        // pack();
         this.setCursor(Cursor.getDefaultCursor());
 
         if (!Parms.FEATURE_CACHE_PASSPHRASE) {
@@ -585,14 +628,14 @@ public class Main extends javax.swing.JFrame {
 
         SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
 
-        //if(SystemUtils.IS_OS_LINUX)
+        // if(SystemUtils.IS_OS_LINUX)
         if (UI_Util.isNimbus()) {
             this.jButtonReply.setText(" " + this.jButtonReply.getText() + " ");
             jProgressBar1.setString(" " + messages.getMessage("downloading_and_decrypting") + " ");
             this.jProgressBar1.setPreferredSize(new Dimension(this.jProgressBar1.getPreferredSize().width + 10, 22));
         }
 
-        //11/09/06 15:01 ABE : No more passphrase recovery
+        // 11/09/06 15:01 ABE : No more passphrase recovery
         jMenuSettings.remove(jMenuItemPassphraseRecoverySettings);
 
         thisOne = this;
@@ -600,17 +643,24 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
                 try {
-                    NewVersionInstaller.checkIfNewVersion(thisOne, net.safester.application.version.Version.VERSION, true);
+                    NewVersionInstaller.checkIfNewVersion(thisOne, net.safester.application.version.Version.VERSION,
+                            true);
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(thisOne, messages.getMessage("impossible_to_access_new_version_info") + CR_LF
-                            + ex.getMessage(), Parms.PRODUCT_NAME, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(thisOne,
+                            messages.getMessage("impossible_to_access_new_version_info") + CR_LF + ex.getMessage(),
+                            Parms.PRODUCT_NAME, JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
         t.start();
 
         if (CryptTray.isSupported()) {
+            
+            if (cryptTray != null) {
+                cryptTray.remove();
+            }
+            
             cryptTray = new CryptTray();
             cryptTray.startAsTray(this);
         }
@@ -626,10 +676,89 @@ public class Main extends javax.swing.JFrame {
         t2.start();
 
         // Subject decryption migration
-        SubjectDecryptionClient subjectDecryptionClient = new SubjectDecryptionClient(userNumber, passphrase, connection);
+        SubjectDecryptionClient subjectDecryptionClient = new SubjectDecryptionClient(userNumber, passphrase,
+                connection);
         subjectDecryptionClient.updateSubjectsInThread();
-        
+
         initDone = true;
+    }
+
+    private void buildAccountsMenu() {
+
+        JMenu jMenuSwitchTo = new JMenu(messages.getMessage("switch_to_account"));
+        jMenuAccounts.add(jMenuSwitchTo);
+        this.jMenuItemConnectToAccount.setText(messages.getMessage("new"));
+
+        if (userAccounts.size() < 2) {
+            JMenuItem item = new JMenuItem(messages.getMessage("please_add_account_to_session"));
+            jMenuSwitchTo.add(item);
+        }
+
+        String accountLists = UserPrefManager.getPreference(UserPrefManager.ACCOUNTS_LIST);
+        if (accountLists != null) {
+            createAddItems(accountLists);
+        }
+        if (accountLists == null || !accountLists.contains(",")) {
+            this.jMenuItemConnectToAccount.setText(messages.getMessage("go"));
+        }
+
+        if (userAccounts.size() < 2) {
+            return;
+        }
+
+        for (UserAccount userAccount : userAccounts) {
+            if (userAccount.getKeyId().equals(keyId)) {
+                continue;
+            }
+
+            JMenuItem itemKeyId = new JMenuItem(userAccount.getKeyId());
+            jMenuSwitchTo.add(itemKeyId);
+
+            itemKeyId.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+                    String newKeyId = itemKeyId.getText();
+
+                    UserAccountSwitcher userAccountSwitcher
+                            = new UserAccountSwitcher(newKeyId, userAccounts);
+                    userAccountSwitcher.switchTo();
+                    thisOne.dispose();
+                }
+            });
+
+        }
+    }
+
+    private void createAddItems(String accountLists) {
+
+        String[] keyIds = accountLists.split(",");
+
+        if (keyIds == null) {
+            return;
+        }
+
+        for (String theKeyId : keyIds) {
+
+            if (theKeyId.equalsIgnoreCase(this.keyId)) {
+                continue;
+            }
+
+            if (UserAccountManager.containsAccountForKey(theKeyId, userAccounts)) {
+                continue;
+            }
+
+            JMenuItem item = new JMenuItem(theKeyId);
+            jMenuConnectToAccount.add(item);
+
+            item.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    Login login = new Login((Main) thisOne, theKeyId);
+                    login.setVisible(true);
+                }
+            });
+        }
     }
 
     public static String getAddressBookEncryptionKey() {
@@ -648,7 +777,6 @@ public class Main extends javax.swing.JFrame {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-
     public void radioButtonChange() {
         // Save current Loc if init has been done
         if (initDone) {
@@ -657,18 +785,21 @@ public class Main extends javax.swing.JFrame {
 //            System.out.println("jRadioButtonMenuItemRight.isSelected()   : " + jRadioButtonMenuItemRight.isSelected());
 //            System.out.println("jRadioButtonMenuItemInactive.isSelected(): " + jRadioButtonMenuItemInactive.isSelected());
             if (jRadioButtonMenuItemPaneInactive.isSelected()) {
-                UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION, UserPrefManager.READING_PANE_INACTIVE);
+                UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION,
+                        UserPrefManager.READING_PANE_INACTIVE);
                 jSplitPaneMessage.setDividerSize(0);
                 jPanelMessageMain.setVisible(false);
                 this.repaint();
             } else if (jRadioButtonMenuItemBottom.isSelected()) {
-                UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION, UserPrefManager.READING_PANE_BOTTOM);
+                UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION,
+                        UserPrefManager.READING_PANE_BOTTOM);
                 jPanelMessageMain.setVisible(true);
                 jSplitPaneMessage.setDividerSize(STANDARD_DIVIDER_SIZE);
                 this.repaint();
 
             } else {
-                UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION, UserPrefManager.READING_PANE_RIGHT);
+                UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION,
+                        UserPrefManager.READING_PANE_RIGHT);
                 jPanelMessageMain.setVisible(true);
                 jSplitPaneMessage.setDividerSize(STANDARD_DIVIDER_SIZE);
                 this.repaint();
@@ -706,7 +837,8 @@ public class Main extends javax.swing.JFrame {
         jSplitPaneFolders.setDividerLocation(loc);
 
         int readingPosition = UserPrefManager.getIntegerPreference(UserPrefManager.READING_PANE_POSITION);
-        if (readingPosition == UserPrefManager.READING_PANE_BOTTOM || readingPosition == UserPrefManager.READING_PANE_INACTIVE) {
+        if (readingPosition == UserPrefManager.READING_PANE_BOTTOM
+                || readingPosition == UserPrefManager.READING_PANE_INACTIVE) {
             jSplitPaneMessage.setOrientation(JSplitPane.VERTICAL_SPLIT);
         } else {
             jSplitPaneMessage.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -721,8 +853,8 @@ public class Main extends javax.swing.JFrame {
             loc = Math.max(loc, MIN_LOCATION_MESSAGE);
         }
 
-        //System.out.println("orientation (0=Vertical): " + orientation);
-        //System.out.println("loc : " + loc);
+        // System.out.println("orientation (0=Vertical): " + orientation);
+        // System.out.println("loc : " + loc);
         jSplitPaneMessage.setDividerLocation(loc);
         jSplitPaneMessage.setLastDividerLocation(loc);
 
@@ -732,12 +864,12 @@ public class Main extends javax.swing.JFrame {
     private void saveSplitPanesLocation() {
 
         if (!jRadioButtonMenuItemFolderInactive.isSelected()) {
-            UserPrefManager.setPreference(
-                    UserPrefManager.SPLIT_PANE_FOLDERS_LOC,
+            UserPrefManager.setPreference(UserPrefManager.SPLIT_PANE_FOLDERS_LOC,
                     jSplitPaneFolders.getUI().getDividerLocation(jSplitPaneFolders));
         }
 
-        UserPrefManager.setPreference(UserPrefManager.FOLDER_SECTION_IS_INACTIVE, jRadioButtonMenuItemFolderInactive.isSelected());
+        UserPrefManager.setPreference(UserPrefManager.FOLDER_SECTION_IS_INACTIVE,
+                jRadioButtonMenuItemFolderInactive.isSelected());
 
         if (jRadioButtonMenuItemBottom.isSelected()) {
             UserPrefManager.setPreference(UserPrefManager.READING_PANE_POSITION, UserPrefManager.READING_PANE_BOTTOM);
@@ -750,13 +882,11 @@ public class Main extends javax.swing.JFrame {
         if (jSplitPaneMessage.getOrientation() == JSplitPane.VERTICAL_SPLIT) {
 
             if (!jRadioButtonMenuItemPaneInactive.isSelected()) {
-                UserPrefManager.setPreference(
-                        UserPrefManager.SPLIT_PANE_MESSAGE_LOC_VERTICAL_SPLIT,
+                UserPrefManager.setPreference(UserPrefManager.SPLIT_PANE_MESSAGE_LOC_VERTICAL_SPLIT,
                         jSplitPaneMessage.getUI().getDividerLocation(jSplitPaneMessage));
             }
         } else {
-            UserPrefManager.setPreference(
-                    UserPrefManager.SPLIT_PANE_MESSAGE_LOC_HORIZONTAL_SPLIT,
+            UserPrefManager.setPreference(UserPrefManager.SPLIT_PANE_MESSAGE_LOC_HORIZONTAL_SPLIT,
                     jSplitPaneMessage.getUI().getDividerLocation(jSplitPaneMessage));
         }
 
@@ -793,25 +923,23 @@ public class Main extends javax.swing.JFrame {
 //        {
 //           MessageReader.setPanelWithTextAreaHeightForMac(jPanelAttach, 1);
 //        }
-        //resizePanelHeigthForMac(jPanelAttach, 56 + 10);
-        //resizePanelHeigthForNimbus(jPanelAttach, 45 + 10);
+        // resizePanelHeigthForMac(jPanelAttach, 56 + 10);
+        // resizePanelHeigthForNimbus(jPanelAttach, 45 + 10);
         if (jListAttach.getModel().getSize() > 1) {
             setPanelWithTextAreaHeightForMac(jPanelAttach, INCREASE_FACTOR);
         }
     }
 
     /*
-    private void resizePanelHeigthForMac(JComponent component, int preferedHeight) {
-        if (SystemUtils.IS_OS_MAC_OSX) {
-            int maxWidth = (int) component.getMaximumSize().getWidth();
-            int minWidth = (int) component.getMinimumSize().getWidth();
-            int prefWidth = (int) component.getPreferredSize().getWidth();
-
-            component.setMaximumSize(new Dimension(maxWidth, preferedHeight));
-            component.setMinimumSize(new Dimension(minWidth, preferedHeight));
-            component.setPreferredSize(new Dimension(prefWidth, preferedHeight));
-        }
-    }
+     * private void resizePanelHeigthForMac(JComponent component, int
+     * preferedHeight) { if (SystemUtils.IS_OS_MAC_OSX) { int maxWidth = (int)
+     * component.getMaximumSize().getWidth(); int minWidth = (int)
+     * component.getMinimumSize().getWidth(); int prefWidth = (int)
+     * component.getPreferredSize().getWidth();
+     * 
+     * component.setMaximumSize(new Dimension(maxWidth, preferedHeight));
+     * component.setMinimumSize(new Dimension(minWidth, preferedHeight));
+     * component.setPreferredSize(new Dimension(prefWidth, preferedHeight)); } }
      */
     private void resizePanelHeigthForNimbus(JComponent component, int preferedHeight) {
         if (UI_Util.isNimbus()) {
@@ -862,8 +990,9 @@ public class Main extends javax.swing.JFrame {
         // Will try to delete the files for 4 o5 seconds maximum
         LogoutManager.logoutAndExit();
         setCursor(Cursor.getDefaultCursor());
-        JDialogDiscardableMessage jDialogDiscardableMessage = new JDialogDiscardableMessage(thisOne, messages.getMessage("logout_success"));
-        //close(); NO! logout() can be called by close();
+        JDialogDiscardableMessage jDialogDiscardableMessage = new JDialogDiscardableMessage(thisOne,
+                messages.getMessage("logout_success"));
+        // close(); NO! logout() can be called by close();
 
         System.exit(0);
 
@@ -950,7 +1079,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void jTextComponentPopupMenuAdder(JTextComponent jTextComponent, MouseEvent e, int type) {
-        JTextComponetPopupMenu jTextFieldPopupMenu = new JTextComponetPopupMenu(this.getConnection(), this, jTextComponent, userNumber, type);
+        JTextComponetPopupMenu jTextFieldPopupMenu = new JTextComponetPopupMenu(this.getConnection(), this,
+                jTextComponent, userNumber, type);
         jTextFieldPopupMenu.showPopupMenu(e);
     }
 
@@ -1030,13 +1160,13 @@ public class Main extends javax.swing.JFrame {
 
 //        jTablePopupMenu.add(new JMenuItem(jMenuItemFoward));
         jTablePopupMenu.addSeparator();
-        //jTablePopupMenu.add(itemAddSender);
-        //jTablePopupMenu.addSeparator();
+        // jTablePopupMenu.add(itemAddSender);
+        // jTablePopupMenu.addSeparator();
         jTablePopupMenu.add(itemDelete);
     }
 
     private void addToContact() {
-        //  jTableMessages.setS
+        // jTableMessages.setS
         int selected_index = jTable1.getSelectedRow();
         String str = (String) jTable1.getValueAt(selected_index, 4);
         System.out.println("str: " + str);
@@ -1059,7 +1189,7 @@ public class Main extends javax.swing.JFrame {
 
     private void getIncomingMessage() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        //Select inbox
+        // Select inbox
         DefaultMutableTreeNode inBoxFolder = customJtree.searchFolder(Parms.INBOX_ID);
         customJtree.getTree().setSelectionPath(new TreePath(inBoxFolder.getPath()));
 
@@ -1078,7 +1208,8 @@ public class Main extends javax.swing.JFrame {
         int idFolder = -1;
 
         if (customJtree.getTree().getSelectionPath() != null) {
-            DefaultMutableTreeNode selectedFolder = (DefaultMutableTreeNode) customJtree.getTree().getSelectionPath().getLastPathComponent();
+            DefaultMutableTreeNode selectedFolder = (DefaultMutableTreeNode) customJtree.getTree().getSelectionPath()
+                    .getLastPathComponent();
             if (selectedFolder.getUserObject() instanceof FolderLocal) {
                 FolderLocal folder = (FolderLocal) selectedFolder.getUserObject();
                 idFolder = folder.getFolderId();
@@ -1091,14 +1222,14 @@ public class Main extends javax.swing.JFrame {
      * Init the list of selected messages
      */
     private void setSelectedMessages() {
-        //Reset list
+        // Reset list
         selectedMessages = new ArrayList<Integer>();
-        //Get selected rows index
+        // Get selected rows index
         int[] selRows = jTable1.getSelectedRows();
         if (selRows.length > 0) {
             for (Integer rowIndex : selRows) {
-                //For each row get message
-                //MessageLocal messageLocal = getMessageForRowIndex(rowIndex.intValue());
+                // For each row get message
+                // MessageLocal messageLocal = getMessageForRowIndex(rowIndex.intValue());
                 int messageId = (Integer) jTable1.getValueAt(rowIndex.intValue(), 0);
                 if (messageId > 0) {
                     selectedMessages.add(messageId);
@@ -1107,11 +1238,11 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
-        /**
+    /**
      * Open selected messages in new windows
      */
     public void displaySelectedMessageNumber() {
-        //Init selected message list
+        // Init selected message list
 
         setSelectedMessages();
 
@@ -1122,18 +1253,18 @@ public class Main extends javax.swing.JFrame {
 
                 updateMessageIsReadInThread(folderId, messageId);
                 MessageLocal message = getCompletedMessage(messageId);
-                
+
                 JOptionPane.showMessageDialog(this, "Message ID: " + message.getMessageId());
                 break;
             }
         }
     }
-    
+
     /**
      * Open selected messages in new windows
      */
     public void openSelectedMessage() {
-        //Init selected message list
+        // Init selected message list
 
         setSelectedMessages();
 
@@ -1146,11 +1277,13 @@ public class Main extends javax.swing.JFrame {
 
                 MessageLocal message = getCompletedMessage(messageId);
 
-                //Open a new window for each message
+                // Open a new window for each message
                 if (folderId != Parms.DRAFT_ID) {
-                    new MessageReader(this, this.getConnection(), message, this.getKeyId(), this.userNumber, this.passphrase, folderId).setVisible(true);
+                    new MessageReader(this, this.getConnection(), message, this.getKeyId(), this.userNumber,
+                            this.passphrase, folderId).setVisible(true);
                 } else {
-                    new MessageComposer(thisOne, getKeyId(), this.userNumber, passphrase, connection, message, Parms.ACTION_EDIT).setVisible(true);
+                    new MessageComposer(thisOne, getKeyId(), this.userNumber, passphrase, connection, message,
+                            Parms.ACTION_EDIT).setVisible(true);
                 }
             }
         }
@@ -1160,7 +1293,7 @@ public class Main extends javax.swing.JFrame {
      * Delete all selected message
      */
     public void deleteSelectedMessage() {
-        //Init selected message list
+        // Init selected message list
         int folderId = getSelectedFolderId();
 
         String text;
@@ -1176,12 +1309,12 @@ public class Main extends javax.swing.JFrame {
 
         setSelectedMessages();
 
-        //for (Integer messageId : selectedMessages) {
-        //    deleteMessage(messageId, idFolder);
-        //}
+        // for (Integer messageId : selectedMessages) {
+        // deleteMessage(messageId, idFolder);
+        // }
         //
-        //Refresh the table
-        //createTable();
+        // Refresh the table
+        // createTable();
         deleteMessages(selectedMessages, folderId);
 
         this.setCursor(Cursor.getDefaultCursor());
@@ -1207,32 +1340,33 @@ public class Main extends javax.swing.JFrame {
                 Set<Integer> messageIdset = new HashSet<>(messagesId);
                 String attachmentMapJson = GsonUtil.MessageIdSetToJson(messageIdset);
                 // 1) Extract my messages, the ones where I am the sender
-                String myMessageIdsJson = awakeFileSession.call("net.safester.server.delete.FileDeletor.getMyMessageIds", userNumber, attachmentMapJson, connection);
+                String myMessageIdsJson = awakeFileSession.call(
+                        "net.safester.server.delete.FileDeletor.getMyMessageIds", userNumber, attachmentMapJson,
+                        connection);
 
                 Set<Integer> myMessageIdSet = GsonUtil.jsonToMessageIdSet(myMessageIdsJson);
 
                 if (myMessageIdSet != null && !myMessageIdSet.isEmpty()) {
 
                     // 2) Get the file names to delete
-                    attachmentMapJson = awakeFileSession.call("net.safester.server.AttachmentSelect.selectAttachments", myMessageIdsJson, connection);
-                    Map<Integer, List<AttachmentLocal>> attachmentLocalMap = GsonUtil.attachmentLocalFromGson(attachmentMapJson);
+                    attachmentMapJson = awakeFileSession.call("net.safester.server.AttachmentSelect.selectAttachments",
+                            myMessageIdsJson, connection);
+                    Map<Integer, List<AttachmentLocal>> attachmentLocalMap = GsonUtil
+                            .attachmentLocalFromGson(attachmentMapJson);
 
                     // 3) FIRST Delete the attachment files. First get the names from main server.
                     // Delete but be done prior to SQL because of SQL commit
                     List<String> attachFilenames = getAttachFilenames(attachmentLocalMap);
                     String attachFilesnamesJson = GsonUtil.attachFilenamesToGson(attachFilenames);
 
-                    awakeFileSession.call("net.safester.server.delete.FileDeletor.deleteFilesOnHttpFileServer", userNumber, myMessageIdsJson, attachFilesnamesJson);
+                    awakeFileSession.call("net.safester.server.delete.FileDeletor.deleteFilesOnHttpFileServer",
+                            userNumber, myMessageIdsJson, attachFilesnamesJson);
                 }
             }
 
             // 4) Delete the SQL values. TO BE DONE IN LAST.
-            awakeFileSession.call("net.safester.server.MessageDeletor.deleteMessages",
-                    userNumber,
-                    keyId,
-                    folderId,
-                    messagesList,
-                    connection);
+            awakeFileSession.call("net.safester.server.MessageDeletor.deleteMessages", userNumber, keyId, folderId,
+                    messagesList, connection);
 
             MessageLocalStoreCache.remove(folderId);
 
@@ -1242,7 +1376,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPaneNewCustom.showException(this, e);
         }
 
-        //Refresh the table
+        // Refresh the table
         createTable();
     }
 
@@ -1272,7 +1406,6 @@ public class Main extends javax.swing.JFrame {
         deleteMessages(messageIdList, folderId);
     }
 
-
     /**
      * Creates the table containing the messages. To be used when first display
      * of a folder, or when new messages are arriving
@@ -1284,6 +1417,7 @@ public class Main extends javax.swing.JFrame {
 
         createTable(true);
     }
+
     /**
      * If true, a thread is running, so do nothing
      */
@@ -1361,7 +1495,8 @@ public class Main extends javax.swing.JFrame {
                 limit = UserPrefManager.getIntegerPreference(UserPrefManager.NB_MESSAGES_PER_PAGE);
 
                 if (limit == 0) {
-                    limit = Parms.DEFAULT_NB_MESSAGES_PER_PAGE;;
+                    limit = Parms.DEFAULT_NB_MESSAGES_PER_PAGE;
+                    ;
                 }
 
                 offset = 0;
@@ -1373,15 +1508,16 @@ public class Main extends javax.swing.JFrame {
             int idFolder = -1;
             idFolder = getSelectedFolderId();
 
-            //  this.setConnection(Parms.getConnection());
+            // this.setConnection(Parms.getConnection());
             messageLocalStore = new MessageLocalStore();
 
             if (idFolder != -1) {
-                //Get messages for the selected folder
+                // Get messages for the selected folder
                 debug("");
                 System.out.println(new Date() + " Safester... messageStoreExtractor.getStore() begin...");
 
-                MessageStoreExtractor messageStoreExtractor = new MessageStoreExtractor(connection, userNumber, passphrase, idFolder, limitClause);
+                MessageStoreExtractor messageStoreExtractor = new MessageStoreExtractor(connection, userNumber,
+                        passphrase, idFolder, limitClause);
                 messageLocalStore = messageStoreExtractor.getStore();
 
                 System.out.println(new Date() + " Safester... messageStoreExtractor.getStore() end...");
@@ -1392,13 +1528,14 @@ public class Main extends javax.swing.JFrame {
                     mainNotifier.notifyNewInbox();
                 }
 
-                //Get the status bar info in thread
+                // Get the status bar info in thread
                 Thread t = new Thread() {
                     @Override
                     public void run() {
                         try {
 
-                            MainStatusBarUpdater mainStatusBarUpdater = new MainStatusBarUpdater(connection, keyId, userNumber);
+                            MainStatusBarUpdater mainStatusBarUpdater = new MainStatusBarUpdater(connection, keyId,
+                                    userNumber);
                             mainStatusBarUpdater.logThisLogin();
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -1410,7 +1547,8 @@ public class Main extends javax.swing.JFrame {
 
                 // Start the thread that will fetch the messages Body content in memory
                 // and user settings
-                BackgroundDownloaderEngine backgroundDownloaderEngine = new BackgroundDownloaderEngine(userNumber, passphrase, messageLocalStore, connection);
+                BackgroundDownloaderEngine backgroundDownloaderEngine = new BackgroundDownloaderEngine(userNumber,
+                        passphrase, messageLocalStore, connection);
                 BackgroundDownloaderEngine.setIsRequestInterrupt(true);
                 backgroundDownloaderEngine.start();
 
@@ -1428,7 +1566,8 @@ public class Main extends javax.swing.JFrame {
                         // for the user id and the folder id
                         LimitClause limitClause = new LimitClause(limit, offset);
                         int idFolder = getSelectedFolderId();
-                        MessageStoreExtractor messageStoreExtractor = new MessageStoreExtractor(connection, userNumber, passphrase, idFolder, limitClause);
+                        MessageStoreExtractor messageStoreExtractor = new MessageStoreExtractor(connection, userNumber,
+                                passphrase, idFolder, limitClause);
                         try {
                             totalMessages = messageStoreExtractor.getTotalMessages();
                         } catch (SQLException ex) {
@@ -1447,8 +1586,9 @@ public class Main extends javax.swing.JFrame {
                 isOutBox = true;
             }
 
-            //Build the table
-            MessagesTableCreator messagesTableCreator = new MessagesTableCreator(this, messageLocalStore, isOutBox, idFolder);
+            // Build the table
+            MessagesTableCreator messagesTableCreator = new MessagesTableCreator(this, messageLocalStore, isOutBox,
+                    idFolder);
             this.jTable1 = messagesTableCreator.create();
             buildJTablePopupMenu();
 
@@ -1457,7 +1597,7 @@ public class Main extends javax.swing.JFrame {
                 customJtree.getTree().setSelectionPath(new TreePath(folderNode.getPath()));
             }
 
-            //Reset message pane
+            // Reset message pane
             resetMessagePane();
             jScrollPane1.setViewportView(jTable1);
 
@@ -1487,17 +1627,18 @@ public class Main extends javax.swing.JFrame {
                 while (true) {
                     try {
                         sleep(Parms.NOTIFY_PERIOD);
-                        MainNotifierServerInfo mainNotifierServerInfo = new MainNotifierServerInfo(userNumber, connection);
+                        MainNotifierServerInfo mainNotifierServerInfo = new MainNotifierServerInfo(userNumber,
+                                connection);
                         boolean doExist = mainNotifierServerInfo.newInboxMessageExists();
                         System.out.println(new Date() + " Testing if new message exists on server: " + doExist);
                         if (doExist) {
-                            //Select inbox
+                            // Select inbox
                             DefaultMutableTreeNode inBoxFolder = customJtree.searchFolder(Parms.INBOX_ID);
                             customJtree.getTree().setSelectionPath(new TreePath(inBoxFolder.getPath()));
 
                             MessageLocalStoreCache.remove(Parms.INBOX_ID); // Cear cache
                             createTable();
-                            //Resleep to avoid overlaps in threads
+                            // Resleep to avoid overlaps in threads
                             sleep(Parms.NOTIFY_PERIOD);
                         }
                     } catch (Exception ex) {
@@ -1544,8 +1685,7 @@ public class Main extends javax.swing.JFrame {
         setSelectedMessages();
         if (!selectedMessages.isEmpty()) {
 
-            jTablePopupMenu.show(e.getComponent(),
-                    e.getX(), e.getY());
+            jTablePopupMenu.show(e.getComponent(), e.getX(), e.getY());
 
         }
     }
@@ -1557,8 +1697,7 @@ public class Main extends javax.swing.JFrame {
      */
     public void showJListPopupMenu(MouseEvent e) {
         if (jListAttach.getSelectedIndices().length > 0) {
-            jListPopupMenu.show(e.getComponent(),
-                    e.getX(), e.getY());
+            jListPopupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
@@ -1567,11 +1706,11 @@ public class Main extends javax.swing.JFrame {
      */
     public void displaySelectedMessage() {
 
-        //init selected message list
+        // init selected message list
         setSelectedMessages();
 
         if (selectedMessages.isEmpty()) {
-            //Selection is empty => nothing to do
+            // Selection is empty => nothing to do
             return;
         }
 
@@ -1580,7 +1719,7 @@ public class Main extends javax.swing.JFrame {
 
         updateMessageIsReadInThread(folderId, messageId);
 
-        //Build message pane with first message of list
+        // Build message pane with first message of list
         buildMessagePane(messageId);
     }
 
@@ -1597,13 +1736,15 @@ public class Main extends javax.swing.JFrame {
             return;
         }
 
-        // If message is already read and it was stored on host in Message Local, do nothing
+        // If message is already read and it was stored on host in Message Local, do
+        // nothing
         MessageLocal messageLocal = messageLocalStore.get(messageId);
         if (messageLocal == null || messageLocal.getIsRead()) {
             return;
         }
 
-        // If message is already read and it sead in MessageTableCellRenderer, do nothing
+        // If message is already read and it sead in MessageTableCellRenderer, do
+        // nothing
         if (MessageTableCellRenderer.readMessages.contains(messageId)) {
             return;
         }
@@ -1639,9 +1780,8 @@ public class Main extends javax.swing.JFrame {
      * @param messageId
      * @throws Exception
      */
-    private static synchronized void updateMessageIsRead(Connection connection, int userNumber,
-            int folderId, int messageId)
-            throws Exception {
+    private static synchronized void updateMessageIsRead(Connection connection, int userNumber, int folderId,
+            int messageId) throws Exception {
         // Update the server saying the message has been read
         MessageTransfer messageTransfer = new MessageTransfer(connection, userNumber, messageId, folderId);
         messageTransfer.setMessageIsRead(true);
@@ -1667,10 +1807,10 @@ public class Main extends javax.swing.JFrame {
      */
     private void buildMessagePane(int messageId) {
 
-        // Remove thread with Swing actions! Must be thread-safe using EDT!        
+        // Remove thread with Swing actions! Must be thread-safe using EDT!
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        //Reset pane
+        // Reset pane
         if (messageId > 0) {
             displayMessage(messageId);
             jPanelMessage.setVisible(true);
@@ -1690,7 +1830,7 @@ public class Main extends javax.swing.JFrame {
     private void displayMessage(int messageId) {
         int location = jSplitPaneMessage.getDividerLocation();
 
-        //Subject is printed in bold and bigger font
+        // Subject is printed in bold and bigger font
         Font f = jTextFieldSubject.getFont();
         f = f.deriveFont(Font.BOLD);
         float newSize = 22;
@@ -1704,8 +1844,8 @@ public class Main extends javax.swing.JFrame {
 
         String header = ""; // Keep this for mise au point / display tuning
 
-        //this.jTextFieldSubject.setText(message.getSubject());
-        //Convert subject from Html after encryption
+        // this.jTextFieldSubject.setText(message.getSubject());
+        // Convert subject from Html after encryption
         this.jTextFieldSubject.setText(HtmlConverter.fromHtml(message.getSubject()));
 
         String sender = HtmlConverter.fromHtml(message.getSenderUserName());
@@ -1716,11 +1856,11 @@ public class Main extends javax.swing.JFrame {
 
         // this.jEditorPaneBody.setText(message.getBody());
         String text = message.getBody();
-        
+
         // test if message is created by Mobile, if yes remove HTML tags
         if (message.getIsSigned()) {
             text = HtmlConverter.fromHtml(text);
-        } 
+        }
 
         try {
             text = JEditorPaneLinkDetector.detectLinkAndCodeHtml(text);
@@ -1731,8 +1871,7 @@ public class Main extends javax.swing.JFrame {
         jPanelBody.remove(jScrollPaneBody);
 
         // create a JEditorPane that renders HTML and defaults to the system font.
-        jEditorPaneBody
-                = new JEditorPane(new HTMLEditorKit().getContentType(), text);
+        jEditorPaneBody = new JEditorPane(new HTMLEditorKit().getContentType(), text);
 
         this.jEditorPaneBody.setContentType("text/html");
         this.jEditorPaneBody.setEditable(false);
@@ -1763,7 +1902,7 @@ public class Main extends javax.swing.JFrame {
         }
         jEditorPaneBody.setFocusable(jEditorPaneBodyFocusable);
 
-        //Display recipients (To and Cc
+        // Display recipients (To and Cc
         List<RecipientLocal> recipients = message.getRecipientLocal();
         String recipientTo = "";
         String recipientCc = "";
@@ -1785,7 +1924,7 @@ public class Main extends javax.swing.JFrame {
         try {
             List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
 
-            //NDP : Main: do not display BCC recipients in CC panel
+            // NDP : Main: do not display BCC recipients in CC panel
             for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
                 int typeRecipient = pendingMessageUserLocal.getType_recipient();
 
@@ -1823,14 +1962,14 @@ public class Main extends javax.swing.JFrame {
             jPanelCc.setVisible(true);
         }
 
-        //DateFormat sdf = new SimpleDateFormat(messages.getMessage("date_format"));
+        // DateFormat sdf = new SimpleDateFormat(messages.getMessage("date_format"));
         AppDateFormat df = new AppDateFormat();
 
         String messageDate = df.format(message.getDateMessage());
 
         jTextFieldDate.setText(messageDate);
         setTextFieldsPopup();
-        //Build attachment list
+        // Build attachment list
 
         List<AttachmentLocal> attachments = message.getAttachmentLocal();
         buildAttachmentList(attachments, message.getSenderUserNumber());
@@ -1838,8 +1977,8 @@ public class Main extends javax.swing.JFrame {
         // This must be done AFTER to, cc, and attach values settings
         setAllPanelWithtextAreaHeightForMac();
 
-        //jPanelMessageAndButtons.remove(jPanelButtons);
-        //jPanelMessageAndButtons.add(jPanelButtons);
+        // jPanelMessageAndButtons.remove(jPanelButtons);
+        // jPanelMessageAndButtons.add(jPanelButtons);
         jPanelMessageMain.add(jPanelMessage);
 
         jSplitPaneMessage.setDividerLocation(location);
@@ -1850,9 +1989,9 @@ public class Main extends javax.swing.JFrame {
         jEditorPaneBody.moveCaretPosition(0);
         jEditorPaneBody.setSelectionEnd(0);
 
-        //this.jButtonPrev.setVisible(false);
-        //this.jButtonNext.setVisible(false);
-        //this.jLabelNbElements.setText(null);
+        // this.jButtonPrev.setVisible(false);
+        // this.jButtonNext.setVisible(false);
+        // this.jLabelNbElements.setText(null);
     }
 
     /**
@@ -1862,7 +2001,7 @@ public class Main extends javax.swing.JFrame {
     public MessageLocal getCompletedMessage(int messageId) {
         MessageLocal message = null;
 
-        // Callback the message updated by the background thread 
+        // Callback the message updated by the background thread
         while (true) {
             message = messageLocalStore.get(messageId);
 
@@ -1897,7 +2036,7 @@ public class Main extends javax.swing.JFrame {
             int attachPosition = attachmentLocal.getAttachPosition();
             long size = attachmentLocal.getFileSize();
 
-            //System.out.println("attachPosition: " + attachPosition + " size: " + size);
+            // System.out.println("attachPosition: " + attachPosition + " size: " + size);
             AttachmentsSize.put(attachPosition - 1, size);
         }
 
@@ -1917,22 +2056,22 @@ public class Main extends javax.swing.JFrame {
         jListAttach = new JList(model_attachs);
         jListAttach.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         jListAttach.setVisibleRowCount(-1);
-        //  jListAttachments.setPrototypeCellValue("a_a_aaaaaaaaaaaaaaaa.aaa");
+        // jListAttachments.setPrototypeCellValue("a_a_aaaaaaaaaaaaaaaa.aaa");
         jListAttach.setVisibleRowCount(-1);
 
         JListUtil.selectItemWhenMouverOver(jListAttach);
 
         jListAttach.setCellRenderer(new ReceivedAttachmentListRenderer(attachments));
 
-        //HACK NDP 17/03/18
+        // HACK NDP 17/03/18
         JListUtil.formatSpacing(jListAttach);
 
         jPanelNorth.remove(jPanelAttach);
         jPanelNorth.remove(jPanelAttachSepMessage);
 
         if (attachments.isEmpty()) {
-            //jPanelAttachSepMessage.setVisible(false);
-            //jScrollPaneAttach.setVisible(false);
+            // jPanelAttachSepMessage.setVisible(false);
+            // jScrollPaneAttach.setVisible(false);
             return;
         } else {
             jPanelNorth.add(jPanelAttach);
@@ -1942,7 +2081,7 @@ public class Main extends javax.swing.JFrame {
         }
         for (AttachmentLocal attachment : attachments) {
 
-            //model_attachs.addElement(attachment.getFileName());
+            // model_attachs.addElement(attachment.getFileName());
             String fileName = attachment.getFileName();
             fileName = HtmlConverter.fromHtml(fileName);
             model_attachs.addElement(fileName);
@@ -1960,8 +2099,8 @@ public class Main extends javax.swing.JFrame {
         String privateKeyPgpBlock = pgpKeyPairLocal.getPrivateKeyPgpBlock();
 
         Map<Integer, Long> attachmentsSize = getAttachmentsSize(attachments);
-        attachmentJListHandler = new AttachmentListHandler(thisOne, senderUserNumber,
-                jListAttach, attachmentsSize, this.getConnection(), privateKeyPgpBlock, passphrase);
+        attachmentJListHandler = new AttachmentListHandler(thisOne, senderUserNumber, jListAttach, attachmentsSize,
+                this.getConnection(), privateKeyPgpBlock, passphrase);
 
         jListAttach.addMouseListener(new MouseAdapter() {
             @Override
@@ -2036,16 +2175,16 @@ public class Main extends javax.swing.JFrame {
      * Reload the tree of folders
      */
     public void reloadJTree() {
-        //Init tree containing folders
+        // Init tree containing folders
         try {
 
-            //       System.out.println("Begin reloadJTree");
+            // System.out.println("Begin reloadJTree");
             foldersHandler = new FoldersHandler(this.getConnection(), userNumber);
             foldersHandler.initFolders();
-            //  jPanelFoldersTree.remove(customJtree);
+            // jPanelFoldersTree.remove(customJtree);
             customJtree = CustomJTree.initJTree(this, connection, foldersHandler, userNumber);
 
-            //     System.out.println("End reloadJTree");
+            // System.out.println("End reloadJTree");
         } catch (Exception e) {
             JOptionPaneNewCustom.showException(rootPane, e);
             System.exit(-1);
@@ -2097,7 +2236,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     /**
-     * @return the keyId
+     * @return the theKeyId
      */
     public String getKeyId() {
         return keyId;
@@ -2137,6 +2276,10 @@ public class Main extends javax.swing.JFrame {
         return attachmentJListHandler;
     }
 
+    Set<UserAccount> getUserAccounts() {
+        return userAccounts;
+    }
+
     private void print() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -2153,7 +2296,7 @@ public class Main extends javax.swing.JFrame {
         cc = StringMgr.ReplaceAll(cc, ">", "&gt;");
 
         String sep = ": ";
-        //sep = Util.fillWithHtmlBlanks(sep, 20);
+        // sep = Util.fillWithHtmlBlanks(sep, 20);
 
         String printText = "";
         printText += jLabelFrom.getText() + sep + from + "<br>";
@@ -2188,6 +2331,11 @@ public class Main extends javax.swing.JFrame {
         search.setVisible(true);
     }
 
+    
+    void updateBottomPlan(String account) {
+        this.jLabelPlan.setText(account);
+    }
+    
     /**
      * debug tool
      */
@@ -2203,6 +2351,7 @@ public class Main extends javax.swing.JFrame {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -2340,6 +2489,10 @@ public class Main extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         jMenuItemClose = new javax.swing.JMenuItem();
         jMenuItemQuit = new javax.swing.JMenuItem();
+        jMenuAccounts = new javax.swing.JMenu();
+        jMenuConnectToAccount = new javax.swing.JMenu();
+        jMenuItemConnectToAccount = new javax.swing.JMenuItem();
+        jSeparator21 = new javax.swing.JPopupMenu.Separator();
         jMenuMessage = new javax.swing.JMenu();
         jMenuItemGetNewMessage = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
@@ -2363,9 +2516,10 @@ public class Main extends javax.swing.JFrame {
         jMenuItemAddPhoto = new javax.swing.JMenuItem();
         jMenuItemDeletePhoto = new javax.swing.JMenuItem();
         jSeparator16 = new javax.swing.JPopupMenu.Separator();
-        jMenuItemDeleteAccount = new javax.swing.JMenuItem();
         jMenuItemUpgrade = new javax.swing.JMenuItem();
         jMenuItemActivateSubscription = new javax.swing.JMenuItem();
+        jSeparator22 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemDeleteAccount = new javax.swing.JMenuItem();
         jMenu2FA = new javax.swing.JMenu();
         jMenuItemDouble2FaAccountQRcode = new javax.swing.JMenuItem();
         jMenuItemDouble2FaActivation = new javax.swing.JMenuItem();
@@ -3258,6 +3412,23 @@ public class Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuFile);
 
+        jMenuAccounts.setText("Accounts");
+
+        jMenuConnectToAccount.setText("Connect to Account");
+
+        jMenuItemConnectToAccount.setText("Go");
+        jMenuItemConnectToAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConnectToAccountActionPerformed(evt);
+            }
+        });
+        jMenuConnectToAccount.add(jMenuItemConnectToAccount);
+
+        jMenuAccounts.add(jMenuConnectToAccount);
+        jMenuAccounts.add(jSeparator21);
+
+        jMenuBar1.add(jMenuAccounts);
+
         jMenuMessage.setText("Message");
 
         jMenuItemGetNewMessage.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
@@ -3407,14 +3578,6 @@ public class Main extends javax.swing.JFrame {
         jMenuSettings.add(jMenuItemDeletePhoto);
         jMenuSettings.add(jSeparator16);
 
-        jMenuItemDeleteAccount.setText("jMenuItemDeleteAccount");
-        jMenuItemDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemDeleteAccountActionPerformed(evt);
-            }
-        });
-        jMenuSettings.add(jMenuItemDeleteAccount);
-
         jMenuItemUpgrade.setText("jMenuItemUpgrade");
         jMenuItemUpgrade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3430,6 +3593,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenuSettings.add(jMenuItemActivateSubscription);
+        jMenuSettings.add(jSeparator22);
+
+        jMenuItemDeleteAccount.setText("jMenuItemDeleteAccount");
+        jMenuItemDeleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDeleteAccountActionPerformed(evt);
+            }
+        });
+        jMenuSettings.add(jMenuItemDeleteAccount);
 
         jMenuBar1.add(jMenuSettings);
 
@@ -3597,18 +3769,18 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonNewMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewMessageActionPerformed
+    private void jButtonNewMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNewMessageActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
+
         new MessageComposer(this, getKeyId(), userNumber, this.passphrase, this.getConnection()).setVisible(true);
         this.setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_jButtonNewMessageActionPerformed
+    }// GEN-LAST:event_jButtonNewMessageActionPerformed
 
-    private void jButtonMoveMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveMessageActionPerformed
-        //Get selected message
+    private void jButtonMoveMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonMoveMessageActionPerformed
+        // Get selected message
         setSelectedMessages();
         if (selectedMessages.isEmpty()) {
-            //No selected messages => nothing to do
+            // No selected messages => nothing to do
             return;
         }
 
@@ -3621,118 +3793,121 @@ public class Main extends javax.swing.JFrame {
             listMessages.add(messageLocal);
         }
 
-        //Display dialog to select new folder
+        // Display dialog to select new folder
         new MessageMover(this, listMessages, true).setVisible(true);
-    }//GEN-LAST:event_jButtonMoveMessageActionPerformed
+    }// GEN-LAST:event_jButtonMoveMessageActionPerformed
 
-    private void jButtonAddressBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddressBookActionPerformed
+    private void jButtonAddressBookActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonAddressBookActionPerformed
         jMenuItemAddressBookActionPerformed(null);
-    }//GEN-LAST:event_jButtonAddressBookActionPerformed
+    }// GEN-LAST:event_jButtonAddressBookActionPerformed
 
-    private void jButtonReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReplyActionPerformed
-
-        setSelectedMessages();
-
-        for (int i = 0; i < selectedMessages.size(); i++) {
-            int messageId = selectedMessages.get(i);
-            MessageLocal message = getCompletedMessage(messageId);
-            new MessageComposer(thisOne, getKeyId(), userNumber, this.passphrase, this.getConnection(), message, Parms.ACTION_REPLY).setVisible(true);
-        }
-
-    }//GEN-LAST:event_jButtonReplyActionPerformed
-
-    private void jButtonReplyAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReplyAllActionPerformed
+    private void jButtonReplyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonReplyActionPerformed
 
         setSelectedMessages();
 
         for (int i = 0; i < selectedMessages.size(); i++) {
             int messageId = selectedMessages.get(i);
             MessageLocal message = getCompletedMessage(messageId);
-            new MessageComposer(thisOne, getKeyId(), userNumber, this.passphrase, this.getConnection(), message, Parms.ACTION_REPLY_ALL).setVisible(true);
+            new MessageComposer(thisOne, getKeyId(), userNumber, this.passphrase, this.getConnection(), message,
+                    Parms.ACTION_REPLY).setVisible(true);
         }
-    }//GEN-LAST:event_jButtonReplyAllActionPerformed
 
-    private void jButtonTransfertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfertActionPerformed
+    }// GEN-LAST:event_jButtonReplyActionPerformed
+
+    private void jButtonReplyAllActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonReplyAllActionPerformed
 
         setSelectedMessages();
 
         for (int i = 0; i < selectedMessages.size(); i++) {
             int messageId = selectedMessages.get(i);
             MessageLocal message = getCompletedMessage(messageId);
-            new MessageComposer(thisOne, getKeyId(), userNumber, this.passphrase, this.getConnection(), message, Parms.ACTION_FOWARD).setVisible(true);
+            new MessageComposer(thisOne, getKeyId(), userNumber, this.passphrase, this.getConnection(), message,
+                    Parms.ACTION_REPLY_ALL).setVisible(true);
         }
-    }//GEN-LAST:event_jButtonTransfertActionPerformed
+    }// GEN-LAST:event_jButtonReplyAllActionPerformed
 
-    private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
+    private void jButtonTransfertActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonTransfertActionPerformed
+
+        setSelectedMessages();
+
+        for (int i = 0; i < selectedMessages.size(); i++) {
+            int messageId = selectedMessages.get(i);
+            MessageLocal message = getCompletedMessage(messageId);
+            new MessageComposer(thisOne, getKeyId(), userNumber, this.passphrase, this.getConnection(), message,
+                    Parms.ACTION_FOWARD).setVisible(true);
+        }
+    }// GEN-LAST:event_jButtonTransfertActionPerformed
+
+    private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonRefreshActionPerformed
         getIncomingMessage();
-    }//GEN-LAST:event_jButtonRefreshActionPerformed
+    }// GEN-LAST:event_jButtonRefreshActionPerformed
 
-    private void jButtonDeleteSelectedMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteSelectedMessageActionPerformed
+    private void jButtonDeleteSelectedMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonDeleteSelectedMessageActionPerformed
         deleteSelectedMessage();
-    }//GEN-LAST:event_jButtonDeleteSelectedMessageActionPerformed
+    }// GEN-LAST:event_jButtonDeleteSelectedMessageActionPerformed
 
-    private void jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrintActionPerformed
+    private void jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonPrintActionPerformed
         if (selectedMessages == null || selectedMessages.isEmpty()) {
             return;
         }
         print();
 
-    }//GEN-LAST:event_jButtonPrintActionPerformed
+    }// GEN-LAST:event_jButtonPrintActionPerformed
 
-    private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
+    private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemQuitActionPerformed
         logout();
-    }//GEN-LAST:event_jMenuItemQuitActionPerformed
+    }// GEN-LAST:event_jMenuItemQuitActionPerformed
 
-    private void jMenuItemPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPrintActionPerformed
+    private void jMenuItemPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemPrintActionPerformed
         jButtonPrintActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemPrintActionPerformed
+    }// GEN-LAST:event_jMenuItemPrintActionPerformed
 
-    private void jMenuItemGetNewMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGetNewMessageActionPerformed
+    private void jMenuItemGetNewMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemGetNewMessageActionPerformed
         jButtonRefreshActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemGetNewMessageActionPerformed
+    }// GEN-LAST:event_jMenuItemGetNewMessageActionPerformed
 
-    private void jMenuItemReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReplyActionPerformed
+    private void jMenuItemReplyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemReplyActionPerformed
         jButtonReplyActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemReplyActionPerformed
+    }// GEN-LAST:event_jMenuItemReplyActionPerformed
 
-    private void jMenuItemReplyAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReplyAllActionPerformed
+    private void jMenuItemReplyAllActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemReplyAllActionPerformed
         jButtonReplyAllActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemReplyAllActionPerformed
+    }// GEN-LAST:event_jMenuItemReplyAllActionPerformed
 
-    private void jMenuItemFowardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFowardActionPerformed
+    private void jMenuItemFowardActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemFowardActionPerformed
         jButtonTransfertActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemFowardActionPerformed
+    }// GEN-LAST:event_jMenuItemFowardActionPerformed
 
-    private void jMenuItemMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMoveActionPerformed
+    private void jMenuItemMoveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemMoveActionPerformed
         jButtonMoveMessageActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemMoveActionPerformed
+    }// GEN-LAST:event_jMenuItemMoveActionPerformed
 
-    private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
+    private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemDeleteActionPerformed
         jButtonDeleteSelectedMessageActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemDeleteActionPerformed
+    }// GEN-LAST:event_jMenuItemDeleteActionPerformed
 
-    private void jMenuItemNewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNewFolderActionPerformed
+    private void jMenuItemNewFolderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemNewFolderActionPerformed
 
         // Do now allow to add a Folder if tree is not enabled
         if (!this.customJtree.isTreeEnabled()) {
             return;
         }
         new TreeNodeAdder(this, connection, this.userNumber, this.customJtree, true).setVisible(true);
-    }//GEN-LAST:event_jMenuItemNewFolderActionPerformed
+    }// GEN-LAST:event_jMenuItemNewFolderActionPerformed
 
-    private void jButtonNewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewFolderActionPerformed
+    private void jButtonNewFolderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNewFolderActionPerformed
         // Do now allow to add a Folder if tree is not enabled
         if (!this.customJtree.isTreeEnabled()) {
             return;
         }
         new TreeNodeAdder(this, connection, this.userNumber, this.customJtree, true).setVisible(true);
-    }//GEN-LAST:event_jButtonNewFolderActionPerformed
+    }// GEN-LAST:event_jButtonNewFolderActionPerformed
 
-    private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNewActionPerformed
+    private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemNewActionPerformed
         jButtonNewMessageActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItemNewActionPerformed
+    }// GEN-LAST:event_jMenuItemNewActionPerformed
 
-    private void jMenuItemUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUserSettingsActionPerformed
+    private void jMenuItemUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemUserSettingsActionPerformed
 
         if (userSettingsUpdater != null) {
             userSettingsUpdater.dispose();
@@ -3741,13 +3916,13 @@ public class Main extends javax.swing.JFrame {
         userSettingsUpdater = new UserSettingsUpdater(thisOne, connection, userNumber, getKeyId());
         userSettingsUpdater.setVisible(true);
 
-    }//GEN-LAST:event_jMenuItemUserSettingsActionPerformed
+    }// GEN-LAST:event_jMenuItemUserSettingsActionPerformed
 
-    private void jMenuItemProxySettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProxySettingsActionPerformed
+    private void jMenuItemProxySettingsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemProxySettingsActionPerformed
         new FrameProxyParms(thisOne).setVisible(true);
-    }//GEN-LAST:event_jMenuItemProxySettingsActionPerformed
+    }// GEN-LAST:event_jMenuItemProxySettingsActionPerformed
 
-    private void jMenuItemChangePassphraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemChangePassphraseActionPerformed
+    private void jMenuItemChangePassphraseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemChangePassphraseActionPerformed
 
         if (changePassphrase != null) {
             changePassphrase.dispose();
@@ -3756,35 +3931,35 @@ public class Main extends javax.swing.JFrame {
         changePassphrase = new ChangePassphrase(this, connection, userNumber, false);
         changePassphrase.setVisible(true);
 
-    }//GEN-LAST:event_jMenuItemChangePassphraseActionPerformed
+    }// GEN-LAST:event_jMenuItemChangePassphraseActionPerformed
 
-    private void jButtonPrevMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPrevMouseEntered
+    private void jButtonPrevMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonPrevMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButtonPrevMouseEntered
+    }// GEN-LAST:event_jButtonPrevMouseEntered
 
-    private void jButtonNextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNextMouseEntered
+    private void jButtonNextMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonNextMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButtonNextMouseEntered
+    }// GEN-LAST:event_jButtonNextMouseEntered
 
-    private void jButtonPrevMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPrevMouseExited
+    private void jButtonPrevMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonPrevMouseExited
         this.setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_jButtonPrevMouseExited
+    }// GEN-LAST:event_jButtonPrevMouseExited
 
-    private void jButtonNextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNextMouseExited
+    private void jButtonNextMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonNextMouseExited
         this.setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_jButtonNextMouseExited
+    }// GEN-LAST:event_jButtonNextMouseExited
 
-    private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
+    private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonPrevActionPerformed
         offset = offset - limit;
         createTable(false);
-    }//GEN-LAST:event_jButtonPrevActionPerformed
+    }// GEN-LAST:event_jButtonPrevActionPerformed
 
-    private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
+    private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNextActionPerformed
         offset = offset + limit;
         createTable(false);
-}//GEN-LAST:event_jButtonNextActionPerformed
+    }// GEN-LAST:event_jButtonNextActionPerformed
 
-    private void jMenuItemSystemInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSystemInfoActionPerformed
+    private void jMenuItemSystemInfoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemSystemInfoActionPerformed
 
         if (systemPropDisplayer != null) {
             systemPropDisplayer.dispose();
@@ -3792,10 +3967,9 @@ public class Main extends javax.swing.JFrame {
 
         systemPropDisplayer = new SystemPropDisplayer(this);
 
+    }// GEN-LAST:event_jMenuItemSystemInfoActionPerformed
 
-    }//GEN-LAST:event_jMenuItemSystemInfoActionPerformed
-
-    private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
+    private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAboutActionPerformed
 
         if (about != null) {
             about.dispose();
@@ -3803,9 +3977,9 @@ public class Main extends javax.swing.JFrame {
 
         about = new About(this);
 
-    }//GEN-LAST:event_jMenuItemAboutActionPerformed
+    }// GEN-LAST:event_jMenuItemAboutActionPerformed
 
-    private void jMenuItemWhatsNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemWhatsNewActionPerformed
+    private void jMenuItemWhatsNewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemWhatsNewActionPerformed
         Desktop desktop = Desktop.getDesktop();
         try {
             String whatsNew = AskForDownloadJframe.getWhatsNewUrl();
@@ -3815,9 +3989,9 @@ public class Main extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.toString());
         }
-    }//GEN-LAST:event_jMenuItemWhatsNewActionPerformed
+    }// GEN-LAST:event_jMenuItemWhatsNewActionPerformed
 
-    private void jMenuItemImportAddrBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportAddrBookActionPerformed
+    private void jMenuItemImportAddrBookActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemImportAddrBookActionPerformed
 
         if (addressBookImportStart != null) {
             addressBookImportStart.dispose();
@@ -3825,20 +3999,20 @@ public class Main extends javax.swing.JFrame {
 
         addressBookImportStart = new AddressBookImportStart(this, connection, userNumber);
 
-    }//GEN-LAST:event_jMenuItemImportAddrBookActionPerformed
+    }// GEN-LAST:event_jMenuItemImportAddrBookActionPerformed
 
-    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonSearchActionPerformed
         search();
-    }//GEN-LAST:event_jButtonSearchActionPerformed
+    }// GEN-LAST:event_jButtonSearchActionPerformed
 
-    private void jMenuItemSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSearchActionPerformed
+    private void jMenuItemSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemSearchActionPerformed
         search();
-    }//GEN-LAST:event_jMenuItemSearchActionPerformed
+    }// GEN-LAST:event_jMenuItemSearchActionPerformed
 
-    private void jMenuItemImportAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportAccountActionPerformed
-    }//GEN-LAST:event_jMenuItemImportAccountActionPerformed
+    private void jMenuItemImportAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemImportAccountActionPerformed
+    }// GEN-LAST:event_jMenuItemImportAccountActionPerformed
 
-    private void jMenuItemAddressBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAddressBookActionPerformed
+    private void jMenuItemAddressBookActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAddressBookActionPerformed
         try {
 
             if (photoAddressBookUpdaterNew != null) {
@@ -3850,9 +4024,9 @@ public class Main extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPaneNewCustom.showException(rootPane, e);
         }
-    }//GEN-LAST:event_jMenuItemAddressBookActionPerformed
+    }// GEN-LAST:event_jMenuItemAddressBookActionPerformed
 
-    private void jMenuItemDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteAccountActionPerformed
+    private void jMenuItemDeleteAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemDeleteAccountActionPerformed
 
         if (confirmAccountDeleteDialog != null) {
             confirmAccountDeleteDialog.dispose();
@@ -3860,14 +4034,14 @@ public class Main extends javax.swing.JFrame {
 
         confirmAccountDeleteDialog = new ConfirmAccountDeleteDialog(this, this.userNumber, this.getKeyId(), connection);
         confirmAccountDeleteDialog.setVisible(true);
-    }//GEN-LAST:event_jMenuItemDeleteAccountActionPerformed
+    }// GEN-LAST:event_jMenuItemDeleteAccountActionPerformed
 
-    private void jMenuItemActivateSubscriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActivateSubscriptionActionPerformed
+    private void jMenuItemActivateSubscriptionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemActivateSubscriptionActionPerformed
         new ActivateSubscriptionDialog(this, userNumber, true, connection).setVisible(true);
 
-    }//GEN-LAST:event_jMenuItemActivateSubscriptionActionPerformed
+    }// GEN-LAST:event_jMenuItemActivateSubscriptionActionPerformed
 
-    private void jButtonHostLockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHostLockActionPerformed
+    private void jButtonHostLockActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonHostLockActionPerformed
 
         if (connection instanceof AwakeConnection) {
             AwakeConnection awakeConnection = (AwakeConnection) connection;
@@ -3884,25 +4058,25 @@ public class Main extends javax.swing.JFrame {
 
         }
 
-    }//GEN-LAST:event_jButtonHostLockActionPerformed
+    }// GEN-LAST:event_jButtonHostLockActionPerformed
 
-    private void jButtonHostLockMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonHostLockMouseEntered
+    private void jButtonHostLockMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonHostLockMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButtonHostLockMouseEntered
+    }// GEN-LAST:event_jButtonHostLockMouseEntered
 
-    private void jButtonHostLockMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonHostLockMouseExited
+    private void jButtonHostLockMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonHostLockMouseExited
         this.setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_jButtonHostLockMouseExited
+    }// GEN-LAST:event_jButtonHostLockMouseExited
 
-    private void jMenuItemPassphraseRecoverySettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPassphraseRecoverySettingsActionPerformed
-        //11/09/06 15:01 ABE : No more passphrase recovery
+    private void jMenuItemPassphraseRecoverySettingsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemPassphraseRecoverySettingsActionPerformed
+        // 11/09/06 15:01 ABE : No more passphrase recovery
 //        if (true) {
 //            return;
 //        }
 //        new PassphraseRecoverySettings(connection, userNumber, userPassphrase).setVisible(true);
-    }//GEN-LAST:event_jMenuItemPassphraseRecoverySettingsActionPerformed
+    }// GEN-LAST:event_jMenuItemPassphraseRecoverySettingsActionPerformed
 
-    private void jMenuItemForgetPassphraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemForgetPassphraseActionPerformed
+    private void jMenuItemForgetPassphraseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemForgetPassphraseActionPerformed
 
         if (Parms.FEATURE_CACHE_PASSPHRASE) {
             boolean rememberPassphrase = UserPrefManager.getBooleanPreference(UserPrefManager.DO_CACHE_PASSPHRASE);
@@ -3914,30 +4088,30 @@ public class Main extends javax.swing.JFrame {
             }
         }
 
-    }//GEN-LAST:event_jMenuItemForgetPassphraseActionPerformed
+    }// GEN-LAST:event_jMenuItemForgetPassphraseActionPerformed
 
-    private void jMenuItemAutoresponderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAutoresponderActionPerformed
+    private void jMenuItemAutoresponderActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAutoresponderActionPerformed
 
         if (autoResponder != null) {
             autoResponder.dispose();
         }
 
         autoResponder = new AutoResponder(this, connection, userNumber, keyId, passphrase);
-    }//GEN-LAST:event_jMenuItemAutoresponderActionPerformed
+    }// GEN-LAST:event_jMenuItemAutoresponderActionPerformed
 
-    private void jMenuItemUpgradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUpgradeActionPerformed
+    private void jMenuItemUpgradeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemUpgradeActionPerformed
         jButtonBuyActionPerformed(null);
-    }//GEN-LAST:event_jMenuItemUpgradeActionPerformed
+    }// GEN-LAST:event_jMenuItemUpgradeActionPerformed
 
-    private void jButtonDetailMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDetailMouseEntered
+    private void jButtonDetailMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonDetailMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButtonDetailMouseEntered
+    }// GEN-LAST:event_jButtonDetailMouseEntered
 
-    private void jButtonDetailMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDetailMouseExited
+    private void jButtonDetailMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonDetailMouseExited
         this.setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_jButtonDetailMouseExited
+    }// GEN-LAST:event_jButtonDetailMouseExited
 
-    private void jButtonDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetailActionPerformed
+    private void jButtonDetailActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonDetailActionPerformed
 
         if (lastLogin != null) {
             lastLogin.dispose();
@@ -3946,34 +4120,34 @@ public class Main extends javax.swing.JFrame {
         lastLogin = new LastLogin(this, connection, userNumber, keyId);
         lastLogin.setVisible(true);
 
-    }//GEN-LAST:event_jButtonDetailActionPerformed
+    }// GEN-LAST:event_jButtonDetailActionPerformed
 
-    private void jButtonBuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuyActionPerformed
+    private void jButtonBuyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonBuyActionPerformed
 
         BuyDialog buyDialog = new BuyDialog(this, connection, userNumber, true);
         buyDialog.setVisible(true);
 
         if (buyDialog.getNewSubscription() != StoreParms.PRODUCT_FREE) {
             short userSubscription = buyDialog.getNewSubscription();
-            ConnectionParms.setSubscription(userSubscription);
+            SubscriptionLocalStore.setSubscription(userSubscription, userNumber);
         }
 
-    }//GEN-LAST:event_jButtonBuyActionPerformed
+    }// GEN-LAST:event_jButtonBuyActionPerformed
 
-    private void jMenuItemAddPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAddPhotoActionPerformed
+    private void jMenuItemAddPhotoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAddPhotoActionPerformed
         PhotoAdder photoAdder = new PhotoAdder(new javax.swing.JFrame(), connection, keyId, true);
         photoAdder.setVisible(true);
-    }//GEN-LAST:event_jMenuItemAddPhotoActionPerformed
+    }// GEN-LAST:event_jMenuItemAddPhotoActionPerformed
 
-    private void jMenuItemDeletePhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeletePhotoActionPerformed
+    private void jMenuItemDeletePhotoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemDeletePhotoActionPerformed
         PhotoUtil.photoDelete(this, connection, keyId);
-    }//GEN-LAST:event_jMenuItemDeletePhotoActionPerformed
+    }// GEN-LAST:event_jMenuItemDeletePhotoActionPerformed
 
-    private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCloseActionPerformed
+    private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCloseActionPerformed
         this.close();
-    }//GEN-LAST:event_jMenuItemCloseActionPerformed
+    }// GEN-LAST:event_jMenuItemCloseActionPerformed
 
-    private void jMenuItemCheckNewVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCheckNewVersionActionPerformed
+    private void jMenuItemCheckNewVersionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCheckNewVersionActionPerformed
 
         Thread t = new Thread() {
             @Override
@@ -3989,122 +4163,119 @@ public class Main extends javax.swing.JFrame {
         };
         t.start();
 
-    }//GEN-LAST:event_jMenuItemCheckNewVersionActionPerformed
+    }// GEN-LAST:event_jMenuItemCheckNewVersionActionPerformed
 
-
-    private void jRadioButtonMenuItemBottomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemBottomActionPerformed
+    private void jRadioButtonMenuItemBottomActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonMenuItemBottomActionPerformed
         radioButtonChange();
-    }//GEN-LAST:event_jRadioButtonMenuItemBottomActionPerformed
+    }// GEN-LAST:event_jRadioButtonMenuItemBottomActionPerformed
 
-    private void jRadioButtonMenuItemRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemRightActionPerformed
+    private void jRadioButtonMenuItemRightActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonMenuItemRightActionPerformed
         radioButtonChange();
-    }//GEN-LAST:event_jRadioButtonMenuItemRightActionPerformed
+    }// GEN-LAST:event_jRadioButtonMenuItemRightActionPerformed
 
-    private void jRadioButtonMenuItemPaneInactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemPaneInactiveActionPerformed
+    private void jRadioButtonMenuItemPaneInactiveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonMenuItemPaneInactiveActionPerformed
         radioButtonChange();
-    }//GEN-LAST:event_jRadioButtonMenuItemPaneInactiveActionPerformed
+    }// GEN-LAST:event_jRadioButtonMenuItemPaneInactiveActionPerformed
 
-    private void jMenuItemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemResetActionPerformed
+    private void jMenuItemResetActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemResetActionPerformed
         WindowsReseter.actionResetWindows(this);
-    }//GEN-LAST:event_jMenuItemResetActionPerformed
+    }// GEN-LAST:event_jMenuItemResetActionPerformed
 
-    private void jRadioButtonMenuItemNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemNormalActionPerformed
+    private void jRadioButtonMenuItemNormalActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonMenuItemNormalActionPerformed
         radioButtonChange();
-    }//GEN-LAST:event_jRadioButtonMenuItemNormalActionPerformed
+    }// GEN-LAST:event_jRadioButtonMenuItemNormalActionPerformed
 
-    private void jRadioButtonMenuItemFolderInactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemFolderInactiveActionPerformed
+    private void jRadioButtonMenuItemFolderInactiveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jRadioButtonMenuItemFolderInactiveActionPerformed
         radioButtonChange();
-    }//GEN-LAST:event_jRadioButtonMenuItemFolderInactiveActionPerformed
+    }// GEN-LAST:event_jRadioButtonMenuItemFolderInactiveActionPerformed
 
-    private void jButtonReply1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReply1ActionPerformed
-
-        int messageId = selectedMessages.get(0);
-        MessageLocal message = getCompletedMessage(messageId);
-        new MessageComposer(thisOne, keyId, userNumber, this.passphrase, connection, message, Parms.ACTION_REPLY).setVisible(true);
-    }//GEN-LAST:event_jButtonReply1ActionPerformed
-
-    private void jButtonReplyAll1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReplyAll1ActionPerformed
+    private void jButtonReply1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonReply1ActionPerformed
 
         int messageId = selectedMessages.get(0);
         MessageLocal message = getCompletedMessage(messageId);
-        new MessageComposer(thisOne, keyId, userNumber, this.passphrase, connection, message, Parms.ACTION_REPLY_ALL).setVisible(true);
-    }//GEN-LAST:event_jButtonReplyAll1ActionPerformed
+        new MessageComposer(thisOne, keyId, userNumber, this.passphrase, connection, message, Parms.ACTION_REPLY)
+                .setVisible(true);
+    }// GEN-LAST:event_jButtonReply1ActionPerformed
 
-    private void jButtonTransfert1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfert1ActionPerformed
+    private void jButtonReplyAll1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonReplyAll1ActionPerformed
 
         int messageId = selectedMessages.get(0);
         MessageLocal message = getCompletedMessage(messageId);
-        new MessageComposer(thisOne, keyId, userNumber, this.passphrase, connection, message, Parms.ACTION_FOWARD).setVisible(true);
-    }//GEN-LAST:event_jButtonTransfert1ActionPerformed
+        new MessageComposer(thisOne, keyId, userNumber, this.passphrase, connection, message, Parms.ACTION_REPLY_ALL)
+                .setVisible(true);
+    }// GEN-LAST:event_jButtonReplyAll1ActionPerformed
 
-    private void jMenuItemDouble2FaAccountQRcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDouble2FaAccountQRcodeActionPerformed
+    private void jButtonTransfert1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonTransfert1ActionPerformed
 
-        AwakeConnection awakeConnection = (AwakeConnection)connection;
+        int messageId = selectedMessages.get(0);
+        MessageLocal message = getCompletedMessage(messageId);
+        new MessageComposer(thisOne, keyId, userNumber, this.passphrase, connection, message, Parms.ACTION_FOWARD)
+                .setVisible(true);
+    }// GEN-LAST:event_jButtonTransfert1ActionPerformed
+
+    private void jMenuItemDouble2FaAccountQRcodeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemDouble2FaAccountQRcodeActionPerformed
+
+        AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-       
+
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
-            //net.safester.server.auth2fa.awake.Auth2faManagerAwake
-            String hexImage = awakeFileSession.call("net.safester.server.auth2fa.awake.Auth2faManagerAwake.get2faQrCodeImage",
-                    userNumber,
-                    keyId,
-                    awakeFileSession.getAuthenticationToken(),
-                    connection);
-                        
+            // net.safester.server.auth2fa.awake.Auth2faManagerAwake
+            String hexImage = awakeFileSession.call(
+                    "net.safester.server.auth2fa.awake.Auth2faManagerAwake.get2faQrCodeImage", userNumber, keyId,
+                    awakeFileSession.getAuthenticationToken(), connection);
+
             // Store the image to a file and pass the file to Double2FaDisplayQrCode
             File file = new File(SystemUtils.USER_HOME + File.separator + "qrcode.png");
             byte[] image = new Hex().decode(hexImage.getBytes());
             FileUtils.writeByteArrayToFile(file, image);
-        
+
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            
+
             // Double2FaAccountCreator
             // Like PhotoDisplayer with a Decorator
             // Your 2FA Account has been created!
             // Please go to "Activity Status" to enable 2FA for next login.
-            
-            Double2FaDisplayQrCode dialog = new Double2FaDisplayQrCode(new javax.swing.JFrame(), this.userNumber, this.keyId, passphrase, file, true, connection);
+            Double2FaDisplayQrCode dialog = new Double2FaDisplayQrCode(new javax.swing.JFrame(), this.userNumber,
+                    this.keyId, passphrase, file, true, connection);
             dialog.setVisible(true);
-                                
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
             this.setCursor(Cursor.getDefaultCursor());
             JOptionPane.showMessageDialog(this, messages.getMessage("double_2fa_can_not_create_account"));
             return;
         }
-       
-    }//GEN-LAST:event_jMenuItemDouble2FaAccountQRcodeActionPerformed
 
-    private void jMenuItemDouble2FaActivationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDouble2FaActivationActionPerformed
-        
+    }// GEN-LAST:event_jMenuItemDouble2FaAccountQRcodeActionPerformed
+
+    private void jMenuItemDouble2FaActivationActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemDouble2FaActivationActionPerformed
+
         // Double2FaActivityStatus
         // 2FA status: Enabled / Disabled.
         // lightbulb_on.png
-        
-        AwakeConnection awakeConnection = (AwakeConnection)connection;
+        AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-        
-        String  double2FaAccountExistsStr = "true";
+
+        String double2FaAccountExistsStr = "true";
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
-            
-            double2FaAccountExistsStr=  awakeFileSession.call("net.safester.server.auth2fa.awake.Auth2faManagerAwake.exists2faAccount",
-                    userNumber,
-                    keyId,
-                    awakeFileSession.getAuthenticationToken(),
-                    connection);
+
+            double2FaAccountExistsStr = awakeFileSession.call(
+                    "net.safester.server.auth2fa.awake.Auth2faManagerAwake.exists2faAccount", userNumber, keyId,
+                    awakeFileSession.getAuthenticationToken(), connection);
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             e.printStackTrace();
             this.setCursor(Cursor.getDefaultCursor());
             JOptionPane.showMessageDialog(this, messages.getMessage("double_2fa_can_not_check_if_account_exists"));
             return;
-        } 
-        
-        if (! Boolean.parseBoolean(double2FaAccountExistsStr)) {
-            String text = messages.getMessage("double_2fa_account_not_exists_1") + CR_LF + messages.getMessage("double_2fa_account_not_exists_2");
-            
+        }
+
+        if (!Boolean.parseBoolean(double2FaAccountExistsStr)) {
+            String text = messages.getMessage("double_2fa_account_not_exists_1") + CR_LF
+                    + messages.getMessage("double_2fa_account_not_exists_2");
+
             text = text.replace("${0}", keyId);
             String title = messages.getMessage("warning");
 
@@ -4112,13 +4283,14 @@ public class Main extends javax.swing.JFrame {
             return;
 
         }
-        
-        Double2FaActivationStatus dialog = new Double2FaActivationStatus(new javax.swing.JFrame(), userNumber, keyId, connection);
-        dialog.setVisible(true);
-        
-    }//GEN-LAST:event_jMenuItemDouble2FaActivationActionPerformed
 
-    private void jMenuItemDouble2faHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDouble2faHelpActionPerformed
+        Double2FaActivationStatus dialog = new Double2FaActivationStatus(new javax.swing.JFrame(), userNumber, keyId,
+                connection);
+        dialog.setVisible(true);
+
+    }// GEN-LAST:event_jMenuItemDouble2FaActivationActionPerformed
+
+    private void jMenuItemDouble2faHelpActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemDouble2faHelpActionPerformed
         String content = HtmlTextUtil.getHtmlHelpContent("2fa_settings_help");
 
         if (newsFrame != null) {
@@ -4126,7 +4298,12 @@ public class Main extends javax.swing.JFrame {
         }
 
         newsFrame = new NewsFrame(this, content, messages.getMessage("help"));
-    }//GEN-LAST:event_jMenuItemDouble2faHelpActionPerformed
+    }// GEN-LAST:event_jMenuItemDouble2faHelpActionPerformed
+
+    private void jMenuItemConnectToAccountActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAddAccountActionPerformed
+        Login login = new Login(this, null);
+        login.setVisible(true);
+    }// GEN-LAST:event_jMenuItemAddAccountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -4139,12 +4316,16 @@ public class Main extends javax.swing.JFrame {
             System.out.println(ex);
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
+
+            Set<UserAccount> userAccounts = new HashSet<>();
+
             @Override
             public void run() {
-                new Main(null, "login@email.net", 0, "passphrase".toCharArray()).setVisible(true);
+                new Main(null, "login@email.net", 0, "passphrase".toCharArray(), StoreParms.PRODUCT_FREE, userAccounts).setVisible(true);
             }
         });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupFolderSection;
     private javax.swing.ButtonGroup buttonGroupReadingPane;
@@ -4181,7 +4362,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JList jListAttach;
     private javax.swing.JMenu jMenu2FA;
     private javax.swing.JMenu jMenuAbout;
+    private javax.swing.JMenu jMenuAccounts;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuConnectToAccount;
     private javax.swing.JMenu jMenuContacts;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuFolderSection;
@@ -4193,6 +4376,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemChangePassphrase;
     private javax.swing.JMenuItem jMenuItemCheckNewVersion;
     private javax.swing.JMenuItem jMenuItemClose;
+    private javax.swing.JMenuItem jMenuItemConnectToAccount;
     private javax.swing.JMenuItem jMenuItemDelete;
     private javax.swing.JMenuItem jMenuItemDeleteAccount;
     private javax.swing.JMenuItem jMenuItemDeletePhoto;
@@ -4311,6 +4495,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator19;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator20;
+    private javax.swing.JPopupMenu.Separator jSeparator21;
+    private javax.swing.JPopupMenu.Separator jSeparator22;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
@@ -4329,5 +4515,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
 
 }

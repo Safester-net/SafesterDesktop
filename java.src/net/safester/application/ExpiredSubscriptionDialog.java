@@ -33,6 +33,8 @@ import java.sql.Connection;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
@@ -45,8 +47,6 @@ import net.safester.application.util.UserPrefManager;
 import net.safester.clientserver.ServerParms;
 import net.safester.clientserver.util.TestAwakeConnection;
 
-import org.awakefw.sql.api.client.AwakeConnection;
-
 
 /**
  * This dialog is displayed on connection when active subscription is expired
@@ -55,16 +55,15 @@ import org.awakefw.sql.api.client.AwakeConnection;
 public class ExpiredSubscriptionDialog extends javax.swing.JDialog {
 
     private MessagesManager messages = new MessagesManager();
-    short expiredSubscription;
-
+    int expiredSubscription;
     private int userNumber;
-    private short newSubscription = StoreParms.PRODUCT_FREE;
+    private int newSubscription = StoreParms.PRODUCT_FREE;
 
     private Connection connection;
 
     Frame caller;
     
-    public ExpiredSubscriptionDialog(java.awt.Frame parent, Connection theConnection, int usernumber, short expiredSubscription, boolean modal) {
+    public ExpiredSubscriptionDialog(java.awt.Frame parent, Connection theConnection, int usernumber, int expiredSubscription, boolean modal) {
         super(parent, modal);
         initComponents();
         this.expiredSubscription = expiredSubscription;
@@ -154,7 +153,7 @@ public class ExpiredSubscriptionDialog extends javax.swing.JDialog {
         }
     }
 
-    public short getNewSubscription() {
+    public int getNewSubscription() {
         return newSubscription;
     }
 
