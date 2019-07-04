@@ -472,9 +472,11 @@ public class Login extends javax.swing.JFrame {
             JOptionPaneNewCustom.showException(this, ex, messages.getMessage("unable_to_connect"));
             return;
         }
+        
 
         HttpProxy httpProxy = proxySessionCheckerNew.getHttpProxy();
-
+        debug(new Date() + " httpProxy: " + httpProxy);
+        
         cmWaitDialog.changeText(this.messages.getMessage("authenticating"));
 
         connection = null;         //Reset Connection

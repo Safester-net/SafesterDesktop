@@ -11,7 +11,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/awake-file-1.1.1e"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/awake-file-1.1.1f"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="test" value="true"/>
@@ -24,7 +24,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/awake-file-1.1.1e.jar"/>
 	<classpathentry kind="lib" path="lib/cgeep_api.jar"/>
 	<classpathentry kind="lib" path="lib/cgeep_crypto.jar"/>
 	<classpathentry kind="lib" path="lib/cgeep_provider.jar"/>

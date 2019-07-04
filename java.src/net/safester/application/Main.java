@@ -159,6 +159,9 @@ public class Main extends javax.swing.JFrame {
     public static final int MIN_LOCATION_MESSAGE = 120;
 
     public static final Color COLOR_MSG_INFO = new Color(132, 192, 252);
+
+    public static final boolean NOTIFY_ON = true;
+    
     private Connection connection;
     private CustomJTree customJtree;
     private MessagesManager messages = new MessagesManager();
@@ -1624,27 +1627,32 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
 
-                while (true) {
-                    try {
-                        sleep(Parms.NOTIFY_PERIOD);
-                        MainNotifierServerInfo mainNotifierServerInfo = new MainNotifierServerInfo(userNumber,
-                                connection);
-                        boolean doExist = mainNotifierServerInfo.newInboxMessageExists();
-                        System.out.println(new Date() + " Testing if new message exists on server: " + doExist);
-                        if (doExist) {
-                            // Select inbox
-                            DefaultMutableTreeNode inBoxFolder = customJtree.searchFolder(Parms.INBOX_ID);
-                            customJtree.getTree().setSelectionPath(new TreePath(inBoxFolder.getPath()));
-
-                            MessageLocalStoreCache.remove(Parms.INBOX_ID); // Cear cache
-                            createTable();
-                            // Resleep to avoid overlaps in threads
+        	if (NOTIFY_ON ) {
+                    while (true) {
+                        try {
                             sleep(Parms.NOTIFY_PERIOD);
+                            MainNotifierServerInfo mainNotifierServerInfo = new MainNotifierServerInfo(userNumber,
+                                    connection);
+                            boolean doExist = mainNotifierServerInfo.newInboxMessageExists();
+                            //System.out.println(new Date() + " Testing if new message exists on server: " + doExist);
+                            
+                            if (doExist) {
+                                // Select inbox
+                                DefaultMutableTreeNode inBoxFolder = customJtree.searchFolder(Parms.INBOX_ID);
+                                customJtree.getTree().setSelectionPath(new TreePath(inBoxFolder.getPath()));
+
+                                MessageLocalStoreCache.remove(Parms.INBOX_ID); // Cear cache
+                                createTable();
+                                // Resleep to avoid overlaps in threads
+                                sleep(Parms.NOTIFY_PERIOD);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                    } 
+        	}
+        	
+
             }
 
         };

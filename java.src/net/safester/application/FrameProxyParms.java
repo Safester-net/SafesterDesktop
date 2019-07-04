@@ -25,7 +25,6 @@ package net.safester.application;
 
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
@@ -46,7 +45,6 @@ import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.UserPrefManager;
 
 import com.swing.util.SwingUtil;
@@ -94,7 +92,7 @@ public class FrameProxyParms extends javax.swing.JFrame {
     {
         clipboardManager = new ClipboardManager(rootPane);
         
-        Dimension dim = new Dimension(515, 416);
+        Dimension dim = new Dimension(428, 344);
         this.setSize(dim);
         this.setPreferredSize(dim);
 
@@ -120,11 +118,11 @@ public class FrameProxyParms extends javax.swing.JFrame {
         this.jTextFieldProxyAddress.setText(null);
         this.jTextFieldProxyPort.setText(null);
 
-        this.jCheckBoxNtlmProxy.setText(messages.getMessage("ntlm_authentication"));
-        this.jTextFieldWorkstation.setText(null);
-        this.jTextFieldDomain.setText(null);
-        this.jLabelWorkstation.setText(messages.getMessage("workstation"));
-        this.jLabelDomain.setText(messages.getMessage("domain"));
+        //this.jCheckBoxNtlmProxy.setText(messages.getMessage("ntlm_authentication"));
+        //this.jTextFieldWorkstation.setText(null);
+        //this.jTextFieldDomain.setText(null);
+        ///this.jLabelWorkstation.setText(messages.getMessage("workstation"));
+        //this.jLabelDomain.setText(messages.getMessage("domain"));
 
         jLabelLogoTitle.setText(messages.getMessage("proxy_settings"));
 
@@ -135,7 +133,7 @@ public class FrameProxyParms extends javax.swing.JFrame {
         jLabelProxyAddress.setText(messages.getMessage("address"));
         jLabelProxyPort.setText(messages.getMessage("port"));
 
-        jButtonHelpNtlm.putClientProperty( "JButton.buttonType", "square" );
+        //jButtonHelpNtlm.putClientProperty( "JButton.buttonType", "square" );
 
         jButtonApply.setText(messages.getMessage("ok"));
         jButtonClose.setText(messages.getMessage("cancel"));
@@ -143,7 +141,7 @@ public class FrameProxyParms extends javax.swing.JFrame {
         // Set the Send preferences for user Preferences
         setStoredPreferences();
         jRadioButtonUseProxyItemStateChanged(null);
-        jCheckBoxNtlmProxyItemStateChanged(null);
+        //jCheckBoxNtlmProxyItemStateChanged(null);
 
         jTextFieldProxyPort.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e)
@@ -232,9 +230,9 @@ public class FrameProxyParms extends javax.swing.JFrame {
         jTextFieldProxyAddress.setText(UserPrefManager.getPreference(UserPrefManager.PROXY_ADDRESS));
         jTextFieldProxyPort.setText(UserPrefManager.getPreference(UserPrefManager.PROXY_PORT));
 
-        jCheckBoxNtlmProxy.setSelected(UserPrefManager.getBooleanPreference(UserPrefManager.PROXY_AUTH_NTLM));
-        jTextFieldWorkstation.setText(UserPrefManager.getPreference(UserPrefManager.NTLM_WORKSTATION));
-        jTextFieldDomain.setText(UserPrefManager.getPreference(UserPrefManager.NTLM_DOMAIN));
+        //jCheckBoxNtlmProxy.setSelected(UserPrefManager.getBooleanPreference(UserPrefManager.PROXY_AUTH_NTLM));
+        //jTextFieldWorkstation.setText(UserPrefManager.getPreference(UserPrefManager.NTLM_WORKSTATION));
+        //jTextFieldDomain.setText(UserPrefManager.getPreference(UserPrefManager.NTLM_DOMAIN));
 
     }
 
@@ -329,9 +327,10 @@ public class FrameProxyParms extends javax.swing.JFrame {
         }
 
         UserPrefManager.setPreference(UserPrefManager.PROXY_TYPE, proxyType);
-        UserPrefManager.setPreference(UserPrefManager.PROXY_AUTH_NTLM, jCheckBoxNtlmProxy.isSelected());
-        UserPrefManager.setPreference(UserPrefManager.NTLM_WORKSTATION, jTextFieldWorkstation.getText());
-        UserPrefManager.setPreference(UserPrefManager.NTLM_DOMAIN, jTextFieldDomain.getText());
+        
+        //UserPrefManager.setPreference(UserPrefManager.PROXY_AUTH_NTLM, jCheckBoxNtlmProxy.isSelected());
+        //UserPrefManager.setPreference(UserPrefManager.NTLM_WORKSTATION, jTextFieldWorkstation.getText());
+        //UserPrefManager.setPreference(UserPrefManager.NTLM_DOMAIN, jTextFieldDomain.getText());
         
         close();
     }
@@ -391,17 +390,6 @@ public class FrameProxyParms extends javax.swing.JFrame {
         jPanelUserDef1 = new javax.swing.JPanel();
         jRadioButtonDirectConnection = new javax.swing.JRadioButton();
         jPanelRight2 = new javax.swing.JPanel();
-        jPanelSepNtlm = new javax.swing.JPanel();
-        jPanelNtlm1 = new javax.swing.JPanel();
-        jPanelLeftNtlm1 = new javax.swing.JPanel();
-        jCheckBoxNtlmProxy = new javax.swing.JCheckBox();
-        jButtonHelpNtlm = new javax.swing.JButton();
-        jPanelNtlm = new javax.swing.JPanel();
-        jPanelLeftNtlm = new javax.swing.JPanel();
-        jLabelWorkstation = new javax.swing.JLabel();
-        jTextFieldWorkstation = new javax.swing.JTextField();
-        jLabelDomain = new javax.swing.JLabel();
-        jTextFieldDomain = new javax.swing.JTextField();
         jPanelSep3 = new javax.swing.JPanel();
         jPanelSepLine = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -539,78 +527,6 @@ public class FrameProxyParms extends javax.swing.JFrame {
 
         getContentPane().add(jPanelProxy);
 
-        jPanelSepNtlm.setMaximumSize(new java.awt.Dimension(32767, 10));
-        jPanelSepNtlm.setPreferredSize(new java.awt.Dimension(1000, 10));
-        getContentPane().add(jPanelSepNtlm);
-
-        jPanelNtlm1.setMaximumSize(new java.awt.Dimension(32767, 33));
-        jPanelNtlm1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jPanelLeftNtlm1.setMinimumSize(new java.awt.Dimension(1, 10));
-        jPanelLeftNtlm1.setPreferredSize(new java.awt.Dimension(1, 10));
-        jPanelNtlm1.add(jPanelLeftNtlm1);
-
-        jCheckBoxNtlmProxy.setText("jCheckBoxNtlmProxy");
-        jCheckBoxNtlmProxy.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jCheckBoxNtlmProxyItemStateChanged(evt);
-            }
-        });
-        jPanelNtlm1.add(jCheckBoxNtlmProxy);
-
-        jButtonHelpNtlm.setForeground(new java.awt.Color(0, 0, 255));
-        jButtonHelpNtlm.setText("(?)");
-        jButtonHelpNtlm.setBorder(null);
-        jButtonHelpNtlm.setBorderPainted(false);
-        jButtonHelpNtlm.setContentAreaFilled(false);
-        jButtonHelpNtlm.setFocusPainted(false);
-        jButtonHelpNtlm.setMargin(new java.awt.Insets(2, 5, 2, 5));
-        jButtonHelpNtlm.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButtonHelpNtlmMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButtonHelpNtlmMouseExited(evt);
-            }
-        });
-        jButtonHelpNtlm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonHelpNtlmActionPerformed(evt);
-            }
-        });
-        jPanelNtlm1.add(jButtonHelpNtlm);
-
-        getContentPane().add(jPanelNtlm1);
-
-        jPanelNtlm.setMaximumSize(new java.awt.Dimension(32767, 33));
-        jPanelNtlm.setMinimumSize(new java.awt.Dimension(211, 33));
-        jPanelNtlm.setPreferredSize(new java.awt.Dimension(398, 33));
-        jPanelNtlm.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jPanelLeftNtlm.setMinimumSize(new java.awt.Dimension(25, 10));
-        jPanelLeftNtlm.setPreferredSize(new java.awt.Dimension(25, 10));
-        jPanelNtlm.add(jPanelLeftNtlm);
-
-        jLabelWorkstation.setText("jLabelWorstation");
-        jPanelNtlm.add(jLabelWorkstation);
-
-        jTextFieldWorkstation.setText("jTextFieldWorkstation");
-        jTextFieldWorkstation.setMaximumSize(new java.awt.Dimension(130, 22));
-        jTextFieldWorkstation.setMinimumSize(new java.awt.Dimension(130, 22));
-        jTextFieldWorkstation.setPreferredSize(new java.awt.Dimension(135, 22));
-        jPanelNtlm.add(jTextFieldWorkstation);
-
-        jLabelDomain.setText("jLabelDomain");
-        jPanelNtlm.add(jLabelDomain);
-
-        jTextFieldDomain.setText("jTextFieldDomain");
-        jTextFieldDomain.setMaximumSize(new java.awt.Dimension(130, 22));
-        jTextFieldDomain.setMinimumSize(new java.awt.Dimension(130, 22));
-        jTextFieldDomain.setPreferredSize(new java.awt.Dimension(130, 22));
-        jPanelNtlm.add(jTextFieldDomain);
-
-        getContentPane().add(jPanelNtlm);
-
         jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 10));
         jPanelSep3.setMinimumSize(new java.awt.Dimension(10, 100));
         jPanelSep3.setPreferredSize(new java.awt.Dimension(1000, 10));
@@ -681,39 +597,6 @@ private void jRadioButtonUseProxyItemStateChanged(java.awt.event.ItemEvent evt) 
     }
 }//GEN-LAST:event_jRadioButtonUseProxyItemStateChanged
 
-private void jCheckBoxNtlmProxyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxNtlmProxyItemStateChanged
-    if (jCheckBoxNtlmProxy.isSelected())
-    {
-        this.jLabelWorkstation.setEnabled(true);
-        this.jLabelDomain.setEnabled(true);
-        this.jTextFieldWorkstation.setEnabled(true);
-        this.jTextFieldDomain.setEnabled(true);
-        
-        this.jTextFieldWorkstation.requestFocus();
-        
-    }
-    else
-    {
-        this.jLabelWorkstation.setEnabled(false);
-        this.jLabelDomain.setEnabled(false);
-        this.jTextFieldWorkstation.setEnabled(false);
-        this.jTextFieldDomain.setEnabled(false);
-    }
-}//GEN-LAST:event_jCheckBoxNtlmProxyItemStateChanged
-
-private void jButtonHelpNtlmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpNtlmActionPerformed
-        String content = HtmlTextUtil.getHtmlHelpContent("proxy_uses_ntlm_authentication");
-        new NewsFrame(this, content, messages.getMessage("help"));        
-}//GEN-LAST:event_jButtonHelpNtlmActionPerformed
-
-private void jButtonHelpNtlmMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonHelpNtlmMouseEntered
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-}//GEN-LAST:event_jButtonHelpNtlmMouseEntered
-
-private void jButtonHelpNtlmMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonHelpNtlmMouseExited
-        this.setCursor(Cursor.getDefaultCursor());
-}//GEN-LAST:event_jButtonHelpNtlmMouseExited
-
 /**
  * @param args the command line arguments
  */
@@ -742,13 +625,9 @@ public static void main(String args[]) {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonApply;
     private javax.swing.JButton jButtonClose;
-    private javax.swing.JButton jButtonHelpNtlm;
-    private javax.swing.JCheckBox jCheckBoxNtlmProxy;
-    private javax.swing.JLabel jLabelDomain;
     private javax.swing.JLabel jLabelLogoTitle;
     private javax.swing.JLabel jLabelProxyAddress;
     private javax.swing.JLabel jLabelProxyPort;
-    private javax.swing.JLabel jLabelWorkstation;
     private javax.swing.JPanel jPaneProxyOptions;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
@@ -763,11 +642,7 @@ public static void main(String args[]) {
     private javax.swing.JPanel jPanelBorderTop;
     private javax.swing.JPanel jPanelBrowserDef;
     private javax.swing.JPanel jPanelButtons;
-    private javax.swing.JPanel jPanelLeftNtlm;
-    private javax.swing.JPanel jPanelLeftNtlm1;
     private javax.swing.JPanel jPanelLetf2;
-    private javax.swing.JPanel jPanelNtlm;
-    private javax.swing.JPanel jPanelNtlm1;
     private javax.swing.JPanel jPanelProxy;
     private javax.swing.JPanel jPanelProxyAddressAndPort;
     private javax.swing.JPanel jPanelProxyContainer;
@@ -777,7 +652,6 @@ public static void main(String args[]) {
     private javax.swing.JPanel jPanelSep4;
     private javax.swing.JPanel jPanelSepLine;
     private javax.swing.JPanel jPanelSepLine1;
-    private javax.swing.JPanel jPanelSepNtlm;
     private javax.swing.JPanel jPanelUserDef;
     private javax.swing.JPanel jPanelUserDef1;
     private javax.swing.JRadioButton jRadioButtonBrowserParameters;
@@ -785,10 +659,8 @@ public static void main(String args[]) {
     private javax.swing.JRadioButton jRadioButtonUseProxy;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextField jTextFieldDomain;
     private javax.swing.JTextField jTextFieldProxyAddress;
     private javax.swing.JTextField jTextFieldProxyPort;
-    private javax.swing.JTextField jTextFieldWorkstation;
     // End of variables declaration//GEN-END:variables
 
 }

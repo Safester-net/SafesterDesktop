@@ -303,7 +303,7 @@ public class Register extends javax.swing.JFrame {
     }
 
     /**
-     * Return a HttpProtocolParameters instance, with an encryption pâssword
+     * Return a HttpProtocolParameters instance, with an encryption password
      */
     public static HttpProtocolParameters getHttpProtocolParameters() {
         HttpProtocolParameters httpProtocolParameters = new HttpProtocolParameters();
