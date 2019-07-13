@@ -466,6 +466,7 @@ public class Login extends javax.swing.JFrame {
                 return;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             this.setCursor(Cursor.getDefaultCursor());
             cmWaitDialog.stopWaiting();
             jButtonCreateAccount.setVisible(true);
