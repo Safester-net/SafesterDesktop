@@ -30,7 +30,7 @@ public class Version
     public static String VERSION    = "v5.1.1";
 
     /** Version date to increment */
-    public static String DATE       = "04-Jul-19";
+    public static String DATE       = "13-Jul-19";
 
     public static String NAME       = "Safester" ;
     public static String COPYRIGHT  = "Copyright &copy; 2019 KawanSoft";

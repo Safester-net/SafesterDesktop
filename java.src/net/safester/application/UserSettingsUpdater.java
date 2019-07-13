@@ -63,7 +63,6 @@ import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
 import net.safester.application.parms.SubscriptionLocalStore;
@@ -150,7 +149,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jCheckBoxSendAnonymousNotifications.setText(messages.getMessage("send_anonymous_notifications"));
         this.jButtonSpellCheckOptions.setText(messages.getMessage("spell_check_options"));
 
-        this.jComboSpellCheckDefaulltLanguage.addItem(messages.getMessage(messages.getMessage("subject")));
+        this.jComboSpellCheckDefaulltLanguage.addItem(messages.getMessage(messages.getMessage("english")));
         this.jComboSpellCheckDefaulltLanguage.addItem(messages.getMessage(messages.getMessage("french")));     
         
         jLabelNotify.setText(MessagesManager.get("new_messages_notification"));
