@@ -29,16 +29,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JOptionPane;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.text.translate.NumericEntityEscaper;
+import org.awakefw.file.api.util.HtmlConverter;
 
 import net.safester.application.util.crypto.PassphraseUtil;
-import org.awakefw.file.api.util.HtmlConverter;
 
 
 public class Test
@@ -59,12 +59,12 @@ public class Test
      */
     public static void main(String[] args) throws Exception
     {             
+	
+	System.out.println(Locale.FRENCH.toLanguageTag());
         
         System.out.println(HtmlConverter.fromHtml("Charles Andr&eacute;"));
         System.out.println(HtmlConverter.fromHtml("Charles Andr&#233;"));
-                
-        if (true) return;
-                
+               
 	System.out.println(System.currentTimeMillis());
 	
 	String result = PassphraseUtil.computeHashAndSaltedPassphrase("brunopaul88@outlook.com","brunopaul88".toCharArray() );

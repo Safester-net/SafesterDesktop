@@ -46,7 +46,6 @@ import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
-import net.safester.clientserver.SubscriptionLocal;
 
 /**
  * This dialog is displayed on connection when active subscription is expired

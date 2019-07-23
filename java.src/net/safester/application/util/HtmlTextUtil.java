@@ -29,11 +29,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 
-
 import org.apache.commons.io.IOUtils;
 
 import com.safelogic.utilx.io.stream.LineInputStream;
 import com.swing.util.SwingUtil;
+
 import net.safester.application.addrbooknew.AddressBookImportStart;
 
 /**
@@ -104,7 +104,8 @@ public class HtmlTextUtil {
 
         BufferedReader br = new BufferedReader(new StringReader(in));
 
-        String line = null;
+        @SuppressWarnings("unused")
+	String line = null;
         int lineNum = 0;
 
         while ((line = br.readLine()) != null)
@@ -177,13 +178,29 @@ public class HtmlTextUtil {
      * The default package name is "net.safester.application.messages.files"
      * 
      * @param helpContentKeyWord    The key word for help file retrieve
+     * @langaue the language tag    
+     * @return  the HTML content of a  HTML resource file in the message file package
+     * @throws IOException
+     */
+    public static String getHtmlHelpContent(String helpContentKeyWord, String language) 
+    {
+        String resource = "net.safester.application.messages.files";
+        return getHtmlHelpContent(resource, language, helpContentKeyWord);
+    }
+    
+    /**
+     * Return  the HTML content of a  HTML resource file in the message file package
+     * The default package name is "net.safester.application.messages.files"
+     * 
+     * @param helpContentKeyWord    The key word for help file retrieve
      * @return  the HTML content of a  HTML resource file in the message file package
      * @throws IOException
      */
     public static String getHtmlHelpContent(String helpContentKeyWord) 
     {
         String resource = "net.safester.application.messages.files";
-        return getHtmlHelpContent(resource, helpContentKeyWord);
+        String language = "en";
+        return getHtmlHelpContent(resource, language, helpContentKeyWord);
     }
     
     
@@ -191,25 +208,30 @@ public class HtmlTextUtil {
      * Return  the HTML content of a  HTML resource file in the message file package
      * 
      * @param packageName           the package name where to find the files
+     * @param language		    the language code "en", "fr", "it", Etc
      * @param helpContentKeyWord    The key word for help file retrieve.
      *                              The language and html extension will be added
      *                              Ex: "myfile" ==> "myfile_en.html" 
-     * 
      * @return  the HTML content of a  HTML resource file in the message file package
      * @throws IOException
      */
-    public static String getHtmlHelpContent(String packageName, String helpContentKeyWord) 
+    private static String getHtmlHelpContent(String packageName, String language, String helpContentKeyWord) 
     {
         if (packageName == null)
         {
             throw new IllegalArgumentException("packageName can not be null!");
         }
+ 
+        if (language == null)
+        {
+            throw new IllegalArgumentException("language can not be null!");
+        }    
         
         if (helpContentKeyWord == null)
         {
             throw new IllegalArgumentException("helpContentKeyWord can not be null!");
         }        
-        
+              
         String htmlContent;
         try {
 
@@ -222,7 +244,6 @@ public class HtmlTextUtil {
             // KEEP THIS CODE AS MODEL
             //java.net.URL myURL
             //  = ResourceBundleTest.class.getResource("/com/safelogic/pgp/test/MyResource_fr.properties");
-            String language = "en";
 
             String helpFile = helpContentKeyWord + "_" + language + ".html";
             String urlResource = packageName + "/" + helpFile;
