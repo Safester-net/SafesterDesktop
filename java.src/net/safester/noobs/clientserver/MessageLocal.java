@@ -25,7 +25,6 @@ package net.safester.noobs.clientserver;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -361,26 +360,26 @@ public class MessageLocal implements Local, Serializable
     }
     
     
-	/**
-     * @return the pendingMessageUserLocal
-     */
-    public List<PendingMessageUserLocal> getPendingMessageUserLocal()
-    {
-        //Never return null
-        if(pendingMessageUserLocal == null){
-            pendingMessageUserLocal = new ArrayList<PendingMessageUserLocal>();
-        }
-        return pendingMessageUserLocal;
-    }
-
-    /**
-     * @param pendingMessageUserLocal the pendingMessageUserLocal to set
-     */
-    public void setPendingMessageUserLocal(
-            List<PendingMessageUserLocal> pendingMessageUserLocal)
-    {
-        this.pendingMessageUserLocal = pendingMessageUserLocal;
-    }
+//    /**
+//     * @return the pendingMessageUserLocal
+//     */
+//    public List<PendingMessageUserLocal> getPendingMessageUserLocal()
+//    {
+//        //Never return null
+//        if(pendingMessageUserLocal == null){
+//            pendingMessageUserLocal = new ArrayList<PendingMessageUserLocal>();
+//        }
+//        return pendingMessageUserLocal;
+//    }
+//
+//    /**
+//     * @param pendingMessageUserLocal the pendingMessageUserLocal to set
+//     */
+//    public void setPendingMessageUserLocal(
+//            List<PendingMessageUserLocal> pendingMessageUserLocal)
+//    {
+//        this.pendingMessageUserLocal = pendingMessageUserLocal;
+//    }
 
     public boolean isIntegrityCheck() {
         return integrityCheck;

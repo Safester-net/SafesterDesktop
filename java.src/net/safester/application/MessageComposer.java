@@ -93,7 +93,6 @@ import net.safester.application.compose.MessageSender;
 import net.safester.application.compose.RecipientsEmailBuilder;
 import net.safester.application.engines.ThreadLocker;
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
 import net.safester.application.parms.SubscriptionLocalStore;
@@ -1114,18 +1113,18 @@ public class MessageComposer extends javax.swing.JFrame {
             }
         }
 
-        try {
-            List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
-
-            for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
-                if (typeRecipient == pendingMessageUserLocal.getType_recipient()) {
-                    recipientsAdresses += pendingMessageUserLocal.getEmail() + "; ";
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPaneNewCustom.showException(null, e);
-        }
+//        try {
+//            List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
+//
+//            for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
+//                if (typeRecipient == pendingMessageUserLocal.getType_recipient()) {
+//                    recipientsAdresses += pendingMessageUserLocal.getEmail() + "; ";
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JOptionPaneNewCustom.showException(null, e);
+//        }
 
         return recipientsAdresses;
     }

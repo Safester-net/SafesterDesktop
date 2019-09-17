@@ -23,25 +23,17 @@
  */
 package net.safester.clientserver.holder;
 
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.awakefw.commons.api.client.HttpProxy;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.kawansoft.httpclient.KawanHttpClient;
 
-import net.safester.clientserver.ServerParms;
+import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.http.ApiKeys;
 import net.safester.clientserver.UserNumberGetterClient;
-import net.safester.clientserver.serverapi.GsonWsUtil;
-import net.safester.clientserver.serverapi.PubKeyDTO;
 
 public class PublicKeyGetter {
 
@@ -69,80 +61,78 @@ public class PublicKeyGetter {
      * @throws SQLException
      */
     public String getPublicKey(int userNumber) throws SQLException  {
-
 	String userEmailAddr = new UserNumberGetterClient(connection).getLoginFromUserNumber(userNumber);
 	return getPublicKey(userEmailAddr);
     }
 
     /**
-     * Returns the PGP public key asc block for the email address.
-     * @param userEmailAddr
+     * Returns the PGP public key asc block for the passed number.
      * @return
      * @throws SQLException
      */
-    public String getPublicKey(String userEmailAddr) throws SQLException {
-	String publicKeyBlock = null;
-
-	String url = ServerParms.getHOST();
-	if (!url.endsWith("/")) {
-	    url += "/";
-	}
-
+    public String getPublicKey(String userEmailAddr) throws SQLException  {
 	AwakeConnection awakeConnection = (AwakeConnection) connection;
 	AwakeFileSession awakeFileSession =  awakeConnection.getAwakeFileSession();
-	KawanHttpClient kawanHttpClient = buildKawanHttpClient(awakeConnection);
-
+	KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+	
+	ApiKeys apiKeys = new ApiKeys(kawanHttpClient, awakeFileSession.getUsername(), 
+		    awakeFileSession.getAuthenticationToken());
+	String publicKeyBlock = null;
+	
 	try {
-            String username = awakeFileSession.getUsername();
-	    Map<String, String> parametersMap = new HashMap<>();
-
-	    parametersMap.put("username", username);
-	    parametersMap.put("token", awakeConnection.getAwakeFileSession().getAuthenticationToken());
-	    parametersMap.put("userEmailAddr", userEmailAddr);
-	    
-	    debug("username     :" + username);
-	    debug("token        :" + awakeConnection.getAwakeFileSession().getAuthenticationToken());
-	    debug("userEmailAddr:" + userEmailAddr);
-	    
-	    String urlGetPublicKey = url + "api/getPublicKey";
-	    debug("url get public key:" + urlGetPublicKey);
-
-	    String publicKeyBlockJson = kawanHttpClient.callWithPost(new URL(urlGetPublicKey), parametersMap);
-	    PubKeyDTO pubKeyDTO = GsonWsUtil.fromJson(publicKeyBlockJson, PubKeyDTO.class);
-	    publicKeyBlock = pubKeyDTO.getPublicKey();
-	    
-	    debug("publicKeyBlock: " + publicKeyBlock);
-	    return publicKeyBlock;
+	    publicKeyBlock = apiKeys.getPublicKey(userEmailAddr);
 	} catch (Exception e) {
 	    throw new SQLException(e);
 	}
+	
+	return publicKeyBlock;
     }
     
-    public static KawanHttpClient buildKawanHttpClient(AwakeConnection awakeConnection) {
-	KawanHttpClient kawanHttpClient;
-	AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-	HttpProxy httpProxy = awakeFileSession.getHttpProxy();
-	if (httpProxy == null) {
-	    kawanHttpClient = new KawanHttpClient();
-	} else {
-	    String proxyHostname = httpProxy.getAddress();
-	    int proxyPort = httpProxy.getPort();
-	    String proxyUserName = httpProxy.getUsername();
-	    String proxyPassword = httpProxy.getPassword();
-
-	    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHostname, proxyPort));
-
-	    if (proxyUserName == null) {
-		kawanHttpClient = new KawanHttpClient(proxy, null);
-	    }
-	    else {
-		kawanHttpClient = new KawanHttpClient(proxy, new PasswordAuthentication(proxyUserName, proxyPassword.toCharArray() ));
-	    }
-	}
-	return kawanHttpClient;
-    }
+//    /**
+//     * Returns the PGP public key asc block for the email address.
+//     * @param userEmailAddr
+//     * @return
+//     * @throws SQLException
+//     */
+//    public String getPublicKey(String userEmailAddr) throws SQLException {
+//	String publicKeyBlock = null;
+//
+//	String url = ServerParms.getHOST();
+//	if (!url.endsWith("/")) {
+//	    url += "/";
+//	}
+//
+//	AwakeConnection awakeConnection = (AwakeConnection) connection;
+//	AwakeFileSession awakeFileSession =  awakeConnection.getAwakeFileSession();
+//	KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.build(awakeConnection);
+//
+//	try {
+//            String username = awakeFileSession.getUsername();
+//	    Map<String, String> parametersMap = new HashMap<>();
+//
+//	    parametersMap.put("username", username);
+//	    parametersMap.put("token", awakeConnection.getAwakeFileSession().getAuthenticationToken());
+//	    parametersMap.put("userEmailAddr", userEmailAddr);
+//	    
+//	    debug("username     :" + username);
+//	    debug("token        :" + awakeConnection.getAwakeFileSession().getAuthenticationToken());
+//	    debug("userEmailAddr:" + userEmailAddr);
+//	    
+//	    String urlGetPublicKey = url + "api/getPublicKey";
+//	    debug("url get public key:" + urlGetPublicKey);
+//
+//	    String publicKeyBlockJson = kawanHttpClient.callWithPost(new URL(urlGetPublicKey), parametersMap);
+//	    PubKeyDTO pubKeyDTO = GsonWsUtil.fromJson(publicKeyBlockJson, PubKeyDTO.class);
+//	    publicKeyBlock = pubKeyDTO.getPublicKey();
+//	    
+//	    debug("publicKeyBlock: " + publicKeyBlock);
+//	    return publicKeyBlock;
+//	} catch (Exception e) {
+//	    throw new SQLException(e);
+//	}
+//    }
     
-    private static void debug(String s) {
+    public static void debug(String s) {
 	if (DEBUG) {
 	    System.out.println(new java.util.Date() + " " + s);
 	}

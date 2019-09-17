@@ -48,6 +48,10 @@ public class AwakeSqlExceptionDecoder {
      *
      * @param e     the Exception thrown by AwakeConnection
      *              when creating an instance
+     * @throws java.net.MalformedURLException
+     * @throws java.net.UnknownHostException
+     * @throws java.net.ConnectException
+     * @throws org.awakefw.commons.api.client.InvalidLoginException
      */
     public static void decodeAndRethrow(Exception e)
             throws MalformedURLException,

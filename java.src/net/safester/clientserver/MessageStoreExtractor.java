@@ -23,29 +23,18 @@
  */
 package net.safester.clientserver;
 
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
-import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import net.safester.application.MessageDecryptor;
 import net.safester.application.parms.Parms;
 import net.safester.clientserver.specs.StoreExtractor;
 import net.safester.noobs.clientserver.MessageLocal;
-import net.safester.noobs.clientserver.PendingMessageUserLocal;
-import net.safester.noobs.clientserver.RecipientLocal;
 
 /**
  * @author Nicolas de Pomereu
@@ -113,6 +102,7 @@ public class MessageStoreExtractor implements StoreExtractor<MessageLocalStore>
      * </ul>
      * 
      * @return the total number of messages for this user Id and folder Id
+     * @throws java.sql.SQLException
      */
     public int getTotalMessages() throws SQLException
     {        
@@ -235,165 +225,10 @@ public class MessageStoreExtractor implements StoreExtractor<MessageLocalStore>
 
             messageLocalStore.put(messageId, messageLocal);
         }
-        
-        if (! messageLocalStore.isEmpty())
-        {
-            // The map of the List<RecipientLocal> of the Messages. Key is message_id
-            Map<Integer, List<RecipientLocal>> recipientLocalMap = getRecipients(userNumber, messageIdSet, connection);      
-            
-            //folderId == Parms.DRAFT_ID
-            Map<Integer, List<PendingMessageUserLocal>> pendingMessageUserLocalMap = new HashMap<>();
-            
-            if (folderId != Parms.INBOX_ID) {
-                pendingMessageUserLocalMap = getPendingMessageUser(messageIdSet);
-            }
-
-            debug("");
-            //debug("senderNameMap: " + senderNameMap);
-            debug("");
-            debug("recipientLocalMap: " + recipientLocalMap);
-            //debug("message id 2: " + messageLocalStore.keySet());
-            
-            List<Integer> theList =  new ArrayList<Integer>(messageLocalStore.keySet());
-            
-            for (int i = 0; i < theList.size(); i++) {
-                
-                int messageId = theList.get(i);
-                
-                MessageLocal messageLocal = messageLocalStore.get(messageId);
-                int senderUserNumber = messageLocal.getSenderUserNumber();
-
-                debug("");
-                debug("messageId       : " + messageId);
-                debug("senderUserNumber: " + senderUserNumber);
-                
-                List<RecipientLocal> recipientLocalList = recipientLocalMap.get(messageId);
-                if (recipientLocalList == null)
-                {
-                    recipientLocalList = new Vector<RecipientLocal>();
-                }
-                
-                messageLocal.setRecipientLocal(recipientLocalList);
-                
-                List<PendingMessageUserLocal> pendingMessageUserLocalList = pendingMessageUserLocalMap.get(messageId);
-                if (pendingMessageUserLocalList == null)
-                {
-                    pendingMessageUserLocalList = new Vector<PendingMessageUserLocal>();
-                }
-                                
-                messageLocal.setPendingMessageUserLocal(pendingMessageUserLocalList);
-                
-                // Put back into messageLocalList
-                messageLocalStore.put(messageId, messageLocal);
-            }
-        }
-        
+       
         return messageLocalStore;
     }
 
-
-/*
-    private void decryptSubjects(MessageSubjectLocalStore messageStore) throws Exception {
-	Set<Integer> messageIdSetTemp = messageStore.keySet();
-
-	MessageDecryptor messageDecryptor = new MessageDecryptor(userNumber,
-		passphrase, connection);
-
-	// OK get and decrypt subject & body and put them back in local store
-	for (int messageId : messageIdSetTemp) {
-	    MessageSubjectLocal messageLocal = messageStore
-		    .get(messageId);
-	    String subject = messageDecryptor
-		    .decrypt(messageLocal.getSubject());
-	    messageLocal.setSubject(subject);
-	    messageLocal.setIntegrityCheck(
-		    messageDecryptor.isIntegrityCheckValid());
-        }
-    }
-*/
-
-    /**
-     * build the list of Recipient Local per message Id
-     * @param userNumber
-     * @param messageIdSet      the message Id to scan
-     * @param connection        the JDBC Connection
-     * 
-     * @return the list of Recipient Local per message Id
-     * 
-     * @throws SQLException
-     */
-    public static Map<Integer, List<RecipientLocal>> getRecipients(int userNumber, Set<Integer> messageIdSet, Connection connection)
-            throws SQLException
-    {
-        Gson gsonOut = new Gson();
-        Type type = new TypeToken<Set<Integer>>() {
-        }.getType();
-        String jsonString = gsonOut.toJson(messageIdSet, type);
-
-        //Put the list on the server, because of intricated SQL statements        
-        AwakeConnection awakeConnection = (AwakeConnection) connection;
-        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-        
-        try
-        {
-            jsonString = awakeFileSession.call( "net.safester.server.MessageSelectSearch.getRecipients",
-                                    userNumber,
-                                    jsonString,
-                                    connection );
-            
-            gsonOut = new Gson();
-            type = new TypeToken<Map<Integer, List<RecipientLocal>>>() {
-            }.getType();
-            Map<Integer, List<RecipientLocal>> recipientLocalMap = gsonOut.fromJson(jsonString, type);
-            return recipientLocalMap;
-            
-        }
-        catch (Exception e)
-        {
-            throw new SQLException(e);
-        }
-    }
-    
-    /**
-     * build the list of Recipient Local per message Id
-     * @param messageIdSet      the message Id to scan
-     * @return the list of Recipient Local per message Id
-     * @throws SQLException
-     */
-    private Map<Integer, List<PendingMessageUserLocal>> getPendingMessageUser(Set<Integer> messageIdSet)
-            throws SQLException
-    {
-           
-        Gson gsonOut = new Gson();
-        Type type = new TypeToken<Set<Integer>>() {
-        }.getType();
-        String jsonString = gsonOut.toJson(messageIdSet, type);
-
-        //Put the list on the server, because of intricated SQL statements        
-        AwakeConnection awakeConnection = (AwakeConnection) connection;
-        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-        
-        try
-        {
-            jsonString = awakeFileSession.call( "net.safester.server.MessageSelectSearch.getPendingMessageUser",
-                                    userNumber,
-                                    jsonString,
-                                    connection );
-            
-            gsonOut = new Gson();
-            type = new TypeToken<Map<Integer, List<PendingMessageUserLocal>>>() {
-            }.getType();
-            Map<Integer, List<PendingMessageUserLocal>> pendingMessageUserLocalList = gsonOut.fromJson(jsonString, type);
-            return pendingMessageUserLocalList;
-            
-        }
-        catch (Exception e)
-        {
-            throw new SQLException(e);
-        }
-    }
-
-    
     /**
      * debug tool
      */

@@ -23,19 +23,13 @@
  */
 package net.safester.clientserver.holder;
 
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.awakefw.commons.api.client.HttpProxy;
-import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 
 import net.safester.clientserver.PgpKeyPairLocal;
 
@@ -115,30 +109,6 @@ public class PgpKeyPairHolder {
 	PgpKeyPairLocal pgpKeyPairLocal = new PgpKeyPairLocal(privateKeyBlock, publicKeyBlock);
 
 	return pgpKeyPairLocal;
-    }
-
-    public static KawanHttpClient buildKawanHttpClient(AwakeConnection awakeConnection) {
-	KawanHttpClient kawanHttpClient;
-	AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-	HttpProxy httpProxy = awakeFileSession.getHttpProxy();
-	if (httpProxy == null) {
-	    kawanHttpClient = new KawanHttpClient();
-	} else {
-	    String proxyHostname = httpProxy.getAddress();
-	    int proxyPort = httpProxy.getPort();
-	    String proxyUserName = httpProxy.getUsername();
-	    String proxyPassword = httpProxy.getPassword();
-
-	    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHostname, proxyPort));
-
-	    if (proxyUserName == null) {
-		kawanHttpClient = new KawanHttpClient(proxy, null);
-	    }
-	    else {
-		kawanHttpClient = new KawanHttpClient(proxy, new PasswordAuthentication(proxyUserName, proxyPassword.toCharArray() ));
-	    }
-	}
-	return kawanHttpClient;
     }
 
     /**

@@ -249,7 +249,9 @@ public class ProxySessionCheckerNew {
 
 	// Ok, install if necessary new version
 	debug("Before new AwakeFileSession...");
-	AwakeFileSession awakeFileSession = new AwakeFileSession(ServerParms.getAwakeSqlServerUrl(), null, null,
+	AwakeFileSession awakeFileSession = new AwakeFileSession(ServerParms.getAwakeSqlServerUrl(), 
+		null, 
+		(char[])null, // Constructor with password
 		httpProxy, httpProtocolParameters);
 	debug("After new AwakeFileSession...");
 	RemoteSoftwareInfo remoteSoftwareInfo = new RemoteSoftwareInfo(awakeFileSession);

@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -61,6 +62,9 @@ import com.safelogic.pgp.api.PgeepPrivateKey;
 import com.safelogic.pgp.api.util.crypto.Sha1;
 import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
+import net.safester.application.http.ApiCoupon;
+import net.safester.application.http.ApiMessages;
+import net.safester.application.http.KawanHttpClientBuilder;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -133,6 +137,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jLabelStorage.setText(messages.getMessage("storage_info"));            
         this.jLabelFontSizeBody.setText(messages.getMessage("font_size_for_reading_message_body"));
         
+        jLabelCoupon.setText(messages.getMessage("coupon"));
+        jLabelCouponHelp .setText(messages.getMessage("optional") + " ");
+
         /*
         if (UI_Util.isNimbus())
         {
@@ -337,6 +344,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
             setStorageInfo();
 
             displayCryptographySettings();
+            jTextFieldCoupon.setText(getCoupon());
 
             jCheckBoxSendNotifyEmail.setSelected(userSettingsLocal.isNotificationOn());
             jCheckBoxSendNotifyEmailStateChanged(null);
@@ -415,6 +423,29 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jTextFieldCryptoSettings.setText(cryptoSettings);
     }
 
+    
+    private String getCoupon() throws Exception {
+        AwakeConnection awakeConnection = (AwakeConnection)connection;
+        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
+        
+        KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+        ApiCoupon apiCoupon = new ApiCoupon(kawanHttpClient, awakeFileSession.getUsername(),
+                awakeFileSession.getAuthenticationToken());
+       String coupon = apiCoupon.getCoupon();
+       return coupon; 
+    }
+    
+    private boolean storeCoupon(String coupon) throws Exception {
+        AwakeConnection awakeConnection = (AwakeConnection) connection;
+        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
+
+        KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+        ApiCoupon apiCoupon = new ApiCoupon(kawanHttpClient, awakeFileSession.getUsername(),
+                awakeFileSession.getAuthenticationToken());
+        
+        boolean ok = apiCoupon.storeCoupon(coupon);
+        return ok;
+    }
    
    private String getSymmetricAlgorithm(PgpKeyPairLocal pgpKeyPairLocal) throws IOException, PGPException {
         // Extract the Symmetric Algorithm
@@ -475,7 +506,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, msg, msg, JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             TheUserSettingsHolder theUserSettingsHolder = new TheUserSettingsHolder(connection, userNumber);
             
             UserSettingsLocal userSettingsLocal = theUserSettingsHolder.get();
@@ -502,6 +533,14 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
             theUserSettingsHolder = new TheUserSettingsHolder(connection, userNumber);
             theUserSettingsHolder.reset();
 
+            boolean isStored = storeCoupon(jTextFieldCoupon.getText());
+            if (! isStored) {
+                
+                String msg = messages.getMessage("invalid_coupon_please_retry");
+                JOptionPane.showMessageDialog(this, msg, msg, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             this.dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -636,6 +675,10 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelNameNew = new javax.swing.JPanel();
         jLabelName = new javax.swing.JLabel();
         jTextFieldUserName = new javax.swing.JTextField();
+        jPanelCoupon = new javax.swing.JPanel();
+        jLabelCoupon = new javax.swing.JLabel();
+        jTextFieldCoupon = new javax.swing.JTextField();
+        jLabelCouponHelp = new javax.swing.JLabel();
         jPanelSep14 = new javax.swing.JPanel();
         jPaneSepNotify = new javax.swing.JPanel();
         jSeparator5 = new javax.swing.JSeparator();
@@ -814,6 +857,28 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelNameNew.add(jTextFieldUserName);
 
         jPanelNameAndEmail.add(jPanelNameNew);
+
+        jPanelCoupon.setMaximumSize(new java.awt.Dimension(32767, 31));
+        jPanelCoupon.setMinimumSize(new java.awt.Dimension(10, 31));
+        jPanelCoupon.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelCoupon.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabelCoupon.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelCoupon.setText("jLabelCoupon");
+        jLabelCoupon.setPreferredSize(new java.awt.Dimension(150, 16));
+        jPanelCoupon.add(jLabelCoupon);
+
+        jTextFieldCoupon.setMinimumSize(new java.awt.Dimension(20, 22));
+        jTextFieldCoupon.setPreferredSize(new java.awt.Dimension(170, 22));
+        jPanelCoupon.add(jTextFieldCoupon);
+
+        jLabelCouponHelp.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
+        jLabelCouponHelp.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelCouponHelp.setText("jLabelOptionnal");
+        jLabelCouponHelp.setPreferredSize(new java.awt.Dimension(200, 16));
+        jPanelCoupon.add(jLabelCouponHelp);
+
+        jPanelNameAndEmail.add(jPanelCoupon);
 
         jPanelCenter.add(jPanelNameAndEmail);
 
@@ -1237,6 +1302,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboSpellCheckDefaulltLanguage;
     private javax.swing.JLabel jLabelAccount;
     private javax.swing.JLabel jLabelAccountInfo;
+    private javax.swing.JLabel jLabelCoupon;
+    private javax.swing.JLabel jLabelCouponHelp;
     private javax.swing.JLabel jLabelCryptoSettings;
     private javax.swing.JLabel jLabelEmailPref;
     private javax.swing.JLabel jLabelFontSizeBody;
@@ -1261,6 +1328,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelButtonsLeft;
     private javax.swing.JPanel jPanelCenter;
     private javax.swing.JPanel jPanelCheckBox;
+    private javax.swing.JPanel jPanelCoupon;
     private javax.swing.JPanel jPanelCryptoSettings;
     private javax.swing.JPanel jPanelCryptoSettings1;
     private javax.swing.JPanel jPanelEast;
@@ -1300,10 +1368,15 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTextField jTextFieldAccount;
+    private javax.swing.JTextField jTextFieldCoupon;
     private javax.swing.JTextField jTextFieldCryptoSettings;
     private javax.swing.JTextField jTextFieldEmail;
     private javax.swing.JTextField jTextFieldStorage;
     private javax.swing.JTextField jTextFieldUserName;
     // End of variables declaration//GEN-END:variables
+
+
+
+
 
 }

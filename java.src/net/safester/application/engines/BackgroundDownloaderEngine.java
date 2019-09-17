@@ -23,23 +23,24 @@
  */
 package net.safester.application.engines;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.safester.application.MessageDecryptor;
+import net.safester.application.http.ApiMessages;
+import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.http.dto.AttachmentInfoDTO;
+import net.safester.application.http.dto.MessageDTO;
 import net.safester.clientserver.MessageLocalStore;
 import net.safester.clientserver.holder.TheUserSettingsHolder;
 import net.safester.clientserver.holder.UserCompletionHolder;
 import net.safester.noobs.clientserver.AttachmentLocal;
-import net.safester.noobs.clientserver.GsonUtil;
 import net.safester.noobs.clientserver.MessageLocal;
-import net.safester.noobs.clientserver.MessageLocalStoreTransfer;
 import org.awakefw.file.api.client.AwakeFileSession;
-
+import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
@@ -122,13 +123,6 @@ public class BackgroundDownloaderEngine extends Thread
             isAlive = true;
                      
             Set<Integer> messageIdSet = messageLocalStore.keySet();
-
-            updateAttachment(messageIdSet);
-
-            if (isRequestInterrupt)
-            {
-                return;
-            }
             
             // must be done after
             updateBody(messageIdSet);
@@ -189,28 +183,19 @@ public class BackgroundDownloaderEngine extends Thread
         {
             return;
         }
-
-        List<Integer> messageIdList = new ArrayList<Integer>(messageIdSet); 
         
         AwakeConnection awakeConnection = (AwakeConnection)connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
         
-        String jsonString = GsonUtil.MessageIdSetToJson(messageIdSet);
+        KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+        ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                awakeFileSession.getAuthenticationToken());
         
-	jsonString = awakeFileSession.call(
-		"net.safester.server.MessageSelect.selectBodies", jsonString, connection);
-        
-        MessageLocalStore messageLocalStoreBodies = MessageLocalStoreTransfer.fromJson(jsonString);
-        
-        for (Integer messageId : messageIdList) {
-            
-            MessageLocal messageLocal = messageLocalStoreBodies.get(messageId);
-            
-            if (messageLocal == null) {
-                continue;
-            }
-            
-            String body = messageLocal.getBody();
+        for (Integer messageId : messageIdSet) {
+                        
+            MessageDTO messageDTO = apiMessages.getMessage(messageId);
+                        
+            String body = messageDTO.getBody();
             MessageDecryptor messageDecryptor = new MessageDecryptor(userNumber, passphrase, connection);
             boolean integrityCheck = true;
             try
@@ -223,50 +208,43 @@ public class BackgroundDownloaderEngine extends Thread
                 System.err.println(body + ": bodys id. FAIL TO DECRYPT BODY!");
             }
             
-            messageLocal = messageLocalStore.get(messageId);
+            List<AttachmentInfoDTO> attachmentInfoDTOList = messageDTO.getAttachments();
+            List<AttachmentLocal> attachmentLocalList = getAttachmentLocalList(attachmentInfoDTOList);
+            
+            MessageLocal messageLocal = messageLocalStore.get(messageId);
             messageLocal.setBody(body);
+            messageLocal.setAttachmentLocal(attachmentLocalList);
             messageLocal.setIntegrityCheck(integrityCheck);
             messageLocal.setUpdateComplete(true);
             messageLocalStore.put(messageId, messageLocal);
             
         }
     }
-
-    /**
-     * Update the Attachments
-     * @param messageIdSet  the set of Messages Ids
-     * 
-     * @throws SQLException if a SQL Exception occurs
-     */
-    private void updateAttachment(Set<Integer> messageIdSet) throws Exception
-    {
-        if (messageIdSet == null || messageIdSet.isEmpty())
-        {
-            return;
+    
+    private List<AttachmentLocal> getAttachmentLocalList(List<AttachmentInfoDTO> attachmentInfoDTOList) {
+        
+        List<AttachmentLocal> attachmentLocalList = new ArrayList<>();
+        
+        if (attachmentInfoDTOList == null || attachmentInfoDTOList.isEmpty()) {
+            return attachmentLocalList;
         }
         
-        List<Integer> messageIdList = new ArrayList<Integer>(messageIdSet);            
-        
-                AwakeConnection awakeConnection = (AwakeConnection)connection;
-        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-        
-        String jsonString = GsonUtil.MessageIdSetToJson(messageIdSet);
-        
-	jsonString = awakeFileSession.call(
-		"net.safester.server.AttachmentSelect.selectAttachments", jsonString, connection);
-        
-        Map<Integer, List<AttachmentLocal>> attachmentLocalMap = GsonUtil.attachmentLocalFromGson(jsonString);
-        
-        // Update back the list
-        for (int i = 0; i < messageIdList.size(); i++) {
-            int messageId = messageIdList.get(i);
-            List<AttachmentLocal> attachmentLocalList = attachmentLocalMap.get(messageId);
+        for (AttachmentInfoDTO attachmentInfoDTO : attachmentInfoDTOList) {
+            AttachmentLocal attachmentLocal = new AttachmentLocal();
+            attachmentLocal.setAttachPosition(attachmentInfoDTO.getAttachPosition());
 
-            MessageLocal messageLocal = messageLocalStore.get(messageId);
-            messageLocal.setAttachmentLocal(attachmentLocalList);     
-            messageLocalStore.put(messageId, messageLocal);
+            attachmentLocal.setFileSize(attachmentInfoDTO.getSize());
+            
+            // Remote file name not set: not used anymore in futur usage
+            //attachmentLocal.setFileName(attachmentInfoDTO.getFilename());
+            attachmentLocal.setFileName(HtmlConverter.fromHtml(attachmentInfoDTO.getRemoteFilename()));
+            
+            attachmentLocalList.add(attachmentLocal);
         }
+        
+        return attachmentLocalList;
     }
+        
 
     /**
      * @return the exception
@@ -275,5 +253,7 @@ public class BackgroundDownloaderEngine extends Thread
     {
         return exception;
     }
+
+
 
 }

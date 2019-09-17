@@ -21,47 +21,48 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
-package net.safester.clientserver.serverapi;
+package net.safester.application.http.dto;
 
 /**
- * DTO for public key
+ * DTO for private key
+ * 
  * @author abecquereau
  *
  */
-public final class PubKeyDTO {
-	
-	private final String status  = "OK";
-	private String publicKey;
-	
-	public PubKeyDTO(final String keyBloc) {
-		this.publicKey = keyBloc;
-	}
+public final class PrivKeyDTO {
 
-	/**
-	 * @return the publicKey
-	 */
-	public String getPublicKey() {
-		return publicKey;
-	}
+    private final String status = "OK";
+    private String privateKey;
 
-	/**
-	 * @param publicKey the publicKey to set
-	 */
-	public void setPublicKey(String publicKey) {
-		this.publicKey = publicKey;
-	}
+    public PrivKeyDTO(final String keyBloc) {
+	this.privateKey = keyBloc;
+    }
 
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
+    /**
+     * @return the privateKey
+     */
+    public String getPrivateKey() {
+	return privateKey;
+    }
 
-	@Override
-	public String toString() {
-	    return "PubKeyDTO [status=" + status + ", publicKey=" + publicKey + "]";
-	}
+    /**
+     * @param privateKey
+     *            the privateKey to set
+     */
+    public void setPrivateKey(String privateKey) {
+	this.privateKey = privateKey;
+    }
 
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+	return status;
+    }
+
+    @Override
+    public String toString() {
+	return "PrivKeyDTO [status=" + status + ", privateKey=" + privateKey + "]";
+    }
 
 }

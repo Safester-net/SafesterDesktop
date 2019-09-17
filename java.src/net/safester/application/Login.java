@@ -490,7 +490,8 @@ public class Login extends javax.swing.JFrame {
         ConnectionParms connectionParms = new ConnectionParms(
                 this.jTextFieldLogin.getText(),
                 passphrase,
-                httpProxy, null);
+                httpProxy, 
+                null);
 
         debug(new Date() + " Login... Getting Connection begin...");
         boolean askForValidationCode = false;
@@ -641,7 +642,9 @@ public class Login extends javax.swing.JFrame {
         UserPrefManager.setPreference(UserPrefManager.ACCOUNTS_LIST, accountLists);
         
         // Notify the user if expired & allow him to buy
-        SubscriptionLocal subscriptionLocal =  null;
+        SubscriptionLocal subscriptionLocal =  connectionParms.getSubscriptionLocal();
+        
+        /*
         try {
 	    subscriptionLocal  = SubscriptionLocalGetterClient.get(jTextFieldLogin.getText(), connection);
 	} catch (SQLException e) {
@@ -651,6 +654,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPaneNewCustom.showException(this, e, messages.getMessage("unable_to_connect"));
             return;
 	}
+        */
         
         int userNumber = subscriptionLocal.getUserNumber();
         allowUserToBuyIfExpired(subscriptionLocal);

@@ -45,6 +45,7 @@ public class PassphraseUtil
     /**
      * Get password for connection using hash
      * @param login         the login
+     * @param password
      * @param passphrase    the passphrase
      *
      * @return  the password to use for connection

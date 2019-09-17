@@ -429,13 +429,13 @@ public class MessagesTableCreator {
             }
         }
                             
-        List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
-        
-        for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
-            if (pendingMessageUserLocal.getType_recipient() == Parms.RECIPIENT_TO) {
-                recipients += pendingMessageUserLocal.getEmail() + "; ";
-            }
-        }
+//        List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
+//        
+//        for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
+//            if (pendingMessageUserLocal.getType_recipient() == Parms.RECIPIENT_TO) {
+//                recipients += pendingMessageUserLocal.getEmail() + "; ";
+//            }
+//        }
 
         if (recipients.isEmpty())
         {

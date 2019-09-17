@@ -23,16 +23,21 @@
  */
 package net.safester.application.register;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,22 +61,6 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import net.safester.application.Help;
-import net.safester.application.Login;
-import net.safester.application.NewsFrame;
-import net.safester.application.messages.LanguageManager;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.CryptoParms;
-import net.safester.application.parms.Parms;
-import net.safester.application.tool.ButtonResizer;
-import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.HtmlTextUtil;
-import net.safester.application.util.JOptionPaneNewCustom;
-import net.safester.application.util.crypto.PassphraseUtil;
-import net.safester.application.util.proxy.ProxySessionCheckerNew;
-import net.safester.application.wait.tools.CmWaitDialog;
-import net.safester.clientserver.ServerParms;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.commons.api.client.HttpProtocolParameters;
@@ -85,15 +74,31 @@ import com.safelogic.pgp.api.toolkit.CgeepApiTools;
 import com.safelogic.utilx.StringMgr;
 import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+
+import net.safester.application.Help;
+import net.safester.application.Login;
+import net.safester.application.NewsFrame;
+import net.safester.application.http.ApiRegister;
+import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.messages.LanguageManager;
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.CryptoParms;
+import net.safester.application.parms.Parms;
+import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.UI_Util;
+import net.safester.application.tool.WindowSettingManager;
+import net.safester.application.util.HtmlTextUtil;
+import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.PolicyInstaller;
+import net.safester.application.util.proxy.ProxySessionCheckerNew;
+import net.safester.application.wait.tools.CmWaitDialog;
+import net.safester.clientserver.ServerParms;
+import org.awakefw.commons.api.client.RemoteException;
 
 public class Register extends javax.swing.JFrame {
 
+   public static final String ERROR_ACCOUNT_ALREADY_EXISTS = "error_account_already_exists";
+        
     public static final String BLANKS_TOO_SHORT = getBlanks(0);
     public static final String BLANKS_WEAK = getBlanks(15);
     public static final String BLANKS_MEDIUM = getBlanks(25);
@@ -180,7 +185,6 @@ public class Register extends javax.swing.JFrame {
         defaultEchocar = this.jPassword.getEchoChar();
 
         jTextFieldUserEmail.setText(originalEmail);
-        jTextFieldCoupon.setText(originalEmail);
         jTextFieldUserFirstName.setText(null);
         jTextFieldUserName.setText(null);
         jPassword.setText(null);
@@ -218,8 +222,6 @@ public class Register extends javax.swing.JFrame {
         jLabelUserName.setText(messages.getMessage("user_first_last_name"));
         jLabelUserEmail.setText(messages.getMessage("email_address"));
         jLabelEmailHelp.setText(messages.getMessage("existing_email_address") + " ");
-        jLabelCoupon.setText(messages.getMessage("coupon"));
-        jLabelCouponHelp .setText(messages.getMessage("optional") + " ");
         jLabelPassphrase.setText(messages.getMessage("passphrase"));
         jLabelRetypePassphrase.setText(messages.getMessage("confirm_passphrase"));
         jLabelKeyboardWarning.setText(null);
@@ -294,7 +296,7 @@ public class Register extends javax.swing.JFrame {
 
         });
 
-        this.setSize(600, 600);
+        this.setSize(590, 590);
 
         testCapsOn();
 
@@ -304,6 +306,7 @@ public class Register extends javax.swing.JFrame {
 
     /**
      * Return a HttpProtocolParameters instance, with an encryption password
+     * @return 
      */
     public static HttpProtocolParameters getHttpProtocolParameters() {
         HttpProtocolParameters httpProtocolParameters = new HttpProtocolParameters();
@@ -363,9 +366,9 @@ public class Register extends javax.swing.JFrame {
     }
 
     /**
-     * Generate keys
+     * Generate keys.
      *
-     * @param userId
+     * @param userEmail
      * @param passphrase
      * @throws IOException
      * @throws KeyException
@@ -375,7 +378,7 @@ public class Register extends javax.swing.JFrame {
      * @throws NumberFormatException
      * @throws PGPException
      */
-    private void generateKeys(String userName, String userId, char[] passphrase)
+    private void generateKeys(String lifeName, String userEmail, char[] passphrase)
             throws IOException, KeyException, InvalidAlgorithmParameterException,
             NoSuchProviderException, NoSuchAlgorithmException, NumberFormatException, PGPException {
 
@@ -394,7 +397,7 @@ public class Register extends javax.swing.JFrame {
         OutputStream privKeyRing = new ByteArrayOutputStream();
         OutputStream pubKeyRing = new ByteArrayOutputStream();
 
-        String pgpUserId = userName + " <" + userId.trim() + ">";
+        String pgpUserId = lifeName + " <" + userEmail.trim() + ">";
 
         kh.generateKeyPair(pgpUserId, passphrase, algoAsym, asymKeyLength, keySym, keyLength, seed, expirationDate, privKeyRing, pubKeyRing);
 
@@ -406,77 +409,18 @@ public class Register extends javax.swing.JFrame {
 
         //Export keys in asc format
         ByteArrayInputStream inKeyRing = new ByteArrayInputStream(privKey);
-        ascPrivKey = kh.getAscPgpPrivKey(userId, inKeyRing);
+        ascPrivKey = kh.getAscPgpPrivKey(userEmail, inKeyRing);
         inKeyRing.close();
 
         inKeyRing = new ByteArrayInputStream(pubKey);
-        ascPubKey = kh.getAscPgpPubKey(userId, inKeyRing);
+        ascPubKey = kh.getAscPgpPubKey(userEmail, inKeyRing);
 
         //Re-open input stream on public key ring
         inKeyRing = new ByteArrayInputStream(pubKey);
 
         cmWaitDialog.changeText(this.messages.getMessage("uploading_keys_to_server"));
-        
-        //Store keys in db
-        try {
-            String hashPass = PassphraseUtil.computeHashAndSaltedPassphrase(userId, passphrase);
-            storeKeyPair(userName, userId, hashPass);
-        } catch (Exception e) {
-            e.printStackTrace();
-            cmWaitDialog.stopWaiting();
-            JOptionPaneNewCustom.showException(rootPane, e);
-        }
 
     }
-
-//    private String getHashPassword(String login, String password)
-//    throws Exception{
-//        String hashPassword = "";
-//        Sha1 sha1 = new Sha1();
-//        String salt = login + Parms.salt;
-//        byte [] bPassphraseSaltCompute = ArrayMgr.AddByte(password.getBytes(), salt.getBytes());
-//       
-//        for(int i = 0; i<Parms.PASSPHRASE_HASH_ITERATIONS; i++){
-//            hashPassword = sha1.getHexHash(bPassphraseSaltCompute);
-//            bPassphraseSaltCompute = hashPassword.getBytes();
-//        }
-//
-//        hashPassword = hashPassword.substring(0, 20); // half of hash
-//        hashPassword = hashPassword.toLowerCase(); // All tests in lowercase
-//        return hashPassword;
-//    }
-    /**
-     * *
-     * Store on the server a key pari by creating a PgpKey instance
-     *
-     * @param UserName the user name
-     * @param userId the user id
-     * @param hashPass the sha(passphrase) / 2 in roder to authenticate for
-     * login
-     * @throws SQLException
-     */
-    private void storeKeyPair(String UserName, String userId, String hashPass)
-            throws Exception {
-
-        String userEmail = this.jTextFieldUserEmail.getText().trim();
-        if (originalEmail == null) {
-            originalEmail = "null";
-        }
-
-        UserName = HtmlConverter.toHtml(UserName);
-
-        awakeFileSession.call("net.safester.server.hosts.KeyPairCreatorV3.storeKeyPairNew",
-                userId,
-                userEmail,
-                UserName,
-                originalEmail,
-                hashPass,
-                ascPrivKey,
-                ascPubKey
-                );
-
-    }
-
     public String getAlgoAsym() {
         return algoAsym;
     }
@@ -679,7 +623,7 @@ public class Register extends javax.swing.JFrame {
 
     private boolean areEmailsEqual() {
         String email1 = jTextFieldUserEmail.getText().toLowerCase();
-        String email2 = jTextFieldCoupon.getText();
+        String email2 = null;
         if (email2 == null) {
             return false;
         }
@@ -699,12 +643,11 @@ public class Register extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(this, messages.getMessage("email_different"), errorMsg, JOptionPane.ERROR_MESSAGE);
 //            return false;
 //        }
-
         //Check email validity
-        String email = jTextFieldUserEmail.getText().toLowerCase().trim();
-        EmailChecker emailChecker = new EmailChecker(email);
+        String userEmail = jTextFieldUserEmail.getText().toLowerCase().trim();
+        EmailChecker emailChecker = new EmailChecker(userEmail);
         if (!emailChecker.isSyntaxValid()) {
-            String msg = MessageFormat.format(messages.getMessage("email_not_vaild"), email);
+            String msg = MessageFormat.format(messages.getMessage("email_not_vaild"), userEmail);
             JOptionPane.showMessageDialog(this, msg, errorMsg, JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -725,9 +668,9 @@ public class Register extends javax.swing.JFrame {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         cmWaitDialog.startWaiting();
 
-        email = email.toLowerCase();
-        jTextFieldUserEmail.setText(email);
-        String result = null;
+        userEmail = userEmail.toLowerCase();
+        jTextFieldUserEmail.setText(userEmail);
+        //String result = null;
 
         // Build the awake file session
         try {
@@ -735,11 +678,11 @@ public class Register extends javax.swing.JFrame {
             awakeFileSession = new AwakeFileSession(
                     ServerParms.getAwakeSqlServerUrl(),
                     null,
-                    null,
+                    (char[]) null, // Constructor with password
                     httpProxy,
                     httpProtocolParameters);
 
-            result = awakeFileSession.call("net.safester.server.hosts.KeyPairCreatorV3.keyPairExist", email);
+            //result = awakeFileSession.call("net.safester.server.hosts.KeyPairCreatorV3.keyPairExist", userEmail);
         } catch (ConnectException e) {
             this.setCursor(Cursor.getDefaultCursor());
             cmWaitDialog.stopWaiting();
@@ -762,42 +705,32 @@ public class Register extends javax.swing.JFrame {
             return false;
         }
 
-        if (Boolean.parseBoolean(result)) {
-            this.setCursor(Cursor.getDefaultCursor());
-            cmWaitDialog.stopWaiting();
-            JOptionPane.showMessageDialog(this, messages.getMessage("email_already_used"), errorMsg, JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
         String firstname = jTextFieldUserFirstName.getText();
         String lastname = jTextFieldUserName.getText();
-        String userName = firstname + " " + lastname;
+        String lifeName = firstname + " " + lastname;
 
         char[] passphrase = this.jPassword.getPassword();
-        String coupon = this.jTextFieldCoupon.getText();
-        
+
         //  String userId = firstname + " " + lastname + " <" + email + ">";
         try {
-            
-            if (coupon != null && coupon.length() > 1) {
-                String userEmail = this.jTextFieldUserEmail.getText().trim();
-                String couponRegisteredStr = awakeFileSession.call("net.safester.server.hosts.KeyPairCreatorV3.storeCoupon", userEmail, coupon);
 
-                if (!Boolean.parseBoolean(couponRegisteredStr)) {
-                    this.setCursor(Cursor.getDefaultCursor());
-                    cmWaitDialog.stopWaiting();
-                    JOptionPane.showMessageDialog(this, messages.getMessage("invalid_coupon_please_retry"), errorMsg, JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-         
             //Generate the key pair
-            generateKeys(userName, email, passphrase);
+            generateKeys(lifeName, userEmail, passphrase);
 
+           //Store keys in db. If not OK, accounts already exists. All other problem trigger an Exception
+            boolean ok = callRegisterApi(lifeName, userEmail, passphrase);
+            
+            if (! ok) {
+                this.setCursor(Cursor.getDefaultCursor());
+                cmWaitDialog.stopWaiting();
+                JOptionPane.showMessageDialog(this, messages.getMessage("email_already_used"), errorMsg, JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+                    
             cmWaitDialog.stopWaiting();
             this.setCursor(Cursor.getDefaultCursor());
             String registrationDone = SwingUtil.getTextContent("registration_done");
-            registrationDone = MessageFormat.format(registrationDone, email);
+            registrationDone = MessageFormat.format(registrationDone, userEmail);
 
             JOptionPane.showMessageDialog(this, registrationDone);
 
@@ -805,7 +738,7 @@ public class Register extends javax.swing.JFrame {
             //safeShareItLogin.setVisible(true);
             if (parent != null && parent instanceof Login) {
                 Login login = (Login) parent;
-                login.setLogin(email);
+                login.setLogin(userEmail);
             }
 
             this.dispose();
@@ -820,6 +753,38 @@ public class Register extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Store on the server a key pari by creating a PgpKey instance
+     *
+     * @param lifeName the user name
+     * @param userEmail the user id
+     * @param passphrase the user very secret passphrase
+     * login
+     * @throws SQLException
+     */
+    private boolean callRegisterApi(String lifeName, String userEmail, char[] passphrase)
+            throws Exception {
+
+        lifeName = HtmlConverter.toHtml(lifeName);
+        
+        KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.build(httpProxy);
+        ApiRegister apiRegister = new ApiRegister(kawanHttpClient);
+        
+        boolean ok = apiRegister.register(userEmail, lifeName, passphrase, ascPrivKey, ascPubKey);
+        
+        if (ok) {
+            return true;
+        }
+        
+        String errorMessage = apiRegister.getErrorMessage();
+        if (errorMessage != null && errorMessage.equals(ERROR_ACCOUNT_ALREADY_EXISTS)) {
+            return false;
+        }
+        else {
+            throw new RemoteException(apiRegister.getErrorMessage(), new Exception(apiRegister.getExceptionName()), apiRegister.getExceptionStackTrace());
+        }
+    }
+    
     /**
      * Get a seed from a file (if file does not exist creates it)
      *
@@ -893,10 +858,6 @@ public class Register extends javax.swing.JFrame {
         jLabelUserEmail = new javax.swing.JLabel();
         jTextFieldUserEmail = new javax.swing.JTextField();
         jLabelEmailHelp = new javax.swing.JLabel();
-        jPanelEmail2 = new javax.swing.JPanel();
-        jLabelCoupon = new javax.swing.JLabel();
-        jTextFieldCoupon = new javax.swing.JTextField();
-        jLabelCouponHelp = new javax.swing.JLabel();
         jPanelPassphrase = new javax.swing.JPanel();
         jPanelSep2 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
@@ -1039,6 +1000,7 @@ public class Register extends javax.swing.JFrame {
         jPanelEditorHelp1.setLayout(new javax.swing.BoxLayout(jPanelEditorHelp1, javax.swing.BoxLayout.LINE_AXIS));
 
         jEditorPaneEmail.setMargin(new java.awt.Insets(4, 4, 4, 4));
+        jEditorPaneEmail.setMaximumSize(new java.awt.Dimension(2147483647, 200));
         jEditorPaneEmail.setPreferredSize(new java.awt.Dimension(106, 126));
         jPanelEditorHelp1.add(jEditorPaneEmail);
 
@@ -1059,7 +1021,7 @@ public class Register extends javax.swing.JFrame {
         jPanelBlank3.setLayout(jPanelBlank3Layout);
         jPanelBlank3Layout.setHorizontalGroup(
             jPanelBlank3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 635, Short.MAX_VALUE)
+            .addGap(0, 632, Short.MAX_VALUE)
         );
         jPanelBlank3Layout.setVerticalGroup(
             jPanelBlank3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1068,17 +1030,14 @@ public class Register extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelBlank3);
 
-        jPanelUserIdentification.setMaximumSize(new java.awt.Dimension(32787, 114));
-        jPanelUserIdentification.setMinimumSize(new java.awt.Dimension(83, 105));
-        jPanelUserIdentification.setPreferredSize(new java.awt.Dimension(390, 105));
+        jPanelUserIdentification.setMinimumSize(new java.awt.Dimension(10, 90));
+        jPanelUserIdentification.setRequestFocusEnabled(false);
         jPanelUserIdentification.setLayout(new javax.swing.BoxLayout(jPanelUserIdentification, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelUserInfo.setMaximumSize(new java.awt.Dimension(32767, 109));
-        jPanelUserInfo.setMinimumSize(new java.awt.Dimension(547, 93));
+        jPanelUserInfo.setMinimumSize(new java.awt.Dimension(10, 93));
         jPanelUserInfo.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel9.setMaximumSize(new java.awt.Dimension(32767, 105));
-        jPanel9.setMinimumSize(new java.awt.Dimension(547, 93));
         jPanel9.setPreferredSize(new java.awt.Dimension(445, 93));
         jPanel9.setLayout(new java.awt.GridLayout(3, 0));
 
@@ -1121,26 +1080,6 @@ public class Register extends javax.swing.JFrame {
         jPanelEmail1.add(jLabelEmailHelp);
 
         jPanel9.add(jPanelEmail1);
-
-        jPanelEmail2.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelEmail2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jLabelCoupon.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabelCoupon.setText("jLabelCoupon");
-        jLabelCoupon.setPreferredSize(new java.awt.Dimension(170, 16));
-        jPanelEmail2.add(jLabelCoupon);
-
-        jTextFieldCoupon.setText("jTextFieldCoupon");
-        jTextFieldCoupon.setMinimumSize(new java.awt.Dimension(265, 22));
-        jTextFieldCoupon.setNextFocusableComponent(jPassword);
-        jTextFieldCoupon.setPreferredSize(new java.awt.Dimension(265, 22));
-        jPanelEmail2.add(jTextFieldCoupon);
-
-        jLabelCouponHelp.setFont(new java.awt.Font("Tahoma", 2, 10)); // NOI18N
-        jLabelCouponHelp.setText("jLabelCouponHelp ");
-        jPanelEmail2.add(jLabelCouponHelp);
-
-        jPanel9.add(jPanelEmail2);
 
         jPanelUserInfo.add(jPanel9);
 
@@ -1231,6 +1170,7 @@ public class Register extends javax.swing.JFrame {
         jPanelEditorHelp.setLayout(new javax.swing.BoxLayout(jPanelEditorHelp, javax.swing.BoxLayout.LINE_AXIS));
 
         jEditorPane.setMargin(new java.awt.Insets(4, 4, 4, 4));
+        jEditorPane.setMaximumSize(new java.awt.Dimension(2147483647, 100));
         jEditorPane.setPreferredSize(new java.awt.Dimension(170, 166));
         jPanelEditorHelp.add(jEditorPane);
 
@@ -1251,7 +1191,7 @@ public class Register extends javax.swing.JFrame {
         jPanelBlank2.setLayout(jPanelBlank2Layout);
         jPanelBlank2Layout.setHorizontalGroup(
             jPanelBlank2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 635, Short.MAX_VALUE)
+            .addGap(0, 632, Short.MAX_VALUE)
         );
         jPanelBlank2Layout.setVerticalGroup(
             jPanelBlank2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1621,8 +1561,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxHideTyping;
     private javax.swing.JEditorPane jEditorPane;
     private javax.swing.JEditorPane jEditorPaneEmail;
-    private javax.swing.JLabel jLabelCoupon;
-    private javax.swing.JLabel jLabelCouponHelp;
     private javax.swing.JLabel jLabelCryptoSettings;
     private javax.swing.JLabel jLabelEmailHelp;
     private javax.swing.JLabel jLabelHideTyping;
@@ -1661,7 +1599,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelEditorHelp;
     private javax.swing.JPanel jPanelEditorHelp1;
     private javax.swing.JPanel jPanelEmail1;
-    private javax.swing.JPanel jPanelEmail2;
     private javax.swing.JPanel jPanelHelpEmail;
     private javax.swing.JPanel jPanelHelpPassphrase;
     private javax.swing.JPanel jPanelLeft1;
@@ -1692,7 +1629,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JTextField jTextFieldCoupon;
     private javax.swing.JTextField jTextFieldCryptoSettings;
     private javax.swing.JTextField jTextFieldUserEmail;
     private javax.swing.JTextField jTextFieldUserFirstName;

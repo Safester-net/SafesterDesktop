@@ -21,7 +21,7 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
-package net.safester.clientserver.serverapi;
+package net.safester.application.http.dto;
 
 import java.io.BufferedReader;
 import java.io.StringReader;

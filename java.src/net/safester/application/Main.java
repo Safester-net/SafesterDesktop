@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import static net.safester.application.MessageReader.INCREASE_FACTOR;
 import static net.safester.application.MessageReader.setPanelWithTextAreaHeightForMac;
 
@@ -97,6 +98,8 @@ import com.swing.util.CustomJtree.TreeNodeAdder;
 
 import net.safester.application.addrbooknew.AddressBookImportStart;
 import net.safester.application.engines.BackgroundDownloaderEngine;
+import net.safester.application.http.ApiMessages;
+import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.install.AskForDownloadJframe;
 import net.safester.application.install.NewVersionInstaller;
 import net.safester.application.messages.MessagesManager;
@@ -133,13 +136,11 @@ import net.safester.clientserver.LimitClause;
 import net.safester.clientserver.MessageLocalStore;
 import net.safester.clientserver.MessageLocalStoreCache;
 import net.safester.clientserver.MessageStoreExtractor;
-import net.safester.clientserver.MessageTransfer;
 import net.safester.clientserver.PgpKeyPairLocal;
 import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.FolderLocal;
 import net.safester.noobs.clientserver.GsonUtil;
 import net.safester.noobs.clientserver.MessageLocal;
-import net.safester.noobs.clientserver.PendingMessageUserLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 import net.safester.noobs.clientserver.SubjectDecryptionClient;
 
@@ -321,6 +322,8 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemAddressBook.setText(messages.getMessage("address_book"));
         this.jMenuItemDelete.setText(messages.getMessage("delete"));
         this.jMenuItemFoward.setText(messages.getMessage("forward"));
+        this.jMenuItemMarkRead.setText(messages.getMessage("mark_messages_as_read"));
+        this.jMenuItemMarkUnread.setText(messages.getMessage("mark_messages_as_unread"));
         this.jMenuItemGetNewMessage.setText(messages.getMessage("get_new_message"));
         this.jMenuItemMove.setText(messages.getMessage("move"));
         this.jMenuItemNew.setText(messages.getMessage("new_message"));
@@ -1160,7 +1163,27 @@ public class Main extends javax.swing.JFrame {
         });
         itemFoward.setIcon(jMenuItemFoward.getIcon());
         jTablePopupMenu.add(itemFoward);
-
+        
+        JMenuItem itemMarkRead = new JMenuItem(jMenuItemMarkRead.getText());
+        itemMarkRead.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jMenuItemMarkReadActionPerformed(e);
+            }
+        });
+        itemMarkRead.setIcon(jMenuItemMarkRead.getIcon());
+        jTablePopupMenu.add(itemMarkRead);
+        
+        JMenuItem itemMarkUnread = new JMenuItem(jMenuItemMarkUnread.getText());
+        itemMarkUnread.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jMenuItemMarkUnreadActionPerformed(e);
+            }
+        });
+        itemMarkUnread.setIcon(jMenuItemMarkUnread.getIcon());
+        jTablePopupMenu.add(itemMarkUnread);
+        
 //        jTablePopupMenu.add(new JMenuItem(jMenuItemFoward));
         jTablePopupMenu.addSeparator();
         // jTablePopupMenu.add(itemAddSender);
@@ -1254,7 +1277,7 @@ public class Main extends javax.swing.JFrame {
         if (folderId != -1) {
             for (Integer messageId : selectedMessages) {
 
-                updateMessageIsReadInThread(folderId, messageId);
+                updateMessageIsReadInThread(folderId, messageId, false);
                 MessageLocal message = getCompletedMessage(messageId);
 
                 JOptionPane.showMessageDialog(this, "Message ID: " + message.getMessageId());
@@ -1276,7 +1299,7 @@ public class Main extends javax.swing.JFrame {
         if (folderId != -1) {
             for (Integer messageId : selectedMessages) {
 
-                updateMessageIsReadInThread(folderId, messageId);
+                updateMessageIsReadInThread(folderId, messageId, false);
 
                 MessageLocal message = getCompletedMessage(messageId);
 
@@ -1291,6 +1314,30 @@ public class Main extends javax.swing.JFrame {
             }
         }
     }
+
+    
+    private void markRead(boolean messageUnread) {
+
+        int folderId = getSelectedFolderId();
+        setSelectedMessages();
+        
+        List<Integer> selectedMessageIds = new ArrayList<>();
+        for (int messageId : selectedMessages) {
+            selectedMessageIds.add(messageId);
+        }
+        
+        jTable1.getSelectionModel().clearSelection();
+        
+        for (int messageId : selectedMessageIds) {
+            updateMessageIsReadInThread(folderId, messageId, messageUnread);
+            MessageLocal message = getCompletedMessage(messageId);
+        }
+        
+        // Refresh the table
+        createTable();
+
+    }
+
 
     /**
      * Delete all selected message
@@ -1725,7 +1772,7 @@ public class Main extends javax.swing.JFrame {
         int folderId = getSelectedFolderId();
         int messageId = selectedMessages.get(0);
 
-        updateMessageIsReadInThread(folderId, messageId);
+        updateMessageIsReadInThread(folderId, messageId, false);
 
         // Build message pane with first message of list
         buildMessagePane(messageId);
@@ -1736,40 +1783,47 @@ public class Main extends javax.swing.JFrame {
      *
      * @param folderId the folder id
      * @param messageId the Message Id
+     * @param messageUnread ir true, message will be marked as unread
      */
-    public void updateMessageIsReadInThread(int folderId, int messageId) {
+    public void updateMessageIsReadInThread(int folderId, int messageId, boolean messageUnread) {
 
         // Nothing if folder is unknown
         if (folderId == -1) {
             return;
         }
 
-        // If message is already read and it was stored on host in Message Local, do
-        // nothing
         MessageLocal messageLocal = messageLocalStore.get(messageId);
-        if (messageLocal == null || messageLocal.getIsRead()) {
+        if (messageLocal == null) {
             return;
         }
 
-        // If message is already read and it sead in MessageTableCellRenderer, do
-        // nothing
-        if (MessageTableCellRenderer.readMessages.contains(messageId)) {
-            return;
-        }
+//        // If message is already read and it sead in MessageTableCellRenderer, do
+//        // nothing
+//        if (!messageUnread && MessageTableCellRenderer.readMessages.contains(messageId)) {
+//            return;
+//        }
 
         // Ok, update the diplay status *and* the valus isRead on host
-        MessageTableCellRenderer.readMessages.add(messageId);
+        if (messageUnread) {
+             MessageTableCellRenderer.readMessages.remove(messageId);
+             messageLocal.setIsRead(false);
+        }
+        else {
+            MessageTableCellRenderer.readMessages.add(messageId);
+            messageLocal.setIsRead(true);
+        }
 
-        final int folderIdFinal = folderId;
+        final String messageSenderEmailAddress = messageLocal.getSenderUserEmail();
         final int messageIdFinal = messageId;
-
+        final boolean messageUnreadFinal = messageUnread;
+                
         Thread t = new Thread() {
             @Override
             public void run() {
                 try {
 
-                    updateMessageIsRead(connection, userNumber, folderIdFinal, messageIdFinal);
-
+                    updateMessageIsRead(connection, messageSenderEmailAddress, messageIdFinal, messageUnreadFinal);
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPaneNewCustom.showException(null, e);
@@ -1788,11 +1842,22 @@ public class Main extends javax.swing.JFrame {
      * @param messageId
      * @throws Exception
      */
-    private static synchronized void updateMessageIsRead(Connection connection, int userNumber, int folderId,
-            int messageId) throws Exception {
+    private static synchronized void updateMessageIsRead(Connection connection, String messageSenderEmailAddress, int messageId, boolean messageUnread) throws Exception {
         // Update the server saying the message has been read
-        MessageTransfer messageTransfer = new MessageTransfer(connection, userNumber, messageId, folderId);
-        messageTransfer.setMessageIsRead(true);
+        //MessageTransfer messageTransfer = new MessageTransfer(connection, userNumber, messageId, folderId);
+        //messageTransfer.setMessageIsRead(true);
+        
+        AwakeConnection awakeConnection = (AwakeConnection)connection;
+        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
+        
+        KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+        ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                awakeFileSession.getAuthenticationToken());
+        apiMessages.setMessageRead(messageId, messageSenderEmailAddress, messageUnread);
+        
+        System.out.println();
+        System.out.println("Message " + messageId + " marked as unread: " + messageUnread + " (messageSenderEmailAddress: " + messageSenderEmailAddress + ")");
+        
     }
 
     /**
@@ -1929,27 +1994,27 @@ public class Main extends javax.swing.JFrame {
 
         }
 
-        try {
-            List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
-
-            // NDP : Main: do not display BCC recipients in CC panel
-            for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
-                int typeRecipient = pendingMessageUserLocal.getType_recipient();
-
-                if (typeRecipient == Parms.RECIPIENT_TO) {
-                    recipientTo += pendingMessageUserLocal.getEmail() + "; ";
-                } else if (typeRecipient == Parms.RECIPIENT_CC) {
-                    recipientCc += pendingMessageUserLocal.getEmail() + "; ";
-                } else {
-                    // Nothing for BCC: do not display them back.
-                }
-
-            }
-        } catch (Exception e) {
-            this.setCursor(Cursor.getDefaultCursor());
-            e.printStackTrace();
-            JOptionPaneNewCustom.showException(rootPane, e);
-        }
+//        try {
+//            List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
+//
+//            // NDP : Main: do not display BCC recipients in CC panel
+//            for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
+//                int typeRecipient = pendingMessageUserLocal.getType_recipient();
+//
+//                if (typeRecipient == Parms.RECIPIENT_TO) {
+//                    recipientTo += pendingMessageUserLocal.getEmail() + "; ";
+//                } else if (typeRecipient == Parms.RECIPIENT_CC) {
+//                    recipientCc += pendingMessageUserLocal.getEmail() + "; ";
+//                } else {
+//                    // Nothing for BCC: do not display them back.
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            this.setCursor(Cursor.getDefaultCursor());
+//            e.printStackTrace();
+//            JOptionPaneNewCustom.showException(rootPane, e);
+//        }
 
         // Remove HTML coding
         recipientTo = HtmlConverter.fromHtml(recipientTo);
@@ -2508,6 +2573,8 @@ public class Main extends javax.swing.JFrame {
         jMenuItemReplyAll = new javax.swing.JMenuItem();
         jMenuItemFoward = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemMarkRead = new javax.swing.JMenuItem();
+        jMenuItemMarkUnread = new javax.swing.JMenuItem();
         jMenuItemMove = new javax.swing.JMenuItem();
         jMenuItemDelete = new javax.swing.JMenuItem();
         jSeparator15 = new javax.swing.JPopupMenu.Separator();
@@ -3452,7 +3519,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemReply.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_reply.png"))); // NOI18N
-        jMenuItemReply.setText("jMenuItem2");
+        jMenuItemReply.setText("jMenuItemReply");
         jMenuItemReply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemReplyActionPerformed(evt);
@@ -3461,7 +3528,7 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemReply);
 
         jMenuItemReplyAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_reply_all.png"))); // NOI18N
-        jMenuItemReplyAll.setText("jMenuItem2");
+        jMenuItemReplyAll.setText("jMenuItemReplyAll");
         jMenuItemReplyAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemReplyAllActionPerformed(evt);
@@ -3471,7 +3538,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemFoward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_forward.png"))); // NOI18N
-        jMenuItemFoward.setText("jMenuItem2");
+        jMenuItemFoward.setText("jMenuItemFoward");
         jMenuItemFoward.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemFowardActionPerformed(evt);
@@ -3480,8 +3547,26 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemFoward);
         jMenuMessage.add(jSeparator9);
 
+        jMenuItemMarkRead.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_open.png"))); // NOI18N
+        jMenuItemMarkRead.setText("jMenuItemMarkRead");
+        jMenuItemMarkRead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMarkReadActionPerformed(evt);
+            }
+        });
+        jMenuMessage.add(jMenuItemMarkRead);
+
+        jMenuItemMarkUnread.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail.png"))); // NOI18N
+        jMenuItemMarkUnread.setText("jMenuItemMarkUnread");
+        jMenuItemMarkUnread.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMarkUnreadActionPerformed(evt);
+            }
+        });
+        jMenuMessage.add(jMenuItemMarkUnread);
+
         jMenuItemMove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_exchange.png"))); // NOI18N
-        jMenuItemMove.setText("jMenuItem2");
+        jMenuItemMove.setText("jMenuItemMove");
         jMenuItemMove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemMoveActionPerformed(evt);
@@ -3490,7 +3575,7 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemMove);
 
         jMenuItemDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/delete.png"))); // NOI18N
-        jMenuItemDelete.setText("jMenuItem2");
+        jMenuItemDelete.setText("jMenuItemDelete");
         jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDeleteActionPerformed(evt);
@@ -3501,7 +3586,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuItemSearch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/binocular.png"))); // NOI18N
-        jMenuItemSearch.setText("jMenuItem2");
+        jMenuItemSearch.setText("jMenuItemSearch");
         jMenuItemSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemSearchActionPerformed(evt);
@@ -3776,6 +3861,14 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemMarkReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMarkReadActionPerformed
+        markRead(false);
+    }//GEN-LAST:event_jMenuItemMarkReadActionPerformed
+
+    private void jMenuItemMarkUnreadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMarkUnreadActionPerformed
+        markRead(true);
+    }//GEN-LAST:event_jMenuItemMarkUnreadActionPerformed
 
     private void jButtonNewMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNewMessageActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -4395,6 +4488,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemFoward;
     private javax.swing.JMenuItem jMenuItemGetNewMessage;
     private javax.swing.JMenuItem jMenuItemImportAddrBook;
+    private javax.swing.JMenuItem jMenuItemMarkRead;
+    private javax.swing.JMenuItem jMenuItemMarkUnread;
     private javax.swing.JMenuItem jMenuItemMove;
     private javax.swing.JMenuItem jMenuItemNew;
     private javax.swing.JMenuItem jMenuItemNewFolder;
@@ -4523,6 +4618,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+
 
 
 }

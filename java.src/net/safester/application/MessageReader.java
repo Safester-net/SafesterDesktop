@@ -59,9 +59,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;
-import net.safester.application.parms.StoreParms;
 import net.safester.application.tool.AttachmentListHandler;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.DesktopWrapper;
@@ -90,6 +88,7 @@ import com.safelogic.utilx.StringMgr;
 import com.swing.util.SwingUtil;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
+import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
@@ -103,7 +102,7 @@ import org.awakefw.file.api.client.AwakeFileSession;
 public class MessageReader extends javax.swing.JFrame {
 
     public static boolean DEBUG = true;
-    
+
     private ClipboardManager clipboardManager;
     private MessagesManager messages = new MessagesManager();
     private MessageLocal message;
@@ -133,6 +132,8 @@ public class MessageReader extends javax.swing.JFrame {
             int theFolderId) {
         this.message = theMessage;
         this.parent = theParent;
+
+        debug("MessageLocal: " + message.toString());
 
         // Use a dedicated Connection to avoid overlap of result files
         this.connection = ((AwakeConnection) theConnection).clone();
@@ -171,8 +172,8 @@ public class MessageReader extends javax.swing.JFrame {
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         } else {
             jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
-        }         
-        
+        }
+
         this.jButtonDelete.setToolTipText(messages.getMessage("delete"));
         this.jButtonFoward.setToolTipText(messages.getMessage("forward"));
         this.jButtonPrint.setToolTipText(messages.getMessage("print"));
@@ -193,7 +194,7 @@ public class MessageReader extends javax.swing.JFrame {
         jMenuItemFoward.setEnabled(message.isFowardable());
 
         this.jMenuItemNew.setVisible(false);
-        
+
         boolean jEditorPaneBodyFocusable = true;
         if (!message.isFowardable() || !message.isPrintable()) {
             jEditorPaneBodyFocusable = false;
@@ -234,44 +235,43 @@ public class MessageReader extends javax.swing.JFrame {
         this.jTextFieldDate.setText(header + messageDate);
 
         String text = message.getBody();
-        
+
         // test if message is created by Mobile, if yes remove HTML tags
         if (message.getIsSigned()) {
             text = HtmlConverter.fromHtml(text);
-        } 
-        
+        }
+
         try {
             text = JEditorPaneLinkDetector.detectLinkAndCodeHtml(text);
         } catch (IOException ex) {
             JOptionPaneNewCustom.showException(this, ex);
         }
-        
+
         /*
         if (DEBUG) {
             System.out.println("message.getIsSigned(): " + message.getIsSigned());
             JOptionPane.showMessageDialog(parent, text);
         }
-        */
-  
+         */
         jPanelBody.remove(jScrollPaneBody);
 
         // create a JEditorPane that renders HTML and defaults to the system font.
-        jEditorPaneBody =
-                new JEditorPane(new HTMLEditorKit().getContentType(), text);
+        jEditorPaneBody
+                = new JEditorPane(new HTMLEditorKit().getContentType(), text);
 
         this.jEditorPaneBody.setContentType("text/html");
         this.jEditorPaneBody.setEditable(false);
-        
+
         this.jEditorPaneBody.setBackground(Color.WHITE);
 
         this.jEditorPaneBody.setText(text);
-        
+
         setSystemFontToHtmlPane(jEditorPaneBody);
         addHyperLinkDetector();
 
         //jEditorPaneBody.setBackground(Color.RED);
         jEditorPaneBody.setBorder(new EmptyBorder(5, 8, 5, 8));
-            
+
         jScrollPaneBody.setViewportView(jEditorPaneBody);
         jPanelBody.add(jScrollPaneBody);
 
@@ -284,45 +284,44 @@ public class MessageReader extends javax.swing.JFrame {
         for (RecipientLocal recipient : recipients) {
 
             EmailUser emailUser = new EmailUser(recipient.getNameRecipient(), recipient.getEmail());
-            
+
             // NDP : MessageReader: do not display BCC recipients in CC panel
             if (recipient.getTypeRecipient() == Parms.RECIPIENT_TO) {
                 recipientTo += emailUser.getNameAndEmailAddress() + "; ";
             } else if (recipient.getTypeRecipient() == Parms.RECIPIENT_CC) {
-                recipientCc += emailUser.getNameAndEmailAddress() + "; ";                        
+                recipientCc += emailUser.getNameAndEmailAddress() + "; ";
             } else {
                 // Nothing for BCC: do not display them back.
             }
         }
 
-
-        try {
-
-            List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
-
-            for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
-                //int pendingUserId = pendingMessageUserLocal.getPending_user_id();
-                int typeRecipient = pendingMessageUserLocal.getType_recipient();
-
-                if (typeRecipient == Parms.RECIPIENT_TO) {
-                    //recipientTo += "<i>" + pendingUserLocal.getEmail() + "</i>; ";
-                    recipientTo += pendingMessageUserLocal.getEmail() + "; ";
-                } else if (typeRecipient == Parms.RECIPIENT_CC) {
-                    //recipientCc += "<i>" + pendingUserLocal.getEmail() + "</i>; ";
-                    recipientCc += pendingMessageUserLocal.getEmail() + "; ";
-                } else {
-                    // Nothing for BCC: do not display them back.
-                }
-            }
-                        
-        if (recipientTo.equals(header) && recipientCc.equals(header)) {
-            recipientTo = Parms.UNKNOWN_RECIPIENT;
-        }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPaneNewCustom.showException(rootPane, e);
-        }
+//        try {
+//
+//            List<PendingMessageUserLocal> pendingMessageUserLocals = message.getPendingMessageUserLocal();
+//
+//            for (PendingMessageUserLocal pendingMessageUserLocal : pendingMessageUserLocals) {
+//                //int pendingUserId = pendingMessageUserLocal.getPending_user_id();
+//                int typeRecipient = pendingMessageUserLocal.getType_recipient();
+//
+//                if (typeRecipient == Parms.RECIPIENT_TO) {
+//                    //recipientTo += "<i>" + pendingUserLocal.getEmail() + "</i>; ";
+//                    recipientTo += pendingMessageUserLocal.getEmail() + "; ";
+//                } else if (typeRecipient == Parms.RECIPIENT_CC) {
+//                    //recipientCc += "<i>" + pendingUserLocal.getEmail() + "</i>; ";
+//                    recipientCc += pendingMessageUserLocal.getEmail() + "; ";
+//                } else {
+//                    // Nothing for BCC: do not display them back.
+//                }
+//            }
+//
+//            if (recipientTo.equals(header) && recipientCc.equals(header)) {
+//                recipientTo = Parms.UNKNOWN_RECIPIENT;
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JOptionPaneNewCustom.showException(rootPane, e);
+//        }
 
         recipientTo = Util.removeTrailingSemiColumns(recipientTo);
         recipientCc = Util.removeTrailingSemiColumns(recipientCc);
@@ -339,7 +338,7 @@ public class MessageReader extends javax.swing.JFrame {
         if (jTextAreaRecipientsCc.getText().length() <= 1) {
             jPanelCc.setVisible(false);
         }
-        
+
         jScrollPaneAttach.remove(jListAttach);
 
         //  jPanelAttachSepRecipients.setBackground(Color.white);
@@ -351,7 +350,7 @@ public class MessageReader extends javax.swing.JFrame {
         setAllPanelsWithtextAreaHeightForMac();
 
         clipboardManager = new ClipboardManager(rootPane);
-                
+
         this.requestFocus();
 
         setTextFieldsPopup();
@@ -361,7 +360,7 @@ public class MessageReader extends javax.swing.JFrame {
         setLabelBackgroundToFields();
 
         this.setSize(732, 732);
-        
+
         //this.setLocationByPlatform(true);
         this.keyListenerAdder();
 
@@ -417,7 +416,6 @@ public class MessageReader extends javax.swing.JFrame {
          jTextAreaRecipientsCc.setBackground(theBackground);
          * 
          */
-
         Color theBackground = jPanelMessage.getBackground();
 
         jTextFieldUserFrom.setBackground(theBackground);
@@ -486,8 +484,7 @@ public class MessageReader extends javax.swing.JFrame {
         if (!SystemUtils.IS_OS_WINDOWS) {
             return;
         }
-        */
-        
+         */
         MessagesManager messages = new MessagesManager();
         String small = messages.getMessage(messages.getMessage("small"));
         String medium = messages.getMessage(messages.getMessage("medium"));
@@ -572,19 +569,19 @@ public class MessageReader extends javax.swing.JFrame {
         jListAttach = new JList(model_attachs);
         jListAttach.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         jListAttach.setVisibleRowCount(-1);
-        
+
         List<AttachmentLocal> attachments = message.getAttachmentLocal();
-       
+
         jListAttach.setCellRenderer(new ReceivedAttachmentListRenderer(attachments));
 
         JListUtil.selectItemWhenMouverOver(jListAttach);
-        
+
         //HACK NDP 17/03/18
         JListUtil.formatSpacing(jListAttach);
 
         // Add space for macOS and Nimbus
         setListFixedCellWidthForMacOsAndNimbus(jListAttach, attachments);
-        
+
         if (attachments.isEmpty()) {
             //jScrollPaneAttach.setViewportView(null);
             //jPanelMessage.remove(jScrollPaneAttach);
@@ -637,19 +634,20 @@ public class MessageReader extends javax.swing.JFrame {
         jScrollPaneAttach.setViewportView(jListAttach);
     }
 
-    
     /**
-     * Special method for Maxc OS & Nimbus: we need to define the cell width from string max length and add icon size (24) plus size of size display info.
-     * Otherwise text is cut with trailing "...".
+     * Special method for Maxc OS & Nimbus: we need to define the cell width
+     * from string max length and add icon size (24) plus size of size display
+     * info. Otherwise text is cut with trailing "...".
+     *
      * @param jListAttach
-     * @param attachments 
+     * @param attachments
      */
     public void setListFixedCellWidthForMacOsAndNimbus(JList jListAttach, List<AttachmentLocal> attachments) {
-                
-        if (! SystemUtils.IS_OS_MAC && ! UI_Util.isNimbus()) {
+
+        if (!SystemUtils.IS_OS_MAC && !UI_Util.isNimbus()) {
             return;
         }
-        
+
         String maxString = "";
         for (AttachmentLocal attachment : attachments) {
             String fileName = attachment.getFileName();
@@ -657,14 +655,14 @@ public class MessageReader extends javax.swing.JFrame {
             FileNameConverter fileNameConverter = new FileNameConverter(fileName);
             fileName = fileNameConverter.fromServerName(); // remove before "-"
             fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove before ".pgp"
-            
+
             fileName = HtmlConverter.fromHtml(fileName);
             if (fileName.length() > maxString.length()) {
                 maxString = fileName;
             }
         }
-        FontMetrics fontMetric =  new JLabel().getFontMetrics(new Font("Tahoma", Font.PLAIN, 13));
-        
+        FontMetrics fontMetric = new JLabel().getFontMetrics(new Font("Tahoma", Font.PLAIN, 13));
+
         if (DEBUG) {
             System.out.println();
             System.out.println("fontMetric      : " + fontMetric);
@@ -675,12 +673,12 @@ public class MessageReader extends javax.swing.JFrame {
 
         int logoWidth = 24;
         int sizeDisplayWidth = fontMetric.stringWidth(" (1111 Kb)");
-        int cellWidth = logoWidth + fontMetric.stringWidth(maxString)+ sizeDisplayWidth;
-        
+        int cellWidth = logoWidth + fontMetric.stringWidth(maxString) + sizeDisplayWidth;
+
         if (SystemUtils.IS_OS_MAC) {
             cellWidth += 55;
         }
-        
+
         jListAttach.setFixedCellWidth(cellWidth);
     }
 
@@ -1440,10 +1438,8 @@ public class MessageReader extends javax.swing.JFrame {
 //        else{
 //            text = messages.getMessage("confirm_delete");
 //        }
-
         text = messages.getMessage("confirm_delete");
         int result = JOptionPane.showConfirmDialog(this, text, title, JOptionPane.YES_NO_OPTION);
-
 
         if (result == JOptionPane.NO_OPTION) {
             return;
@@ -1511,7 +1507,7 @@ public class MessageReader extends javax.swing.JFrame {
                     messageBodyLocal.setSenderUserNumber(message.getSenderUserNumber());
                     String jsonString = GsonUtil.messageBodyLocalToGson(messageBodyLocal);
                     AwakeFileSession awakeFileSession = ((AwakeConnection) connection).getAwakeFileSession();
-                    
+
                     jsonString = awakeFileSession.call("net.safester.server.hosts.MessageReaderHost.getMessageBodyOnly", message.getSenderUserNumber(), jsonString);
                     messageBodyLocal = GsonUtil.gsonToMessageBodyLocal(jsonString);
                     encryptedBody = messageBodyLocal.getBody();
@@ -1524,7 +1520,6 @@ public class MessageReader extends javax.swing.JFrame {
 
             //Font courrier = new java.awt.Font("Courrier", 1, 11);
             //jEditorPaneBody.setFont(courrier);
-
             encryptedBody = HtmlTextUtil.formatWithBr(encryptedBody);
             jEditorPaneBody.setText(encryptedBody);
         } else {
@@ -1539,6 +1534,10 @@ public class MessageReader extends javax.swing.JFrame {
         jEditorPaneBody.setSelectionEnd(0);
 
     }//GEN-LAST:event_jButtonDisplayEncryptedActionPerformed
+
+    private void debug(String string) {
+        System.out.println(new Date() + " " + MessageReader.class.getSimpleName() + " " + string);
+    }
 
     /**
      * @param args the command line arguments
@@ -1625,4 +1624,5 @@ public class MessageReader extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
 }
