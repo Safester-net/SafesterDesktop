@@ -67,8 +67,6 @@ public class PassphraseUtil
         passphraseStr = passphraseStr.substring(0,20);
         passphraseStr = passphraseStr.toLowerCase();
         
-        System.out.println("passphraseStr: " + passphraseStr);
-        
         //Apply salt and hash iterations
         //public static String salt = "ThiS*IsSAlt4loGin$";
         //public static int PASSPHRASE_HASH_ITERATIONS = 3;

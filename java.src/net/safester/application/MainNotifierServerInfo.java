@@ -25,6 +25,7 @@ package net.safester.application;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
@@ -38,6 +39,8 @@ import org.awakefw.sql.api.client.AwakeConnection;
  */
 public class MainNotifierServerInfo {
 
+    public static boolean DEBUG = true;
+        
     private Connection connection = null;
     private int userNumber = -1;
     
@@ -58,6 +61,8 @@ public class MainNotifierServerInfo {
 
         try {
             String lastMessageIdStr = awakeFileSession.call("net.safester.server.NotifyInfo.getLastMessageNonDownloaded", userNumber, connection);
+            debug("lastMessageIdStr: " + lastMessageIdStr + ":");
+                    
             int lastMessageId =  0;
             try {
                 lastMessageId = Integer.parseInt(lastMessageIdStr);
@@ -83,13 +88,22 @@ public class MainNotifierServerInfo {
             String newMessageStr = awakeFileSession.call("net.safester.server.NotifyInfo.newInboxMessageExists", userNumber, connection);
             boolean newMessage = Boolean.parseBoolean(newMessageStr.trim());
             
-            //System.out.println("newMessageStr: " + newMessageStr + ":");
-            //System.out.println("newMessage   : " + newMessage + ":");
+            debug("newMessageStr: " + newMessageStr + ":");
+            debug("newMessage   : " + newMessage + ":");
             
             return newMessage;
           
         } catch (Exception e) {
             throw new SQLException(e);
+        }
+    }
+    
+    /**
+     * debug tool
+     */
+    private void debug(String s) {
+        if (DEBUG) {
+            System.out.println(new Date() + " " + MainNotifierServerInfo.class.getName() + " " + s);
         }
     }
 

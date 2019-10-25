@@ -97,6 +97,7 @@ import com.swing.util.CustomJtree.CustomJTree;
 import com.swing.util.CustomJtree.TreeNodeAdder;
 
 import net.safester.application.addrbooknew.AddressBookImportStart;
+import net.safester.application.compose.api.drafts.MessageDraftManager;
 import net.safester.application.engines.BackgroundDownloaderEngine;
 import net.safester.application.http.ApiMessages;
 import net.safester.application.http.KawanHttpClientBuilder;
@@ -1252,11 +1253,15 @@ public class Main extends javax.swing.JFrame {
         selectedMessages = new ArrayList<Integer>();
         // Get selected rows index
         int[] selRows = jTable1.getSelectedRows();
+        
+        debug("setSelectedMessages() selRows: " + selRows.length);
+        
         if (selRows.length > 0) {
             for (Integer rowIndex : selRows) {
                 // For each row get message
                 // MessageLocal messageLocal = getMessageForRowIndex(rowIndex.intValue());
                 int messageId = (Integer) jTable1.getValueAt(rowIndex.intValue(), 0);
+                debug("setSelectedMessages() messageId: " + messageId);
                 if (messageId > 0) {
                     selectedMessages.add(messageId);
                 }
@@ -1295,14 +1300,26 @@ public class Main extends javax.swing.JFrame {
         setSelectedMessages();
 
         int folderId = getSelectedFolderId();
-
+        debug("folderId: " + folderId);
+                
         if (folderId != -1) {
             for (Integer messageId : selectedMessages) {
 
+                debug("openSelectedMessage messageId: " + messageId);
+                
                 updateMessageIsReadInThread(folderId, messageId, false);
 
-                MessageLocal message = getCompletedMessage(messageId);
+                MessageLocal message = null;
+                
+                if (folderId == Parms.DRAFT_ID) {
+                    message = messageLocalStore.get(messageId);
+                }
+                else {
+                    message = getCompletedMessage(messageId);
+                }
 
+                debug("openSelectedMessage() message: " + message);
+                
                 // Open a new window for each message
                 if (folderId != Parms.DRAFT_ID) {
                     new MessageReader(this, this.getConnection(), message, this.getKeyId(), this.userNumber,
@@ -1380,6 +1397,13 @@ public class Main extends javax.swing.JFrame {
     public void deleteMessages(List<Integer> messagesId, int folderId) {
         try {
 
+            if (folderId == Parms.DRAFT_ID) {
+                MessageDraftManager messageDraftSaver = new MessageDraftManager(userNumber);
+                messageDraftSaver.delete(messagesId);
+                createTable();
+                return;
+            }
+            
             String messagesList = messagesId.toString();
 
             // Do the delete on the server, because of security concerns
@@ -1546,7 +1570,6 @@ public class Main extends javax.swing.JFrame {
 
                 if (limit == 0) {
                     limit = Parms.DEFAULT_NB_MESSAGES_PER_PAGE;
-                    ;
                 }
 
                 offset = 0;
@@ -1564,13 +1587,13 @@ public class Main extends javax.swing.JFrame {
             if (idFolder != -1) {
                 // Get messages for the selected folder
                 debug("");
-                System.out.println(new Date() + " Safester... messageStoreExtractor.getStore() begin...");
+                debug(new Date() + " Safester... messageStoreExtractor.getStore() begin...");
 
                 MessageStoreExtractor messageStoreExtractor = new MessageStoreExtractor(connection, userNumber,
                         passphrase, idFolder, limitClause);
                 messageLocalStore = messageStoreExtractor.getStore();
 
-                System.out.println(new Date() + " Safester... messageStoreExtractor.getStore() end...");
+                debug(new Date() + " Safester... messageStoreExtractor.getStore() end...");
 
                 // NOTIFY
                 if (idFolder == Parms.INBOX_ID) {
@@ -1595,12 +1618,14 @@ public class Main extends javax.swing.JFrame {
                 };
                 t.start();
 
-                // Start the thread that will fetch the messages Body content in memory
-                // and user settings
-                BackgroundDownloaderEngine backgroundDownloaderEngine = new BackgroundDownloaderEngine(userNumber,
-                        passphrase, messageLocalStore, connection);
-                BackgroundDownloaderEngine.setIsRequestInterrupt(true);
-                backgroundDownloaderEngine.start();
+                if (idFolder != Parms.DRAFT_ID) {
+                    // Start the thread that will fetch the messages Body content in memory
+                    // and user settings
+                    BackgroundDownloaderEngine backgroundDownloaderEngine = new BackgroundDownloaderEngine(userNumber,
+                            passphrase, messageLocalStore, connection);
+                    BackgroundDownloaderEngine.setIsRequestInterrupt(true);
+                    backgroundDownloaderEngine.start();
+                }
 
             }
 
@@ -1651,7 +1676,7 @@ public class Main extends javax.swing.JFrame {
             resetMessagePane();
             jScrollPane1.setViewportView(jTable1);
 
-            System.out.println(new Date() + " Safester... jScrollPane1.setViewportView(jTable) end...");
+            debug(new Date() + " Safester... jScrollPane1.setViewportView(jTable) end...");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1788,7 +1813,7 @@ public class Main extends javax.swing.JFrame {
     public void updateMessageIsReadInThread(int folderId, int messageId, boolean messageUnread) {
 
         // Nothing if folder is unknown
-        if (folderId == -1) {
+        if (folderId == -1 || folderId == Parms.DRAFT_ID) {
             return;
         }
 
@@ -2082,6 +2107,12 @@ public class Main extends javax.swing.JFrame {
                 throw new IllegalArgumentException("Message is null for Message Id: " + messageId);
             }
 
+            //23/10/19 NDP: No wait for DRAFT
+            int folderId = getSelectedFolderId();
+            if (folderId == Parms.DRAFT_ID) {
+                return message;
+            }
+            
             if (message.isUpdateComplete()) {
                 break;
             }

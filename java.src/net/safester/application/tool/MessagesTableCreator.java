@@ -46,6 +46,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import net.safester.application.Main;
+import static net.safester.application.Main.DEBUG;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -64,6 +65,8 @@ import org.awakefw.file.api.util.HtmlConverter;
  */
 public class MessagesTableCreator {
 
+    public static boolean DEBUG = false;
+        
     private JFrame parent;
     
     /** The National language  messages */
@@ -389,14 +392,17 @@ public class MessagesTableCreator {
     
    private void jTableMessages_mouseClicked(MouseEvent e) {
 
+        debug("CLICKED: jTableMessages_mouseClicked()");
+
         if (parent instanceof Main) {
             Main caller = (Main) parent;
 
             if (e.getClickCount() >= 2) {
+                debug("CLICKED: caller.openSelectedMessage()");
                 caller.openSelectedMessage();
             }
-     }
-   }
+        }
+    }
 
    private void jTableMessages_mousePressedOrReleased(MouseEvent e) {
 
@@ -443,5 +449,14 @@ public class MessagesTableCreator {
         }
 
         return recipients;
+    }
+    
+        /**
+     * debug tool
+     */
+    private void debug(String s) {
+        if (DEBUG) {
+            System.out.println(s);
+        }
     }
 }

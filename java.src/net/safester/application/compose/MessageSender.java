@@ -117,7 +117,7 @@ public class MessageSender {
 
         if (!message.getIsWithAttachment()) {
             if(isDraft){
-                mailComposer.uploadDraft();
+                //mailComposer.uploadDraft();
             }
             else{
 

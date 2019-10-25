@@ -25,7 +25,9 @@ package net.safester.application.compose;
 
 import java.sql.Connection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -53,6 +55,8 @@ public class RecipientsEmailBuilder {
 
     private String firstInvalidEmail = null;
     private int recipientType;
+    
+    private Map<String, String> names = new HashMap<>();
     
     /**
      * @param connection        the jdbc connection
@@ -88,6 +92,15 @@ public class RecipientsEmailBuilder {
         return firstInvalidEmail;
     }
     
+    public String getName(String emailAddress) {
+        String name = "";
+        if (names.get(emailAddress) != null)
+        { 
+            name = names.get(emailAddress);
+        }
+        return name;
+    }
+        
     /**
      * Builds the list of emails addresses that will receive the message
      * @return the list of emails addresses tthat will receive the message
@@ -127,7 +140,7 @@ public class RecipientsEmailBuilder {
 
                 // Nice class that does all the dirt work of name/email split!
                 EmailUser emailUser = new EmailUser(recipientValue);
-
+                
                 if (!emailUser.isEmailSyntaxValid()) {
                     firstInvalidEmail = recipientValue;
                     return new Vector<String>();
@@ -138,8 +151,9 @@ public class RecipientsEmailBuilder {
                 if (emailAddress != null) {
                     emailAddress = emailAddress.toLowerCase();
                 }
-
-                emailsList.add(emailAddress);                  
+                
+                emailsList.add(emailAddress);   
+                names.put(emailAddress, emailUser.getName());
             }          
         }
 
@@ -165,5 +179,7 @@ public class RecipientsEmailBuilder {
             System.out.println(new Date() + " " + s);
         }
     }
+
+
     
 }

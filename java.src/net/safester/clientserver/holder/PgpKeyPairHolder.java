@@ -41,7 +41,7 @@ import net.safester.clientserver.PgpKeyPairLocal;
  */
 public class PgpKeyPairHolder {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * The static user settings in memory

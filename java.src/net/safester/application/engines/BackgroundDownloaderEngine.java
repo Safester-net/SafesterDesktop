@@ -205,7 +205,7 @@ public class BackgroundDownloaderEngine extends Thread
             }
             catch (Exception e)
             {
-                System.err.println(body + ": bodys id. FAIL TO DECRYPT BODY!");
+                System.err.println(body + ": bodys id. FAIL TO DECRYPT BODY: " + e);
             }
             
             List<AttachmentInfoDTO> attachmentInfoDTOList = messageDTO.getAttachments();

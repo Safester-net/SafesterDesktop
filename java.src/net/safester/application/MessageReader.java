@@ -101,7 +101,7 @@ import org.awakefw.file.api.client.AwakeFileSession;
 
 public class MessageReader extends javax.swing.JFrame {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     private ClipboardManager clipboardManager;
     private MessagesManager messages = new MessagesManager();

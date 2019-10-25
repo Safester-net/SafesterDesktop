@@ -44,7 +44,6 @@ public class PublicKeyGetter {
     /**
      * Constructor. 
      * @param connection
-     * @param userNumber	the user Number to get the public key for
      */
     public PublicKeyGetter(Connection connection) {
 	
@@ -67,6 +66,7 @@ public class PublicKeyGetter {
 
     /**
      * Returns the PGP public key asc block for the passed number.
+     * @param userEmailAddr
      * @return
      * @throws SQLException
      */

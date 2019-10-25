@@ -264,7 +264,7 @@ public class MessageDownloadEngine extends Thread {
                 }
 
             } catch (Exception e) {
-                System.err.println(body + ": bodys id. FAIL TO DECRYPT BODY!");
+                System.err.println(body + ": bodys id. FAIL TO DECRYPT BODY: " + e);
                 body = "*** Can not decrypt Body ***";
             }
 

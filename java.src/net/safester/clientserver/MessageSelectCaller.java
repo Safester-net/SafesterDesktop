@@ -28,16 +28,15 @@ import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.awakefw.commons.api.client.RemoteException;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.kawansoft.httpclient.KawanHttpClient;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 import net.safester.application.http.ApiMessages;
 import net.safester.application.http.KawanHttpClientBuilder;
@@ -50,7 +49,7 @@ import net.safester.noobs.clientserver.RecipientLocal;
 
 public class MessageSelectCaller {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * The user number
@@ -91,7 +90,7 @@ public class MessageSelectCaller {
         if (this.limitClause == null) {
             throw new NullPointerException("limitClause is null!");
         }
-
+        
         AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
@@ -194,6 +193,11 @@ public class MessageSelectCaller {
     int count() throws SQLException, IllegalArgumentException, UnknownHostException, ConnectException, RemoteException,
             IOException {
 
+        if (folderId == Parms.DRAFT_ID) {
+            MessageSelectCallerDraft messageSelectCallerDraft = new MessageSelectCallerDraft(userNumber);
+            return messageSelectCallerDraft.count();
+        }
+                
         AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
         KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
@@ -215,6 +219,10 @@ public class MessageSelectCaller {
             System.out.println(string);
         }
 
+    }
+
+    private MessageLocalStore getDraftMessageLocalStore() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

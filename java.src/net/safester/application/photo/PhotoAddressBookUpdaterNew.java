@@ -82,6 +82,7 @@ import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.TableUtil;
+import net.safester.clientserver.UserNumberGetterClient;
 import net.safester.clientserver.UserPhotoLocal;
 import net.safester.noobs.clientserver.AddressBookListTransfer;
 import net.safester.noobs.clientserver.AddressBookNewLocal;
@@ -753,7 +754,14 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
                 
                 recipients += fullAddress + "; ";
             }
-            new MessageComposer(this.parent, null, userId, connection, recipients).setVisible(true);
+            
+            try {
+                String userEmailAddr = new UserNumberGetterClient(connection).getLoginFromUserNumber(userId);
+                new MessageComposer(this.parent, userEmailAddr, userId, connection, recipients).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(PhotoAddressBookUpdaterNew.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }
 

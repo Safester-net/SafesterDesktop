@@ -41,7 +41,6 @@ import net.safester.application.engines.WaiterEngine;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.util.CacheFileHandler;
 import net.safester.clientserver.specs.ListTransfer;
-import net.safester.clientserver.test.AttachmentListTransferTest;
 import net.safester.clientserver.util.FileNameConverter;
 import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
@@ -142,16 +141,7 @@ public class AttachmentListTransfer implements ListTransfer<AttachmentLocal>
             // Nothing done in emulation mode
         }
         
-        if (awakeFileSession == null)
-        {
-            if(parent instanceof AttachmentListTransferTest)
-            {
-                AttachmentListTransferTest attachmentListTransferTest = (AttachmentListTransferTest)parent;
-                attachmentListTransferTest.addText("serverCallerNew is null");
-            }
-            return;
-        }
-        
+
         List<File> files = new Vector<File>();           
         List<String> remoteFilesPath = new Vector<String>();
         CacheFileHandler cacheFileHandler = new CacheFileHandler();
@@ -182,11 +172,6 @@ public class AttachmentListTransfer implements ListTransfer<AttachmentLocal>
             debug("local  attachmentFile: " + attachmentFile);
             debug("remote remoteFilePath: " + remoteFilePath);
             
-            if(parent instanceof AttachmentListTransferTest)
-            {
-                AttachmentListTransferTest attachmentListTransferTest = (AttachmentListTransferTest)parent;
-                attachmentListTransferTest.addText("remoteFilePath: " + remoteFilePath);
-            }
         }
         
         // And now, start the listener & the engine

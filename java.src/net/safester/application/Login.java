@@ -102,7 +102,7 @@ import net.safester.clientserver.SubscriptionLocal;
  */
 public class Login extends javax.swing.JFrame {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG  = false;
     public static int MAX_SIZE = 425;
     /**
      * Called windows instances

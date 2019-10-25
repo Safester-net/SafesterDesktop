@@ -6,6 +6,7 @@ package net.safester.application.http;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
+import java.sql.Connection;
 
 import org.awakefw.commons.api.client.HttpProxy;
 import org.awakefw.file.api.client.AwakeFileSession;
@@ -89,6 +90,15 @@ public class KawanHttpClientBuilder {
 	kawanHttpClient = build(httpProxy);
 
 	return kawanHttpClient;
+    }
+
+    public static KawanHttpClient buildFromAwakeConnection(Connection connection) {
+	if (connection == null) {
+	    throw new NullPointerException("connection is null!");
+	}
+	
+	AwakeConnection awakeConnection = (AwakeConnection) connection;
+	return buildFromAwakeConnection(awakeConnection);
     }
 
 

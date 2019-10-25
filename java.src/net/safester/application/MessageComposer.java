@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -44,7 +45,6 @@ import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -84,14 +84,28 @@ import org.awakefw.sql.api.client.AwakeConnection;
 import com.keyoti.rapidSpell.LanguageType;
 import com.keyoti.rapidSpell.desktop.RapidSpellAsYouType;
 import com.safelogic.utilx.StringMgr;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import com.swing.util.SwingUtil;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
 import net.atlanticbb.tantlinger.ui.text.HTMLUtils;
-import net.safester.application.compose.MessageSender;
 import net.safester.application.compose.RecipientsEmailBuilder;
+import net.safester.application.compose.api.ApiMessageSender;
+import net.safester.application.compose.api.IncomingAttachementDTOUtil;
+import net.safester.application.compose.api.PGPPublicKeysBuilder;
+import net.safester.application.compose.api.PgpTextEncryptor;
+import net.safester.application.compose.api.drafts.MessageDraftManager;
+import net.safester.application.compose.api.engines.ApiEncryptAttachmentsUsingThread;
 import net.safester.application.engines.ThreadLocker;
+import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.http.dto.IncomingAttachementDTO;
+import net.safester.application.http.dto.IncomingMessageDTO;
+import net.safester.application.http.dto.IncomingRecipientDTO;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
@@ -130,9 +144,11 @@ import net.safester.clientserver.holder.TheUserSettingsHolder;
 import net.safester.clientserver.holder.UserCompletionHolder;
 import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
-import net.safester.noobs.clientserver.PendingMessageUserLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 import net.safester.noobs.clientserver.UserSettingsLocal;
+import org.awakefw.commons.api.client.AwakeProgressManager;
+import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
+import org.bouncycastle.openpgp.PGPPublicKey;
 
 /**
  * Main window for composing a message.
@@ -150,9 +166,7 @@ public class MessageComposer extends javax.swing.JFrame {
      * The visual debug flag, if we want to see tthe html content
      */
     public static boolean VISUAL_DEBUG = false;
-
-    /* Lexicon is static so it's not reloaded */
-    private static Set<String> lexicon = null;
+    
     //Index of buttons (for AddressBook)
     public static final int BUTTON_TO = 0;
     public static final int BUTTON_CC = 1;
@@ -181,13 +195,24 @@ public class MessageComposer extends javax.swing.JFrame {
     JFrame caller;
     private int userNumber;
     private char[] passphrase;
-    private MessageLocal message;
-    private List<RecipientLocal> recipients;
+    
+    // BEGIN OLD FIELDS 
+    //private MessageLocal message;
+    //private List<RecipientLocal> recipients;
+    // END OLD FIELDS 
+    
+    // BEGIN NEW FIELDS 
+    private IncomingMessageDTO incomingMessageDTO = null;
+    private List<IncomingRecipientDTO> incomingRecipientsDTO = null;
+    // END NEW FIELDS     
+    
     private Set<String> recipientKeyList;
+
+           
     //private List<String> emailsToInvite;
     public static final String CR_LF = System.getProperty("line.separator");
     private String signature;
-    private int messageId = -1;
+    //private int messageId = -1;
     private boolean isChanged = false;
     private String keyId = null;
     /**
@@ -199,8 +224,16 @@ public class MessageComposer extends javax.swing.JFrame {
     private TextSearchFrame textSearchFrame = null;
     private TextReplaceFrame textReplaceFrame = null;
 
+    private int folderId = -1;
+    private int messageId = -1;
+    
     /**
      * Creates new form MailComposer
+     * @param caller
+     * @param keyId
+     * @param theConnection
+     * @param userNumber
+     * @param thePassphrase
      */
     public MessageComposer(JFrame caller, String keyId, int userNumber, char[] thePassphrase, Connection theConnection) {
 
@@ -226,13 +259,34 @@ public class MessageComposer extends javax.swing.JFrame {
 
     public MessageComposer(JFrame caller, String keyId, int userNumber, char[] thePassphrase, Connection connection, MessageLocal message, int action) {
         this(caller, keyId, userNumber, thePassphrase, connection);
+        
+        //Remove attachments in case of drafts
+        if (message.getFolderId() == Parms.DRAFT_ID) {
+            // Put files to attach in jListAttach
+            List<AttachmentLocal> attachmentLocalList = message.getAttachmentLocal();
+            if (attachmentLocalList != null) {
+                for (AttachmentLocal attachmentLocal : attachmentLocalList) {
+                    fileListManager.add(new File(attachmentLocal.getFileName()));
+                }
+                // Set to null the instance to avoid problems
+                message.setAttachmentLocal(null);
+            }
+            
+            message.setSenderUserNumber(userNumber);
+        }
+        
         initMessageComponent(message, action);
+        
         if (message.getFolderId() == Parms.DRAFT_ID) {
             //If we just opened a Draft no need to indicate that message had been changed
             isChanged = false;
             String title = thisOne.getTitle();
             title = StringUtils.removeEnd(title, "*");
             thisOne.setTitle(title);
+            folderId = Parms.DRAFT_ID;
+            messageId = message.getMessageId(); // required for drafts save
+
+
         }
     }
 
@@ -434,9 +488,22 @@ public class MessageComposer extends javax.swing.JFrame {
 
             if (connection != null) {
 
+                //TODO: fix this. Dirty. Sometimes, keyId can be null (call from Address Book)
+                if (keyId == null) {
+                    System.out.println("WARNING! keyId is null in MessageComposer!");
+                    //UserLoginTransfert userLoginTransfert = new UserLoginTransfert(connection, this.userNumber);
+                    //UserLoginLocal userLoginLocal = userLoginTransfert.get();
+                    //keyId = userLoginLocal.getKey_id();
+                    keyId = new UserNumberGetterClient(connection).getLoginFromUserNumber(this.userNumber);
+                }
+                
                 debug(new Date() + " instal completion...");
-                installCompletion();
-                debug(new Date() + " completion installed.");
+                try {
+                    installCompletion();
+                    debug(new Date() + " completion installed.");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, this.messages.getMessage("can_not_install_completion") + " " + e.getMessage());
+                }
 
                 TheUserSettingsHolder theUserSettingsHolder = new TheUserSettingsHolder(connection, userNumber);
                 UserSettingsLocal userSettingsLocal = theUserSettingsHolder.get();
@@ -444,18 +511,6 @@ public class MessageComposer extends javax.swing.JFrame {
                 if (UserPrefManager.getBooleanPreference(UserPrefManager.INSERT_SIGNATURE)) {
                     signature = userSettingsLocal.getSignature();
                 }
-
-                //TODO: fix this. Dirty. Sometimes, keyId can be null (call from Address Book)
-                if (keyId == null) {
-                    System.out.println("WARNING! keyId is null in MessageComposer!");
-                    //UserLoginTransfert userLoginTransfert = new UserLoginTransfert(connection, this.userNumber);
-                    //UserLoginLocal userLoginLocal = userLoginTransfert.get();
-                    //keyId = userLoginLocal.getKey_id();
-                    
-                    keyId = new UserNumberGetterClient(connection).getLoginFromUserNumber(this.userNumber);
-                    
-                }
-
                 jToggleButtonSendAnonymousNotification.setSelected(userSettingsLocal.getSend_anonymous_notification_on());
             }
 
@@ -494,14 +549,13 @@ public class MessageComposer extends javax.swing.JFrame {
             htmlEditor.getEditor().setCaretPosition(0);
             htmlEditor.getEditor().setSelectionEnd(1);
 
-//            System.out.println("BEGIN editor.getText() :"
+//            debug("BEGIN editor.getText() :"
 //                    + CR_LF + htmlEditor.getText() + ":"
 //                    + CR_LF
 //                    + "END editor.getText()");
         } catch (Exception e) {
             e.printStackTrace();
             this.setCursor(Cursor.getDefaultCursor());
-
             JOptionPaneNewCustom.showException(this, e);
         }
 
@@ -802,7 +856,7 @@ public class MessageComposer extends javax.swing.JFrame {
             //Empty current selection
             if (htmlEditor.getEditor().getSelectionStart() != htmlEditor.getEditor().getSelectionEnd()) {
                 htmlEditor.getEditor().replaceSelection("");
-                System.out.println("replace!!!");
+                debug("pasteTextWithBr(): replace!!!");
             }
 
             HTMLUtils.insertHTML("<img src=safester_tag>", HTML.Tag.IMG, htmlEditor.getEditor());
@@ -910,10 +964,16 @@ public class MessageComposer extends javax.swing.JFrame {
         // Add completion to to and cc text area
         UserCompletionHolder userCompletionHolder = new UserCompletionHolder(connection, userNumber);
 
-        if (lexicon == null) {
-            lexicon = userCompletionHolder.getLexicon();
+        // HACK: lexicon must now be global
+              
+        LexiconStore lexiconStore = new LexiconStore(keyId);
+        if (! lexiconStore.existsLexicon()) {
+            Set<String> lexiconForKeyId = userCompletionHolder.getLexicon();
+            lexiconStore.addLexicon(lexiconForKeyId);
         }
 
+        Set<String> lexicon = LexiconStore.getAllLexicons();
+        
         powerEditorTo = new PowerEditor(lexicon, this, jTextAreaRecipientsTo);
         jPanelScrollPaneTo.remove(jScrollPaneTo);
         jScrollPaneTo = new JScrollPane(powerEditorTo);
@@ -970,8 +1030,8 @@ public class MessageComposer extends javax.swing.JFrame {
 
     private void editMessage(MessageLocal message) {
 
-        this.messageId = message.getMessageId();
-        this.message = message;
+        //this.messageId = message.getMessageId();
+        //this.message = message;
 
         this.jTextFieldSubject.setText(message.getSubject());
         this.setTitle(this.jTextFieldSubject.getText());
@@ -1389,14 +1449,52 @@ public class MessageComposer extends javax.swing.JFrame {
     }
 
     private void saveAsDraft() {
+        
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             this.htmlEditor.getEditor().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            int isOk = buildMessage(true);
+            int statusBuild = buildMessage();
+            
+            if (statusBuild == RECIPIENT_OK ) {
+ 
+                PGPPublicKeysBuilder pGPPublicKeysBuilder = new PGPPublicKeysBuilder(recipientKeyList, connection);
+                List<PGPPublicKey> pGPPublicKeyList = pGPPublicKeysBuilder.buildPGPPublicKeys();
 
-            if (isOk == MessageComposer.RECIPIENT_NOT_SET || isOk == MessageComposer.RECIPIENT_OK) {
-                MessageSender messageSender = new MessageSender(this, connection, message, recipientKeyList);
-                messageSender.saveAsDraft();
+                PgpTextEncryptor pgpTextEncryptor = new PgpTextEncryptor(pGPPublicKeyList);
+                String encrypted = pgpTextEncryptor.encrypt(incomingMessageDTO.getBody());
+                incomingMessageDTO.setBody(encrypted);
+                encrypted = pgpTextEncryptor.encrypt(incomingMessageDTO.getSubject());
+                incomingMessageDTO.setSubject(encrypted);
+                
+                debug("incomingMessageDTO saved: " + incomingMessageDTO);
+   
+                // Afd file paths to dratfs
+                // Empty Attachment info but real files info
+                List<IncomingAttachementDTO> incomingAttachementDTOListEmpty = new ArrayList<>();
+                incomingMessageDTO.setAttachments(incomingAttachementDTOListEmpty);
+                List<String> filesToAttach = new ArrayList<>();
+                for (File file : fileListManager.getFiles()) {
+                    filesToAttach.add(file.toString());
+                }
+                incomingMessageDTO.setFileToAttachList(filesToAttach);
+                
+                MessageDraftManager messageDraftSaver = new MessageDraftManager(userNumber);
+                messageDraftSaver.save(incomingMessageDTO);
+                
+                if (getCaller() instanceof Main) {
+                    Main theMain = getCaller();
+                    theMain.createTable();
+                }
+  
+                this.setCursor(Cursor.getDefaultCursor());
+                this.htmlEditor.getEditor().setCursor(Cursor.getDefaultCursor());
+                this.isChanged = false;
+                
+//                if (fileListManager.getFiles() != null && ! fileListManager.getFiles().isEmpty()) {
+//                   JDialogDiscardableMessage jDialogDiscardableMessage = 
+//                           new JDialogDiscardableMessage(thisOne, messages.getMessage("attachments_are_not_saved_in_drafts"));;
+//                }
+                
             } else {
                 this.setCursor(Cursor.getDefaultCursor());
                 this.htmlEditor.getEditor().setCursor(Cursor.getDefaultCursor());
@@ -1404,9 +1502,12 @@ public class MessageComposer extends javax.swing.JFrame {
                 this.isChanged = true;
             }
         } catch (Exception exception) {
+            this.setCursor(Cursor.getDefaultCursor());
+            this.htmlEditor.getEditor().setCursor(Cursor.getDefaultCursor());
             exception.printStackTrace();
             JOptionPaneNewCustom.showException(this, exception);
         }
+        
     }
 
     private void sendMessage() {
@@ -1421,7 +1522,7 @@ public class MessageComposer extends javax.swing.JFrame {
         }
 
         try {
-            statusSend = buildMessage(false);
+            statusSend = buildMessage();
         } catch (Exception e) {
             e.printStackTrace(System.err);
             this.setCursor(Cursor.getDefaultCursor());
@@ -1474,15 +1575,38 @@ public class MessageComposer extends javax.swing.JFrame {
                 return; // Do nothing
             }
             
-            System.out.println("BEGIN BODY");
-            System.out.println(message.getBody());
-            System.out.println("END BODY");
+            debug("BEGIN BODY");
+            debug(incomingMessageDTO.getBody());
+            debug("END BODY");
 
             // We are now locked ==> Send message.
             try {
+                /*
                 MessageLocalStoreCache.remove(Parms.OUTBOX_ID);
                 MessageSender messageSender = new MessageSender(this, connection, message, recipientKeyList);
                 messageSender.send();
+                */
+                List<File> enuncryptedFiles = fileListManager.getFiles();
+                                
+                AwakeConnection awakeConnection = (AwakeConnection) connection;
+                KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(connection);
+                AwakeProgressManager awakeProgressManager = new DefaultAwakeProgressManager();  
+  
+                PGPPublicKeysBuilder pGPPublicKeysBuilder = new PGPPublicKeysBuilder(recipientKeyList, connection);
+                List<PGPPublicKey> pGPPublicKeyList = pGPPublicKeysBuilder.buildPGPPublicKeys();
+
+                PgpTextEncryptor pgpTextEncryptor = new PgpTextEncryptor(pGPPublicKeyList);
+                String bodyEncrypted = pgpTextEncryptor.encrypt(incomingMessageDTO.getBody());
+                incomingMessageDTO.setBody(bodyEncrypted);
+                
+                ApiMessageSender apiMessageSender = new ApiMessageSender(kawanHttpClient,
+		incomingMessageDTO.getSenderEmailAddr(), awakeConnection.getAuthenticationToken(), incomingMessageDTO, enuncryptedFiles,
+		awakeProgressManager);
+	        
+                ApiEncryptAttachmentsUsingThread apiEncryptAttachmentsUsingThread = new ApiEncryptAttachmentsUsingThread(
+                        apiMessageSender, pGPPublicKeyList, this);
+                apiEncryptAttachmentsUsingThread.encryptAndsendMessage();
+        
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPaneNewCustom.showException(this.caller, e);
@@ -1565,18 +1689,36 @@ public class MessageComposer extends javax.swing.JFrame {
      *
      * @return
      */
-    private int buildMessage(boolean isDraft) {
+    private int buildMessage() {
 
-        String body = htmlEditor.getText();
+        //String body = htmlEditor.getText();
 
-        if (message == null) {
-            message = new MessageLocal();
+        if (incomingMessageDTO == null) {
+            incomingMessageDTO = new IncomingMessageDTO();
         }
 
-        message.setSenderUserNumber(this.userNumber);
-        message.setBody("<br>" + htmlEditor.getText());
-
-        String text = message.getBody();
+        // Required for DRAFT identification
+        if (this.messageId > 0) {
+            incomingMessageDTO.setMessageId(messageId);
+        }
+        else {
+            incomingMessageDTO.setMessageId(-1);
+        }
+        
+        //message.setSenderUserNumber(this.userNumber);
+        //message.setBody("<br>" + htmlEditor.getText());
+        incomingMessageDTO.setDesktopCreation(true);
+        incomingMessageDTO.setSenderEmailAddr(keyId);
+        
+        // 23/10/19 HACK NDP: for drafts, do not repeat operation
+        if (folderId != Parms.DRAFT_ID) {
+            incomingMessageDTO.setBody("<br>" + htmlEditor.getText());
+        }
+        else {
+            incomingMessageDTO.setBody(htmlEditor.getText());
+        }
+        
+        String text = incomingMessageDTO.getBody();
 
         if (VISUAL_DEBUG) {
             JOptionPane.showMessageDialog(this, text);
@@ -1588,23 +1730,22 @@ public class MessageComposer extends javax.swing.JFrame {
             return MessageComposer.RECIPIENT_NOT_SET;
         }
 
-        if (!recipientSet() && !isDraft) {
+        if (!recipientSet()) {
             JOptionPane.showMessageDialog(this, messages.getMessage("no_recipient_set"));
             return MessageComposer.RECIPIENT_NOT_SET;
         }
 
         if (DEBUG) {
-            System.out.println("-BEGIN message.setBody(editor.getText(): ");
-            System.out.println(htmlEditor.getText());
-            System.out.println("-END   message.setBody(editor.getText(): ");
+            debug("-BEGIN message.setBody(editor.getText(): ");
+            debug(htmlEditor.getText());
+            debug("-END   message.setBody(editor.getText(): ");
         }
 
-        message.setPrintable(!jToggleButtonNoPrint.isSelected());
-        message.setFowardable(!jToggleButtonNoFoward.isSelected());
+        incomingMessageDTO.setPrintable(!jToggleButtonNoPrint.isSelected());
+        incomingMessageDTO.setFowardable(!jToggleButtonNoFoward.isSelected());
+        incomingMessageDTO.setAnonymousNotification(jToggleButtonSendAnonymousNotification.isSelected());
 
-        message.setAnonymousNotification(jToggleButtonSendAnonymousNotification.isSelected());
-
-        long sizeMessage = message.getBody().length();
+        long sizeMessage = incomingMessageDTO.getBody().length();
         short userSubscription = SubscriptionLocalStore.getSubscription();
 
         if (sizeMessage > StoreParms.getBodyLimitForSubscription(userSubscription)) {
@@ -1624,8 +1765,16 @@ public class MessageComposer extends javax.swing.JFrame {
             return MessageComposer.MESSAGE_SIZE_EXCEEDED;
         }
 
-        List<AttachmentLocal> attachments = buildAttachList();
-
+        //List<AttachmentLocal> attachments = buildAttachList();
+        
+        List<IncomingAttachementDTO> attachments = null;
+        try {
+            attachments = IncomingAttachementDTOUtil.getAttachmentsAddingPgpExt(fileListManager.getFiles());
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(MessageComposer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, messages.getMessage("can_not_attach_file") + " " + ex.getMessage());
+        }
+        
         if (attachments != null && !attachments.isEmpty()) {
 
             long attachmentLength = computeAttachmentLength(attachments);
@@ -1647,31 +1796,35 @@ public class MessageComposer extends javax.swing.JFrame {
                 }
                 return MessageComposer.MESSAGE_SIZE_EXCEEDED;
             }
-            message.setIsWithAttachment(true);
-            message.setAttachmentLocal(attachments);
+            //message.setIsWithAttachment(true);
+            //message.setAttachmentLocal(attachments);
+            incomingMessageDTO.setAttachments(attachments);
         }
-
-        message.setDateMessage(new Timestamp(System.currentTimeMillis()));
+        
+        //message.setDateMessage(new Timestamp(System.currentTimeMillis()));
 
         // message.setSubject(jTextFieldSubject.getText());
         // Convert subject to Html before encryption
-        message.setSubject(HtmlConverter.toHtml(jTextFieldSubject.getText()));
+        incomingMessageDTO.setSubject(HtmlConverter.toHtml(jTextFieldSubject.getText()));
 
-        System.out.println("subject:" + message.getSubject());
-
-        message.setSizeMessage(sizeMessage);
-        recipients = new Vector<RecipientLocal>();
+        //message.setSizeMessage(sizeMessage);
+        incomingMessageDTO.setSize(sizeMessage);
+        
+        //recipients = new Vector<RecipientLocal>();
+        
+        incomingRecipientsDTO = new ArrayList<>();
         recipientKeyList = new HashSet<String>();
         recipientKeyList.add(keyId);
 
         int recipientStatus = MessageComposer.RECIPIENT_OK;
+        
         int rc = buildRecipientList(jTextAreaRecipientsTo, Parms.RECIPIENT_TO);
         if (rc != MessageComposer.RECIPIENT_OK) {
             recipientStatus = rc;
         }
 
         // HACK NDP
-        System.out.println("jTextAreaRecipientsCc: " + jTextAreaRecipientsCc.getText() + ":");
+        //debug("jTextAreaRecipientsCc: " + jTextAreaRecipientsCc.getText() + ":");
 
         rc = buildRecipientList(jTextAreaRecipientsCc, Parms.RECIPIENT_CC);
 
@@ -1689,28 +1842,27 @@ public class MessageComposer extends javax.swing.JFrame {
 
             int recipientsLimit = StoreParms.getRecipientsLimitForSubscription(SubscriptionLocalStore.getSubscription());
 
-            if (recipients.size() > recipientsLimit) {
+            if (incomingRecipientsDTO.size() > recipientsLimit) {
 
                 String htmlMessage = HtmlTextUtil.getHtmlHelpContent("upgrade_for_recipients_number");
                 String productName = StoreParms.getProductNameForSubscription(userSubscription);
 
-                htmlMessage = MessageFormat.format(htmlMessage, recipients.size(), productName, recipientsLimit);
+                htmlMessage = MessageFormat.format(htmlMessage, recipientKeyList.size(), productName, recipientsLimit);
                 new UnavailableFeatureDialog(null, this.userNumber, this.connection, htmlMessage, true).setVisible(true);
 
                 return MessageComposer.RECIPIENT_INVALID;
             }
 
-            message.setRecipientLocal(recipients);
+            incomingMessageDTO.setRecipients(incomingRecipientsDTO);
         }
         return recipientStatus;
 
     }
 
-    private long computeAttachmentLength(List<AttachmentLocal> attachments) {
+    private long computeAttachmentLength(List<IncomingAttachementDTO> attachments) {
         long totalLength = 0;
-        for (AttachmentLocal attachmentLocal : attachments) {
-            File f = new File(attachmentLocal.getFileName());
-            totalLength += f.length();
+        for (IncomingAttachementDTO attachment : attachments) {
+            totalLength += attachment.getSize();
         }
         return totalLength;
     }
@@ -1731,23 +1883,49 @@ public class MessageComposer extends javax.swing.JFrame {
         return recipientSet;
     }
 
-    public void putMessage() throws SQLException {
+    public void putMessage() {
 
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-            this.jTextFieldSubject.setText(message.getSubject());
-            this.htmlEditor.setText(message.getBody().replaceAll(System.getProperty("line.separator"), "<br>"));
-
+            this.jTextFieldSubject.setText(incomingMessageDTO.getSubject());
+            this.htmlEditor.setText(incomingMessageDTO.getBody().replaceAll(System.getProperty("line.separator"), "<br>"));
+            
             rapidAYT.setTextComponent(null);
             this.htmlEditor.setCaretPosition(0);
 
             JDialogDiscardableMessage pgeepShowDiscardableMessage = new JDialogDiscardableMessage(thisOne, messages.getMessage("message_encrypted"));
-            uploadMessage();
+            
+            //uploadMessage();
+            this.requestFocus();
+            this.isChanged = false;
+            //String title = thisOne.getTitle();
+            //title = StringUtils.removeEnd(title, "*");
+
+            // Delete the Draft
+           if (folderId == Parms.DRAFT_ID && messageId > 0) {
+                MessageDraftManager messageDraftSaver = new MessageDraftManager(userNumber);
+                List<Integer> messageIdList = new ArrayList<>();
+                messageIdList.add(messageId);
+                try {
+                    messageDraftSaver.delete(messageIdList);
+                } catch (IOException ex) {
+                    Logger.getLogger(MessageComposer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (caller instanceof Main) {
+                    MessageLocalStoreCache.remove(Parms.OUTBOX_ID);
+                    Main main = (Main) caller;
+                                   main.createTable();
+                }
+            }
+            
+            //Close windows-
+            this.dispose();
+            
             new ThreadLocker().unlock();
         } finally {
             this.setCursor(Cursor.getDefaultCursor());
-            this.htmlEditor.setText(message.getBody().replaceAll("<br>", System.getProperty("line.separator")));
+            this.htmlEditor.setText(incomingMessageDTO.getBody().replaceAll("<br>", System.getProperty("line.separator")));
             //enableSendAction(true);
         }
 
@@ -1763,6 +1941,7 @@ public class MessageComposer extends javax.swing.JFrame {
         this.htmlEditor.setEnabled(enable);
     }
 
+    /*
     public void uploadDraft() throws SQLException {
 
         if (caller instanceof Main) {
@@ -1779,8 +1958,8 @@ public class MessageComposer extends javax.swing.JFrame {
         this.isChanged = false;
 
         if (caller instanceof Main) {
-            Main safeShareItMain = (Main) caller;
-            safeShareItMain.createTable();
+            Main theMain = (Main) caller;
+            theMain.createTable();
         }
 
         String title = thisOne.getTitle();
@@ -1790,14 +1969,17 @@ public class MessageComposer extends javax.swing.JFrame {
 
         this.requestFocus();
     }
-
+    */
+    
+    /*
     private void uploadMessage() throws SQLException {
+        
         if (this.messageId != -1) {
             message.setMessageId(messageId);
             //Delete draft
             if (caller instanceof Main) {
-                Main safeShareItMain = (Main) caller;
-                safeShareItMain.deleteMessage(message.getMessageId(), Parms.DRAFT_ID);
+                Main theMain = (Main) caller;
+                theMain.deleteMessage(message.getMessageId(), Parms.DRAFT_ID);
                 this.requestFocus();
             }
         }
@@ -1815,6 +1997,7 @@ public class MessageComposer extends javax.swing.JFrame {
         this.dispose();
 
     }
+    */
 
     private int buildRecipientList(JTextArea textArea, int recipientType) {
 
@@ -1823,7 +2006,10 @@ public class MessageComposer extends javax.swing.JFrame {
             textArea = MessageComposerNotarization.addEmailBccNotarization(rootPane, textArea, this.keyId, this.connection);
         }
 
-        List<RecipientLocal> bufferRecipients = new Vector<RecipientLocal>();
+        //List<RecipientLocal> bufferRecipients = new Vector<RecipientLocal>();
+        
+        List<IncomingRecipientDTO> bufferRecipients = new ArrayList<>();
+        
         if (textArea.getText() == null) {
             return MessageComposer.RECIPIENT_NOT_SET;
         }
@@ -1843,14 +2029,19 @@ public class MessageComposer extends javax.swing.JFrame {
             }
 
             for (String emailAddress : emailsList) {
-                int recipientUserNumber = - 1; // We don't care ==> not used any more
+                //int recipientUserNumber = - 1; // We don't care ==> not used any more
 
-                RecipientLocal recipient = new RecipientLocal();
-                recipient.setUserNumber(recipientUserNumber);
-                recipient.setTypeRecipient(recipientType);
-                recipient.setNameRecipient(emailAddress);
-                recipient.setRecipientPosition(position++);
+//                RecipientLocal recipient = new RecipientLocal();
+//                recipient.setUserNumber(recipientUserNumber);
+//                recipient.setTypeRecipient(recipientType);
+//                recipient.setNameRecipient(emailAddress);
+//                recipient.setRecipientPosition(position++);
 
+                IncomingRecipientDTO recipient = new IncomingRecipientDTO();
+                recipient.setRecipientType(recipientType);
+                recipient.setRecipientName(recipientsEmailBuilder.getName(emailAddress));
+                recipient.setRecipientEmailAddr(emailAddress);
+                              
                 bufferRecipients.add(recipient);
 
                 this.recipientKeyList.add(emailAddress);
@@ -1860,7 +2051,9 @@ public class MessageComposer extends javax.swing.JFrame {
             JOptionPaneNewCustom.showException(rootPane, e);
         }
 
-        recipients.addAll(bufferRecipients);
+        //recipients.addAll(bufferRecipients);
+        incomingRecipientsDTO.addAll(bufferRecipients);
+        
         return MessageComposer.RECIPIENT_OK;
     }
 

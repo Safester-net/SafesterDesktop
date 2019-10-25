@@ -151,6 +151,7 @@ public class FileListManager extends AbstractFileListManager
      * may be called by outside program
      * @param files     Files to add
      */
+    @Override
     public void add(File[] files)
     {
         boolean forbidenFileDetected = false;

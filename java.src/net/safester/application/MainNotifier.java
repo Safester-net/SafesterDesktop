@@ -25,12 +25,14 @@ package net.safester.application;
 
 import java.awt.TrayIcon;
 import java.sql.Connection;
+import java.util.Date;
+
+import org.awakefw.file.api.util.HtmlConverter;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.util.UserPrefManager;
 import net.safester.clientserver.MessageLocalStore;
 import net.safester.noobs.clientserver.MessageLocal;
-import org.awakefw.file.api.util.HtmlConverter;
 
 /**
  * 
@@ -41,6 +43,8 @@ import org.awakefw.file.api.util.HtmlConverter;
  */
 public class MainNotifier {
 
+    public static boolean DEBUG = true;
+        
     private MessageLocalStore messageLocalStore = null;
     private CryptTray cryptTray = null;
     private int userNumber = -1;
@@ -61,6 +65,8 @@ public class MainNotifier {
 	this.cryptTray = cryptTray;
 	this.userNumber = userNumber;
 	this.connection = connection;
+        
+        debug("Constructor called!");
     }
 
     // Notify if necessary
@@ -71,6 +77,9 @@ public class MainNotifier {
 	final boolean playSound = !UserPrefManager
 		.getBooleanPreference(UserPrefManager.NOTIFY_NO_PLAY_SOUND);
 
+        debug("popUpOnTaskbar: " + popUpOnTaskbar);
+        debug("playSound     : " + playSound);
+                
 	if (!popUpOnTaskbar && !playSound) {
 	    return;
 	}
@@ -134,4 +143,12 @@ public class MainNotifier {
 	t.start();
     }
 
+    /**
+     * debug tool
+     */
+    private void debug(String s) {
+        if (DEBUG) {
+            System.out.println(new Date() + " " + MainNotifier.class.getName() + " " + s);
+        }
+    }
 }

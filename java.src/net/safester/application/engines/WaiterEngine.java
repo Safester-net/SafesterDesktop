@@ -23,6 +23,8 @@
  */
 package net.safester.application.engines;
 
+import com.safelogic.utilx.Debug;
+
 /**
  * Dedicated wait engine that starts quickly a new Progress Monitor.
  * To be used when main thread is too long to start
@@ -35,7 +37,7 @@ public class WaiterEngine extends Thread
     private static final String BLANK = " ";
 
     /** The debug flag */
-    protected boolean DEBUG = true; //Debug.isSet(this);
+    protected boolean DEBUG = Debug.isSet(this);
 
    /** Current value of progression out of MAXIMUM_PROGRESS */
     private int m_current;

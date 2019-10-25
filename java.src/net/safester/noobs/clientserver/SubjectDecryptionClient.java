@@ -43,7 +43,7 @@ import net.safester.clientserver.MessageStoreExtractor;
  */
 public class SubjectDecryptionClient {
 
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
 
     private int userNumber = -1;
     /** The passphrase to use */

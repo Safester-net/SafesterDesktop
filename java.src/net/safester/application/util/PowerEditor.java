@@ -214,6 +214,10 @@ public class PowerEditor extends JPanel
                 }
             };
 
+            //HACK 23/09/19: add clean cursor over 
+            PowerEditorUtil.selectRowWhenMouseOverLine(theList);
+            theList.setCellRenderer(new PowerEditorListCellRenderer());
+        
             theList.setFont(theTextComponent.getFont());
 
             theList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -230,7 +234,7 @@ public class PowerEditor extends JPanel
         private void setEventManagement()
         {
             theList.addKeyListener(new WordMenuKeyListener());
-            theList.addMouseListener(new WordMenuMouseListener());
+            theList.addMouseListener(new WordMenuMouseListener());                        
         }
 
         private void onSelected()

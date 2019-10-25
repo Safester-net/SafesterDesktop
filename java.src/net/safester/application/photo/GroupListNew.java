@@ -66,10 +66,13 @@ import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import com.swing.util.SwingUtil;
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import net.safester.clientserver.GroupMemberCache;
+import net.safester.clientserver.UserNumberGetterClient;
 import org.apache.commons.lang3.SystemUtils;
 
 /**
@@ -567,7 +570,14 @@ public class GroupListNew extends javax.swing.JFrame {
                 recipients += groupName + "; ";
             }
             //Open Composer JFrame
-            new MessageComposer(this, null, userNumber, connection, recipients).setVisible(true);
+            
+            try {
+                String userEmailAddr = new UserNumberGetterClient(connection).getLoginFromUserNumber(userNumber);
+                new MessageComposer(this, userEmailAddr, userNumber, connection, recipients).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(PhotoAddressBookUpdaterNew.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception e) {
             this.setCursor(Cursor.getDefaultCursor());

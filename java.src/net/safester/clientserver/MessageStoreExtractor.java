@@ -23,6 +23,7 @@
  */
 package net.safester.clientserver;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
@@ -140,7 +141,7 @@ public class MessageStoreExtractor implements StoreExtractor<MessageLocalStore>
 
 
     @Override
-    public MessageLocalStore getStore() throws SQLException
+    public MessageLocalStore getStore() throws SQLException, IOException
     {
         MessageLocalStore messageLocalStore = null;
 
@@ -186,16 +187,22 @@ public class MessageStoreExtractor implements StoreExtractor<MessageLocalStore>
      * @return  the MessageLocalStore for this request
      * @throws SQLException
      */
-    private MessageLocalStore selectAndBuildStore() throws SQLException
+    private MessageLocalStore selectAndBuildStore() throws SQLException, IOException
     {
         MessageLocalStore messageLocalStore = null;
 	MessageSelectCaller messageSelectCaller = new MessageSelectCaller(userNumber, folderId, limitClause, connection);
+        
+        if (folderId == Parms.DRAFT_ID) {
+            MessageSelectCallerDraft messageSelectCallerDraft = new MessageSelectCallerDraft(userNumber, passphrase, connection);
+            return messageSelectCallerDraft.getMessageLocalStore();
+        }
         
         try {
             messageLocalStore = messageSelectCaller.selectMessages();
         } catch (Exception e) {
 	    throw new SQLException(e);
 	}
+        
         
         Set<Integer> messageIdSet = messageLocalStore.keySet();
         

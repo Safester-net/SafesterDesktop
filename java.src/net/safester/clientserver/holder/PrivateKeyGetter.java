@@ -26,7 +26,6 @@ package net.safester.clientserver.holder;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.kawansoft.httpclient.KawanHttpClient;
@@ -67,11 +66,10 @@ public class PrivateKeyGetter {
 	String userEmailAddr = new UserNumberGetterClient(connection).getLoginFromUserNumber(userNumber);
 
 	AwakeConnection awakeConnection = (AwakeConnection) connection;
-	AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-	KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+	KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(connection);
 
-	ApiKeys apiKeys = new ApiKeys(kawanHttpClient, awakeFileSession.getUsername(),
-		awakeFileSession.getAuthenticationToken());
+	ApiKeys apiKeys = new ApiKeys(kawanHttpClient, awakeConnection.getUsername(),
+		awakeConnection.getAuthenticationToken());
 	String privateKeyBlock = null;
 
 	try {

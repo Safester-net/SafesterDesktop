@@ -1,9 +1,15 @@
 package net.safester.application.http.dto;
 
+import java.io.File;
 import java.util.List;
 
 public final class IncomingMessageDTO {
 
+    // BEGIN Needed on local side only for Drafts identification
+    private int messageId = 1;
+    private List<String> fileToAttachList;
+    // END Needed on local side only for Drafts identification
+    
     private String senderEmailAddr;
     private List<IncomingRecipientDTO> recipients;
     private long size;
@@ -18,6 +24,9 @@ public final class IncomingMessageDTO {
     private boolean isEncrypted;
     private boolean isSigned;
     
+    // new value as of 14/10/19
+    private boolean anonymousNotification;
+    
     // New info that says message comes from Desktop
     private boolean isDesktopCreation = false;
 
@@ -28,6 +37,22 @@ public final class IncomingMessageDTO {
 
     }
 
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
+    public List<String> getFileToAttachList() {
+        return fileToAttachList;
+    }
+
+    public void setFileToAttachList(List<String> fileToAttachList) {
+        this.fileToAttachList = fileToAttachList;
+    }
+   
     /**
      * @return the senderEmailAddr
      */
@@ -160,12 +185,41 @@ public final class IncomingMessageDTO {
         this.isDesktopCreation = isDesktopCreation;
     }
 
-    @Override
-    public String toString() {
-	return "IncomingMessageDTO [senderEmailAddr=" + senderEmailAddr + ", recipients=" + recipients + ", size="
-		+ size + ", subject=" + subject + ", body=" + body + ", attachments=" + attachments + ", priority="
-		+ priority + ", printable=" + printable + ", fowardable=" + fowardable + ", isEncrypted=" + isEncrypted
-		+ ", isSigned=" + isSigned + ", isDesktopCreation=" + isDesktopCreation + "]";
+    public boolean isAnonymousNotification() {
+        return anonymousNotification;
     }
 
+    public void setAnonymousNotification(boolean anonymousNotification) {
+        this.anonymousNotification = anonymousNotification;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.messageId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final IncomingMessageDTO other = (IncomingMessageDTO) obj;
+        if (this.messageId != other.messageId) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "IncomingMessageDTO{" + "messageId=" + messageId + ", senderEmailAddr=" + senderEmailAddr + ", recipients=" + recipients + ", size=" + size + ", subject=" + subject + ", body=" + body + ", attachments=" + attachments + ", priority=" + priority + ", printable=" + printable + ", fowardable=" + fowardable + ", isEncrypted=" + isEncrypted + ", isSigned=" + isSigned + ", anonymousNotification=" + anonymousNotification + ", isDesktopCreation=" + isDesktopCreation + '}';
+    }
 }

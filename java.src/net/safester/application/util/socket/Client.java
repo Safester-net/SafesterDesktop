@@ -49,7 +49,7 @@ public class Client
 {
     
     /** debug infos */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     /** The default port to use */
     public static int DEFAULT_PORT = 50028; 
@@ -245,10 +245,7 @@ public class Client
         }
         else if (buffer.contains(SoTag.PASSPHRASE_IS))
         {
-            String passphraseStr = buffer.substring(SoTag.PASSPHRASE_IS.length());
-            debug("buffer       : " + buffer);
-            debug("passphraseStr: " + passphraseStr);
-            
+            String passphraseStr = buffer.substring(SoTag.PASSPHRASE_IS.length());            
             return passphraseStr.toCharArray();
         }      
         else

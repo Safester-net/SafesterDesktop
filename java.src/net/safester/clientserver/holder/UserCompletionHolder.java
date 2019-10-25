@@ -40,7 +40,7 @@ import net.safester.clientserver.util.EmailCompletionBuilder;
 public class UserCompletionHolder {
 
     /** The lexicon store for multi accounts */
-    private static Map<Integer, Set<String>> LEXICON = new HashMap<Integer, Set<String>>();;
+    private static Map<Integer, Set<String>> LEXICON = new HashMap<>();
     
     /** The user number */
     private int userNumber = 0;

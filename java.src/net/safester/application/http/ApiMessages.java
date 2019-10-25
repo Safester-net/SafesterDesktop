@@ -27,7 +27,7 @@ import net.safester.clientserver.ServerParms;
  */
 public class ApiMessages {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static final int INBOX = 1;
     public static final int OUTBOX = 2;
@@ -257,7 +257,7 @@ public class ApiMessages {
 
     }
     
-    protected static String getUrlWithFinalSlash() {
+    public static String getUrlWithFinalSlash() {
 	String url = ServerParms.getHOST();
 	if (!url.endsWith("/")) {
 	    url += "/";

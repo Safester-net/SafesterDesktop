@@ -119,7 +119,7 @@ public class AttachmentTransferListener {
             isTaskCanceled = true;
             defaultAwakeProgressManager.cancel();
 
-            // 20/05/10 16:40 NDP:  AttachmentTransferListener:
+            // 20/05/10 16:40 NDP:  ApiMessageSenderEngineListener:
             //                      unlock default ThreadLocker when task is canceled
             new ThreadLocker().unlock();
         }
@@ -141,16 +141,11 @@ public class AttachmentTransferListener {
                 if (jframe instanceof MessageComposer && !isTaskCanceled) {
 
                     MessageComposer mailComposer = (MessageComposer) jframe;
-
-                    try {
-                        if (isDraft) {
-                            mailComposer.uploadDraft();
-                        } else {
-                            mailComposer.putMessage();
-                        }
-                    } catch (SQLException sqle) {
-                        JOptionPaneNewCustom.showException(jframe, sqle);
-                    }                    
+                    if (isDraft) {
+                        //mailComposer.uploadDraft();
+                    } else {
+                        mailComposer.putMessage();
+                    }                 
                 }
             }
             

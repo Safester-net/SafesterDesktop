@@ -23,6 +23,7 @@
  */
 package net.safester.clientserver.specs;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -37,6 +38,6 @@ public interface StoreExtractor<E extends LocalStore>
     /**
      * @return a LocalStore of the element
      */
-    public abstract E getStore() throws SQLException;
+    public abstract E getStore() throws SQLException, IOException;
 
 }

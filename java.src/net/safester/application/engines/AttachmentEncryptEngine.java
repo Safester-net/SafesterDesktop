@@ -30,15 +30,14 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import net.safester.application.parms.Parms;
-import net.safester.application.util.CacheFileHandler;
-
 import org.bouncycastle.openpgp.PGPPublicKey;
 
 import com.safelogic.pgp.api.PgpActionsOne;
 import com.safelogic.pgp.api.engines.CryptoEngine;
 import com.safelogic.pgp.api.util.parms.CmPgpCodes;
-import com.swing.util.SwingUtil;
+
+import net.safester.application.parms.Parms;
+import net.safester.application.util.CacheFileHandler;
 
 public class AttachmentEncryptEngine extends Thread implements CryptoEngine {
 

@@ -248,6 +248,8 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
         try {
             String returnString = awakeFileSession.call("net.safester.server.hosts.newapi.FoldersNewApi.getAllChildren",
                     userNumber,
+                    rootFolderId,
+                    recurse,
                     connection);
             
 	Gson gsonOut = new Gson();

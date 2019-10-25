@@ -58,6 +58,24 @@ public final class AwakeConnection extends AbstractConnection implements Connect
     }
 
     /**
+     * Returns the username of this Awake File underlying session
+     * @return the username of this Awake File underlying session
+     */
+    public String getUsername() {
+	return this.AwakeFileSession.getUsername();
+    }
+    
+    /**
+     * Returns the Authentication Token. This method is used by other Awake products
+     * (Awake SQL, ...)
+     * 
+     * @return the Authentication Token
+     */
+    public String getAuthenticationToken() {
+	return this.AwakeFileSession.getAuthenticationToken();
+    }
+
+    /**
      * Allows to get a copy of the current <code>AwakeConnection</code>: use it to
      * do some simultaneous operations in a different thread (in order to avoid
      * conflicts).

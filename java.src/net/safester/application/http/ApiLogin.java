@@ -24,7 +24,7 @@ import net.safester.clientserver.ServerParms;
  */
 public class ApiLogin {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static final int INBOX = 1;
     public static final int OUTBOX = 2;

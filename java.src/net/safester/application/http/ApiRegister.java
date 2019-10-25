@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import com.google.api.client.util.Preconditions;
 import com.kawansoft.httpclient.KawanHttpClient;
 
@@ -25,7 +24,8 @@ import net.safester.clientserver.ServerParms;
  */
 public class ApiRegister {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
+    
     protected KawanHttpClient kawanHttpClient = null;
     
     protected String errorMessage = null;
@@ -87,6 +87,7 @@ public class ApiRegister {
 	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
 
 	if (resultAnalyzer.isStatusOk()) {
+	    @SuppressWarnings("unused")
 	    SuccessDTO successDTO = GsonWsUtil.fromJson(jsonResult, SuccessDTO.class);
 	} else {
 	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
