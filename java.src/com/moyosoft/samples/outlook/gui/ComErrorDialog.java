@@ -23,9 +23,11 @@
  */
 package com.moyosoft.samples.outlook.gui;
 
-import java.awt.*;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Window;
 
-import com.moyosoft.connector.com.*;
+import com.moyosoft.connector.com.ComponentObjectModelException;
 
 public class ComErrorDialog
 {

@@ -34,15 +34,15 @@ import java.util.logging.Level;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.FileUtils;
+
+import com.safelogic.utilx.Debug;
+
 import net.safester.application.SystemInit;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
-
-import org.apache.commons.io.FileUtils;
-
-import com.safelogic.utilx.Debug;
 
 
 /**

@@ -23,6 +23,8 @@
  */
 package com.swing.util.CustomJtree;
 
+import java.awt.Color;
+
 /*
  * Copyright (c) 1995 - 2008 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -70,6 +72,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DropMode;
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -84,21 +87,20 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.safester.application.Main;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.Parms;
-import net.safester.application.tool.FoldersHandler;
-import net.safester.application.util.JOptionPaneNewCustom;
-import net.safester.clientserver.FolderListTransfer;
-import net.safester.noobs.clientserver.FolderLocal;
+import org.apache.commons.lang3.SystemUtils;
 
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.dragdrop.TreeDataExtractor;
 import com.swing.util.CustomJtree.dragdrop.TreeTransferHandler;
-import java.awt.Color;
-import javax.swing.Icon;
+
+import net.safester.application.Main;
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
+import net.safester.application.tool.FoldersHandler;
 import net.safester.application.tool.UI_Util;
-import org.apache.commons.lang3.SystemUtils;
+import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.clientserver.FolderListTransfer;
+import net.safester.noobs.clientserver.FolderLocal;
 
 public class CustomJTree extends JPanel
         implements

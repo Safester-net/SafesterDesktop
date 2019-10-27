@@ -11,9 +11,16 @@ import java.util.Map;
 import org.awakefw.commons.api.client.RemoteException;
 
 import com.google.api.client.util.Preconditions;
+import com.google.api.services.people.v1.model.Person;
 import com.kawansoft.httpclient.KawanHttpClient;
+import java.util.ArrayList;
+import java.util.List;
+import net.safester.application.http.dto.AddressBookEntryDTO;
+import net.safester.application.http.dto.AddressBookEntryListDTO;
+import net.safester.application.http.dto.ErrorDTO;
 
 import net.safester.application.http.dto.ErrorFullDTO;
+import net.safester.application.http.dto.GooglePersonsDTO;
 import net.safester.application.http.dto.GsonWsUtil;
 import net.safester.application.http.dto.MessageCountDTO;
 import net.safester.application.http.dto.MessageDTO;
@@ -253,6 +260,57 @@ public class ApiMessages {
 	    this.exceptionName = errorFullDTO.getExceptionName();
 	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
 	    throw new RemoteException(errorMessage, new SQLException(this.exceptionName), exceptionStackTrace);
+	}
+
+    }
+    
+    /**
+     * Returns  the list of Google Peope API Persons for the pass validation code.
+     * @param googleCode    the Google People API validation code
+     * @param displayFirstBeforeLast    if true, first name is before last
+     * @return
+     * @throws Exception 
+     */
+    public List<AddressBookEntryDTO> googleGetPersons(String googleCode, boolean displayFirstBeforeLast)
+	    throws Exception {
+	
+	//NO! on Desktop there are many folders
+	//Preconditions.checkArgument(directoryId >= 1 && directoryId <= 3, "Wrong directoryId!");
+	
+	String url = getUrlWithFinalSlash();
+	url += "api/googleGetPersons";
+
+	Map<String, String> parametersMap = new HashMap<>();
+	parametersMap.put("username", username);
+	parametersMap.put("token", token);
+	parametersMap.put("google_code", googleCode + "");
+	parametersMap.put("display_first_before_last_name", displayFirstBeforeLast + "");
+        
+	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+
+	AddressBookEntryListDTO addressBookEntryListDTO = null;
+
+	if (resultAnalyzer.isStatusOk()) {
+	    addressBookEntryListDTO = GsonWsUtil.fromJson(jsonResult, AddressBookEntryListDTO.class);
+            List<AddressBookEntryDTO> personList = addressBookEntryListDTO.getAddressBookEntries();
+            
+            // Just in case
+            if (personList == null) {
+                personList = new ArrayList<>();
+            }
+            
+            return personList;
+	} else {
+	    ErrorDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorDTO.class);
+	    this.errorMessage = errorFullDTO.getErrorMessage();
+            
+            if (this.errorMessage.equals("Invalid Google Code.")) {
+                return null;
+            }
+            
+	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+	    throw new RemoteException(errorMessage, new Exception(this.exceptionName), exceptionStackTrace);
 	}
 
     }

@@ -23,26 +23,29 @@
  */
 package net.safester.application.addrbooknew;
 
-import net.safester.application.addrbooknew.tools.FileDialogMemory;
 import java.awt.Component;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
-import net.iharder.dnd.FileDrop;
-import com.swing.util.SwingUtil;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Window;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.FilenameFilter;
 import java.sql.Connection;
+import java.util.List;
+
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+
+import org.apache.commons.lang3.SystemUtils;
+
+import com.swing.util.SwingUtil;
+
+import net.iharder.dnd.FileDrop;
 import net.safester.application.Help;
 import net.safester.application.NewsFrame;
+import net.safester.application.addrbooknew.tools.FileDialogMemory;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;
@@ -51,7 +54,6 @@ import net.safester.application.tool.CsvFileFilter;
 import net.safester.application.tool.JFileChooserMemory;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.HtmlTextUtil;
-import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Main class & frame to import external address book.

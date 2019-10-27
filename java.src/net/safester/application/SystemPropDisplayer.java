@@ -38,13 +38,13 @@ import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.SystemPropsTableCreator;
 import net.safester.application.util.TableClipboardManager;
-
-import com.swing.util.SwingUtil;
 
 /**
  *

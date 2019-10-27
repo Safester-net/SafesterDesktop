@@ -23,7 +23,8 @@
  */
 package com.moyosoft.samples.outlook.folderchooser;
 
-import com.moyosoft.connector.ms.outlook.folder.*;
+import com.moyosoft.connector.ms.outlook.folder.FoldersCollection;
+import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 
 public class OutlookFolderRootNode extends AbstractFolderTreeNode
 {

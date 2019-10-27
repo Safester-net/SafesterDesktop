@@ -42,9 +42,9 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.safester.noobs.clientserver.FolderLocal;
-
 import com.swing.util.CustomJtree.dragdrop.TreePathBuilder;
+
+import net.safester.noobs.clientserver.FolderLocal;
 
 public class TreeDragAndDrop {
     private JScrollPane getContent() {

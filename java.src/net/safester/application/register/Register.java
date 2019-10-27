@@ -23,7 +23,6 @@
  */
 package net.safester.application.register;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -65,10 +64,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.commons.api.client.HttpProtocolParameters;
 import org.awakefw.commons.api.client.HttpProxy;
+import org.awakefw.commons.api.client.RemoteException;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.util.HtmlConverter;
 import org.bouncycastle.openpgp.PGPException;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.toolkit.CgeepApiTools;
 import com.safelogic.utilx.StringMgr;
@@ -93,7 +94,6 @@ import net.safester.application.util.PolicyInstaller;
 import net.safester.application.util.proxy.ProxySessionCheckerNew;
 import net.safester.application.wait.tools.CmWaitDialog;
 import net.safester.clientserver.ServerParms;
-import org.awakefw.commons.api.client.RemoteException;
 
 public class Register extends javax.swing.JFrame {
 

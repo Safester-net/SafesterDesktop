@@ -38,14 +38,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.photo.UsersAddressBookCache;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.noobs.clientserver.AddressBookListTransfer;
 import net.safester.noobs.clientserver.AddressBookNewLocal;
-
-import org.apache.commons.lang3.StringUtils;
 
 
 public class JTextComponetPopupMenu {

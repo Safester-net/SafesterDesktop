@@ -29,13 +29,13 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
-import net.safester.application.updater.InstallParameters;
-
 import org.awakefw.commons.api.client.AwakeProgressManager;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.client.AwakeUrl;
 import org.awakefw.file.http.HttpTransfer;
 import org.awakefw.file.util.AwakeClientLogger;
+
+import net.safester.application.updater.InstallParameters;
 
 
 

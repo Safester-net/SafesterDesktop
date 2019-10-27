@@ -24,6 +24,7 @@
 package net.safester.application.util;
 
 
+import java.awt.Color;
 /****************************************************************/ 
 /*                      JDialogDiscardableMessage                             */
 /*                                                              */ 
@@ -57,13 +58,12 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
+import com.safelogic.pgp.api.util.crypto.Sha1;
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ClipboardManager;
-
-import com.safelogic.pgp.api.util.crypto.Sha1;
-import com.swing.util.SwingUtil;
-import java.awt.Color;
 /** 
  * Summary description for JDialogDiscardableMessage
  * 

@@ -51,10 +51,10 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
-
-import com.swing.util.SwingUtil;
 
 
 

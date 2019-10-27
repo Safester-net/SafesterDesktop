@@ -27,7 +27,9 @@ import java.awt.Window;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
+
 import javax.swing.JOptionPane;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.WindowSettingManager;

@@ -24,9 +24,11 @@
 package com.swing.util;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,23 +36,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-
-import net.safester.application.messages.LanguageManager;
-import net.safester.application.messages.MessagesManager;
+import javax.swing.border.LineBorder;
 
 import org.apache.commons.lang3.SystemUtils;
 
 import com.safelogic.utilx.io.stream.LineInputStream;
-import java.awt.Color;
-import java.awt.Window;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.border.LineBorder;
+
+import net.safester.application.messages.LanguageManager;
+import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.UI_Util;
 
 

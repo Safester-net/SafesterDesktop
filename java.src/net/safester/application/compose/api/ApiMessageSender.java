@@ -3,7 +3,6 @@
  */
 package net.safester.application.compose.api;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,11 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.safester.application.http.ApiMessages;
 
-
-import net.safester.application.http.dto.IncomingMessageDTO;
 import org.awakefw.commons.api.client.AwakeProgressManager;
+
+import com.kawansoft.httpclient.KawanHttpClient;
+
+import net.safester.application.http.ApiMessages;
+import net.safester.application.http.dto.IncomingMessageDTO;
 
 /**
  * @author Nicolas de Pomereu

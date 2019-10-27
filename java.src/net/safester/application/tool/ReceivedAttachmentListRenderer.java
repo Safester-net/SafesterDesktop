@@ -38,15 +38,15 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import net.safester.application.parms.Parms;
 import net.safester.application.util.CacheFileHandler;
 import net.safester.application.util.JListUtil;
 import net.safester.application.util.TableUtil;
 import net.safester.clientserver.util.FileNameConverter;
 import net.safester.noobs.clientserver.AttachmentLocal;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 
 public class ReceivedAttachmentListRenderer extends JLabel implements ListCellRenderer {
 

@@ -23,7 +23,6 @@
  */
 package net.safester.application;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -56,16 +55,16 @@ import org.awakefw.sql.api.client.AwakeConnection;
 import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
 import org.bouncycastle.openpgp.PGPException;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import com.keyoti.rapidSpell.LanguageType;
 import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.PgeepPrivateKey;
 import com.safelogic.pgp.api.util.crypto.Sha1;
 import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
-import net.safester.application.http.ApiCoupon;
-import net.safester.application.http.ApiMessages;
-import net.safester.application.http.KawanHttpClientBuilder;
 
+import net.safester.application.http.ApiCoupon;
+import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;

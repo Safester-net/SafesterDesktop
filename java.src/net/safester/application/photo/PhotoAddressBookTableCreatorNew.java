@@ -24,7 +24,6 @@
 package net.safester.application.photo;
 
 import java.awt.Window;
-import net.safester.application.tool.*;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -34,6 +33,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 import net.safester.application.messages.MessagesManager;
+import net.safester.application.tool.DesktopWrapper;
 
 public class PhotoAddressBookTableCreatorNew {
 

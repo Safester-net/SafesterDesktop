@@ -31,8 +31,8 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.kawansoft.httpclient.KawanHttpClient;
 
-import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.http.ApiKeys;
+import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.clientserver.UserNumberGetterClient;
 
 public class PublicKeyGetter {

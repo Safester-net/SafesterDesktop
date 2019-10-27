@@ -24,22 +24,25 @@
 package net.safester.application.addrbooknew.tools;
 
 
+import static net.safester.application.addrbooknew.AddressBookImportCsv2.CR_LF;
+
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,11 +54,6 @@ import javax.swing.UIManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.safelogic.pgp.util.UserPreferencesManager;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.prefs.BackingStoreException;
-import static net.safester.application.addrbooknew.AddressBookImportCsv2.CR_LF;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.WindowSettingManager;
 

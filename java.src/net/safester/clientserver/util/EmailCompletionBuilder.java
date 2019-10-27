@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.awakefw.file.api.util.HtmlConverter;
+
 import net.safester.application.util.EmailUser;
 import net.safester.clientserver.EmailRecipientExtractor;
 import net.safester.clientserver.EmailRecipientLocal;
 import net.safester.clientserver.holder.GroupHolder;
-
-import org.awakefw.file.api.util.HtmlConverter;
 
 /**
  * Buils for a suer number the list of emails addresses for completion.

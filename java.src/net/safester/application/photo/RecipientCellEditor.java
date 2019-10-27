@@ -23,13 +23,6 @@
  */
 package net.safester.application.photo;
 
-/*
- * RecipientCellEditor is used by TableFTFEditDemo.java.
- */
-
-import com.kawansoft.crypt.sms.MobilePhoneValidator;
-import com.kawansoft.crypt.sms.MobileUtil;
-
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -44,14 +37,17 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-
-
-
-
-import com.safelogic.utilx.Debug;
-
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
+
+/*
+ * RecipientCellEditor is used by TableFTFEditDemo.java.
+ */
+
+import com.kawansoft.crypt.sms.MobilePhoneValidator;
+import com.kawansoft.crypt.sms.MobileUtil;
+import com.safelogic.utilx.Debug;
+
 import net.safester.application.addrbooknew.tools.CryptAppUtil;
 import net.safester.application.messages.MessagesManager;
 

@@ -24,6 +24,7 @@
 package com.moyosoft.samples.outlook.folderchooser;
 
 import java.util.Comparator;
+
 import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 
 class OutlookFolderComparator implements Comparator

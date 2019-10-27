@@ -23,6 +23,7 @@
  */
 package net.safester.application.register;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.KeyAdapter;
@@ -32,15 +33,14 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.CryptoParms;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.util.HtmlTextUtil;
-
-import com.swing.util.SwingUtil;
-import java.awt.Color;
         
 /**
  *

@@ -23,8 +23,11 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -35,38 +38,35 @@ import java.io.StringReader;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.photo.GroupListNew;
+import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.util.EmailUser;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.EmailGroupTransfert;
+import net.safester.clientserver.GroupMemberCache;
 import net.safester.clientserver.GroupMemberListTransfert;
 import net.safester.clientserver.holder.GroupHolder;
 import net.safester.noobs.clientserver.EmailGroupLocal;
 import net.safester.noobs.clientserver.GroupMemberLocal;
-
-import org.apache.commons.lang3.StringUtils;
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.swing.util.SwingUtil;
-import java.awt.Color;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.util.Map;
-import javax.swing.KeyStroke;
-import net.safester.application.photo.GroupListNew;
-import net.safester.application.tool.ButtonResizer;
-import net.safester.clientserver.GroupMemberCache;
-import org.apache.commons.lang3.SystemUtils;
 
 /**
  *

@@ -23,17 +23,25 @@
  */
 package net.safester.application.addrbooknew;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.tree.TreePath;
 
-import com.moyosoft.connector.com.*;
-import com.moyosoft.connector.ms.outlook.folder.*;
+import com.moyosoft.connector.com.ComponentObjectModelException;
+import com.moyosoft.connector.ms.outlook.folder.FolderType;
+import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 import com.moyosoft.samples.outlook.folderchooser.NewFolderDialog;
 import com.moyosoft.samples.outlook.folderchooser.OutlookFolderTreeNode;
-import com.moyosoft.samples.outlook.gui.*;
+import com.moyosoft.samples.outlook.gui.ComErrorDialog;
+import com.moyosoft.samples.outlook.gui.Icons;
+
 import net.safester.application.messages.MessagesManager;
  
 class FolderPopupMenuNew extends JPopupMenu implements MouseListener

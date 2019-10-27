@@ -23,8 +23,6 @@
  */
 package net.safester.application;
 
-import net.safester.application.photo.*;
-import com.swing.util.SwingUtil;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -41,17 +39,23 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.photo.ImageResizer;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * Displays the QR Code for the 2FA account.

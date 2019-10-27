@@ -36,9 +36,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import net.safester.application.updater.InstallParameters;
-
 import org.apache.commons.lang3.StringUtils;
+
+import net.safester.application.updater.InstallParameters;
 
 
 /**

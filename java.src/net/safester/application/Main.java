@@ -23,7 +23,6 @@
  */
 package net.safester.application;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import static net.safester.application.MessageReader.INCREASE_FACTOR;
 import static net.safester.application.MessageReader.setPanelWithTextAreaHeightForMac;
 
@@ -91,6 +90,7 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import com.safelogic.utilx.StringMgr;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.CustomJTree;

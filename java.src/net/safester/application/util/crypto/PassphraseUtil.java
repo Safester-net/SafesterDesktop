@@ -26,12 +26,12 @@ package net.safester.application.util.crypto;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
-import net.safester.application.parms.Parms;
-
 import org.awakefw.commons.api.server.util.Sha1;
 import org.awakefw.file.api.util.HtmlConverter;
 
 import com.safelogic.utilx.ArrayMgr;
+
+import net.safester.application.parms.Parms;
 
 /**
  * Utility class fo passphrase management

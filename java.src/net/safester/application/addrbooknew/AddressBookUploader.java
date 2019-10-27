@@ -28,10 +28,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.safester.noobs.clientserver.AddressBookListTransfer;
-import net.safester.noobs.clientserver.AddressBookLocal;
-import net.safester.noobs.clientserver.AddressBookNewLocal;
 import org.awakefw.file.api.util.HtmlConverter;
+
+import net.safester.noobs.clientserver.AddressBookListTransfer;
+import net.safester.noobs.clientserver.AddressBookNewLocal;
 
 public class AddressBookUploader {
 

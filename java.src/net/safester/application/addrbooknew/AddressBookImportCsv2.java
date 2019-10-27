@@ -23,7 +23,10 @@
  */
 package net.safester.application.addrbooknew;
 
-import net.safester.application.addrbooknew.tools.MobileUtil;
+import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_HEIGHT;
+import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_WIDTH;
+import static net.safester.application.addrbooknew.tools.AddressBookUtil.getSeparator;
+
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -35,22 +38,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.UIManager;
+import javax.swing.text.NumberFormatter;
 
 import com.swing.util.SwingUtil;
-import java.sql.Connection;
-import javax.swing.JFormattedTextField;
-import javax.swing.text.NumberFormatter;
+
 import net.safester.application.Help;
-import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_HEIGHT;
-import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_WIDTH;
-import static net.safester.application.addrbooknew.tools.AddressBookUtil.getSeparator;
+import net.safester.application.addrbooknew.tools.MobileUtil;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;

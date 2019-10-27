@@ -23,7 +23,6 @@
  */
 package net.safester.application.addrbooknew;
 
-import net.safester.application.addrbooknew.tools.CryptAppUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +39,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.safelogic.utilx.Debug;
+
+import net.safester.application.addrbooknew.tools.CryptAppUtil;
 import net.safester.application.parms.Parms;
 
 /**

@@ -23,29 +23,28 @@
  */
 package net.safester.application.engines;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.safester.application.messages.MessagesManager;
-import net.safester.clientserver.MessageListExtractor;
-import net.safester.noobs.clientserver.MessageLocal;
-
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.safelogic.pgp.api.util.parms.CmPgpCodes;
 import java.lang.reflect.Type;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import net.safester.application.MessageDecryptor;
-import net.safester.clientserver.MessageStoreExtractor;
-import net.safester.noobs.clientserver.AddressBookNewLocal;
-import net.safester.noobs.clientserver.GsonUtil;
+
 import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.safelogic.pgp.api.util.parms.CmPgpCodes;
+
+import net.safester.application.MessageDecryptor;
+import net.safester.application.messages.MessagesManager;
+import net.safester.clientserver.MessageListExtractor;
+import net.safester.clientserver.MessageStoreExtractor;
+import net.safester.noobs.clientserver.GsonUtil;
+import net.safester.noobs.clientserver.MessageLocal;
 
 /**
  * Message download engine, used by search

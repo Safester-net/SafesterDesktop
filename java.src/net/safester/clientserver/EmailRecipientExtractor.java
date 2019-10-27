@@ -23,16 +23,18 @@
  */
 package net.safester.clientserver;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import net.safester.clientserver.specs.ListExtractor;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import net.safester.clientserver.specs.ListExtractor;
 
 
 /**

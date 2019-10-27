@@ -23,9 +23,9 @@
  */
 package net.safester.application.util.proxy;
 
-import net.safester.application.util.UserPrefManager;
-
 import org.awakefw.commons.api.client.HttpProxy;
+
+import net.safester.application.util.UserPrefManager;
 
 
 /**

@@ -23,31 +23,36 @@
  */
 package net.safester.application.addrbooknew;
  
-import net.safester.application.addrbooknew.tools.SessionUtil;
-import net.safester.application.addrbooknew.tools.ProcessUtil;
-import com.moyosoft.connector.ms.outlook.Outlook;
+import static net.safester.application.addrbooknew.AddressBookImportCsv2.CR_LF;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
-
-import com.safelogic.pgp.util.UserPreferencesManager;
-import com.swing.util.SwingUtil;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
+import org.apache.commons.lang3.SystemUtils;
+
+import com.moyosoft.connector.ms.outlook.Outlook;
+import com.safelogic.pgp.util.UserPreferencesManager;
+import com.swing.util.SwingUtil;
+
 import net.safester.application.NewsFrame;
-import static net.safester.application.addrbooknew.AddressBookImportCsv2.CR_LF;
 import net.safester.application.addrbooknew.gmail.AddressBookImportGmail;
 import net.safester.application.addrbooknew.outlook.OutlookUtil;
 import net.safester.application.addrbooknew.outlook.OutlookUtilMoyosoft;
+import net.safester.application.addrbooknew.tools.ProcessUtil;
+import net.safester.application.addrbooknew.tools.SessionUtil;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;
@@ -55,7 +60,6 @@ import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.HtmlTextUtil;
-import org.apache.commons.lang3.SystemUtils;
 
 /**
  *
@@ -128,14 +132,8 @@ public class AddressBookImportStart extends javax.swing.JDialog {
         
         jRadioButtonUseCsv.setSelected(true);
         
-        boolean isOutlookInstalled = false;
-
-        try {
-            isOutlookInstalled = OutlookUtil.isOutlookInstalled();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Impossible to say if Outlook Office is installed." + CR_LF
-                    + SessionUtil.getCleanErrorMessage(ex), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
-        }
+        // New version just query the Registry and does throw Exception
+        boolean isOutlookInstalled = OutlookUtil.isOutlookInstalled();
         
         if (isOutlookInstalled) {
             jRadioButtonUseCsv.setSelected(false);
@@ -147,10 +145,17 @@ public class AddressBookImportStart extends javax.swing.JDialog {
             if (! SystemUtils.IS_OS_WINDOWS) {
                 String text = jRadioButtonUseOutlookOffice.getText().trim() + " (Windows)";
                 jRadioButtonUseOutlookOffice.setText(text);
+                jRadioButtonUseOutlookOffice.setSelected(false);
+                jRadioButtonUseOutlookOffice.setEnabled(false);
+            }
+            else {
+                jRadioButtonUseOutlookOffice.setEnabled(true);
+                jRadioButtonUseOutlookOffice.setSelected(false);
             }
 
-            jRadioButtonUseOutlookOffice.setEnabled(false);
-            jRadioButtonUseGmail.setSelected(true);
+            jRadioButtonUseCsv.setSelected(true);
+            jRadioButtonUseGmail.setSelected(false);
+            jRadioButtonUseCsv.requestFocusInWindow();
         }
             
         // make invisible GMail panel for now

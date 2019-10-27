@@ -23,7 +23,8 @@
  */
 package net.safester.application.photo;
 
-import net.safester.application.util.TableUtil;
+import static net.safester.application.photo.PhotoAddresBookTableCellRendererNew.GENERIC_PHOTO_ICON;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
@@ -36,13 +37,13 @@ import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import net.safester.application.parms.Parms;
-import static net.safester.application.photo.PhotoAddresBookTableCellRendererNew.GENERIC_PHOTO_ICON;
-import net.safester.application.util.GroupTreeTableElement;
 import org.jdesktop.swingx.JXTreeTable;
-
-import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
+import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
+
+import net.safester.application.parms.Parms;
+import net.safester.application.util.GroupTreeTableElement;
+import net.safester.application.util.TableUtil;
 
 
 /**

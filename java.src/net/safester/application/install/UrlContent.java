@@ -31,7 +31,6 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-import javax.swing.JFrame;
 
 import org.apache.commons.io.IOUtils;
 

@@ -25,11 +25,13 @@ package net.safester.application;
 
 
 
-import net.safester.application.util.UserPrefManager;
 import java.awt.AWTException;
 import java.awt.Frame;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -41,12 +43,10 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang3.SystemUtils;
 
 import com.safelogic.utilx.Debug;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.Window;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.util.UserPrefManager;
 import net.safester.application.version.Version;
 
 

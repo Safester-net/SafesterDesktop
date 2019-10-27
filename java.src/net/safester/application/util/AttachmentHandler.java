@@ -37,6 +37,11 @@ import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 import javax.swing.Timer;
 
+import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.http.engine.FileDownloaderEngine;
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import net.safester.application.Main;
 import net.safester.application.MessageReader;
 import net.safester.application.engines.AttachmentDownloadListener;
@@ -45,11 +50,6 @@ import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.AttachmentListHandler;
 import net.safester.clientserver.util.FileNameConverter;
-
-import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.file.http.engine.FileDownloaderEngine;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 public class AttachmentHandler {
 

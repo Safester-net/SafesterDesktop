@@ -25,18 +25,18 @@ package net.safester.application;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import net.safester.clientserver.PgpKeyPairLocal;
-import net.safester.clientserver.holder.PgpKeyPairHolder;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bouncycastle.openpgp.PGPPrivateKey;
+import org.bouncycastle.openpgp.PGPPublicKey;
 
 import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.PgpActionsOne;
 import com.safelogic.pgp.apispecs.KeyHandler;
-import java.util.ArrayList;
-import java.util.List;
-import org.bouncycastle.openpgp.PGPPublicKey;
+
+import net.safester.clientserver.PgpKeyPairLocal;
+import net.safester.clientserver.holder.PgpKeyPairHolder;
 
 /**
  * @author Class to decrypt a Message Body and Subject. The connection to the

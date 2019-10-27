@@ -25,7 +25,6 @@ package net.safester.application.tool;
 
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -45,8 +44,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import org.awakefw.file.api.util.HtmlConverter;
+
 import net.safester.application.Main;
-import static net.safester.application.Main.DEBUG;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -54,10 +54,7 @@ import net.safester.application.util.TableUtil;
 import net.safester.application.util.Util;
 import net.safester.clientserver.MessageLocalStore;
 import net.safester.noobs.clientserver.MessageLocal;
-import net.safester.noobs.clientserver.PendingMessageUserLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
-
-import org.awakefw.file.api.util.HtmlConverter;
 
 /**
  * Create a JTable with all public keys from the Keyring

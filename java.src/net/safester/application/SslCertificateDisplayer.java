@@ -50,6 +50,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 
+import org.awakefw.commons.api.client.HttpProxy;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.TableModelNonEditable;
@@ -58,10 +62,6 @@ import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.JTableUtil;
 import net.safester.application.util.SslCertExtractor;
 import net.safester.application.util.TableClipboardManager;
-
-import org.awakefw.commons.api.client.HttpProxy;
-
-import com.swing.util.SwingUtil;
 import net.safester.clientserver.ServerParms;
 
 /**

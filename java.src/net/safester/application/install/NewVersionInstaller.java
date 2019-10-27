@@ -31,15 +31,18 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
+
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import org.awakefw.commons.api.client.HttpProxy;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.UserPrefManager;
 import net.safester.application.util.proxy.ProxyDetector;
 import net.safester.clientserver.ServerParms;
-import org.awakefw.commons.api.client.HttpProxy;
 
 /**
  *

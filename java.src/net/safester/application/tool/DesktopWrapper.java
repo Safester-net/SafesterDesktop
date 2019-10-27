@@ -31,11 +31,11 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
+import com.safelogic.utilx.StringMgr;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import com.safelogic.utilx.StringMgr;
 
 /**
  * @author Nicolas de Pomereu

@@ -23,27 +23,27 @@
  */
 package net.safester.application.util;
 
-import java.awt.Rectangle;
-import java.util.List;
-
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import static net.safester.application.updater.InstallParameters.debug;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultRowSorter;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.JTableHeader;
-import static net.safester.application.updater.InstallParameters.debug;
+
 import org.apache.commons.lang3.SystemUtils;
 
 /**

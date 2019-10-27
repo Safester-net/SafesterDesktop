@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Frame;
@@ -34,17 +35,16 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.swing.util.SwingUtil;
-import java.awt.Color;
 
 /**
  * This dialog is displayed when user wants to delete his account

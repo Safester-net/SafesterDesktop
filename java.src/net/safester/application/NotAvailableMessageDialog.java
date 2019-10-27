@@ -39,6 +39,11 @@ import java.util.logging.Logger;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.commons.lang3.StringUtils;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.client.AwakeUrl;
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
@@ -46,11 +51,6 @@ import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.util.TestAwakeConnection;
-
-import org.apache.commons.lang3.StringUtils;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.file.api.client.AwakeUrl;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * This dialog is displayed on connection if a host /newstart/not_available_message.html file exists.

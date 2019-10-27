@@ -34,9 +34,6 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import net.safester.application.tool.FileSecurityChecker;
-import net.safester.application.util.JOptionPaneNewCustom;
-
 import org.bouncycastle.openpgp.PGPPublicKey;
 
 import com.safelogic.pgp.api.PgpActionsOne;
@@ -47,6 +44,8 @@ import com.safelogic.pgp.api.util.parms.CmPgpCodes;
 import com.safelogic.pgp.api.util.parms.PgpExtensions;
 import com.safelogic.pgp.apispecs.PgpFileStatus;
 import com.safelogic.utilx.Hex;
+
+import net.safester.application.util.JOptionPaneNewCustom;
 
 /**
  * A DecryptEngine is an decryption Thread, because of Progression Monitor

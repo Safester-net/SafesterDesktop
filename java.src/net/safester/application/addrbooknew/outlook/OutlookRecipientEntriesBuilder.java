@@ -31,8 +31,9 @@ import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 import com.moyosoft.connector.ms.outlook.item.ItemsCollection;
 import com.moyosoft.connector.ms.outlook.item.ItemsIterator;
 import com.moyosoft.connector.ms.outlook.item.OutlookItem;
-import net.safester.application.addrbooknew.tools.MobileUtil;
+
 import net.safester.application.addrbooknew.RecipientEntry;
+import net.safester.application.addrbooknew.tools.MobileUtil;
 
 public class OutlookRecipientEntriesBuilder {
 

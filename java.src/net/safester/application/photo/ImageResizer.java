@@ -23,7 +23,6 @@
  */
 package net.safester.application.photo;
 
-import com.safelogic.utilx.Base64;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -37,7 +36,10 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import org.apache.commons.io.IOUtils;
+
+import com.safelogic.utilx.Base64;
 
 public class ImageResizer {
 

@@ -32,10 +32,10 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.awakefw.file.api.util.HtmlConverter;
+
 import net.safester.application.util.EmailUser;
 import net.safester.clientserver.holder.GroupHolder;
-
-import org.awakefw.file.api.util.HtmlConverter;
 
 /**
  * Allow to build the recipients lists and to expand from groups

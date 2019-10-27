@@ -24,8 +24,8 @@
 package net.safester.application.util;
 
 import java.awt.Component;
-import javax.swing.DefaultListCellRenderer;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 public class PowerEditorListCellRenderer extends DefaultListCellRenderer {

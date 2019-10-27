@@ -23,9 +23,9 @@
  */
 package com.moyosoft.samples.outlook.folderchooser;
 
-import javax.swing.tree.*;
+import javax.swing.tree.MutableTreeNode;
 
-import com.moyosoft.connector.ms.outlook.folder.*;
+import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 
 public interface FolderTreeNode extends MutableTreeNode
 {

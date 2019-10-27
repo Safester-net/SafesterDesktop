@@ -13,7 +13,6 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 
 import net.safester.application.compose.api.GsonUtil;
-import net.safester.application.http.dto.IncomingAttachementDTO;
 import net.safester.application.http.dto.IncomingMessageDTO;
 
 /**
@@ -78,7 +77,8 @@ public class MessageDraftManager {
 
     /**
      * Creates the user.home/.safester/SafesterDrafts.txt it does not exists.
-     * @param userNumber
+     * @param userNumber    the owner
+     * @return the drafts file
      */
     public static  File getSafesterDraftsTxt(int userNumber) {
 	File safesterDraftsTxt = new File(getSafesterDir().toString() + File.separator + "SafesterDrafts_" + userNumber + ".txt");

@@ -4,12 +4,12 @@
 package net.safester.application.http;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.api.client.util.Preconditions;
 import com.kawansoft.httpclient.KawanHttpClient;
-import java.sql.Timestamp;
 
 import net.safester.application.http.dto.ErrorFullDTO;
 import net.safester.application.http.dto.GsonWsUtil;

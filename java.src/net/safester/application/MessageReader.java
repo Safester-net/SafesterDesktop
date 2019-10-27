@@ -28,6 +28,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -41,22 +43,34 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
+
+import org.apache.commons.lang3.SystemUtils;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.util.HtmlConverter;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.safelogic.utilx.StringMgr;
+import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -66,38 +80,23 @@ import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.tool.JTextComponetPopupMenu;
 import net.safester.application.tool.ReceivedAttachmentListRenderer;
 import net.safester.application.tool.SortedDefaultListModel;
+import net.safester.application.tool.UI_Util;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.AppDateFormat;
 import net.safester.application.util.EmailUser;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JEditorPaneLinkDetector;
+import net.safester.application.util.JListUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.UserPrefManager;
 import net.safester.application.util.Util;
 import net.safester.clientserver.PgpKeyPairLocal;
-import net.safester.noobs.clientserver.AttachmentLocal;
-import net.safester.noobs.clientserver.MessageLocal;
-import net.safester.noobs.clientserver.PendingMessageUserLocal;
-import net.safester.noobs.clientserver.RecipientLocal;
-
-import org.apache.commons.lang3.SystemUtils;
-import org.awakefw.file.api.util.HtmlConverter;
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.safelogic.utilx.StringMgr;
-import com.swing.util.SwingUtil;
-import java.awt.FontMetrics;
-import java.awt.Toolkit;
-import java.util.Date;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
-import net.safester.application.tool.UI_Util;
-import net.safester.application.util.JListUtil;
 import net.safester.clientserver.util.FileNameConverter;
+import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.GsonUtil;
 import net.safester.noobs.clientserver.MessageBodyLocal;
-import org.awakefw.file.api.client.AwakeFileSession;
+import net.safester.noobs.clientserver.MessageLocal;
+import net.safester.noobs.clientserver.RecipientLocal;
 
 public class MessageReader extends javax.swing.JFrame {
 

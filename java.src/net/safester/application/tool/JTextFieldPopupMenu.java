@@ -36,14 +36,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.photo.PhotoAddressBookUpdaterNew;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.noobs.clientserver.AddressBookListTransfer;
-import net.safester.noobs.clientserver.AddressBookLocal;
 import net.safester.noobs.clientserver.AddressBookNewLocal;
-
-import org.apache.commons.lang3.StringUtils;
 
 
 public class JTextFieldPopupMenu {

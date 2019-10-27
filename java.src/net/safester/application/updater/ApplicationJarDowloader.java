@@ -39,12 +39,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
-import net.safester.application.engines.MultipleUrlDownloaderEngine;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.Parms;
-import net.safester.application.socket.client.SocketClient;
-import net.safester.application.util.JOptionPaneNewCustom;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -52,6 +46,12 @@ import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
 import org.awakefw.file.api.client.AwakeFileSession;
 
 import com.safelogic.pgp.api.util.crypto.Sha1;
+
+import net.safester.application.engines.MultipleUrlDownloaderEngine;
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
+import net.safester.application.socket.client.SocketClient;
+import net.safester.application.util.JOptionPaneNewCustom;
 
 /**
  * Install all jars to specified installation directory

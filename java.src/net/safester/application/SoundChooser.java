@@ -25,6 +25,7 @@ package net.safester.application;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
@@ -35,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -44,9 +47,6 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import com.swing.util.SwingUtil;
-import java.awt.HeadlessException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.safester.application.addrbooknew.tools.CryptAppUtil;
 import net.safester.application.messages.MessagesManager;

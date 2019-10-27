@@ -23,20 +23,20 @@
  */
 package net.safester.clientserver;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import static java.lang.reflect.Array.set;
 import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Set;
+
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import net.safester.noobs.clientserver.GsonUtil;
 import net.safester.noobs.clientserver.MessageLocal;
-import org.awakefw.file.api.client.AwakeFileSession;
-
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * @author Nicolas de Pomereu

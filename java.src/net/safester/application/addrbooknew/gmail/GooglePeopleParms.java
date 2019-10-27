@@ -43,8 +43,5 @@ public class GooglePeopleParms {
     public static final String SCOPE = "https://www.googleapis.com/auth/contacts.readonly";
     public static final String REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
     public static final String CLIENT_ID = "867619729893-r2itvu10me6ni6hps7f7qps73vr5k13h.apps.googleusercontent.com";
-       
-    // The encryption key for Client Secret fetched from server
-    static final String CLIENT_SECRET_PASSWORD = "loveme$890;3";
-
+      
 }

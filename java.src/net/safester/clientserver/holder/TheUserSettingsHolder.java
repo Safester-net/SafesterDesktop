@@ -28,10 +28,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import net.safester.clientserver.UserSettingsExtractor;
 import net.safester.noobs.clientserver.UserSettingsLocal;
-
-import org.awakefw.sql.api.client.AwakeConnection;
 
 
 /**

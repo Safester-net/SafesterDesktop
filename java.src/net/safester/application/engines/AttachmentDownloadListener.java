@@ -30,14 +30,14 @@ import java.text.MessageFormat;
 import javax.swing.ProgressMonitor;
 import javax.swing.Timer;
 
+import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
+import org.awakefw.file.http.HttpTransfer;
+import org.awakefw.file.http.engine.FileDownloaderEngine;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.AttachmentListHandler;
 import net.safester.application.util.CacheFileHandler;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
-import org.awakefw.file.http.HttpTransfer;
-import org.awakefw.file.http.engine.FileDownloaderEngine;
 
 
 /**

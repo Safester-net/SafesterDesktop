@@ -32,6 +32,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+
 import net.safester.application.util.UserPrefManager;
 
 public class WindowSettingManager {

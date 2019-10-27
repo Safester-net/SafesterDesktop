@@ -26,13 +26,13 @@ package net.safester.clientserver;
 import java.io.ByteArrayInputStream;
 import java.util.Date;
 
-import net.safester.clientserver.util.PgpKeyInfo;
-import net.safester.noobs.clientserver.specs.Local;
-
 import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.PgeepPublicKey;
 import com.safelogic.pgp.apispecs.KeyHandler;
 import com.safelogic.pgp.apispecs.PubkeyDescriptor;
+
+import net.safester.clientserver.util.PgpKeyInfo;
+import net.safester.noobs.clientserver.specs.Local;
 
 /**
  * @author Nicolas de Pomereu

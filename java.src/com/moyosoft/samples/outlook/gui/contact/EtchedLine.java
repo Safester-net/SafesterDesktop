@@ -23,8 +23,11 @@
  */
 package com.moyosoft.samples.outlook.gui.contact;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
 
 public class EtchedLine extends JPanel
 {

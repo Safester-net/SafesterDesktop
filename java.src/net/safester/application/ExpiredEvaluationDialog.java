@@ -34,6 +34,11 @@ import java.sql.Connection;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.commons.lang3.StringUtils;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.client.AwakeUrl;
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
@@ -44,11 +49,6 @@ import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.UserPrefManager;
 import net.safester.clientserver.util.TestAwakeConnection;
-
-import org.apache.commons.lang3.StringUtils;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.file.api.client.AwakeUrl;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 
 /**

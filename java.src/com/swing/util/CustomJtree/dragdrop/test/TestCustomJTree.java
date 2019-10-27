@@ -25,12 +25,12 @@ package com.swing.util.CustomJtree.dragdrop.test;
 
 import java.sql.Connection;
 
+import com.swing.util.CustomJtree.CustomJTree;
+
 import net.safester.application.parms.ConnectionParms;
 import net.safester.application.tool.FoldersHandler;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import com.swing.util.CustomJtree.CustomJTree;
 
 /**
  *

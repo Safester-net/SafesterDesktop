@@ -22,24 +22,24 @@
  * intact.
  */
 package net.safester.application.addrbooknew;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-
 import com.swing.util.SwingUtil;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Window;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;

@@ -44,6 +44,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -57,18 +58,18 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.commons.io.IOUtils;
+import org.awakefw.file.api.util.HtmlConverter;
+
+import com.safelogic.utilx.io.stream.LineInputStream;
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.tool.WindowSettingManager;
-
-import com.safelogic.utilx.io.stream.LineInputStream;
-import com.swing.util.SwingUtil;
-import java.io.ByteArrayOutputStream;
-import org.apache.commons.io.IOUtils;
-import org.awakefw.file.api.util.HtmlConverter;
 /** 
  * Summary description for Help
  * 

@@ -23,9 +23,10 @@
  */
 package net.safester.application.addrbooknew.outlook;
 
-import com.moyosoft.connector.ms.outlook.Outlook;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+
+import com.moyosoft.connector.ms.outlook.Outlook;
 
 /**
  * Utility methods for Outlook Office to be used with Moyosoft tool

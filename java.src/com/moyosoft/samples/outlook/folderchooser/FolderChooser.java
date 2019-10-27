@@ -23,20 +23,34 @@
  */
 package com.moyosoft.samples.outlook.folderchooser;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
+import javax.swing.tree.TreePath;
 
-import com.moyosoft.connector.com.*;
-import com.moyosoft.connector.exception.*;
-import com.moyosoft.connector.ms.outlook.*;
-import com.moyosoft.connector.ms.outlook.folder.*;
-import com.moyosoft.samples.outlook.gui.*;
+import com.moyosoft.connector.com.ComponentObjectModelException;
+import com.moyosoft.connector.exception.LibraryNotFoundException;
+import com.moyosoft.connector.ms.outlook.Outlook;
+import com.moyosoft.connector.ms.outlook.folder.FoldersCollection;
+import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
+import com.moyosoft.samples.outlook.gui.Icons;
 
 public class FolderChooser extends JDialog implements TreeSelectionListener,
         TreeWillExpandListener

@@ -23,17 +23,21 @@
  */
 package net.safester.application;
 
-import com.safelogic.utilx.syntax.EmailChecker;
 import java.sql.Connection;
+
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.JTextArea;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.Parms;
-import net.safester.application.util.JOptionPaneNewCustom;
+
 import org.apache.commons.lang3.StringUtils;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.safelogic.utilx.syntax.EmailChecker;
+
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
+import net.safester.application.util.JOptionPaneNewCustom;
 
 /**
  * Everything to do notarizarion with a BCC email address.

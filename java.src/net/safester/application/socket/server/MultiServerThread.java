@@ -35,10 +35,10 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
-import net.safester.application.socket.client.SoTag;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import net.safester.application.socket.client.SoTag;
 
 
 class MultiServerThread extends Thread {

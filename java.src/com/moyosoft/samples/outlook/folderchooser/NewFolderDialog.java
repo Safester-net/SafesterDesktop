@@ -23,13 +23,30 @@
  */
 package com.moyosoft.samples.outlook.folderchooser;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-import com.moyosoft.connector.ms.outlook.folder.*;
-import com.moyosoft.samples.outlook.gui.contact.*;
+import com.moyosoft.connector.ms.outlook.folder.FolderType;
+import com.moyosoft.samples.outlook.gui.contact.EtchedLine;
 
 public class NewFolderDialog extends JDialog
 {

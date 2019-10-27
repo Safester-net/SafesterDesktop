@@ -26,20 +26,19 @@ package net.safester.application.addrbooknew.tools;
 
 import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
-import com.kawansoft.crypt.util.sms.PhoneCountryLookup;
 import java.util.Locale;
 
 import javax.swing.Icon;
-import net.safester.application.messages.LanguageManager;
-import net.safester.application.parms.ImageParmsUtil;
-import net.safester.application.parms.Parms;
-import net.safester.application.util.TableUtil;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.kawansoft.crypt.util.sms.PhoneCountryLookup;
+
+import net.safester.application.messages.LanguageManager;
+import net.safester.application.parms.Parms;
+import net.safester.application.util.TableUtil;
 
 /**
  * Basic Table Cell Renderer for Word Files:

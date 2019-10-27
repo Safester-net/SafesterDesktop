@@ -39,18 +39,18 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.commons.lang3.SystemUtils;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import org.apache.commons.lang3.SystemUtils;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.swing.util.SwingUtil;
 
 /**
  *

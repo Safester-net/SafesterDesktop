@@ -23,11 +23,6 @@
  */
 package net.safester.application;
 
-import com.safelogic.pgp.api.KeyHandlerOne;
-import com.safelogic.pgp.api.PgpActionsOne;
-import com.safelogic.pgp.apispecs.KeyHandler;
-import net.safester.application.photo.*;
-import com.swing.util.SwingUtil;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -44,6 +39,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -53,20 +49,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.Parms;
-import net.safester.application.tool.ButtonResizer;
-import net.safester.application.tool.ClipboardManager;
-import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.JOptionPaneNewCustom;
-import net.safester.clientserver.PgpKeyPairLocal;
-import net.safester.clientserver.holder.PgpKeyPairHolder;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 import org.bouncycastle.openpgp.PGPPrivateKey;
+
+import com.safelogic.pgp.api.KeyHandlerOne;
+import com.safelogic.pgp.api.PgpActionsOne;
+import com.safelogic.pgp.apispecs.KeyHandler;
+import com.swing.util.SwingUtil;
+
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
+import net.safester.application.photo.ImageResizer;
+import net.safester.application.tool.ButtonResizer;
+import net.safester.application.tool.ClipboardManager;
+import net.safester.application.tool.WindowSettingManager;
+import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.clientserver.PgpKeyPairLocal;
+import net.safester.clientserver.holder.PgpKeyPairHolder;
 
 /**
  * Displays the QR Code for the 2FA account.

@@ -23,11 +23,16 @@
  */
 package net.safester.application.engines;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.util.HtmlConverter;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.kawansoft.httpclient.KawanHttpClient;
 
 import net.safester.application.MessageDecryptor;
 import net.safester.application.http.ApiMessages;
@@ -39,9 +44,6 @@ import net.safester.clientserver.holder.TheUserSettingsHolder;
 import net.safester.clientserver.holder.UserCompletionHolder;
 import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.file.api.util.HtmlConverter;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * @author Nicolas de Pomereu

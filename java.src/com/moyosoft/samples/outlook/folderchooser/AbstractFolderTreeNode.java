@@ -31,7 +31,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.moyosoft.connector.com.ComponentObjectModelException;
-import com.moyosoft.connector.ms.outlook.folder.*;
+import com.moyosoft.connector.ms.outlook.folder.FoldersCollection;
+import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 
 public abstract class AbstractFolderTreeNode extends DefaultMutableTreeNode implements FolderTreeNode {
 

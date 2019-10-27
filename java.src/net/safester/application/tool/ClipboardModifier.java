@@ -28,10 +28,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import org.apache.commons.lang3.StringUtils;
 
 
 /**

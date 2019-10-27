@@ -23,8 +23,10 @@
  */
 package com.moyosoft.samples.outlook.folderchooser;
 
-import com.moyosoft.connector.ms.outlook.folder.*;
 import javax.swing.JOptionPane;
+
+import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 

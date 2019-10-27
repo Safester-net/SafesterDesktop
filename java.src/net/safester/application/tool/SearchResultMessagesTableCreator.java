@@ -45,6 +45,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import org.apache.commons.lang3.StringUtils;
+import org.awakefw.file.api.util.HtmlConverter;
+
 import net.safester.application.Search;
 import net.safester.application.engines.MessageDownloadEngine;
 import net.safester.application.messages.MessagesManager;
@@ -54,9 +57,6 @@ import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.TableUtil;
 import net.safester.noobs.clientserver.MessageLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
-import org.apache.commons.lang3.StringUtils;
-
-import org.awakefw.file.api.util.HtmlConverter;
 
 /**
  * Create a JTable with all public keys from the Keyring

@@ -26,14 +26,15 @@ package net.safester.application.addrbooknew.tools;
 
 import java.awt.Component;
 import java.util.List;
-import javax.swing.JOptionPane;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
 import net.safester.application.addrbooknew.RecipientEntry;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.TableModelNonEditable;

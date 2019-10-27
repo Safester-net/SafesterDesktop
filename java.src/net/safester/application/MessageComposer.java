@@ -23,7 +23,6 @@
  */
 package net.safester.application;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -40,12 +39,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -53,6 +54,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -78,18 +81,17 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.awakefw.commons.api.client.AwakeProgressManager;
+import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
 import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
+import org.bouncycastle.openpgp.PGPPublicKey;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import com.keyoti.rapidSpell.LanguageType;
 import com.keyoti.rapidSpell.desktop.RapidSpellAsYouType;
 import com.safelogic.utilx.StringMgr;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import com.swing.util.SwingUtil;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
@@ -146,9 +148,6 @@ import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 import net.safester.noobs.clientserver.UserSettingsLocal;
-import org.awakefw.commons.api.client.AwakeProgressManager;
-import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
-import org.bouncycastle.openpgp.PGPPublicKey;
 
 /**
  * Main window for composing a message.
@@ -278,6 +277,11 @@ public class MessageComposer extends javax.swing.JFrame {
         initMessageComponent(message, action);
         
         if (message.getFolderId() == Parms.DRAFT_ID) {
+            
+            jToggleButtonNoFoward.setSelected(! message.isFowardable());
+            jToggleButtonNoPrint.setSelected(! message.isPrintable());
+            jToggleButtonSendAnonymousNotification.setSelected(message.isAnonymousNotification());
+            
             //If we just opened a Draft no need to indicate that message had been changed
             isChanged = false;
             String title = thisOne.getTitle();
@@ -1453,6 +1457,8 @@ public class MessageComposer extends javax.swing.JFrame {
         try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             this.htmlEditor.getEditor().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            
+            // Everything done here:
             int statusBuild = buildMessage();
             
             if (statusBuild == RECIPIENT_OK ) {
@@ -1489,11 +1495,6 @@ public class MessageComposer extends javax.swing.JFrame {
                 this.setCursor(Cursor.getDefaultCursor());
                 this.htmlEditor.getEditor().setCursor(Cursor.getDefaultCursor());
                 this.isChanged = false;
-                
-//                if (fileListManager.getFiles() != null && ! fileListManager.getFiles().isEmpty()) {
-//                   JDialogDiscardableMessage jDialogDiscardableMessage = 
-//                           new JDialogDiscardableMessage(thisOne, messages.getMessage("attachments_are_not_saved_in_drafts"));;
-//                }
                 
             } else {
                 this.setCursor(Cursor.getDefaultCursor());

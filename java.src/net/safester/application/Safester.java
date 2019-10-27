@@ -26,23 +26,20 @@ package net.safester.application;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang3.SystemUtils;
+import org.awakefw.file.api.client.AwakeFileSession;
+
+import net.safester.application.installpolicy.PolicyInstallerV1;
 import net.safester.application.mac.MacOsXFullPolicyFiles;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.JOptionPaneHtml;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import org.apache.commons.lang3.SystemUtils;
-import org.awakefw.file.api.client.AwakeFileSession;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-
-import net.safester.application.installpolicy.PolicyInstallerV1;
 import net.safester.clientserver.ServerParms;
 
 public class Safester {

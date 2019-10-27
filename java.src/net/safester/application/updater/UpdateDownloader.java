@@ -43,14 +43,14 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.awakefw.file.api.client.AwakeFileSession;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.version.Version;
-
-import org.awakefw.file.api.client.AwakeFileSession;
-
-import com.swing.util.SwingUtil;
 
 /**
  * JFrame of SafeShareIt updater

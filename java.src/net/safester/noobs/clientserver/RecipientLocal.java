@@ -24,9 +24,9 @@
 package net.safester.noobs.clientserver;
 
 
-import net.safester.noobs.clientserver.specs.Local;
-
 import org.apache.commons.lang3.StringEscapeUtils;
+
+import net.safester.noobs.clientserver.specs.Local;
 
 /**
  * @author Nicolas de Pomereu

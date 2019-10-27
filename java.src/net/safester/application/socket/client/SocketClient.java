@@ -35,11 +35,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import net.safester.application.updater.InstallParameters;
-import net.safester.application.util.UserPrefManager;
-
 import org.apache.commons.lang3.StringUtils;
 import org.awakefw.file.util.convert.Pbe;
+
+import net.safester.application.updater.InstallParameters;
+import net.safester.application.util.UserPrefManager;
 
 
 /**

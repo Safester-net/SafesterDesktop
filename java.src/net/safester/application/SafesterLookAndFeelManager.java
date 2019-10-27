@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
@@ -34,8 +35,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
-
-import java.awt.Color;
 
 import net.safester.application.tool.UI_Util;
 

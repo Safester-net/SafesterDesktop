@@ -24,25 +24,27 @@
 package net.safester.application;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.tool.ButtonResizer;
-
-import com.swing.util.SwingUtil;
-import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.text.MaskFormatter;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.swing.util.SwingUtil;
+
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *

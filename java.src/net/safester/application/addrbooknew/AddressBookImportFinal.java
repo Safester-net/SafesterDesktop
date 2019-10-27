@@ -23,12 +23,10 @@
  */
 package net.safester.application.addrbooknew;
 
+import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_HEIGHT;
+import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_WIDTH;
+import static net.safester.application.addrbooknew.AddressBookImportCsv2.CR_LF;
 
-import com.google.api.services.people.v1.model.Person;
-import net.safester.application.addrbooknew.tools.CryptAppUtil;
-import net.safester.application.addrbooknew.tools.SessionUtil;
-import net.safester.application.addrbooknew.tools.RecipientCellEditor;
-import net.safester.application.addrbooknew.tools.RecipientEntriesTableCreator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -40,6 +38,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.sql.Connection;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,16 +52,13 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-
 import com.swing.util.SwingUtil;
-import java.sql.Connection;
-import java.text.DecimalFormat;
-import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_HEIGHT;
-import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_WIDTH;
-import static net.safester.application.addrbooknew.AddressBookImportCsv2.CR_LF;
+
 import net.safester.application.addrbooknew.gmail.AddressBookImportGmail;
-import net.safester.application.addrbooknew.gmail.GoogleContacts;
-import net.safester.application.addrbooknew.gmail.GoogleRecipientsBuilder;
+import net.safester.application.addrbooknew.tools.RecipientCellEditor;
+import net.safester.application.addrbooknew.tools.RecipientEntriesTableCreator;
+import net.safester.application.addrbooknew.tools.SessionUtil;
+import net.safester.application.http.dto.AddressBookEntryDTO;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;
@@ -73,8 +70,8 @@ import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.TableClipboardManager;
 import net.safester.application.util.TableUtil;
 import net.safester.noobs.clientserver.AddressBookListTransfer;
-import net.safester.noobs.clientserver.AddressBookLocal;
 import net.safester.noobs.clientserver.AddressBookNewLocal;
+import org.awakefw.file.api.util.HtmlConverter;
 
 /**
  * Main class & frame to import external address book.
@@ -109,31 +106,32 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
 
     private File file = null;
 
-    private List<RecipientEntry> recipientEntries = new ArrayList<RecipientEntry>();
+    private List<RecipientEntry> recipientEntries = new ArrayList<>();
     private boolean doDisplayFirstBeforeLast = false;
-    
+
     private static String LABEL_CSV_IMPORT = MessagesManager.get("importing_contacts_from_a_csv_file");
     private static String LABEL_OUTLOOK_IMPORT = MessagesManager.get("importing_contacts_from_outlook");
     private static String LABEL_GOOGLE_IMPORT = MessagesManager.get("importing_contacts_from_gmail");
-    
+
     private static String HELP_DURING_IMPORT_CSV = MessagesManager.get("please_wait_while_import_csv");
     private static String HELP_DURING_IMPORT_OUTLOOK = MessagesManager.get("please_wait_while_import_outlook");
     private static String HELP_DURING_IMPORT_GOOGLE = MessagesManager.get("please_wait_while_import_gmail");
-       
+
     private static String HELP_AFTER_IMPORT = MessagesManager.get("click_go_to_finalize_import");
-    
+
     private static int ORIGIN_CSV_IMPORT = 1;
     private static int ORIGIN_OUTLOOK_IMPORT = 2;
     private static int ORIGIN_GOOGLE_IMPORT = 3;
-                    
+
     private int origin = -1;
-    private GoogleContacts googleContacts;
-                
+
     private Connection connection = null;
     private int userNumber = -1;
-    
+    private List<AddressBookEntryDTO> personList = null;
+
     /**
      * Creates instance for CSV import
+     *
      * @param parent
      * @param recipientEntries
      * @param file
@@ -154,20 +152,21 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         origin = ORIGIN_CSV_IMPORT;
         this.connection = connection;
         this.userNumber = userNumber;
-        
+
         initComponents();
         initializeCompany();
     }
-    
+
     /**
      * Creates instance for Outlook Import
+     *
      * @param parent
      * @param recipientEntries the value of recipientEntries
      */
     public AddressBookImportFinal(Window parent, List<RecipientEntry> recipientEntries, Connection connection, int userNumber) {
 
         this.parent = parent;
-        
+
         if (recipientEntries == null) {
             throw new NullPointerException("pdfRecipients is null!");
         }
@@ -176,39 +175,39 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         origin = ORIGIN_OUTLOOK_IMPORT;
         this.connection = connection;
         this.userNumber = userNumber;
-                
+
         initComponents();
         initializeCompany();
     }
-    
-     /**
-     * Creates instance for Gmails Import
+
+    /**
+     * Creates instance for Gmails Import.
+     *
      * @param parent
-     * @param googleContacts
+     * @param personList
      * @param doDisplayFirstBeforeLast
      * @param connection
+     * @param userNumber
      */
-    
-    public AddressBookImportFinal(Window parent, GoogleContacts googleContacts, boolean doDisplayFirstBeforeLast, Connection connection, int userNumber) {
+    public AddressBookImportFinal(Window parent, List<AddressBookEntryDTO> personList, boolean doDisplayFirstBeforeLast, Connection connection, int userNumber) {
 
         this.parent = parent;
-        
-        if (googleContacts == null) {
-            throw new NullPointerException("googleContacts is null!");
+
+        if (personList == null) {
+            personList = new ArrayList<>();
         }
-        
-        this.googleContacts = googleContacts;
+
+        this.personList = personList;
         this.doDisplayFirstBeforeLast = doDisplayFirstBeforeLast;
         this.connection = connection;
         this.userNumber = userNumber;
-        
+
         origin = ORIGIN_GOOGLE_IMPORT;
-                
+
         initComponents();
         initializeCompany();
     }
-    
-    
+
     /**
      * This is the method to include in the constructor
      */
@@ -219,29 +218,28 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         } catch (RuntimeException e1) {
             e1.printStackTrace();
         }
-        
+
         //click_go_to_finalize_import
         //allow_creation_of_duplicates
         //do_not_import_duplicates 
         //replace_dulicates_with_items_imported
-        
         jLabelTitle.setText(MessagesManager.get("importing_contacts"));
         jLabelHelp.setText(MessagesManager.get("click_go_to_finalize_import"));
         jRadioButtonDuplicatesCreate.setText(MessagesManager.get("allow_creation_of_duplicates"));
         jRadioButtonDuplicatesNoImport.setText(MessagesManager.get("do_not_import_duplicates"));
         jRadioButtonDuplicatesReplace.setText(MessagesManager.get("replace_dulicates_with_items_imported"));
-        
+
         jButtonPrevious.setText("< " + MessagesManager.get("previous"));
         jButtonClose.setText(MessagesManager.get("close"));
         jButtonClose.setText(MessagesManager.get("cancel"));
-        
+
         this.setModal(true);
         buttonGroupOptions.add(jRadioButtonDuplicatesCreate);
         buttonGroupOptions.add(jRadioButtonDuplicatesReplace);
         buttonGroupOptions.add(jRadioButtonDuplicatesNoImport);
 
         jRadioButtonDuplicatesReplace.setSelected(true);
-        
+
         clipboardManager = new ClipboardManager(rootPane);
 
         this.setSize(AddressBookImportCsv1.ADDR_WIDTH, AddressBookImportCsv1.ADDR_HEIGHT);
@@ -251,8 +249,7 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         if (parent != null) {
             this.setLocationRelativeTo(parent);
         }
-        */
-
+         */
         if (origin == ORIGIN_CSV_IMPORT) {
             jLabelTitle.setText(LABEL_CSV_IMPORT);
             jLabelTitle.setIcon(Parms.createImageIcon(Parms.ICON_IMPORT_CSV_PATH));
@@ -266,12 +263,12 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
             jLabelTitle.setText(LABEL_GOOGLE_IMPORT);
             jLabelHelp.setText(HELP_DURING_IMPORT_GOOGLE);
         }
-                
+
         List<RecipientEntry> recipientsInit = new ArrayList<RecipientEntry>();
         createTableRecipientEntries(recipientsInit);
-        
+
         createTableRecipientEntriesInThread();
-       
+
         this.setTitle(this.jLabelTitle.getText());
 
         // These 2 stupid lines : only to force to display top of file first
@@ -289,10 +286,10 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         br.setWidthToMax();
 
         SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
-                
+
         this.setLocationRelativeTo(parent);
         WindowSettingManager.load(this);
-        
+
         // Because of dynamic Swing fields settings on language by indowSettingMgr.load(this);
         // We misy reset jLabelTitle
         jLabelTitle.setText(this.getTitle());
@@ -311,18 +308,17 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
                 } else if (origin == ORIGIN_OUTLOOK_IMPORT) {
                     createRecipientEntriesFromOutlook();
                 } else if (origin == ORIGIN_GOOGLE_IMPORT) {
-                    createPdfRecipientsFromGoogle();
-                }
-                else {
+                    createRecipientsFromGoogle();
+                } else {
                     throw new IllegalArgumentException("origin is invalid: " + origin);
                 }
             }
 
         };
         t.start();
-        
+
     }
-                    
+
     private void createRecipientEntriesFromCsv() {
         try {
             this.setCursor(Cursor
@@ -342,89 +338,88 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
             jLabelHelp.setText(HELP_AFTER_IMPORT);
         }
     }
-    
+
     private void createRecipientEntriesFromOutlook() {
 
         try {
             this.setCursor(Cursor
                     .getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-            this.setButtonsEnabled(false);            
-            
+            this.setButtonsEnabled(false);
+
             createTableRecipientEntries(recipientEntries);
-            
+
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception ex) {
             this.setCursor(Cursor.getDefaultCursor());
             JOptionPane.showMessageDialog(this, "Impossible to acess Outlook Office data. " + CR_LF
                     + SessionUtil.getCleanErrorMessage(ex), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
-        }
-        finally {
+        } finally {
             this.setButtonsEnabled(true);
             jLabelHelp.setText(HELP_AFTER_IMPORT);
         }
-                    
+
     }
 
-    
-    private void createPdfRecipientsFromGoogle() {
-    
+    private void createRecipientsFromGoogle() {
+
         try {
             this.setCursor(Cursor
                     .getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-            this.setButtonsEnabled(false);            
+            this.setButtonsEnabled(false);
+            
+            for (AddressBookEntryDTO addressBookEntryDTO : personList) {
+                String emailAddress = addressBookEntryDTO.getEmailAddress();
+                String name = HtmlConverter.fromHtml(addressBookEntryDTO.getName());
+                String company =  HtmlConverter.fromHtml(addressBookEntryDTO.getCompany());
+                String mobile = addressBookEntryDTO.getCellPhone();
+                                             
+                RecipientEntry recipientEntry = new RecipientEntry(emailAddress, name, company, mobile, null);
+                recipientEntries.add(recipientEntry);
+            }
 
-            List<Person> persons = this.googleContacts.getPersons();
-            
-            GoogleRecipientsBuilder googlePdfRecipientsBuilder = new GoogleRecipientsBuilder(persons, doDisplayFirstBeforeLast);
-            this.recipientEntries = googlePdfRecipientsBuilder.build();
-            
             createTableRecipientEntries(recipientEntries);
-            
+
             this.setCursor(Cursor.getDefaultCursor());
         } catch (Exception ex) {
             this.setCursor(Cursor.getDefaultCursor());
             JOptionPane.showMessageDialog(this, "Impossible to access Gmail Contacts. " + CR_LF
                     + SessionUtil.getCleanErrorMessage(ex), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
-        }
-        finally {
+        } finally {
             this.setButtonsEnabled(true);
             jLabelHelp.setText(HELP_AFTER_IMPORT);
         }
-        
+
     }
-     
-    
+
     private void setButtonsEnabled(boolean enabled) {
-        
+
         jPanelOptions.setEnabled(enabled);
         jRadioButtonDuplicatesCreate.setEnabled(enabled);
         jRadioButtonDuplicatesNoImport.setEnabled(enabled);
         jRadioButtonDuplicatesReplace.setEnabled(enabled);
-        
+
         List<Component> components = SwingUtil.getAllComponants(jPanelButtons);
-               
-        for (int i = 0; i < components.size(); i++)
-        {
+
+        for (int i = 0; i < components.size(); i++) {
             Component component = (Component) components.get(i);
-            
-            if (component instanceof JButton)
-            {                
-                JButton currentButton = (JButton)component; 
+
+            if (component instanceof JButton) {
+                JButton currentButton = (JButton) component;
                 currentButton.setEnabled(enabled);
             }
         }
     }
-        
-    public void createTableRecipientEntries(List<RecipientEntry> pdfRecipients) {
-                        
-        // This class will fo all the format checks
-        RecipientEntriesTableCreator pdfRecipientsTableCreator = new RecipientEntriesTableCreator(pdfRecipients);
-        pdfRecipientsTableCreator.setTableEditable(false);
-        pdfRecipientsTableCreator.setTableSortable(false);
 
-        jTable1 = pdfRecipientsTableCreator.create();
+    public void createTableRecipientEntries(List<RecipientEntry> recipients) {
+
+        // This class will fo all the format checks
+        RecipientEntriesTableCreator recipientsTableCreator = new RecipientEntriesTableCreator(recipients);
+        recipientsTableCreator.setTableEditable(false);
+        recipientsTableCreator.setTableSortable(false);
+
+        jTable1 = recipientsTableCreator.create();
 
         jTable1.requestFocusInWindow();
 
@@ -436,29 +431,26 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         TableColumn col = jTable1.getColumnModel().getColumn(0);
         col.setCellEditor(new RecipientCellEditor(0));
 
-        
         //col = jTable1.getColumnModel().getColumn(2);
         //col.setCellEditor(new RecipientCellEditor(2));
-
         TableUtil.selectRowWhenMouverOverRecipients(jTable1);
-                
+
         DecimalFormat myFormatter = new DecimalFormat("###,###");
         String count = myFormatter.format(jTable1.getModel().getRowCount());
-        jLabelCount.setText(count+ " Contacts");
-                
+        jLabelCount.setText(count + " Contacts");
+
         jTable1.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 TableModel tm1 = (TableModel) e.getSource();
                 DecimalFormat myFormatter = new DecimalFormat("###,###");
-                String count = myFormatter.format(tm1.getRowCount() );
-                jLabelCount.setText(count+ " Contacts");
+                String count = myFormatter.format(tm1.getRowCount());
+                jLabelCount.setText(count + " Contacts");
             }
         });
-        
+
         //col = jTable1.getColumnModel().getColumn(3);
         //col.setCellEditor(new RecipientCellEditor(3));
-
         //jTable1.setToolTipText("Tooltip pour la Table");
         jScrollPane1.setViewportView(jTable1);
 
@@ -519,7 +511,7 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
             if (keyCode == KeyEvent.VK_ESCAPE) {
                 this.dispose();
             }
-            
+
             if (keyCode == KeyEvent.VK_P && e.isControlDown()) {
                 jButtonPreviousActionPerformed(null);
             }
@@ -530,70 +522,65 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
      * Import the names and emails list onto the address book
      */
     private void go() {
-                
+
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
+
         try {
-            
+
             List<RecipientEntry> finalRecipientEntries = new ArrayList<RecipientEntry>();
-            
+
             AddressBookListTransfer addressBookListTransfer = new AddressBookListTransfer(connection, userNumber);
             //Get current list of addressBook
             List<AddressBookNewLocal> addressBookLocals = addressBookListTransfer.getList();
-            
+
             List<RecipientEntry> serverRecipientEntries = new ArrayList<>();
             for (AddressBookNewLocal addressBookLocal : addressBookLocals) {
                 serverRecipientEntries.add(new RecipientEntry(addressBookLocal.getEmail(), addressBookLocal.getName(),
                         addressBookLocal.getCompany(), addressBookLocal.getCellPhone(), null));
             }
-            
+
             if (jRadioButtonDuplicatesCreate.isSelected()) {
                 finalRecipientEntries.addAll(serverRecipientEntries);
                 finalRecipientEntries.addAll(recipientEntries);
-                
-            }
-            else if (jRadioButtonDuplicatesReplace.isSelected()) {
-                
+
+            } else if (jRadioButtonDuplicatesReplace.isSelected()) {
+
                 for (RecipientEntry serverRecipientEntry : serverRecipientEntries) {
-                    if (! recipientEntries.contains(serverRecipientEntry)) {
+                    if (!recipientEntries.contains(serverRecipientEntry)) {
                         finalRecipientEntries.add(serverRecipientEntry);
                     }
                 }
-                
+
                 finalRecipientEntries.addAll(recipientEntries);
 
-            }
-            else if (jRadioButtonDuplicatesNoImport.isSelected()) {
-                
+            } else if (jRadioButtonDuplicatesNoImport.isSelected()) {
+
                 finalRecipientEntries.addAll(serverRecipientEntries);
-                  
+
                 for (RecipientEntry newRecipientEntry : recipientEntries) {
-                    if (! serverRecipientEntries.contains(newRecipientEntry)) {
+                    if (!serverRecipientEntries.contains(newRecipientEntry)) {
                         finalRecipientEntries.add(newRecipientEntry);
                     }
                 }
-                
+
             }
-            
+
             // Ok do the import in remoe DB
             AddressBookUploader addressBookUploader = new AddressBookUploader(connection, userNumber, finalRecipientEntries);
             addressBookUploader.importOnServer();
-            
+
             UsersAddressBookCache.clear();
-            
+
             this.dispose();
             this.setCursor(Cursor.getDefaultCursor());
             JOptionPane.showMessageDialog(this, MessagesManager.get("contacts_successfully_imported"), Parms.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
 
-            
-            
         } catch (Exception exception) {
-             this.setCursor(Cursor.getDefaultCursor());
-             JOptionPaneNewCustom.showException(this, exception);
+            this.setCursor(Cursor.getDefaultCursor());
+            JOptionPaneNewCustom.showException(this, exception);
         }
-                
-      }
 
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -878,11 +865,10 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
 
 private void jButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviousActionPerformed
     this.dispose();
-    
+
     if (origin == ORIGIN_CSV_IMPORT) {
         AddressBookImportCsv2 addressBookImport2 = new AddressBookImportCsv2(parent, file, connection, userNumber);
-    }
-    else if (origin == ORIGIN_OUTLOOK_IMPORT) {
+    } else if (origin == ORIGIN_OUTLOOK_IMPORT) {
         FolderChooserNew folderChooserNew;
         try {
             folderChooserNew = new FolderChooserNew(parent, this.connection, this.userNumber);
@@ -896,8 +882,7 @@ private void jButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     } else if (origin == ORIGIN_GOOGLE_IMPORT) {
         AddressBookImportGmail addressBookImportGmail = new AddressBookImportGmail(parent, connection, userNumber);
-    }
-    else {
+    } else {
         throw new IllegalArgumentException("origin is invalid: " + origin);
     }
 
@@ -973,7 +958,5 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-
-
 
 }

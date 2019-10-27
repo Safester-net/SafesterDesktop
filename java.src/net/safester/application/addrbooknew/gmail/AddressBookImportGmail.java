@@ -23,31 +23,42 @@
  */
 package net.safester.application.addrbooknew.gmail;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleBrowserClientRequestUrl;
+import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
 import com.swing.util.SwingUtil;
-import java.sql.Connection;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
+
 import net.safester.application.Help;
 import net.safester.application.addrbooknew.AddressBookImportFinal;
-import net.safester.application.addrbooknew.tools.CryptAppUtil;
 import net.safester.application.addrbooknew.tools.SessionUtil;
+import net.safester.application.http.ApiMessages;
+import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.http.dto.AddressBookEntryDTO;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * Main class & frame to import external address book.
@@ -201,9 +212,6 @@ public class AddressBookImportGmail extends javax.swing.JDialog {
      */
     private void doNext() {
 
-        boolean isCodeValid = false;
-
-        
         if (jTextFieldCode.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, MessagesManager.get("this_code_is_invalid"), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
             jTextFieldCode.requestFocusInWindow();
@@ -213,14 +221,26 @@ public class AddressBookImportGmail extends javax.swing.JDialog {
         this.setCursor(Cursor
                 .getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        String clientSecret = null;
+        List<AddressBookEntryDTO> persons = null;
+        
         try {
-            AwakeConnection awakeConnection = (AwakeConnection) connection;
+            AwakeConnection awakeConnection = (AwakeConnection)connection;
             AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
-            //clientSecret = awakeFileSession.call("net.safester.server.AdressBookImporter.importAddressBook");
-            clientSecret = awakeFileSession.call("net.safester.server.GmailInfo.getInfo");
-            clientSecret = GmailClientSecret.decrypt(clientSecret);
+            KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+            ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                awakeFileSession.getAuthenticationToken());
+                       
+            persons = apiMessages.googleGetPersons(jTextFieldCode.getText(), jCheckBoxDisplayFirstNameBefore.isSelected());
+            
+            if (persons == null) {
+                this.setCursor(Cursor
+                        .getDefaultCursor());
+                JOptionPane.showMessageDialog(this, MessagesManager.get("this_code_is_invalid"), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
+                jTextFieldCode.requestFocusInWindow();
+                return;
+            }
+                               
         } catch (Exception ex) {
             this.setCursor(Cursor
                     .getDefaultCursor());
@@ -230,36 +250,41 @@ public class AddressBookImportGmail extends javax.swing.JDialog {
             return;
         }
                 
-        GoogleContacts googleContacts = new GoogleContacts();
-        try {
-            isCodeValid = googleContacts.validateCode(jTextFieldCode.getText().trim(), clientSecret);
-        } catch (Exception ex) {
-            this.setCursor(Cursor
-                    .getDefaultCursor());
-            JOptionPane.showMessageDialog(this, MessagesManager.get("unable_to_validate_the_code")+ CR_LF
-                    + SessionUtil.getCleanErrorMessage(ex), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
-            jTextFieldCode.requestFocusInWindow();
-            return;
-        }
-
-        if (!isCodeValid) {
-            this.setCursor(Cursor
-                    .getDefaultCursor());
-            JOptionPane.showMessageDialog(this, MessagesManager.get("this_code_is_invalid"), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
-            jTextFieldCode.requestFocusInWindow();
-            return;
-        }
-
         this.dispose();
         
         // Pass Contacts instance to last window for final import
-        AddressBookImportFinal addressBookImportFinal = new AddressBookImportFinal(parent, googleContacts, jCheckBoxDisplayFirstNameBefore.isSelected(), connection, userNumber);
+        AddressBookImportFinal addressBookImportFinal = new AddressBookImportFinal(parent, persons, jCheckBoxDisplayFirstNameBefore.isSelected(), connection, userNumber);
 
     }
     
-    private void getCode() {
+    private void getGoogleCode() {
         try {
-            GoogleContacts.openBrowserToGetCode();
+            // Go to the Google Developers Console, open your application's
+            // credentials page, and copy the client ID and client secret.
+            // Then paste them into the following code.
+            String clientId = GooglePeopleParms.CLIENT_ID;
+
+            // Or your redirect URL for web based applications.
+            String redirectUrl = GooglePeopleParms.REDIRECT_URL;
+            String scope = GooglePeopleParms.SCOPE;
+
+            // Step 1: Authorize -->
+            String authorizationUrl = new GoogleBrowserClientRequestUrl(clientId,
+                    redirectUrl, Arrays.asList(scope)).setResponseTypes(
+                    Arrays.asList(GooglePeopleParms.RESPONSE_TYPE_CODE)).build();
+
+            // Point or redirect your user to the authorizationUrl.
+            Desktop desktop = Desktop.getDesktop();
+
+            URI uri = null;
+
+            try {
+                uri = new URL(authorizationUrl).toURI();
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(e);
+            }
+
+            desktop.browse(uri);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, MessagesManager.get("unable_to_get_an_authorization_code") + CR_LF
                     + SessionUtil.getCleanErrorMessage(ex), Parms.APP_NAME, JOptionPane.ERROR_MESSAGE);
@@ -664,7 +689,7 @@ private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }//GEN-LAST:event_jButtonGetCodeMouseExited
 
     private void jButtonGetCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGetCodeActionPerformed
-        getCode();
+        getGoogleCode();
     }//GEN-LAST:event_jButtonGetCodeActionPerformed
 
     private void jCheckBoxDisplayFirstNameBeforeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxDisplayFirstNameBeforeItemStateChanged

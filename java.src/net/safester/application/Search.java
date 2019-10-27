@@ -23,8 +23,6 @@
  */
 package net.safester.application;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -42,6 +40,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -54,23 +53,24 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.swing.util.SwingUtil;
+import com.swing.util.CustomComboBox.TreeListCellRenderer;
+import com.swing.util.CustomComboBox.TreeListModel;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.SearchResultMessagesTableCreator;
 import net.safester.application.tool.WindowSettingManager;
+import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.search.MessageSearch;
 import net.safester.noobs.clientserver.FolderLocal;
 import net.safester.noobs.clientserver.MessageLocal;
-
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.swing.util.SwingUtil;
-import com.swing.util.CustomComboBox.TreeListCellRenderer;
-import com.swing.util.CustomComboBox.TreeListModel;
-import java.util.Set;
-import net.safester.application.util.JOptionPaneNewCustom;
-import org.awakefw.file.api.client.AwakeFileSession;
 
 /**
  * SafeShareIt Search engine JFrame

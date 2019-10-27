@@ -29,10 +29,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.Parms;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
+
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
 
 /**
  * Util methods to access translation dictionnaries

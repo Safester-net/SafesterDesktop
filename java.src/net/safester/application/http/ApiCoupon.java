@@ -11,8 +11,8 @@ import org.awakefw.commons.api.client.RemoteException;
 
 import com.google.api.client.util.Preconditions;
 import com.kawansoft.httpclient.KawanHttpClient;
-import net.safester.application.http.dto.CouponDTO;
 
+import net.safester.application.http.dto.CouponDTO;
 import net.safester.application.http.dto.ErrorFullDTO;
 import net.safester.application.http.dto.GsonWsUtil;
 import net.safester.clientserver.ServerParms;

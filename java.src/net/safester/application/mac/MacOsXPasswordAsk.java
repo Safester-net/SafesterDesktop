@@ -35,13 +35,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import com.swing.util.SwingUtil;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.util.JOptionPaneNewCustom;
-
-import com.swing.util.SwingUtil;
 
 /**
  * Dialog to ask a Mac Os X account.

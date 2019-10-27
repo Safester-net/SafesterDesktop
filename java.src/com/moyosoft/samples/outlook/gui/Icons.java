@@ -23,7 +23,8 @@
  */
 package com.moyosoft.samples.outlook.gui;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class Icons
 {

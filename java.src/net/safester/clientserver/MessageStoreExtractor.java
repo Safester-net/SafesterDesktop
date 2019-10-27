@@ -31,7 +31,6 @@ import java.util.Set;
 
 import org.awakefw.sql.api.client.AwakeConnection;
 
-
 import net.safester.application.MessageDecryptor;
 import net.safester.application.parms.Parms;
 import net.safester.clientserver.specs.StoreExtractor;

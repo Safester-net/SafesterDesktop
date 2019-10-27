@@ -26,6 +26,7 @@ package net.safester.application.engines;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.text.MessageFormat;
 import java.util.List;
@@ -35,14 +36,13 @@ import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 import javax.swing.Timer;
 
-import net.safester.application.MessageComposer;
-import net.safester.application.messages.MessagesManager;
-import net.safester.application.util.JOptionPaneNewCustom;
-
 import com.safelogic.pgp.api.engines.CryptoEngine;
 import com.swing.util.SwingUtil;
-import java.io.FileNotFoundException;
+
+import net.safester.application.MessageComposer;
+import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.util.JOptionPaneNewCustom;
 
 public class AttachmentDecryptEngineListener {
 

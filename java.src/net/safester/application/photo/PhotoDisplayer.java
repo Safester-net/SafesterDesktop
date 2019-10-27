@@ -23,7 +23,6 @@
  */
 package net.safester.application.photo;
 
-import com.swing.util.SwingUtil;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -37,8 +36,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.ImageIcon;
 import javax.swing.JRootPane;
+
+import com.swing.util.SwingUtil;
+
 import net.safester.application.tool.UI_Util;
 
 /**

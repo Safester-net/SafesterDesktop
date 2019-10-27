@@ -23,8 +23,7 @@
  */
 package net.safester.noobs.clientserver;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -35,7 +34,8 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 
-import java.lang.reflect.Type;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import net.safester.application.parms.CryptoParms;
 import net.safester.clientserver.specs.ListTransfer;

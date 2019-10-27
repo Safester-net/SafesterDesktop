@@ -28,8 +28,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
+
+import net.safester.application.tool.WinRegistry;
 
 /**
  * Uses fast raw C# user.dir/OutlookChecker.exe call  to test if outlook is installed.
@@ -39,17 +42,59 @@ import org.apache.commons.lang3.SystemUtils;
  */
 public class OutlookUtil {
 
+    private static boolean ASSUME_OUTLOOK_INSTALLED = true;
+            
+     /**
+     * Says if Outlook Office is installed
+     * @return true if Outlook Office is installed, else false
+     * All Exceptions are trapped
+     */
+    public static boolean isOutlookInstalled() {
+        
+        if (!SystemUtils.IS_OS_WINDOWS) {
+            return false;
+        }
+                
+        String value = null;
+        
+        try {
+             value  = WinRegistry.readString(
+                    WinRegistry.HKEY_LOCAL_MACHINE, //HKEY
+                    "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE", //Key
+                    "Path");                                                                //ValueName
+        } catch (Throwable throwable) {
+            System.out.println(throwable);
+        } 
+                
+        if (value != null && value.toLowerCase().contains("office")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+      
+    }
+    
+    public static void main(String[] args) throws IOException
+    {
+        System.out.println(isOutlookInstalled());
+    }
     /**
      * Says if Outlook Office is installed
      * @return true if Outlook Office is installed, else false
      * @throws IOException 
      */
-    public static boolean isOutlookInstalled() throws IOException {
+    
+    private static boolean isOutlookInstalledWithCSharp() throws IOException {
 
         if (!SystemUtils.IS_OS_WINDOWS) {
             return false;
         }
 
+        if (ASSUME_OUTLOOK_INSTALLED) {
+            return true;
+        }
+        
         String programFileStr = getOutlookCheckerProgram();
         
         String line;

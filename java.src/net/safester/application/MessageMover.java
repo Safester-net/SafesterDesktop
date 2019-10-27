@@ -38,6 +38,12 @@ import javax.swing.JDialog;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.swing.util.SwingUtil;
+import com.swing.util.CustomJtree.FolderTreeCellRendererNew;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.WindowSettingManager;
@@ -45,12 +51,6 @@ import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.MessageLocalStoreCache;
 import net.safester.noobs.clientserver.FolderLocal;
 import net.safester.noobs.clientserver.MessageLocal;
-
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.swing.util.SwingUtil;
-import com.swing.util.CustomJtree.FolderTreeCellRendererNew;
 
 public class MessageMover extends javax.swing.JDialog {
 

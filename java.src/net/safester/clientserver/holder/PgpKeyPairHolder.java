@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.awakefw.sql.api.client.AwakeConnection;
 
-
 import net.safester.clientserver.PgpKeyPairLocal;
 
 /*

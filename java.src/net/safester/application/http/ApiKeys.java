@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import com.google.api.client.util.Preconditions;
 import com.kawansoft.httpclient.KawanHttpClient;
 

@@ -3,6 +3,8 @@
  */
 package net.safester.clientserver;
 
+import static net.safester.application.Main.DEBUG;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,13 +12,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static net.safester.application.Main.DEBUG;
-import net.safester.application.MessageDecryptor;
 
 import org.apache.commons.io.FileUtils;
 
+import net.safester.application.MessageDecryptor;
 import net.safester.application.compose.api.GsonUtil;
 import net.safester.application.compose.api.drafts.MessageDraftManager;
 import net.safester.application.compose.api.drafts.MessageDraftsStore;

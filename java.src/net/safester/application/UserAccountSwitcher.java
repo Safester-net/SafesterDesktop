@@ -3,7 +3,6 @@
  */
 package net.safester.application;
 
-import java.sql.Connection;
 import java.util.Set;
 
 /**

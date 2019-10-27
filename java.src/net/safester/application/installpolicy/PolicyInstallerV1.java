@@ -23,7 +23,6 @@
  */
 package net.safester.application.installpolicy;
 
-import net.safester.application.mac.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,13 +31,12 @@ import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.io.IOUtils;
 
 import com.safelogic.pgp.api.util.crypto.Sha1;
 import com.safelogic.pgp.util.UrlUtil;
-import javax.swing.JOptionPane;
-import static net.safester.application.mac.MacOsXFullPolicyFiles.LOCAL_POLICY_JAR;
-import static net.safester.application.mac.MacOsXFullPolicyFiles.US_EXPORT_POLICY_JAR;
 
 /**
  * Class to install full policy files for Windows & Linux

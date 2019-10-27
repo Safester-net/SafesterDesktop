@@ -23,23 +23,29 @@
  */
 package net.safester.application;
 
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
+
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.util.HtmlConverter;
+import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.Debug;
 import com.swing.util.SwingUtil;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.event.KeyAdapter;
-import java.sql.Connection;
-import java.util.List;
-import javax.swing.SwingUtilities;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ImageParmsUtil;
 import net.safester.application.tool.ButtonResizer;
@@ -48,11 +54,8 @@ import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.TableClipboardManager;
 import net.safester.clientserver.UserSettingsExtractor;
-import net.safester.noobs.clientserver.UserSettingsLocal;
 import net.safester.clientserver.holder.TheUserSettingsHolder;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.file.api.util.HtmlConverter;
-import org.awakefw.sql.api.client.AwakeConnection;
+import net.safester.noobs.clientserver.UserSettingsLocal;
 
 /**
  * Displays Log files per year/Month

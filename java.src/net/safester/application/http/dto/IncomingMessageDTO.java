@@ -1,6 +1,5 @@
 package net.safester.application.http.dto;
 
-import java.io.File;
 import java.util.List;
 
 public final class IncomingMessageDTO {

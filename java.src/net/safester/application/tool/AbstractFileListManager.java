@@ -42,9 +42,9 @@ import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import net.safester.application.messages.MessagesManager;
-
 import com.safelogic.utilx.Debug;
+
+import net.safester.application.messages.MessagesManager;
 
 /**
  * Manages all drag & drop and ctrl-c/ctrl-c operations on a list of files

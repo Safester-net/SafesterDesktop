@@ -43,12 +43,12 @@ import java.util.Vector;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import net.safester.application.util.proxy.SimpleAuthenticator;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.awakefw.commons.api.client.HttpProxy;
 import org.awakefw.commons.api.server.util.Sha1;
+
+import net.safester.application.util.proxy.SimpleAuthenticator;
 
 public class SslCertExtractor
 {
