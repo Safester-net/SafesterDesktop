@@ -253,7 +253,8 @@ public class MessageComposer extends javax.swing.JFrame {
 
         initComponents();
         initCompany();
-
+        
+       
     }
 
     public MessageComposer(JFrame caller, String keyId, int userNumber, char[] thePassphrase, Connection connection, MessageLocal message, int action) {
@@ -659,12 +660,14 @@ public class MessageComposer extends javax.swing.JFrame {
         // Nimbus settings
         SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
 
+        this.jTextAreaRecipientsTo.requestFocusInWindow();
+        //this.htmlEditor.getEditor().requestFocusInWindow();
+        
         this.setLocationRelativeTo(caller);
         WindowSettingManager.load(this);
         this.setCursor(Cursor.getDefaultCursor());
 
-        this.jTextAreaRecipientsTo.requestFocusInWindow();
-
+        
         long timeBegin = new Date().getTime();
 
         // Load in thread to put in memory cache the server time & the Groups & The Master Key
