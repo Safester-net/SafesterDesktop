@@ -35,6 +35,7 @@ import com.safelogic.utilx.io.stream.LineInputStream;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.addrbooknew.AddressBookImportStart;
+import net.safester.application.messages.LanguageManager;
 
 /**
  * Mis methos to read Text files in HTML.
@@ -180,7 +181,6 @@ public class HtmlTextUtil {
      * @param helpContentKeyWord    The key word for help file retrieve
      * @langaue the language tag    
      * @return  the HTML content of a  HTML resource file in the message file package
-     * @throws IOException
      */
     public static String getHtmlHelpContent(String helpContentKeyWord, String language) 
     {
@@ -194,12 +194,11 @@ public class HtmlTextUtil {
      * 
      * @param helpContentKeyWord    The key word for help file retrieve
      * @return  the HTML content of a  HTML resource file in the message file package
-     * @throws IOException
      */
     public static String getHtmlHelpContent(String helpContentKeyWord) 
     {
         String resource = "net.safester.application.messages.files";
-        String language = "en";
+        String language = LanguageManager.getLanguage();
         return getHtmlHelpContent(resource, language, helpContentKeyWord);
     }
     

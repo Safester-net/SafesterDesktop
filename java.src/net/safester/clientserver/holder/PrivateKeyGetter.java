@@ -36,7 +36,7 @@ import net.safester.clientserver.UserNumberGetterClient;
 
 public class PrivateKeyGetter {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private Connection connection;
 

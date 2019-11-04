@@ -96,9 +96,7 @@ public class ChangePassphrase extends javax.swing.JDialog {
     }
 
     private void initCompany() {
-        LanguageManager languageManager = new LanguageManager();
-        LanguageManager.setLanguage("en");
-        languageManager.storeLanguage();
+        
         messages = new MessagesManager();
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
         this.setTitle(messages.getMessage("change_passphrase"));

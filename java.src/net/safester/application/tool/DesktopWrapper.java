@@ -258,12 +258,13 @@ public class DesktopWrapper
                 try
                 {
                     java.awt.Desktop dekstop = java.awt.Desktop.getDesktop();
+                    System.out.println("finalUrl: " + finalUrl);
                     dekstop.browse(finalUrl.toURI());
                 }
                 catch (Exception e)
                 {
                     MessagesManager messagesManager = new MessagesManager();
-                    String message = messagesManager.getMessage("ERR_HTTP_BROWSER_ERROR");
+                    String message = messagesManager.getMessage("err_http_browser_error");
                     JOptionPaneNewCustom.showException(null, e, message);
                 }                     
 

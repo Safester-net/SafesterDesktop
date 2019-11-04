@@ -45,7 +45,7 @@ import net.safester.application.util.UserPrefManager;
 public class MultiServer {
         
     /** debug infos */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     /** The Server Socket */
     private ServerSocket serverSocket;

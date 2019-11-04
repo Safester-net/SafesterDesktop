@@ -31,15 +31,18 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.file.api.client.AwakeFileSession;
 
 import net.safester.application.installpolicy.PolicyInstallerV1;
 import net.safester.application.mac.MacOsXFullPolicyFiles;
+import net.safester.application.messages.LanguageManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.JOptionPaneHtml;
 import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
 
 public class Safester {
@@ -49,6 +52,9 @@ public class Safester {
     public static final String CR_LF = System.getProperty("line.separator");
     private static boolean USE_SYNTHETICA = false;
 
+    // Change to to true to suport Franch
+    public static final boolean LANGUAGE_ENABLED = true;
+        
     /**
      * SafeShareIt main launcher
      *
@@ -57,6 +63,20 @@ public class Safester {
     public static void main(String[] args) {
 
 	try {
+            
+            // Must be done at each language change
+            HTMLEditorPane.setLanguage(LanguageManager.getLanguage());
+        
+            // Set User-Agent 
+             System.setProperty("http.agent", SystemUtils.OS_NAME + " " + SystemUtils.OS_VERSION + " Safester " + Version.getVersionWithDate());
+             
+            //TODO: change when French available
+            if (!LANGUAGE_ENABLED) {
+                LanguageManager languageManager = new LanguageManager();
+                LanguageManager.setLanguage("en"); 
+                languageManager.storeLanguage();
+            }
+            
 	    // take the menu bar off the jframe
 	    System.setProperty("apple.laf.useScreenMenuBar", "true");
 	    AwakeFileSession.setUseBase64EncodingForCall();

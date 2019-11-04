@@ -46,7 +46,7 @@ public class Parms {
         Locale.ENGLISH.getLanguage(),
         Locale.FRENCH.getLanguage()
     };
-
+    
     public static final int NOTIFY_PERIOD = 20000;
     
     /** To use for background selection */

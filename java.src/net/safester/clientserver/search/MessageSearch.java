@@ -59,7 +59,7 @@ public class MessageSearch {
     /**
      * The debug flag
      */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     //Connection to db
     Connection connection;

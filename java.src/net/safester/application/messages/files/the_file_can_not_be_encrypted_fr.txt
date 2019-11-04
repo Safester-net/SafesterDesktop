@@ -1,0 +1,7 @@
+Le fichier {0} ne peut pas être chiffré car
+l'espace disponible sur le périphérique de {1} est insuffisant.
+
+Espace libre requis: {2} Mo.
+Espace libre disponible: {3} Mo.
+
+Veuillez libérer de l'espace et réessayer.

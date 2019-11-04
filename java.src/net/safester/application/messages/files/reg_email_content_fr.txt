@@ -1,11 +1,11 @@
-Hello {0},
+Bonjour {0},
 
-To confirm your Safester account creation please click on the following link:
+Pour confirmer la création de votre compte Safester, cliquez sur le lien suivant:
 
- {1} 
+  {1}
 
 
-Best Regards,
+Bien cordialement,
 
-The Safester Team
+L'équipe Safester
 contact@safester.net

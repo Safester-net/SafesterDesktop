@@ -95,7 +95,7 @@ import net.safester.noobs.clientserver.GsonUtil;
  */
 public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
         
     public static final String CR_LF = System.getProperty("line.separator");
         
@@ -131,7 +131,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         userId = theUserNumber;
         thisOne = this;
         initComponents();
-        initSafelogic();
+        initCompany();
     }
 
     public JFrame getCaller() {
@@ -199,7 +199,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
     /**
      * Our Swing init method
      */
-    private void initSafelogic() {
+    private void initCompany() {
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
         this.setTitle(messages.getMessage("address_book"));
 
@@ -239,6 +239,8 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jButtonSave.setToolTipText(messages.getMessage("save_changes"));
         jButtonGroups.setToolTipText(messages.getMessage("group_button"));
 
+        jMenuFile.setText(messages.getMessage("file"));
+                
         if (SystemUtils.IS_OS_MAC_OSX) {
             jMenuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -902,7 +904,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuFile = new javax.swing.JMenu();
         jMenuItemSave = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuItemExport = new javax.swing.JMenuItem();
@@ -997,8 +999,6 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
         jPanelSep1.setMaximumSize(new java.awt.Dimension(10, 10));
-        jPanelSep1.setMinimumSize(new java.awt.Dimension(10, 10));
-        jPanelSep1.setPreferredSize(new java.awt.Dimension(10, 10));
 
         javax.swing.GroupLayout jPanelSep1Layout = new javax.swing.GroupLayout(jPanelSep1);
         jPanelSep1.setLayout(jPanelSep1Layout);
@@ -1196,7 +1196,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        jMenu1.setText("File");
+        jMenuFile.setText("File");
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/floppy_disk.png"))); // NOI18N
@@ -1206,16 +1206,16 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
                 jMenuItemSaveActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItemSave);
-        jMenu1.add(jSeparator4);
+        jMenuFile.add(jMenuItemSave);
+        jMenuFile.add(jSeparator4);
 
         jMenuItemExport.setText("jMenuItemExport");
-        jMenu1.add(jMenuItemExport);
+        jMenuFile.add(jMenuItemExport);
 
         jMenuItemImport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/book_telephone.png"))); // NOI18N
         jMenuItemImport.setText("jMenuItemImport");
-        jMenu1.add(jMenuItemImport);
-        jMenu1.add(jSeparator2);
+        jMenuFile.add(jMenuItemImport);
+        jMenuFile.add(jSeparator2);
 
         jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/close.png"))); // NOI18N
@@ -1225,9 +1225,9 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
                 jMenuItemCloseActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItemClose);
+        jMenuFile.add(jMenuItemClose);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenuFile);
 
         setJMenuBar(jMenuBar1);
 
@@ -1327,8 +1327,8 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCount;
     private javax.swing.JLabel jLabelIn;
     private javax.swing.JLabel jLabelSearch;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemExport;
     private javax.swing.JMenuItem jMenuItemImport;

@@ -32,6 +32,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import net.safester.application.messages.LanguageManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -138,7 +139,12 @@ public class MainStatusBarUpdater {
     {
         MessagesManager messages = new MessagesManager();
         short subscription = SubscriptionLocalStore.getSubscription();
-        String account = StoreParms.getProductNameForSubscription(subscription) + " " + messages.getMessage("account");                
+        String account = StoreParms.getProductNameForSubscription(subscription) + " " + messages.getMessage("account");    
+        
+        if (LanguageManager.getLanguage().equals("fr")) {
+            account = messages.getMessage("account") + " " + StoreParms.getProductNameForSubscription(subscription) ;    
+        }
+        
         return account;
     }
     
@@ -228,7 +234,11 @@ public class MainStatusBarUpdater {
 
         textLastLoginAgo = getLastLoginText(now, dateTime, messages);
 
-        debug("text: " + textLastLoginAgo);
+        debug("jsonString: " + jsonString);
+        debug("text      : " + textLastLoginAgo);
+        debug("now       : " + System.currentTimeMillis());
+        debug("time      : " + time);
+        debug("diff in ss: " + ((now.getTime() - time) / 1000));  
         return textLastLoginAgo;
     }
     
@@ -252,7 +262,7 @@ public class MainStatusBarUpdater {
         // Compute the delay in seconds
         long lastLoginDelay =  now.getTime() - dateTime.getTime();
 
-        if (lastLoginDelay == 0)
+        if (lastLoginDelay <= 1000)
         {
             return ""; // No display message at init
         }

@@ -39,7 +39,7 @@ import org.awakefw.sql.api.client.AwakeConnection;
  */
 public class MainNotifierServerInfo {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
         
     private Connection connection = null;
     private int userNumber = -1;

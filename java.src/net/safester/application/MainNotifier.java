@@ -43,7 +43,7 @@ import net.safester.noobs.clientserver.MessageLocal;
  */
 public class MainNotifier {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
         
     private MessageLocalStore messageLocalStore = null;
     private CryptTray cryptTray = null;

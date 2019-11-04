@@ -65,6 +65,7 @@ import com.swing.util.SwingUtil;
 
 import net.safester.application.http.ApiCoupon;
 import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
@@ -84,6 +85,8 @@ import net.safester.noobs.clientserver.UserSettingsLocal;
 
 public class UserSettingsUpdater extends javax.swing.JFrame {
 
+    private static boolean DEUBG = true;
+        
     /**
      * 
      */
@@ -100,6 +103,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private String accountTypeName = null;
     private SignatureFrame signatureFrame = null;
     private SoundChooser soundChooser = null;
+
+
 
     /** Creates new form SafeShareItSettings */
     public UserSettingsUpdater(JFrame jFrame, Connection theConnection, int theUserNumber, String keyId) {
@@ -147,6 +152,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
             this.jPanelNameAndEmail.setMaximumSize(new Dimension(2147483647, 455));
         }
         */
+        this.jLabelLanguage.setText(messages.getMessage("default_language"));
         this.jLabelSpellCheckDefaultLanguage.setText(messages.getMessage("spell_check_default_language"));
         this.jCheckBoxHideDecrypDialog.setText(messages.getMessage("hide_decrypting_progess_bar"));
         this.jCheckBoxHideEncryptionDiscardableWindow.setText(messages.getMessage("hide_encrypted_warning_on_send"));
@@ -155,9 +161,14 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jCheckBoxSendAnonymousNotifications.setText(messages.getMessage("send_anonymous_notifications"));
         this.jButtonSpellCheckOptions.setText(messages.getMessage("spell_check_options"));
 
-        this.jComboSpellCheckDefaulltLanguage.addItem(messages.getMessage(messages.getMessage("english")));
-        this.jComboSpellCheckDefaulltLanguage.addItem(messages.getMessage(messages.getMessage("french")));     
+        String [] userLanguages = {messages.getMessage("english"), messages.getMessage("french")};
+        jComboDefaulltLanguage.setModel(new DefaultComboBoxModel(userLanguages));
+
+        this.jComboDefaulltLanguage.setEnabled(Safester.LANGUAGE_ENABLED);
         
+        String [] spellCheckLanguages = {messages.getMessage("english"), messages.getMessage("french")};
+        jComboSpellCheckDefaulltLanguage.setModel(new DefaultComboBoxModel(spellCheckLanguages));
+            
         jLabelNotify.setText(MessagesManager.get("new_messages_notification"));
         jCheckBoxSendNotifyEmail.setText(MessagesManager.get("send_notification_email_to"));
         jCheckBoxPopUpOnTaskbar.setText(MessagesManager.get("pop_up_message_on_taskbar"));
@@ -172,7 +183,18 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         
         this.jButtonSignature.setText(messages.getMessage("signature"));
         this.jButtonSignature.setToolTipText(messages.getMessage("add_a_signature_tooltip"));
-                
+        
+        jLabelDefaultLanguage.setText(messages.getMessage("default_language"));
+        
+        debug("LanguageManager.getLanguage().equals(\"fr\"): " + LanguageManager.getLanguage().equals("fr"));
+        
+        if (LanguageManager.getLanguage().equals("fr")) {
+            this.jComboDefaulltLanguage.setSelectedItem(messages.getMessage("french"));
+        }
+        else {
+           this.jComboDefaulltLanguage.setSelectedItem(messages.getMessage("english")); 
+        }
+        
         int defaultLanguage = LanguageType.ENGLISH;
         if (Locale.getDefault().getLanguage().equals("fr"))
         {
@@ -185,7 +207,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
                 defaultLanguage = Integer.parseInt(sLanguage);
             }
             catch(NumberFormatException e){
-                //Do nothing leave english as default language
+                //Do nothing leave english as default languageSpellCheck
             }
         }
 
@@ -266,7 +288,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jTextFieldUserName.requestFocus();
                
         this.setLocationRelativeTo(parent);
-        this.setSize(new Dimension(575, 717));
+        this.setSize(new Dimension(606, 751));
        
         SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
         
@@ -566,11 +588,13 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         UserPrefManager.setPreference(UserPrefManager.HIDE_DECRYPTING_DIALOG, hideDecryptingDialog);
         UserPrefManager.setPreference(UserPrefManager.INSERT_SIGNATURE, jCheckBoxInsertSignature.isSelected());
         
-        int language = LanguageType.ENGLISH;
+              
+        int languageSpellCheck = LanguageType.ENGLISH;
         if(jComboSpellCheckDefaulltLanguage.getSelectedItem().equals(messages.getMessage("french"))){
-            language = LanguageType.FRENCH;
+            languageSpellCheck = LanguageType.FRENCH;
         }
-        UserPrefManager.setPreference(UserPrefManager.SPELL_CHECK_LANGUAGE, "" + language);
+        UserPrefManager.setPreference(UserPrefManager.SPELL_CHECK_LANGUAGE, "" + languageSpellCheck);
+        
         String hashMessage = null;
         Sha1 hashcode = new Sha1();
         MessagesManager messagesManager = new MessagesManager();
@@ -593,7 +617,22 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         UserPrefManager.setPreference(UserPrefManager.NB_MESSAGES_PER_PAGE,
                                             (Integer)jComboNbMessagesPerPage.getSelectedItem());
-       
+
+        String language = LanguageManager.getLanguage();
+        String chosenLanguage = language;
+        if (jComboDefaulltLanguage.getSelectedItem().equals(messages.getMessage("french"))) {
+            chosenLanguage = "fr";
+        } else {
+            chosenLanguage = "en";
+        }
+
+        if (!language.equals(chosenLanguage)) {
+            LanguageManager.setLanguage(chosenLanguage);
+            new LanguageManager().storeLanguage();
+            JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed_for_language_change"));
+            System.exit(0);
+        }
+                
     }
 
     /**
@@ -679,6 +718,15 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jTextFieldCoupon = new javax.swing.JTextField();
         jLabelCouponHelp = new javax.swing.JLabel();
         jPanelSep14 = new javax.swing.JPanel();
+        jPaneSepLanguage = new javax.swing.JPanel();
+        jSeparator11 = new javax.swing.JSeparator();
+        jLabelLanguage = new javax.swing.JLabel();
+        jSeparator12 = new javax.swing.JSeparator();
+        jPanelLanguage = new javax.swing.JPanel();
+        jLabelDefaultLanguage = new javax.swing.JLabel();
+        jComboDefaulltLanguage = new javax.swing.JComboBox();
+        jPanelSep3 = new javax.swing.JPanel();
+        jPanelSepBlanc8 = new javax.swing.JPanel();
         jPaneSepNotify = new javax.swing.JPanel();
         jSeparator5 = new javax.swing.JSeparator();
         jLabelNotify = new javax.swing.JLabel();
@@ -885,6 +933,48 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelSep14.setMinimumSize(new java.awt.Dimension(10, 8));
         jPanelSep14.setPreferredSize(new java.awt.Dimension(10, 8));
         jPanelCenter.add(jPanelSep14);
+
+        jPaneSepLanguage.setLayout(new javax.swing.BoxLayout(jPaneSepLanguage, javax.swing.BoxLayout.LINE_AXIS));
+
+        jSeparator11.setMaximumSize(new java.awt.Dimension(24, 6));
+        jSeparator11.setMinimumSize(new java.awt.Dimension(24, 6));
+        jSeparator11.setPreferredSize(new java.awt.Dimension(24, 6));
+        jPaneSepLanguage.add(jSeparator11);
+
+        jLabelLanguage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/24x24/keyboard.png"))); // NOI18N
+        jLabelLanguage.setText("Spell Check");
+        jLabelLanguage.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
+        jPaneSepLanguage.add(jLabelLanguage);
+
+        jSeparator12.setMaximumSize(new java.awt.Dimension(27000, 6));
+        jSeparator12.setPreferredSize(new java.awt.Dimension(27000, 6));
+        jPaneSepLanguage.add(jSeparator12);
+
+        jPanelCenter.add(jPaneSepLanguage);
+
+        jPanelLanguage.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 5));
+
+        jLabelDefaultLanguage.setText("jLabelDefaultLanguage");
+        jPanelLanguage.add(jLabelDefaultLanguage);
+
+        jComboDefaulltLanguage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboDefaulltLanguageActionPerformed(evt);
+            }
+        });
+        jPanelLanguage.add(jComboDefaulltLanguage);
+
+        jPanelSep3.setMaximumSize(new java.awt.Dimension(1, 10));
+        jPanelSep3.setMinimumSize(new java.awt.Dimension(1, 10));
+        jPanelSep3.setPreferredSize(new java.awt.Dimension(1, 10));
+        jPanelLanguage.add(jPanelSep3);
+
+        jPanelCenter.add(jPanelLanguage);
+
+        jPanelSepBlanc8.setMaximumSize(new java.awt.Dimension(32767, 8));
+        jPanelSepBlanc8.setMinimumSize(new java.awt.Dimension(10, 8));
+        jPanelSepBlanc8.setPreferredSize(new java.awt.Dimension(10, 8));
+        jPanelCenter.add(jPanelSepBlanc8);
 
         jPaneSepNotify.setLayout(new javax.swing.BoxLayout(jPaneSepNotify, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1263,6 +1353,10 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboSpellCheckDefaulltLanguageActionPerformed
 
+    private void jComboDefaulltLanguageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboDefaulltLanguageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboDefaulltLanguageActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1296,6 +1390,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxPopUpOnTaskbar;
     private javax.swing.JCheckBox jCheckBoxSendAnonymousNotifications;
     private javax.swing.JCheckBox jCheckBoxSendNotifyEmail;
+    private javax.swing.JComboBox jComboDefaulltLanguage;
     private javax.swing.JComboBox jComboFontSizeBody;
     private javax.swing.JComboBox jComboNbMessagesPerPage;
     private javax.swing.JComboBox jComboSpellCheckDefaulltLanguage;
@@ -1304,8 +1399,10 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCoupon;
     private javax.swing.JLabel jLabelCouponHelp;
     private javax.swing.JLabel jLabelCryptoSettings;
+    private javax.swing.JLabel jLabelDefaultLanguage;
     private javax.swing.JLabel jLabelEmailPref;
     private javax.swing.JLabel jLabelFontSizeBody;
+    private javax.swing.JLabel jLabelLanguage;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelNbMessagesPerPage;
     private javax.swing.JLabel jLabelNotify;
@@ -1315,6 +1412,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPaneSepAccountInfo;
     private javax.swing.JPanel jPaneSepEmailPref;
+    private javax.swing.JPanel jPaneSepLanguage;
     private javax.swing.JPanel jPaneSepNotify;
     private javax.swing.JPanel jPaneSepSpellCheck;
     private javax.swing.JPanel jPanel1;
@@ -1335,6 +1433,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelHideAndAnon;
     private javax.swing.JPanel jPanelHideEncryptDiscard;
     private javax.swing.JPanel jPanelHidensertSignature;
+    private javax.swing.JPanel jPanelLanguage;
     private javax.swing.JPanel jPanelNameAndEmail;
     private javax.swing.JPanel jPanelNameNew;
     private javax.swing.JPanel jPanelNbMessagesPerPage;
@@ -1346,9 +1445,11 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSep14;
     private javax.swing.JPanel jPanelSep15;
     private javax.swing.JPanel jPanelSep2;
+    private javax.swing.JPanel jPanelSep3;
     private javax.swing.JPanel jPanelSepBlanc5;
     private javax.swing.JPanel jPanelSepBlanc6;
     private javax.swing.JPanel jPanelSepBlanc7;
+    private javax.swing.JPanel jPanelSepBlanc8;
     private javax.swing.JPanel jPanelSepBlank;
     private javax.swing.JPanel jPanelSepLine;
     private javax.swing.JPanel jPanelSepLine2;
@@ -1358,6 +1459,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelWest;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
+    private javax.swing.JSeparator jSeparator11;
+    private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -1373,6 +1476,12 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldStorage;
     private javax.swing.JTextField jTextFieldUserName;
     // End of variables declaration//GEN-END:variables
+
+    private void debug(String s) {
+        if (DEUBG) {
+            System.out.println(s);
+        }
+    }
 
 
 

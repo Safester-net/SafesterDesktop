@@ -44,7 +44,7 @@ public class MultiServer {
     
     
     /** debug infos */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     
     /**

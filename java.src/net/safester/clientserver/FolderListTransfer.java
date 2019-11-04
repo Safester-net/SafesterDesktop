@@ -34,6 +34,8 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.util.Locale;
+import net.safester.application.messages.LanguageManager;
 
 import net.safester.clientserver.specs.ListTransfer;
 import net.safester.noobs.clientserver.FolderLocal;
@@ -112,6 +114,30 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
         for (FolderLocal folderLocal : folderLocalList) {
             String name = folderLocal.getName();
             name = HtmlConverter.fromHtml(name);
+            
+            if (folderLocal.getFolderId() <= 3 && LanguageManager.getLanguage().equals(Locale.FRENCH.getLanguage())) {
+                if (folderLocal.getFolderId() == 1) {
+                    name = "Réception";
+                }
+                else if (folderLocal.getFolderId() == 2) {
+                    name = "Envois";
+                }
+                else if (folderLocal.getFolderId() == 3) {
+                    name = "Brouillons";
+                }
+            }
+            else {
+                if (folderLocal.getFolderId() == 1) {
+                    name = "InBox";
+                }
+                else if (folderLocal.getFolderId() == 2) {
+                    name = "Sent";
+                }
+                else if (folderLocal.getFolderId() == 3) {
+                    name = "Drafts";
+                }
+            }
+            
             folderLocal.setName(name);
         }
         

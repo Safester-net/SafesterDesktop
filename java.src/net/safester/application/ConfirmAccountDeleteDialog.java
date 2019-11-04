@@ -91,6 +91,8 @@ public class ConfirmAccountDeleteDialog extends javax.swing.JDialog {
         this.jLabelTitle.setText(messages.getMessage("confirm_delete_account"));
         
         this.jLabelConfirmDelete.setText(messages.getMessage("account_delete_yes_no"));
+        this.jTextFieldConfirmDelete.setText(messages.getMessage("no"));
+        
         jEditorPane.setContentType("text/html");
         jEditorPane.setEditable(false);
         jEditorPane.setBackground(Color.WHITE);
@@ -170,14 +172,17 @@ public class ConfirmAccountDeleteDialog extends javax.swing.JDialog {
 
         String errorMsg = messages.getMessage("error");
 
+        String theYes = messages.getMessage("yes");
+        String theNo = messages.getMessage("no");
+                
         String confirmation = this.jTextFieldConfirmDelete.getText();
-        if(confirmation == null ||(!confirmation.equals("yes") && !confirmation.equals("no"))){
+        if(confirmation == null ||(!confirmation.equalsIgnoreCase(theYes) && !confirmation.equalsIgnoreCase(theNo))){
             JOptionPane.showMessageDialog(rootPane, messages.getMessage("enter_yes_or_no"),
                                           errorMsg, JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (! confirmation.equals("yes"))
+        if (! confirmation.equalsIgnoreCase(theYes))
         {
             JOptionPane.showMessageDialog(rootPane, messages.getMessage("account_will_not_be_deleted"),
                                           errorMsg, JOptionPane.ERROR_MESSAGE);
@@ -379,8 +384,10 @@ public class ConfirmAccountDeleteDialog extends javax.swing.JDialog {
         jLabelConfirmDelete.setText("jLabelConfirmDelete");
         jPanelConfirmDelete.add(jLabelConfirmDelete);
 
-        jTextFieldConfirmDelete.setText("no");
-        jTextFieldConfirmDelete.setPreferredSize(new java.awt.Dimension(40, 22));
+        jTextFieldConfirmDelete.setText("non");
+        jTextFieldConfirmDelete.setMaximumSize(new java.awt.Dimension(50, 22));
+        jTextFieldConfirmDelete.setMinimumSize(new java.awt.Dimension(50, 22));
+        jTextFieldConfirmDelete.setPreferredSize(new java.awt.Dimension(50, 22));
         jPanelConfirmDelete.add(jTextFieldConfirmDelete);
 
         jPanelCenter.add(jPanelConfirmDelete);

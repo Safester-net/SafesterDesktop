@@ -81,7 +81,7 @@ public class Double2FaDisplayQrCode extends javax.swing.JDialog {
 
     public static final String CR_LF = System.getProperty("line.separator");
         
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * Messages in national language

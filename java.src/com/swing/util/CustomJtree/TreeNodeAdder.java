@@ -233,7 +233,7 @@ public class TreeNodeAdder extends javax.swing.JDialog {
 
         jPanel5.setMaximumSize(new java.awt.Dimension(32767, 49));
         jPanel5.setPreferredSize(new java.awt.Dimension(453, 49));
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 12));
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 12));
 
         jButtonOk.setText("Ok");
         jButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -251,18 +251,19 @@ public class TreeNodeAdder extends javax.swing.JDialog {
         });
         jPanel5.add(jButtonCancel);
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 10));
-        jPanel1.setMinimumSize(new java.awt.Dimension(0, 10));
+        jPanel1.setMaximumSize(new java.awt.Dimension(5, 5));
+        jPanel1.setMinimumSize(new java.awt.Dimension(5, 5));
+        jPanel1.setPreferredSize(new java.awt.Dimension(5, 5));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
+            .addGap(0, 5, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
+            .addGap(0, 5, Short.MAX_VALUE)
         );
 
         jPanel5.add(jPanel1);

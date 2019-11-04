@@ -65,7 +65,7 @@ import net.safester.clientserver.ServerParms;
  * 
  */
 public class ProxySessionCheckerNew {
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /** The parent Window */
     private JFrame parent = null;
@@ -288,7 +288,7 @@ public class ProxySessionCheckerNew {
      */
     @SuppressWarnings("unused")
     private void checkUrlDownload(String urlAddress) throws Exception {
-	// org.awakefm.file.http.HttpTransferOne.DEBUG = true;
+	// org.awakefm.file.http.HttpTransferOne.DEBUG = false;
 	// System.out.println("httpProxy: " + httpProxy);
 
 	debug("");

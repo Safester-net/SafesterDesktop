@@ -53,7 +53,7 @@ import net.safester.clientserver.SubscriptionLocal;
  */
 public class ConnectionParms {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     //Login for connection
     private String login;

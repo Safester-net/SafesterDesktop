@@ -43,7 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 public class MacOsXCommands
 {
     /** debug infos */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     /**
      * Default constructor

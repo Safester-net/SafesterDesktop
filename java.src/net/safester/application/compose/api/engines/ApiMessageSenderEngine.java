@@ -42,7 +42,7 @@ public class ApiMessageSenderEngine extends Thread {
     public static final int RC_OK = 1;
 
     /** The debug flag */
-    public boolean DEBUG = true;
+    public boolean DEBUG = false;
 
     /** The return code */
     private int returnCode = RC_ERROR;

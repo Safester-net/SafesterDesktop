@@ -159,10 +159,7 @@ public class Login extends javax.swing.JFrame {
 
         //org.awakefm.file.http.HttpTransferOne.DEBUG = false;
         clipboardManager = new ClipboardManager(rootPane);
-
-        LanguageManager languageManager = new LanguageManager();
-        LanguageManager.setLanguage("en");
-        languageManager.storeLanguage();
+        
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
 
         this.jButtonVersion.setText(net.safester.application.version.Version.VERSION + " ");
@@ -771,8 +768,8 @@ public class Login extends javax.swing.JFrame {
         int userSubscription = subscriptionLocal.getTypeSubscription();
         boolean isExpired = SubscriptionLocalManager.isEsxpired(subscriptionLocal);
         
-        System.out.println("isExpired              : " + isExpired);
-        System.out.println("userSubscription       : " + userSubscription);
+        debug("isExpired              : " + isExpired);
+        debug("userSubscription       : " + userSubscription);
         
         // Always accept FREE
         if (userSubscription == StoreParms.PRODUCT_FREE) {

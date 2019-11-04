@@ -45,7 +45,7 @@ import net.safester.noobs.clientserver.MessageLocal;
  */
 public class MessageListExtractor {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * The Jdbc connection

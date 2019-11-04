@@ -1,4 +1,4 @@
-You will receive within few minutes on {0} an email with a link to confirm your registration.
-Important: you will be authorized to log in after your confirmation.
+Vous recevrez dans quelques minutes sur {0} un e-mail avec un lien de confirmation de votre inscription.
+Important: vous serez autorisé à vous connecter après votre confirmation.
 
-Thank you for your Account Creation.
+Merci pour votre création de compte.

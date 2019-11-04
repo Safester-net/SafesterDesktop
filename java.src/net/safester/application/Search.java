@@ -138,6 +138,7 @@ public class Search extends javax.swing.JFrame {
         this.jLabelTitle.setText(messages.getMessage("search_message"));
         this.jLabelFolder.setText(messages.getMessage("folder"));
         this.jLabelSearchContent.setText(messages.getMessage("find"));
+        this.jLabelSearchIn.setText(messages.getMessage("in"));
         this.jLabelSearchDate.setText(messages.getMessage("message_date_between"));
         this.jLabelAnd.setText(messages.getMessage("and"));
         this.jButtonSearch.setText("search");

@@ -42,7 +42,7 @@ import net.safester.clientserver.holder.GroupHolder;
  */
 public class RecipientsEmailBuilder {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     /** The Jdbc Connection */
     private Connection connection = null;

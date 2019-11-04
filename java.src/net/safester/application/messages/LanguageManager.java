@@ -39,8 +39,8 @@ import net.safester.application.parms.Parms;
  */
 public class LanguageManager
 {
-    /** The Preferences Key for the Language in use with cGeep*/
-    private static String LANGUAGE_KEY = "pGeepLanguage";
+    /** The Preferences Key for the Language in use with Safester*/
+    private static String LANGUAGE_KEY = "LANGUAGE_KEY";
     
     /** Language defined by the setLanguage() method */
     private static String LANGUAGE = null;
@@ -69,6 +69,8 @@ public class LanguageManager
             LanguageManager languageManager = new LanguageManager();
             languageManager.loadLanguage();          
         }
+        
+        //System.out.println("Language:" + LANGUAGE);
         
         return LANGUAGE;
     }

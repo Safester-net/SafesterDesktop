@@ -197,7 +197,7 @@ public class SoundChooser extends javax.swing.JFrame {
             }
             else {
                 // Play default resource
-                String filename = "images/files/sounds/{0}.wav";
+                String filename = "images/files/sounds/{0}";
                 String wavName = getWavNameFromResource(DEFAULT_RESOURCE);
                 filename = filename.replace("{0}", wavName);
                 InputStream inputStream = AudioFilePlayer.getInputStreamOnResource(filename);
@@ -209,10 +209,22 @@ public class SoundChooser extends javax.swing.JFrame {
     }
     
     public static String getWavNameFromResource(String resource) {
-        String wavName = MessagesManager.get(resource);
-        wavName = wavName.toLowerCase();
-        wavName = wavName.replace(",", "");
-        wavName = wavName.replace(" ", "_");
+        //String wavName = MessagesManager.get(resource);
+        //wavName = wavName.toLowerCase();
+        //wavName = wavName.replace(",", "");
+        //wavName = wavName.replace(" ", "_");
+        String wavName = null;
+        if (resource.equals("notify_1")) {
+            wavName = "melodious_high-pitched_alert_with_reverb.wav";
+        } else if (resource.equals("notify_2")) {
+            wavName = "melodious_alert_with_arpeggios_and_delay.wav";
+        } else if (resource.equals("notify_3")) {
+            wavName = "melodious_and_happy_alert.wav";
+        } else if (resource.equals("notify_4")) {
+            wavName = "echoing_two-tone_alerting.wav";
+        } else if (resource.equals("notify_5")) {
+            wavName = "pure_high-pitched_reverberating_chord.wav";
+        }
         return wavName;
     }
     
@@ -223,7 +235,7 @@ public class SoundChooser extends javax.swing.JFrame {
             //System.out.println("name: " + name);
 
             if (!name.equals("notify_user_file")) {
-                String resource = "images/files/sounds/{0}.wav";
+                String resource = "images/files/sounds/{0}";
                 resource = resource.replace("{0}", getWavNameFromResource(name));
                 InputStream inputStream = AudioFilePlayer.getInputStreamOnResource(resource);
                 AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
@@ -569,6 +581,7 @@ public class SoundChooser extends javax.swing.JFrame {
         jRadioButton3.setText("jRadioButton3");
         jRadioButton3.setMaximumSize(new java.awt.Dimension(300, 25));
         jRadioButton3.setMinimumSize(new java.awt.Dimension(300, 25));
+        jRadioButton3.setName(""); // NOI18N
         jRadioButton3.setPreferredSize(new java.awt.Dimension(300, 25));
         jRadioButton3.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {

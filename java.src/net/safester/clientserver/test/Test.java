@@ -23,6 +23,7 @@
  */
 package net.safester.clientserver.test;
 
+import java.awt.Font;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.Locale;
+import javax.swing.JLabel;
 
 import javax.swing.JOptionPane;
 
@@ -59,8 +61,10 @@ public class Test
      */
     public static void main(String[] args) throws Exception
     {             
-	
-	
+        Font font = new JLabel().getFont();
+        System.out.println(font);
+        System.out.println(font.getName());
+        
 	System.out.println(Locale.FRENCH.toLanguageTag());
         
         System.out.println(HtmlConverter.fromHtml("Charles Andr&eacute;"));

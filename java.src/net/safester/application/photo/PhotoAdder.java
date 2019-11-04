@@ -73,7 +73,7 @@ public class PhotoAdder extends javax.swing.JDialog {
 
     public static String TEST_USERID = USERID_3;
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     public static boolean TEST = false;
 
     /**

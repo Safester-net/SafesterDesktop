@@ -108,6 +108,7 @@ import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.http.dto.IncomingAttachementDTO;
 import net.safester.application.http.dto.IncomingMessageDTO;
 import net.safester.application.http.dto.IncomingRecipientDTO;
+import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
@@ -235,7 +236,7 @@ public class MessageComposer extends javax.swing.JFrame {
      * @param thePassphrase
      */
     public MessageComposer(JFrame caller, String keyId, int userNumber, char[] thePassphrase, Connection theConnection) {
-
+                    
         if (connection != null) {
             if (!(caller instanceof Main) && !(caller instanceof MessageReader) && !(caller instanceof GroupListNew)) {
                 throw new IllegalArgumentException("MailComposer can only be caller from Main or MessageReader JFrame");
@@ -519,7 +520,7 @@ public class MessageComposer extends javax.swing.JFrame {
                 jToggleButtonSendAnonymousNotification.setSelected(userSettingsLocal.getSend_anonymous_notification_on());
             }
 
-            htmlEditor = new HTMLEditorPane();
+            htmlEditor =  new HTMLEditorPane();
 
             setSpellCheck(language);
 
@@ -537,7 +538,7 @@ public class MessageComposer extends javax.swing.JFrame {
                 if (!signature.isEmpty()) {
                     htmlEditor.setText("<pre>" + signature + "</pre><br>");
                 } else {
-                    htmlEditor.setText("nbsp;");
+                    htmlEditor.setText("&nbsp;");
                 }
                 htmlEditor.setTextSimple();
             } else {
@@ -579,7 +580,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
 
         //getCaret().setVisible( true ). 
-        this.setSize(732, 732);
+        this.setSize(891, 736);
 
         this.keyListenerAdder();
 
@@ -705,7 +706,7 @@ public class MessageComposer extends javax.swing.JFrame {
      */
     private void alignFieldsOnRightForAllOs() {
         if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_LINUX) {
-            int widthReference = jLabelSubject.getPreferredSize().width;
+            int widthReference = jPanelLabelSubject.getPreferredSize().width;
 
             int maxHeight = (int) jButtonTo.getMaximumSize().getHeight();
             int minHeight = (int) jButtonTo.getMinimumSize().getHeight();
@@ -2168,6 +2169,7 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelSubjectContainer = new javax.swing.JPanel();
         jPanelLabelSubject = new javax.swing.JPanel();
         jLabelSubject = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         jPanelSubject = new javax.swing.JPanel();
         jTextFieldSubject = new javax.swing.JTextField();
         jPanel5_2 = new javax.swing.JPanel();
@@ -2175,6 +2177,7 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelFiles = new javax.swing.JPanel();
         jPanelLabelAttached = new javax.swing.JPanel();
         jLabelAttached = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         jPanelScrollPane = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListAttach = new javax.swing.JList();
@@ -2283,6 +2286,9 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelRecipientsTo.setLayout(new javax.swing.BoxLayout(jPanelRecipientsTo, javax.swing.BoxLayout.LINE_AXIS));
 
         jButtonTo.setText("To...");
+        jButtonTo.setMaximumSize(new java.awt.Dimension(130, 24));
+        jButtonTo.setMinimumSize(new java.awt.Dimension(130, 24));
+        jButtonTo.setPreferredSize(new java.awt.Dimension(130, 24));
         jButtonTo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonToActionPerformed(evt);
@@ -2345,6 +2351,9 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelRecipientsCc.setLayout(new javax.swing.BoxLayout(jPanelRecipientsCc, javax.swing.BoxLayout.LINE_AXIS));
 
         jButtonCc.setText("Cc...");
+        jButtonCc.setMaximumSize(new java.awt.Dimension(130, 24));
+        jButtonCc.setMinimumSize(new java.awt.Dimension(130, 24));
+        jButtonCc.setPreferredSize(new java.awt.Dimension(130, 24));
         jButtonCc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCcActionPerformed(evt);
@@ -2403,6 +2412,9 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelRecipientsBcc.setLayout(new javax.swing.BoxLayout(jPanelRecipientsBcc, javax.swing.BoxLayout.LINE_AXIS));
 
         jButtonBcc2.setText("Bcc...");
+        jButtonBcc2.setMaximumSize(new java.awt.Dimension(130, 24));
+        jButtonBcc2.setMinimumSize(new java.awt.Dimension(130, 24));
+        jButtonBcc2.setPreferredSize(new java.awt.Dimension(130, 24));
         jButtonBcc2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBcc2ActionPerformed(evt);
@@ -2434,7 +2446,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         jPanelRecipients.add(jPanelRecipientsBcc);
 
-        jPanelBccNotarization.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 68, 5));
+        jPanelBccNotarization.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 130, 5));
 
         jLabelBccNotification.setFont(new java.awt.Font("Tahoma", 2, 13)); // NOI18N
         jLabelBccNotification.setText("jLabelNotification");
@@ -2489,19 +2501,32 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 32));
         jPanelSubjectContainer.setLayout(new javax.swing.BoxLayout(jPanelSubjectContainer, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelLabelSubject.setMaximumSize(new java.awt.Dimension(71, 24));
-        jPanelLabelSubject.setMinimumSize(new java.awt.Dimension(71, 24));
-        jPanelLabelSubject.setPreferredSize(new java.awt.Dimension(71, 24));
-        jPanelLabelSubject.setLayout(new javax.swing.BoxLayout(jPanelLabelSubject, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelLabelSubject.setMaximumSize(new java.awt.Dimension(130, 24));
+        jPanelLabelSubject.setMinimumSize(new java.awt.Dimension(130, 24));
+        jPanelLabelSubject.setPreferredSize(new java.awt.Dimension(130, 24));
+        jPanelLabelSubject.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
 
         jLabelSubject.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelSubject.setText("Subject");
-        jLabelSubject.setMaximumSize(new java.awt.Dimension(65, 14));
-        jLabelSubject.setMinimumSize(new java.awt.Dimension(65, 14));
-        jLabelSubject.setPreferredSize(new java.awt.Dimension(65, 14));
         jPanelLabelSubject.add(jLabelSubject);
 
         jPanelSubjectContainer.add(jPanelLabelSubject);
+
+        jPanel6.setMaximumSize(new java.awt.Dimension(5, 5));
+        jPanel6.setMinimumSize(new java.awt.Dimension(5, 5));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 5, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 5, Short.MAX_VALUE)
+        );
+
+        jPanelSubjectContainer.add(jPanel6);
 
         jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 31));
         jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 31));
@@ -2560,19 +2585,32 @@ public class MessageComposer extends javax.swing.JFrame {
         jPanelFiles.setPreferredSize(new java.awt.Dimension(10, 50));
         jPanelFiles.setLayout(new javax.swing.BoxLayout(jPanelFiles, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelLabelAttached.setMaximumSize(new java.awt.Dimension(71, 24));
-        jPanelLabelAttached.setMinimumSize(new java.awt.Dimension(71, 24));
-        jPanelLabelAttached.setPreferredSize(new java.awt.Dimension(71, 24));
-        jPanelLabelAttached.setLayout(new javax.swing.BoxLayout(jPanelLabelAttached, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelLabelAttached.setMaximumSize(new java.awt.Dimension(130, 24));
+        jPanelLabelAttached.setMinimumSize(new java.awt.Dimension(130, 24));
+        jPanelLabelAttached.setPreferredSize(new java.awt.Dimension(130, 24));
+        jPanelLabelAttached.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
 
-        jLabelAttached.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabelAttached.setText("Attached");
-        jLabelAttached.setMaximumSize(new java.awt.Dimension(65, 14));
-        jLabelAttached.setMinimumSize(new java.awt.Dimension(65, 14));
-        jLabelAttached.setPreferredSize(new java.awt.Dimension(65, 14));
+        jLabelAttached.setText("Pièces Jointes");
         jPanelLabelAttached.add(jLabelAttached);
 
         jPanelFiles.add(jPanelLabelAttached);
+
+        jPanel5.setMaximumSize(new java.awt.Dimension(5, 5));
+        jPanel5.setMinimumSize(new java.awt.Dimension(5, 5));
+        jPanel5.setPreferredSize(new java.awt.Dimension(5, 5));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 5, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 5, Short.MAX_VALUE)
+        );
+
+        jPanelFiles.add(jPanel5);
 
         jPanelScrollPane.setLayout(new javax.swing.BoxLayout(jPanelScrollPane, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -3222,8 +3260,10 @@ public class MessageComposer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel5_2;
     private javax.swing.JPanel jPanel5_3;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelBccNotarization;
     private javax.swing.JPanel jPanelCenterMain;

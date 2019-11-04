@@ -81,7 +81,6 @@ import net.safester.application.Login;
 import net.safester.application.NewsFrame;
 import net.safester.application.http.ApiRegister;
 import net.safester.application.http.KawanHttpClientBuilder;
-import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.CryptoParms;
 import net.safester.application.parms.Parms;
@@ -175,9 +174,8 @@ public class Register extends javax.swing.JFrame {
     private void initCompany() {
 
         //clipboardManager = new ClipboardManager(rootPane);
-        LanguageManager languageManager = new LanguageManager();
-        LanguageManager.setLanguage("en");
-        languageManager.storeLanguage();
+
+        
         messages = new MessagesManager();
 
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
@@ -270,7 +268,7 @@ public class Register extends javax.swing.JFrame {
 
         //if (SystemUtils.IS_OS_LINUX)
         if (UI_Util.isNimbus()) {
-            jPanelUserInfo.setPreferredSize(new Dimension(445, 109));
+            jPanelUserInfo.setPreferredSize(new Dimension(552, 124));
         }
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -296,7 +294,7 @@ public class Register extends javax.swing.JFrame {
 
         });
 
-        this.setSize(590, 590);
+        this.setSize(602, 602);
 
         testCapsOn();
 

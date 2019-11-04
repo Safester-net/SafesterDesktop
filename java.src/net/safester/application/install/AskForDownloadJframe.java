@@ -43,6 +43,7 @@ import javax.swing.event.HyperlinkListener;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.Help;
+import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
@@ -213,7 +214,7 @@ public class AskForDownloadJframe extends javax.swing.JDialog {
 
     public static String getWhatsNewUrl() {
         String whatsNewHtml = ServerParms.getHOST() + "/whats_new_{0}.html";
-        whatsNewHtml = whatsNewHtml.replace("{0}", "en"); //LanguageManager.getLanguage());
+        whatsNewHtml = whatsNewHtml.replace("{0}", LanguageManager.getLanguage());
         return whatsNewHtml;
     }
 

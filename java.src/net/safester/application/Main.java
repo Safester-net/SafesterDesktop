@@ -157,7 +157,7 @@ public class Main extends javax.swing.JFrame {
 
     public static final String CR_LF = System.getProperty("line.separator");
 
-    public static final int DEFAULT_SPLIT_PANE_FOLDERS_LOC = 120;
+    public static final int DEFAULT_SPLIT_PANE_FOLDERS_LOC = 140;
     public static final int MIN_LOCATION_MESSAGE = 120;
 
     public static final Color COLOR_MSG_INFO = new Color(132, 192, 252);
@@ -1196,7 +1196,7 @@ public class Main extends javax.swing.JFrame {
         // jTableMessages.setS
         int selected_index = jTable1.getSelectedRow();
         String str = (String) jTable1.getValueAt(selected_index, 4);
-        System.out.println("str: " + str);
+        debug("str: " + str);
     }
 
     /*
@@ -1507,7 +1507,7 @@ public class Main extends javax.swing.JFrame {
      */
     public static synchronized boolean lockCreateTableThreadRunning() {
         if (createTableThreadRunning) {
-            System.out.println("Thread is running!");
+            debug("Thread is running!");
             return true;
         } else {
             createTableThreadRunning = true;
@@ -1880,8 +1880,8 @@ public class Main extends javax.swing.JFrame {
                 awakeFileSession.getAuthenticationToken());
         apiMessages.setMessageRead(messageId, messageSenderEmailAddress, messageUnread);
         
-        System.out.println();
-        System.out.println("Message " + messageId + " marked as unread: " + messageUnread + " (messageSenderEmailAddress: " + messageSenderEmailAddress + ")");
+        debug("");
+        debug("Message " + messageId + " marked as unread: " + messageUnread + " (messageSenderEmailAddress: " + messageSenderEmailAddress + ")");
         
     }
 
@@ -2443,7 +2443,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * debug tool
      */
-    private void debug(String s) {
+    private static void debug(String s) {
         if (DEBUG) {
             System.out.println(s);
         }
@@ -2811,9 +2811,9 @@ public class Main extends javax.swing.JFrame {
         jPanelProgressBarBox.add(jPanelPush);
 
         jProgressBar1.setIndeterminate(true);
-        jProgressBar1.setMaximumSize(new java.awt.Dimension(180, 17));
-        jProgressBar1.setMinimumSize(new java.awt.Dimension(180, 17));
-        jProgressBar1.setPreferredSize(new java.awt.Dimension(180, 17));
+        jProgressBar1.setMaximumSize(new java.awt.Dimension(190, 17));
+        jProgressBar1.setMinimumSize(new java.awt.Dimension(190, 17));
+        jProgressBar1.setPreferredSize(new java.awt.Dimension(190, 17));
         jProgressBar1.setString(" ");
         jProgressBar1.setStringPainted(true);
         jPanelProgressBarBox.add(jProgressBar1);

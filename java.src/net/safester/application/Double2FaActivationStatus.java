@@ -64,7 +64,7 @@ import net.safester.application.tool.WindowSettingManager;
  */
 public class Double2FaActivationStatus extends javax.swing.JDialog {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * Messages in national language
@@ -107,7 +107,7 @@ public class Double2FaActivationStatus extends javax.swing.JDialog {
     public void initialize() {
         clipboardManager = new ClipboardManager(rootPane);
 
-        this.setSize(new Dimension(350, 350));
+        this.setSize(new Dimension(390, 390));
 
         try {
             this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());

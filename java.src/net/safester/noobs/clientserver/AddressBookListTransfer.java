@@ -48,7 +48,7 @@ import net.safester.clientserver.specs.ListTransfer;
  */
 public class AddressBookListTransfer implements ListTransfer<AddressBookNewLocal> {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
         
     /**
      * The Jdbc connection

@@ -49,7 +49,7 @@ public class Util
 {
 
     /** The debug flag */ 
-    protected static boolean DEBUG = true;
+    protected static boolean DEBUG = false;
     
     /** Universal and clean line separator */
     public static String CR_LF = System.getProperty("line.separator") ;

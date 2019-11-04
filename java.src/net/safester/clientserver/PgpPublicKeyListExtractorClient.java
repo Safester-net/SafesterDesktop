@@ -41,7 +41,7 @@ import net.safester.clientserver.specs.ListExtractor;
  */
 public class PgpPublicKeyListExtractorClient implements ListExtractor<PgpPublicKeyLocal> {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /**
      * The Jdbc connection

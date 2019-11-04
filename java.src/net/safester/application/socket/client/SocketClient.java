@@ -50,7 +50,7 @@ public class SocketClient
 {
     
     /** debug infos */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /** Buffered reader to read content from Socket*/
     private BufferedReader socket_in = null;

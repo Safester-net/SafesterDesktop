@@ -1,0 +1,7 @@
+Les fichiers ne peuvent pas être téléchargés et déchiffrés car
+l'espace disponible sur le périphérique de {0} est insuffisant.
+
+Espace libre requis: {1} Mo.
+Espace libre disponible: {2} Mo.
+
+Veuillez libérer de l'espace et réessayer.

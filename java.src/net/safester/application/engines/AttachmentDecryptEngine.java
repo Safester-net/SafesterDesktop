@@ -58,7 +58,7 @@ public class AttachmentDecryptEngine extends Thread implements CryptoEngine {
      * The debug flag
      */
     //  protected boolean DEBUG = Debug.isSet(this);
-    protected boolean DEBUG = true;
+    protected boolean DEBUG = false;
 
     /* National language messages */
     private MessagesManager messages = new MessagesManager();

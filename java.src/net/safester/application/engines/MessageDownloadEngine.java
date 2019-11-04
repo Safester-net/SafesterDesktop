@@ -53,7 +53,7 @@ import net.safester.noobs.clientserver.MessageLocal;
  */
 public class MessageDownloadEngine extends Thread {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
         
     public static final int MAXIMUM_PROGRESS = 100;
 

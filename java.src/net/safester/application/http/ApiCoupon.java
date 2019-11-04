@@ -27,7 +27,7 @@ public class ApiCoupon {
 
     public static final String ERROR_INVALID_COUPON = "error_invalid_coupon";
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     protected KawanHttpClient kawanHttpClient = null;
     protected String username = null;
