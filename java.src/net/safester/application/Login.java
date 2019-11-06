@@ -523,7 +523,7 @@ public class Login extends javax.swing.JFrame {
                 this.setCursor(Cursor.getDefaultCursor());
                 cmWaitDialog.stopWaiting();
                 String text = SwingUtil.getTextContent("account_waiting_for_confirm");
-                text = MessageFormat.format(text, lowerCaseLogin);
+                text = text.replace("{0}", lowerCaseLogin);
                 jButtonCreateAccount.setVisible(true);
                 JOptionPane.showMessageDialog(this, text);
                 return;
