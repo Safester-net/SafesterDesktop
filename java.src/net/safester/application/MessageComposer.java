@@ -108,7 +108,6 @@ import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.http.dto.IncomingAttachementDTO;
 import net.safester.application.http.dto.IncomingMessageDTO;
 import net.safester.application.http.dto.IncomingRecipientDTO;
-import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
@@ -1858,12 +1857,30 @@ public class MessageComposer extends javax.swing.JFrame {
                 return MessageComposer.RECIPIENT_INVALID;
             }
 
+            // Encode in HTML the names in incomingRecipientsDTO
+            incomingRecipientsDTO = htmlEncodeNames(incomingRecipientsDTO);
+            
             incomingMessageDTO.setRecipients(incomingRecipientsDTO);
         }
+        
         return recipientStatus;
 
     }
 
+    private static List<IncomingRecipientDTO> htmlEncodeNames(final List<IncomingRecipientDTO> incomingRecipientsDTO) {
+        
+        List<IncomingRecipientDTO> incomingRecipientDTOListNew = new ArrayList<>();
+        
+        for (IncomingRecipientDTO incomingRecipientDTO : incomingRecipientsDTO) {
+            String name = incomingRecipientDTO.getRecipientName();
+            name = HtmlConverter.toHtml(name);
+            incomingRecipientDTO.setRecipientName(name);
+            incomingRecipientDTOListNew.add(incomingRecipientDTO);
+        }
+        
+        return incomingRecipientDTOListNew;
+    }
+        
     private long computeAttachmentLength(List<IncomingAttachementDTO> attachments) {
         long totalLength = 0;
         for (IncomingAttachementDTO attachment : attachments) {
@@ -3328,5 +3345,7 @@ public class MessageComposer extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem selectAlljMenuItem;
     // End of variables declaration//GEN-END:variables
+
+
 
 }

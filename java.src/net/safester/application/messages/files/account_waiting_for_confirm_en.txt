@@ -1,4 +1,4 @@
-Merci de confirmer votre inscription pour vous connecter.
+Please confirm your registration in order to log in.
 
-Vérifiez l'adresse de votre boîte de réception pour {0}:
-Vous devez cliquer sur un lien de confirmation dans un courrier électronique entrant envoyé par Safester.
+Check your inbox for {0} address:
+You must click on a confirmation link on an incoming email sent by Safester.
