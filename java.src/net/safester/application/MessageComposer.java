@@ -104,6 +104,7 @@ import net.safester.application.compose.api.PgpTextEncryptor;
 import net.safester.application.compose.api.drafts.MessageDraftManager;
 import net.safester.application.compose.api.engines.ApiEncryptAttachmentsUsingThread;
 import net.safester.application.engines.ThreadLocker;
+import net.safester.application.http.ApiMessages;
 import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.http.dto.IncomingAttachementDTO;
 import net.safester.application.http.dto.IncomingMessageDTO;
@@ -148,6 +149,7 @@ import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 import net.safester.noobs.clientserver.UserSettingsLocal;
+import org.awakefw.file.api.client.AwakeFileSession;
 
 /**
  * Main window for composing a message.
@@ -2043,13 +2045,29 @@ public class MessageComposer extends javax.swing.JFrame {
             List<String> emailsList = recipientsEmailBuilder.build();
 
             if (recipientsEmailBuilder.getFirstInvalidEmail() != null) {
-                String msg = MessageFormat.format(messages.getMessage("recipient_not_contain_email"),
-                        recipientsEmailBuilder.getFirstInvalidEmail());
+                String msg = messages.getMessage("recipient_not_contain_email");
+                msg = msg.replace("{0}", recipientsEmailBuilder.getFirstInvalidEmail());
                 JOptionPane.showMessageDialog(this, msg);
                 textArea.requestFocus();
                 return MessageComposer.RECIPIENT_INVALID;
             }
 
+            AwakeConnection awakeConnection = (AwakeConnection) connection;
+            AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
+
+            KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+            ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                    awakeFileSession.getAuthenticationToken());
+            for (String emailAddres : emailsList) {
+                if (!apiMessages.verifyEmailAddrMx(emailAddres)) {
+                    String msg = messages.getMessage("recipient_not_contain_email_no_mx");
+                    msg = msg.replace("{0}", emailAddres);
+                    JOptionPane.showMessageDialog(this, msg);
+                    textArea.requestFocus();
+                    return MessageComposer.RECIPIENT_INVALID;
+                }
+            }
+            
             for (String emailAddress : emailsList) {
                 //int recipientUserNumber = - 1; // We don't care ==> not used any more
 

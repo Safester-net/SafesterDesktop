@@ -95,10 +95,14 @@ public class SafesterLookAndFeelManager {
         //UIManager.setLookAndFeel(
         //        "com.jtattoo.plaf.noire.NoireLookAndFeel");
         
-        //setDarkTheme();
+        boolean isDarkMode = false;
+        if (isDarkMode) {
+            setDarkTheme();
+        }
+
     }
 
-        private static void setDarkTheme() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    private static void setDarkTheme() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
          UIManager.put( "control", new Color( 128, 128, 128) );
          UIManager.put( "info", new Color(128,128,128) );
          UIManager.put( "nimbusBase", new Color( 18, 30, 49) );

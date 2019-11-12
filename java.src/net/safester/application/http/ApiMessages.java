@@ -25,6 +25,7 @@ import net.safester.application.http.dto.GsonWsUtil;
 import net.safester.application.http.dto.MessageCountDTO;
 import net.safester.application.http.dto.MessageDTO;
 import net.safester.application.http.dto.MessageListDTO;
+import net.safester.application.http.dto.PubKeyDTO;
 import net.safester.clientserver.ServerParms;
 
 /**
@@ -315,6 +316,41 @@ public class ApiMessages {
 
     }
     
+        /**
+     * Gets the PGP public key block for the passed email address. Return true if
+     * success. Use the error/Exception getter for error.
+     * @param userEmailAddr
+     * 
+     * @return
+     * @throws Exception
+     */
+    public boolean verifyEmailAddrMx(String userEmailAddr) throws Exception {
+
+	String url = ApiMessages.getUrlWithFinalSlash();
+	url += "api/verifyEmailAddrMx";
+
+	Map<String, String> parametersMap = new HashMap<>();
+	parametersMap.put("username", username);
+	parametersMap.put("token", token);
+	parametersMap.put("userEmailAddr", userEmailAddr);
+
+	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+
+	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+	if (resultAnalyzer.isStatusOk()) {
+            return true;
+	} else {
+	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
+	    this.errorMessage = errorFullDTO.getErrorMessage();
+	    this.exceptionName = errorFullDTO.getExceptionName();
+	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+	    // NO! Not in this method because we must accept non existing remote keys
+            // TOTO: clean this.
+            //throw new RemoteException(errorMessage, new Exception(this.exceptionName), exceptionStackTrace);
+            return false;
+	}
+
+    }
     public static String getUrlWithFinalSlash() {
 	String url = ServerParms.getHOST();
 	if (!url.endsWith("/")) {

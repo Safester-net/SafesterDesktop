@@ -183,7 +183,7 @@ public class SoundChooser extends javax.swing.JFrame {
         }
         
         if (! resource.equals("notify_user_file")) {
-            String filename = "images/files/sounds/{0}.wav";
+            String filename = "images/files/sounds/{0}";
             String wavName = getWavNameFromResource(resource);
             filename = filename.replace("{0}", wavName);
             InputStream inputStream = AudioFilePlayer.getInputStreamOnResource(filename);

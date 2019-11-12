@@ -100,7 +100,7 @@ import net.safester.noobs.clientserver.RecipientLocal;
 
 public class MessageReader extends javax.swing.JFrame {
 
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     private ClipboardManager clipboardManager;
     private MessagesManager messages = new MessagesManager();
