@@ -23,16 +23,22 @@
  */
 package net.safester.application;
 
+import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.TrayIcon;
 import java.sql.Connection;
 import java.util.Date;
+import static net.safester.application.Main.main;
+import net.safester.application.http.ApiMessages;
+import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.http.dto.MessageHeaderDTO;
 
 import org.awakefw.file.api.util.HtmlConverter;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.util.UserPrefManager;
 import net.safester.clientserver.MessageLocalStore;
-import net.safester.noobs.clientserver.MessageLocal;
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * 
@@ -45,7 +51,7 @@ public class MainNotifier {
 
     public static boolean DEBUG = false;
         
-    private MessageLocalStore messageLocalStore = null;
+    private Main main = null;
     private CryptTray cryptTray = null;
     private int userNumber = -1;
     private Connection connection = null;
@@ -58,10 +64,9 @@ public class MainNotifier {
      * @param userNumber
      * @param connection
      */
-    public MainNotifier(MessageLocalStore messageLocalStore,
-	    CryptTray cryptTray, int userNumber, Connection connection) {
+    public MainNotifier(Main main, CryptTray cryptTray, int userNumber, Connection connection) {
 
-	this.messageLocalStore = messageLocalStore;
+        this.main = main;
 	this.cryptTray = cryptTray;
 	this.userNumber = userNumber;
 	this.connection = connection;
@@ -97,17 +102,26 @@ public class MainNotifier {
 		    if (lastMessageId <= 0) {
 			return;
 		    }
+                    
+                    AwakeConnection awakeConnection = (AwakeConnection)connection;
+                    AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
-		    MessageLocal messageLocal = messageLocalStore
-			    .get(lastMessageId);
-		    if (messageLocal != null) {
+                    KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+                    ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                            awakeFileSession.getAuthenticationToken());
+
+                    MessageHeaderDTO messageHeaderDTO = apiMessages.getMessageHeader(lastMessageId);
+                    
+		    if (messageHeaderDTO != null) {
 			String caption = MessagesManager
 				.get("safester_new_message_from") + " "
-				+ messageLocal.getSenderUserName();
-			String subject = messageLocal.getSubject();
+				+ messageHeaderDTO.getSenderName();
+			String subject = messageHeaderDTO.getSubject();
 			if (subject == null) {
 			    subject = "";
 			}
+                        
+                        main.getIncomingMessage();
 
 			if (popUpOnTaskbar) {
 			    if (CryptTray.isSupported() && cryptTray != null) {
@@ -135,7 +149,6 @@ public class MainNotifier {
 
 		} catch (Exception ex) {
 		    ex.printStackTrace();
-		    // JOptionPaneNewCustom.showException(null, ex);
 		}
 	    }
 

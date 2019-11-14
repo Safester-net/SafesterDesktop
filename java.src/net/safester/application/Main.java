@@ -1214,13 +1214,14 @@ public class Main extends javax.swing.JFrame {
         deleteSelectedMessage();
     }
 
-    private void getIncomingMessage() {
+    public void getIncomingMessage() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // Select inbox
         DefaultMutableTreeNode inBoxFolder = customJtree.searchFolder(Parms.INBOX_ID);
         customJtree.getTree().setSelectionPath(new TreePath(inBoxFolder.getPath()));
 
         MessageLocalStoreCache.remove(Parms.INBOX_ID);
+        MessageLocalStoreCache.remove(Parms.OUTBOX_ID);
         createTable();
 
         this.setCursor(Cursor.getDefaultCursor());
@@ -1260,10 +1261,13 @@ public class Main extends javax.swing.JFrame {
             for (Integer rowIndex : selRows) {
                 // For each row get message
                 // MessageLocal messageLocal = getMessageForRowIndex(rowIndex.intValue());
-                int messageId = (Integer) jTable1.getValueAt(rowIndex.intValue(), 0);
-                debug("setSelectedMessages() messageId: " + messageId);
-                if (messageId > 0) {
-                    selectedMessages.add(messageId);
+                
+                if (jTable1.getValueAt(rowIndex, 0) instanceof Integer) {
+                    int messageId = (Integer) jTable1.getValueAt(rowIndex, 0);
+                    debug("setSelectedMessages() messageId: " + messageId);
+                    if (messageId > 0) {
+                        selectedMessages.add(messageId);
+                    }
                 }
             }
         }
@@ -1597,7 +1601,7 @@ public class Main extends javax.swing.JFrame {
 
                 // NOTIFY
                 if (idFolder == Parms.INBOX_ID) {
-                    MainNotifier mainNotifier = new MainNotifier(messageLocalStore, cryptTray, userNumber, connection);
+                    MainNotifier mainNotifier = new MainNotifier(this, cryptTray, userNumber, connection);
                     mainNotifier.notifyNewInbox();
                 }
 
@@ -1675,6 +1679,20 @@ public class Main extends javax.swing.JFrame {
             // Reset message pane
             resetMessagePane();
             jScrollPane1.setViewportView(jTable1);
+            
+            // HACK TRY TO SELCT FIRST MESSAGE
+            debug("jTable1.getRowCount(): " + jTable1.getRowCount());
+            if (jTable1.getRowCount() > 0) {
+                try {
+                    // Build message pane with first message of list
+                    if (jTable1.getValueAt(0, 0) instanceof Integer) {
+                        int messageId = (Integer) jTable1.getValueAt(0, 0);
+                        buildMessagePane(messageId);
+                    }
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
 
             debug(new Date() + " Safester... jScrollPane1.setViewportView(jTable) end...");
 

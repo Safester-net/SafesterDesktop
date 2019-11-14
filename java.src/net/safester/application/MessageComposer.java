@@ -1936,13 +1936,14 @@ public class MessageComposer extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     Logger.getLogger(MessageComposer.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if (caller instanceof Main) {
-                    MessageLocalStoreCache.remove(Parms.OUTBOX_ID);
-                    Main main = (Main) caller;
-                                   main.createTable();
-                }
             }
-            
+
+            if (caller instanceof Main) {
+                MessageLocalStoreCache.remove(Parms.OUTBOX_ID);
+                Main main = (Main) caller;
+                main.createTable();
+            }
+                           
             //Close windows-
             this.dispose();
             

@@ -61,10 +61,10 @@ public class MessageTableCellRenderer extends  DefaultTableCellRenderer  {
 
     private boolean isSearchTable = false;
     
+    MessagesManager messagesManager = new MessagesManager();
+    
     /**
-     * Constructor  
-     * @param owner             the KeyRing Owner
-     * @param useToolTipText    if true, the email will be displayed as Tool Tip Test  
+     * Default Constructor.
      */
     public MessageTableCellRenderer()
     {
@@ -96,6 +96,11 @@ public class MessageTableCellRenderer extends  DefaultTableCellRenderer  {
         JComponent jComponent = (JComponent)c;
         jComponent.setBorder(new EmptyBorder(5, 5, 5, 5));
         
+        if (column == 2) {
+           //this.setToolTipText((String)table.getValueAt(row, 0));
+           setToolTipText(messagesManager.getMessage("message_id") +  " " + table.getValueAt(row, 0) + "");
+        }
+
         String read = (String)table.getValueAt(row, 2);
         String attachValue = (String)table.getValueAt(row, 3);
         if (read == null || attachValue == null)

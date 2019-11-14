@@ -10,6 +10,8 @@ import java.util.List;
  */
 public final class MessageHeaderDTO {
 
+    private final String status = "OK";
+    
     private long messageId;
     private String senderEmailAddr;
     private String senderName;
@@ -216,14 +218,16 @@ public final class MessageHeaderDTO {
         this.isSigned = isSigned;
     }
 
-    @Override
-    public String toString() {
-	return "MessageHeaderDTO [messageId=" + messageId + ", senderEmailAddr=" + senderEmailAddr + ", senderName="
-		+ senderName + ", recipients=" + recipients + ", date=" + date + ", size=" + size + ", subject="
-		+ subject + ", hasAttachs=" + hasAttachs + ", isRead=" + isRead + ", senderUserNumber="
-		+ senderUserNumber + ", priority=" + priority + ", printable=" + printable + ", fowardable="
-		+ fowardable + ", isEncrypted=" + isEncrypted + ", isSigned=" + isSigned + "]";
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+	return status;
     }
 
+    @Override
+    public String toString() {
+        return "MessageHeaderDTO{" + "status=" + status + ", messageId=" + messageId + ", senderEmailAddr=" + senderEmailAddr + ", senderName=" + senderName + ", recipients=" + recipients + ", date=" + date + ", size=" + size + ", subject=" + subject + ", hasAttachs=" + hasAttachs + ", isRead=" + isRead + ", senderUserNumber=" + senderUserNumber + ", priority=" + priority + ", printable=" + printable + ", fowardable=" + fowardable + ", isEncrypted=" + isEncrypted + ", isSigned=" + isSigned + '}';
+    }    
  
 }

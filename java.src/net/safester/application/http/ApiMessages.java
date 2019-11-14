@@ -11,7 +11,6 @@ import java.util.Map;
 import org.awakefw.commons.api.client.RemoteException;
 
 import com.google.api.client.util.Preconditions;
-import com.google.api.services.people.v1.model.Person;
 import com.kawansoft.httpclient.KawanHttpClient;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +19,11 @@ import net.safester.application.http.dto.AddressBookEntryListDTO;
 import net.safester.application.http.dto.ErrorDTO;
 
 import net.safester.application.http.dto.ErrorFullDTO;
-import net.safester.application.http.dto.GooglePersonsDTO;
 import net.safester.application.http.dto.GsonWsUtil;
 import net.safester.application.http.dto.MessageCountDTO;
 import net.safester.application.http.dto.MessageDTO;
+import net.safester.application.http.dto.MessageHeaderDTO;
 import net.safester.application.http.dto.MessageListDTO;
-import net.safester.application.http.dto.PubKeyDTO;
 import net.safester.clientserver.ServerParms;
 
 /**
@@ -155,7 +153,38 @@ public class ApiMessages {
 
     }
     
-    
+    public MessageHeaderDTO getMessageHeader(int messageId) throws Exception {
+	String url = getUrlWithFinalSlash();
+	url += "api/getMessageHeader";
+
+	Map<String, String> parametersMap = new HashMap<>();
+	parametersMap.put("username", username);
+	parametersMap.put("token", token);
+	parametersMap.put("messageId", messageId + "");
+
+	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+
+	MessageHeaderDTO messageHeaderDTO = null;
+
+	if (resultAnalyzer.isStatusOk()) {
+	    messageHeaderDTO = GsonWsUtil.fromJson(jsonResult, MessageHeaderDTO.class);
+	} else {
+	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
+	    this.errorMessage = errorFullDTO.getErrorMessage();
+	    this.exceptionName = errorFullDTO.getExceptionName();
+	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+            System.err.println("getMessageHeader errorMessage : " + this.errorMessage );
+            System.err.println("getMessageHeader exceptionName: " + this.exceptionName );
+            System.err.println("getMessageHeader exceptionStackTrace: " + this.exceptionStackTrace );
+                        
+	    throw new RemoteException(errorMessage, new Exception(this.exceptionName), exceptionStackTrace);
+	}
+
+	return messageHeaderDTO;
+    }
+
+        
     /**
      * Gets the message for an user.
      * @param messageId
@@ -164,10 +193,7 @@ public class ApiMessages {
      */
     public MessageDTO getMessage(int messageId)
 	    throws Exception {
-	
-	//NO! on Desktop there are many folders
-	//Preconditions.checkArgument(directoryId >= 1 && directoryId <= 3, "Wrong directoryId!");
-	
+
 	String url = getUrlWithFinalSlash();
 	url += "api/getMessage";
 
@@ -380,5 +406,6 @@ public class ApiMessages {
 	    System.out.println(new java.util.Date() + " " + ApiMessages.class.getName() + " " + s);
 	}
     }
+
 
 }
