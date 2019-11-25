@@ -75,6 +75,8 @@ import com.safelogic.pgp.api.toolkit.CgeepApiTools;
 import com.safelogic.utilx.StringMgr;
 import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
+import java.awt.FocusTraversalPolicy;
+import java.util.Vector;
 
 import net.safester.application.Help;
 import net.safester.application.Login;
@@ -143,13 +145,16 @@ public class Register extends javax.swing.JFrame {
 
     private HttpProxy httpProxy = null;
 
+    private Vector<Component> focusList =  new Vector<>();
+    
+
     /**
      *
      * @param parent
      * @param email the email parameter (optional)
      */
     public Register(JFrame parent, String email) {
-
+        
         this.parent = parent;
         this.originalEmail = email;
 
@@ -294,6 +299,16 @@ public class Register extends javax.swing.JFrame {
 
         });
 
+        focusList.add(jTextFieldUserFirstName);
+        focusList.add(jTextFieldUserName);
+        focusList.add(jTextFieldUserEmail);
+        focusList.add(jPassword);
+        focusList.add(jPassword1);
+        focusList.add(jCheckBoxHideTyping);
+                     
+        FocusTraversalPolicy focusTraversalPolicy =  new MyOwnFocusTraversalPolicy(focusList);
+        this.setFocusTraversalPolicy(focusTraversalPolicy);
+        
         this.setSize(602, 602);
 
         testCapsOn();

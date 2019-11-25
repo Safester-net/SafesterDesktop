@@ -24,24 +24,14 @@
 package net.safester.application;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Vector;
 import net.safester.application.messages.LanguageManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
@@ -306,56 +296,57 @@ public class MainStatusBarUpdater {
         return message;
     }
 
-    /**
-     * Call the LoginLogUpdate servlet to log this login event
-     *
-     * @return  the httpClient return code
-     *
-     * @throws SQLException
-     * @throws IOException
-     */
-    public int logThisLogin() throws SQLException, IOException
-    {
-        if (! FIRST_ACCESS )
-        {
-            return 0;
-        }
-        
-        FIRST_ACCESS = false;
-        
-        DefaultHttpClient httpClient = null;
-
-        try
-        {
-            httpClient = new DefaultHttpClient();
-            String ServletAddress = null;
-            String servletName = "LoginLogUpdate";
-            
-            ServletAddress = host + "/" + servletName;
-            //debug(ServletAddress);
-
-            HttpPost httpPost = new HttpPost(ServletAddress);
-            httpPost.setHeader("User-Agent", "Safester " + net.safester.application.version.Version.getVersionWithDate() + " " + SystemUtils.OS_NAME + " " +  SystemUtils.OS_VERSION );
-            
-            List<BasicNameValuePair> requestParams = new Vector<BasicNameValuePair>();
-            requestParams.add(new BasicNameValuePair("username", keyId));
-            requestParams.add(new BasicNameValuePair("authentication_token", authenticationToken));
-
-            httpPost.setEntity(new UrlEncodedFormEntity(requestParams, HTTP.UTF_8));
-
-            HttpResponse response  = httpClient.execute(httpPost);
-
-            int statusCode = response.getStatusLine().getStatusCode();
-            return statusCode;
-        }
-        finally
-        {
-            if (httpClient != null)
-            {
-                httpClient.getConnectionManager().shutdown();
-            }
-        }
-    }
+//    /**
+//     * Call the LoginLogUpdate servlet to log this login event
+//     *
+//     * @return  the httpClient return code
+//     *
+//     * @throws SQLException
+//     * @throws IOException
+//     */
+//    public int logThisLogin() throws SQLException, IOException
+//    {
+//        
+//        if (! FIRST_ACCESS )
+//        {
+//            return 0;
+//        }
+//        
+//        FIRST_ACCESS = false;
+//        
+//        DefaultHttpClient httpClient = null;
+//
+//        try
+//        {
+//            httpClient = new DefaultHttpClient();
+//            String ServletAddress = null;
+//            String servletName = "LoginLogUpdate";
+//            
+//            ServletAddress = host + "/" + servletName;
+//            //debug(ServletAddress);
+//
+//            HttpPost httpPost = new HttpPost(ServletAddress);
+//            httpPost.setHeader("User-Agent", "Safester " + net.safester.application.version.Version.getVersionWithDate() + " " + SystemUtils.OS_NAME + " " +  SystemUtils.OS_VERSION );
+//            
+//            List<BasicNameValuePair> requestParams = new Vector<BasicNameValuePair>();
+//            requestParams.add(new BasicNameValuePair("username", keyId));
+//            requestParams.add(new BasicNameValuePair("authentication_token", authenticationToken));
+//
+//            httpPost.setEntity(new UrlEncodedFormEntity(requestParams, HTTP.UTF_8));
+//
+//            HttpResponse response  = httpClient.execute(httpPost);
+//
+//            int statusCode = response.getStatusLine().getStatusCode();
+//            return statusCode;
+//        }
+//        finally
+//        {
+//            if (httpClient != null)
+//            {
+//                httpClient.getConnectionManager().shutdown();
+//            }
+//        }
+//    }
     
     public static void main(String[] args)  throws Exception
     {

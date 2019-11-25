@@ -260,6 +260,11 @@ public class SwingUtil
      */
     public static String  getTextContent(String fileReference)
     {
+        String language = LanguageManager.getLanguage();
+        return getTextContent(fileReference, language);
+    }
+
+    public static String getTextContent(String fileReference, String language) {
         String content;
         try
         {
@@ -271,7 +276,7 @@ public class SwingUtil
 
             fileReference = fileReference.toLowerCase();
 
-            String language = LanguageManager.getLanguage();
+
 
             String resource = "/" + MessagesManager.MESSAGE_FILES_PACKAGE;
             resource = resource.replace(".", "/");

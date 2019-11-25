@@ -1604,24 +1604,9 @@ public class Main extends javax.swing.JFrame {
                     MainNotifier mainNotifier = new MainNotifier(this, cryptTray, userNumber, connection);
                     mainNotifier.notifyNewInbox();
                 }
-
-                // Get the status bar info in thread
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            MainStatusBarUpdater mainStatusBarUpdater = new MainStatusBarUpdater(connection, keyId,
-                                    userNumber);
-                            mainStatusBarUpdater.logThisLogin();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                            JOptionPaneNewCustom.showException(rootPane, ex);
-                        }
-                    }
-                };
-                t.start();
-
+                
+                debug(new Date() + " Safester... mainNotifier.notifyNewInbox() end...");
+                
                 if (idFolder != Parms.DRAFT_ID) {
                     // Start the thread that will fetch the messages Body content in memory
                     // and user settings
@@ -1630,7 +1615,8 @@ public class Main extends javax.swing.JFrame {
                     BackgroundDownloaderEngine.setIsRequestInterrupt(true);
                     backgroundDownloaderEngine.start();
                 }
-
+                
+                debug(new Date() + " Safester... backgroundDownloaderEngine.start() end...");
             }
 
             final boolean finalReset = reset;
@@ -1682,7 +1668,7 @@ public class Main extends javax.swing.JFrame {
             
             // HACK TRY TO SELCT FIRST MESSAGE
             debug("jTable1.getRowCount(): " + jTable1.getRowCount());
-            if (jTable1.getRowCount() > 0) {
+            if (jTable1.getRowCount() > 0 && ! SystemUtils.IS_OS_LINUX) {
                 try {
                     // Build message pane with first message of list
                     if (jTable1.getValueAt(0, 0) instanceof Integer) {

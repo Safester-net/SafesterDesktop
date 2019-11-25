@@ -1158,7 +1158,9 @@ public class MessageComposer extends javax.swing.JFrame {
 
         for (RecipientLocal recipient : recipients) {
 
-            if (!newRecipients.contains(recipient) && this.userNumber != recipient.getUserNumber()) {
+            String email = recipient.getEmail();
+            
+            if (!newRecipients.contains(recipient) && !this.keyId.equalsIgnoreCase(email)) {
                 newRecipients.add(recipient);
             }
         }
