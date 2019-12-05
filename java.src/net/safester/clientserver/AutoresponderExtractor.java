@@ -36,7 +36,7 @@ import net.safester.noobs.clientserver.GsonUtil;
  * @author RunningLiberty
  *
  */
-public class AutoresponderExtractor implements UniqueExtractor<AutoresponderLocal>
+public class AutoresponderExtractor implements UniqueExtractor<AutoresponderLocal2>
 {
     /** The Jdbc connection */
     private Connection connection = null;
@@ -62,13 +62,13 @@ public class AutoresponderExtractor implements UniqueExtractor<AutoresponderLoca
      * @throws SQLException     if any SQL Exception is raised
      */
     @Override
-    public AutoresponderLocal get()
+    public AutoresponderLocal2 get()
             throws SQLException {
         
         AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
-        String methodRemote = "net.safester.server.hosts.newapi.AutoresponderNewApi.get";
+        String methodRemote = "net.safester.server.hosts.newapi.AutoresponderNewApi2.get";
         //debug("methodRemote: " + methodRemote);
 
         String jsonString = null;
@@ -84,26 +84,27 @@ public class AutoresponderExtractor implements UniqueExtractor<AutoresponderLoca
             throw new SQLException(e);
         }
         
-        AutoresponderLocal autoresponderLocal = GsonUtil.autoresponderFromGson(jsonString);
-        return autoresponderLocal;
+        AutoresponderLocal2 autoresponderLocal2 = GsonUtil.autoresponder2FromGson(jsonString);
+        return autoresponderLocal2;
 
     }
 
+        
     /**
-     * Update the server Autoresponder table with a local instance
-     * @param autoresponderLocal    the local autoresponder instance
+     * Update the server Autoresponder2 table with a local instance
+     * @param autoresponderLocal2    the local autoresponder instance
      * @throws SQLException
      */
-    public void update(AutoresponderLocal autoresponderLocal)
+    public void update(AutoresponderLocal2 autoresponderLocal2)
             throws SQLException {
 
         AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
-        String methodRemote = "net.safester.server.hosts.newapi.AutoresponderNewApi.put";
+        String methodRemote = "net.safester.server.hosts.newapi.AutoresponderNewApi2.put";
         //debug("methodRemote: " + methodRemote);
 
-        String jsonString = GsonUtil.autoresponderToGson(autoresponderLocal);
+        String jsonString = GsonUtil.autoresponder2ToGson(autoresponderLocal2);
         try
         {
              awakeFileSession.call(methodRemote,

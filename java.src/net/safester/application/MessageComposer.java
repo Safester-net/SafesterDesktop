@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -83,6 +84,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.commons.api.client.AwakeProgressManager;
 import org.awakefw.commons.api.client.DefaultAwakeProgressManager;
+import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 import org.bouncycastle.openpgp.PGPPublicKey;
@@ -134,6 +136,7 @@ import net.safester.application.util.JDialogDiscardableMessage;
 import net.safester.application.util.JListUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.PowerEditor;
+import net.safester.application.util.TextCleanUtil;
 import net.safester.application.util.UserPrefManager;
 import net.safester.clientserver.MessageLocalStoreCache;
 import net.safester.clientserver.MessageTransfer;
@@ -149,7 +152,6 @@ import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 import net.safester.noobs.clientserver.UserSettingsLocal;
-import org.awakefw.file.api.client.AwakeFileSession;
 
 /**
  * Main window for composing a message.
@@ -656,7 +658,7 @@ public class MessageComposer extends javax.swing.JFrame {
         resizePanelHeigthForNimbus(jPanelRecipientsBcc, 45);
         resizePanelHeigthForNimbus(jPanelFiles, 45);
 
-        // To align on right size all text & textarea field lengths
+        // To align on right size all visualTextDebug & textarea field lengths
         alignFieldsOnRightForAllOs();
 
         // Nimbus settings
@@ -835,7 +837,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         if (id == KeyEvent.KEY_PRESSED) {
 
-            // Paste text with a special routine
+            // Paste visualTextDebug with a special routine
             if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
                 if (e.getComponent() == htmlEditor.getEditor()) {
 
@@ -850,8 +852,8 @@ public class MessageComposer extends javax.swing.JFrame {
     }
 
     /**
-     * Method to use when a text with CR_LF is to copied to external window
-     * (Word, Gmal, etc).
+     * Method to use when a visualTextDebug with CR_LF is to copied to external window
+ (Word, Gmal, etc).
      */
     private void pasteTextWithBr() {
 
@@ -970,7 +972,7 @@ public class MessageComposer extends javax.swing.JFrame {
     }
 
     public void installCompletion() {
-        // Add completion to to and cc text area
+        // Add completion to to and cc visualTextDebug area
         UserCompletionHolder userCompletionHolder = new UserCompletionHolder(connection, userNumber);
 
         // HACK: lexicon must now be global
@@ -1402,7 +1404,7 @@ public class MessageComposer extends javax.swing.JFrame {
      * Add a list of recipients to a JTextArea
      *
      * @param recipients The set containing recipients to add
-     * @param textArea The destination text area
+     * @param textArea The destination visualTextDebug area
      */
     private void addRecipients(Set<String> recipients, JTextArea textArea) {
         String newRecipientsStr = "";
@@ -1718,25 +1720,24 @@ public class MessageComposer extends javax.swing.JFrame {
         incomingMessageDTO.setDesktopCreation(true);
         incomingMessageDTO.setSenderEmailAddr(keyId);
         
+        String rawText = htmlEditor.getText();
+        String text = TextCleanUtil.cleanSpecialChars(rawText);
+        
+ 
+        debug("rawText:");
+        debug(rawText);
+        debug("text:");
+        debug(text);
+        
         // 23/10/19 HACK NDP: for drafts, do not repeat operation
         if (folderId != Parms.DRAFT_ID) {
-            incomingMessageDTO.setBody("<br>" + htmlEditor.getText());
+            incomingMessageDTO.setBody("<br>" + text);
         }
         else {
-            incomingMessageDTO.setBody(htmlEditor.getText());
+            incomingMessageDTO.setBody(text);
         }
         
-        String text = incomingMessageDTO.getBody();
-
-        if (VISUAL_DEBUG) {
-            JOptionPane.showMessageDialog(this, text);
-        }
-        if (VISUAL_DEBUG) {
-            new NewsFrame(this, text, "debug").setVisible(true);
-        }
-        if (VISUAL_DEBUG) {
-            return MessageComposer.RECIPIENT_NOT_SET;
-        }
+        if (doViualTextDebug()) return MessageComposer.RECIPIENT_NOT_SET;
 
         if (!recipientSet()) {
             JOptionPane.showMessageDialog(this, messages.getMessage("no_recipient_set"));
@@ -1869,6 +1870,21 @@ public class MessageComposer extends javax.swing.JFrame {
         
         return recipientStatus;
 
+    }
+
+        
+    private boolean doViualTextDebug() throws HeadlessException {
+        String visualTextDebug = incomingMessageDTO.getBody();
+        if (VISUAL_DEBUG) {
+            JOptionPane.showMessageDialog(this, visualTextDebug);
+        }
+        if (VISUAL_DEBUG) {
+            new NewsFrame(this, visualTextDebug, "debug").setVisible(true);
+        }
+        if (VISUAL_DEBUG) {
+            return true;
+        }
+        return false;
     }
 
     private static List<IncomingRecipientDTO> htmlEncodeNames(final List<IncomingRecipientDTO> incomingRecipientsDTO) {
@@ -3366,6 +3382,8 @@ public class MessageComposer extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem selectAlljMenuItem;
     // End of variables declaration//GEN-END:variables
+
+
 
 
 

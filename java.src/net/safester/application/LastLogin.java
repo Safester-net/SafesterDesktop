@@ -53,7 +53,7 @@ import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.AppDateFormat;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.util.TestAwakeConnection;
-import net.safester.noobs.clientserver.LoginLogLocal;
+import net.safester.noobs.clientserver.LoginLogLocal2;
 
 public class LastLogin extends javax.swing.JFrame {
 
@@ -154,7 +154,7 @@ public class LastLogin extends javax.swing.JFrame {
 
         String jsonString = null;
         try {
-            jsonString = awakeFileSession.call("net.safester.server.hosts.newapi.LoginLogNewApi.getPreviousLogin",
+            jsonString = awakeFileSession.call("net.safester.server.hosts.newapi.LoginLogNewApi2.getPreviousLogin",
                     userNumber,
                     connection);
         } catch (Exception e) {
@@ -162,14 +162,14 @@ public class LastLogin extends javax.swing.JFrame {
         }
         
         Gson gsonOut = new Gson();
-	java.lang.reflect.Type type = new TypeToken<LoginLogLocal>() {
+	java.lang.reflect.Type type = new TypeToken<LoginLogLocal2>() {
 	}.getType();
-	LoginLogLocal loginLogLocal = gsonOut.fromJson(jsonString, type);
+	LoginLogLocal2 loginLogLocal2 = gsonOut.fromJson(jsonString, type);
         
-        if (loginLogLocal != null && loginLogLocal.getUser_number() > 0) {
-            Timestamp dateTime = loginLogLocal.getDate_time();
-            String ipAddress = loginLogLocal.getIp_address();
-            String hostname = loginLogLocal.getHostname();
+        if (loginLogLocal2 != null && loginLogLocal2.getUser_number() > 0) {
+            Timestamp dateTime = new Timestamp(loginLogLocal2.getDate_time());
+            String ipAddress = loginLogLocal2.getIp_address();
+            String hostname = loginLogLocal2.getHostname();
 
             String formatedDateTime = df.format(dateTime);
 

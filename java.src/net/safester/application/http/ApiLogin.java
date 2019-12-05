@@ -13,7 +13,7 @@ import com.kawansoft.httpclient.KawanHttpClient;
 
 import net.safester.application.http.dto.ErrorFullDTO;
 import net.safester.application.http.dto.GsonWsUtil;
-import net.safester.application.http.dto.LoginOk;
+import net.safester.application.http.dto.LoginOkNew;
 import net.safester.application.util.crypto.PassphraseUtil;
 import net.safester.clientserver.ServerParms;
 
@@ -65,7 +65,7 @@ public class ApiLogin {
 	Preconditions.checkNotNull(password, "password is null!");
 
 	String url = getBaseUrlWithFinalSlash();
-	url += "api/login";
+	url += "api/loginNew";
 
 	String connectionPassword = PassphraseUtil.computeHashAndSaltedPassphrase(username, password);
 
@@ -80,11 +80,11 @@ public class ApiLogin {
 	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
 
 	if (resultAnalyzer.isStatusOk()) {
-	    LoginOk loginOk = GsonWsUtil.fromJson(jsonResult, LoginOk.class);
+	    LoginOkNew loginOk = GsonWsUtil.fromJson(jsonResult, LoginOkNew.class);
 	    this.token = loginOk.getToken();
 	    this.product = loginOk.getProduct();
             this.userNumber = loginOk.getUserNumber();
-            this.endDate = loginOk.getEndDate();
+            this.endDate = new Timestamp(loginOk.getEndDate());
 	} else {
 	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
 	    this.errorMessage = errorFullDTO.getErrorMessage();

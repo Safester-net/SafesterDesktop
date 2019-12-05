@@ -21,43 +21,51 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
+package net.safester.noobs.clientserver;
 
-package net.safester.application.version;
+public class LoginLogLocal2 {
 
-public class Version
-{
-    /** Version value to increment */    
-    public static String VERSION    = "v5.6.5";
-
-    /** Version date to increment */
-    public static String DATE       = "05-Dec-19";
-
-    public static String NAME       = "Safester" ;
-    public static String COPYRIGHT  = "Copyright &copy; 2019 KawanSoft";
-
-
+    private int user_number = 0;
+    private long date_time = -1;
+    private String ip_address= null;
+    private String hostname= null;
+    private String device= null;
+    
+    public int getUser_number() {
+        return user_number;
+    }
+    public void setUser_number(int user_number) {
+        this.user_number = user_number;
+    }
+    public long getDate_time() {
+        return date_time;
+    }
+    public void setDate_time(long time) {
+        this.date_time = time;
+    }
+    public String getIp_address() {
+        return ip_address;
+    }
+    public void setIp_address(String ip_address) {
+        this.ip_address = ip_address;
+    }
+    public String getHostname() {
+        return hostname;
+    }
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+    public String getDevice() {
+        return device;
+    }
+    public void setDevice(String device) {
+        this.device = device;
+    }
     @Override
-    public String toString()
-    {
-        return VERSION;
-    }
-
-    /**
-     *
-     * @return the Version in "SafeShareIt vX.YY Copyright (c)" format
-     */
-    public static String getVersionWithCopyright()
-    {
-        return NAME + " " + new Version().toString() + " - " + DATE + " " + COPYRIGHT;
-    }
-
-    /**
-     *
-     * @return the Version in "SafeShareIt vX.YY  DD/MM/YY" format
-     */
-    public static String getVersionWithDate()
-    {
-        return NAME + " " + new Version().toString() + " " + DATE;
-    }
-
+    public String toString() {
+	return "LoginLogLocal [user_number=" + user_number + ", date_time=" + date_time + ", ip_address=" + ip_address
+		+ ", hostname=" + hostname + ", device=" + device + "]";
+    }  
+    
+    
 }

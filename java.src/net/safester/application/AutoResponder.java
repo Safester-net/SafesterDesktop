@@ -57,7 +57,7 @@ import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.crypto.CryptoUtil;
 import net.safester.clientserver.AutoresponderExtractor;
-import net.safester.clientserver.AutoresponderLocal;
+import net.safester.clientserver.AutoresponderLocal2;
 import net.safester.clientserver.PgpKeyPairLocal;
 import net.safester.clientserver.ServerParms;
 import net.safester.clientserver.holder.PgpKeyPairHolder;
@@ -199,7 +199,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 	    AutoresponderExtractor autoresponderExtractor = new AutoresponderExtractor(connection, userNumber);
-	    AutoresponderLocal autoresponderLocal = autoresponderExtractor.get();
+	    AutoresponderLocal2 autoresponderLocal2 = autoresponderExtractor.get();
 
 //	    PgpKeyPairTransfer pgpKeyPairTransfer = new PgpKeyPairTransfer(connection,
 //		    ServerParms.getMasterKeyUserNumber());
@@ -218,7 +218,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    pubKeyBloc.add(pgpMasterKeyPairLocal.getPublicKeyPgpBlock());
 	    pubKeyBloc.add(pgpKeyPairForUser.getPublicKeyPgpBlock());
 
-	    if (autoresponderLocal == null) {
+	    if (autoresponderLocal2.getDtBegin() < 0 && autoresponderLocal2.getDtExpire() < 0 ) {
 		this.jRadioButtonResponderOff.setSelected(true);
 		jXDatePickerBegin.setDate(new java.util.Date());
 		jXDatePickerEnd.setDate(new java.util.Date());
@@ -226,12 +226,12 @@ public class AutoResponder extends javax.swing.JDialog {
 		return;
 	    }
 
-	    this.jRadioButtonResponderOn.setSelected(autoresponderLocal.getResponderOn());
-	    this.jXDatePickerBegin.setDate(autoresponderLocal.getDtBegin());
-	    this.jXDatePickerEnd.setDate(autoresponderLocal.getDtExpire());
+	    this.jRadioButtonResponderOn.setSelected(autoresponderLocal2.getResponderOn());
+	    this.jXDatePickerBegin.setDate(new Date(autoresponderLocal2.getDtBegin()));
+	    this.jXDatePickerEnd.setDate(new Date(autoresponderLocal2.getDtExpire()));
 
-	    String encryptedSubject = autoresponderLocal.getSubject();
-	    String encryptedBody = autoresponderLocal.getBody();
+	    String encryptedSubject = autoresponderLocal2.getSubject();
+	    String encryptedBody = autoresponderLocal2.getBody();
 
 	    String subject = CryptoUtil.decrypt(encryptedSubject, pgpKeyPairForUser.getPrivateKeyPgpBlock(),
 		    passphrase);
@@ -286,11 +286,11 @@ public class AutoResponder extends javax.swing.JDialog {
 	try {
 	    AutoresponderExtractor autoresponderExtractor = new AutoresponderExtractor(connection, userNumber);
 
-	    AutoresponderLocal autoresponderLocal = new AutoresponderLocal();
-	    autoresponderLocal.setUserNumber(userNumber);
-	    autoresponderLocal.setResponderOn(jRadioButtonResponderOn.isSelected());
-	    autoresponderLocal.setDtBegin(new Date(jXDatePickerBegin.getDate().getTime()));
-	    autoresponderLocal.setDtExpire(new Date(jXDatePickerEnd.getDate().getTime()));
+	    AutoresponderLocal2 autoresponderLocal2 = new AutoresponderLocal2();
+	    autoresponderLocal2.setUserNumber(userNumber);
+	    autoresponderLocal2.setResponderOn(jRadioButtonResponderOn.isSelected());
+	    autoresponderLocal2.setDtBegin(jXDatePickerBegin.getDate().getTime());
+	    autoresponderLocal2.setDtExpire(jXDatePickerEnd.getDate().getTime());
 
 	    String subject = jTextFieldSubject.getText();
 	    String body = jTextAreaBody.getText();
@@ -298,11 +298,11 @@ public class AutoResponder extends javax.swing.JDialog {
 	    String encryptedSubject = CryptoUtil.encrypt(subject, pubKeyBloc);
 	    String encryptedBody = CryptoUtil.encrypt(body, pubKeyBloc);
 
-	    autoresponderLocal.setSubject(encryptedSubject);
-	    autoresponderLocal.setBody(encryptedBody);
+	    autoresponderLocal2.setSubject(encryptedSubject);
+	    autoresponderLocal2.setBody(encryptedBody);
 
 	    // Do the delete + insert
-	    autoresponderExtractor.update(autoresponderLocal);
+	    autoresponderExtractor.update(autoresponderLocal2);
 	} catch (Exception ex) {
 	    ex.printStackTrace();
 	    this.setCursor(Cursor.getDefaultCursor());
@@ -390,294 +390,291 @@ public class AutoResponder extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-	buttonGroup1 = new javax.swing.ButtonGroup();
-	jPanelUp = new javax.swing.JPanel();
-	jPanelBorderTop = new javax.swing.JPanel();
-	jPanel6 = new javax.swing.JPanel();
-	jPanel12 = new javax.swing.JPanel();
-	jLabelLogoTitle = new javax.swing.JLabel();
-	jPanelSep2 = new javax.swing.JPanel();
-	jPanelSepLine1 = new javax.swing.JPanel();
-	jPanelSep4 = new javax.swing.JPanel();
-	jSeparator3 = new javax.swing.JSeparator();
-	jPanelSep5 = new javax.swing.JPanel();
-	jPanelMain = new javax.swing.JPanel();
-	jPanelLetf2 = new javax.swing.JPanel();
-	jPaneMain = new javax.swing.JPanel();
-	jPanelResponderOffOn = new javax.swing.JPanel();
-	jPanel2 = new javax.swing.JPanel();
-	jRadioButtonResponderOff = new javax.swing.JRadioButton();
-	jPanel3 = new javax.swing.JPanel();
-	jRadioButtonResponderOn = new javax.swing.JRadioButton();
-	jPanelResponderDetails = new javax.swing.JPanel();
-	jPanelLeft = new javax.swing.JPanel();
-	jPanelResponderMain = new javax.swing.JPanel();
-	jPanelDates = new javax.swing.JPanel();
-	jLabelDateFrom = new javax.swing.JLabel();
-	jXDatePickerBegin = new org.jdesktop.swingx.JXDatePicker();
-	jPanel1 = new javax.swing.JPanel();
-	jLabelDateUntil = new javax.swing.JLabel();
-	jXDatePickerEnd = new org.jdesktop.swingx.JXDatePicker();
-	jPanelSubjectContainer = new javax.swing.JPanel();
-	jPanelLabelSubject = new javax.swing.JPanel();
-	jLabelSubject = new javax.swing.JLabel();
-	jPanelSep5b = new javax.swing.JPanel();
-	jPanelSubject = new javax.swing.JPanel();
-	jTextFieldSubject = new javax.swing.JTextField();
-	jPanelBody = new javax.swing.JPanel();
-	jPanelLabelMessage = new javax.swing.JPanel();
-	jLabelMessage = new javax.swing.JLabel();
-	jPanelSep5b1 = new javax.swing.JPanel();
-	jScrollPaneBody = new javax.swing.JScrollPane();
-	jTextAreaBody = new javax.swing.JTextArea();
-	jPanelRight2 = new javax.swing.JPanel();
-	jPanelSep3 = new javax.swing.JPanel();
-	jPanelSepLine = new javax.swing.JPanel();
-	jPanelSep1 = new javax.swing.JPanel();
-	jSeparator2 = new javax.swing.JSeparator();
-	jPanelSep = new javax.swing.JPanel();
-	jPanelButtons = new javax.swing.JPanel();
-	jButtonApply = new javax.swing.JButton();
-	jButtonClose = new javax.swing.JButton();
-	jPanel4 = new javax.swing.JPanel();
-
-	setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-	setPreferredSize(new java.awt.Dimension(440, 440));
-	getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
-
-	jPanelUp.setMaximumSize(new java.awt.Dimension(32767, 10));
-	getContentPane().add(jPanelUp);
-
-	jPanelBorderTop.setLayout(new javax.swing.BoxLayout(jPanelBorderTop, javax.swing.BoxLayout.LINE_AXIS));
-
-	jPanel6.setMaximumSize(new java.awt.Dimension(32767, 38));
-	jPanel6.setLayout(new java.awt.GridLayout(1, 0));
-
-	jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 3));
-
-	jLabelLogoTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-	jLabelLogoTitle.setIcon(new javax.swing.ImageIcon(
-		getClass().getResource("/net/safester/application/images/files_2/32x32/telephone.png"))); // NOI18N
-	jLabelLogoTitle.setText("Vacation Responder");
-	jPanel12.add(jLabelLogoTitle);
-
-	jPanel6.add(jPanel12);
-
-	jPanelBorderTop.add(jPanel6);
-
-	getContentPane().add(jPanelBorderTop);
-
-	jPanelSep2.setMaximumSize(new java.awt.Dimension(32767, 10));
-	jPanelSep2.setPreferredSize(new java.awt.Dimension(1000, 10));
-	getContentPane().add(jPanelSep2);
-
-	jPanelSepLine1.setLayout(new javax.swing.BoxLayout(jPanelSepLine1, javax.swing.BoxLayout.LINE_AXIS));
-
-	jPanelSep4.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanelSepLine1.add(jPanelSep4);
-
-	jSeparator3.setMaximumSize(new java.awt.Dimension(32767, 6));
-	jSeparator3.setMinimumSize(new java.awt.Dimension(0, 6));
-	jSeparator3.setPreferredSize(new java.awt.Dimension(0, 6));
-	jPanelSepLine1.add(jSeparator3);
-
-	jPanelSep5.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanelSepLine1.add(jPanelSep5);
-
-	getContentPane().add(jPanelSepLine1);
-
-	jPanelMain.setLayout(new javax.swing.BoxLayout(jPanelMain, javax.swing.BoxLayout.LINE_AXIS));
-
-	jPanelLetf2.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanelMain.add(jPanelLetf2);
-
-	jPaneMain.setLayout(new javax.swing.BoxLayout(jPaneMain, javax.swing.BoxLayout.Y_AXIS));
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jPanelUp = new javax.swing.JPanel();
+        jPanelBorderTop = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jLabelLogoTitle = new javax.swing.JLabel();
+        jPanelSep2 = new javax.swing.JPanel();
+        jPanelSepLine1 = new javax.swing.JPanel();
+        jPanelSep4 = new javax.swing.JPanel();
+        jSeparator3 = new javax.swing.JSeparator();
+        jPanelSep5 = new javax.swing.JPanel();
+        jPanelMain = new javax.swing.JPanel();
+        jPanelLetf2 = new javax.swing.JPanel();
+        jPaneMain = new javax.swing.JPanel();
+        jPanelResponderOffOn = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jRadioButtonResponderOff = new javax.swing.JRadioButton();
+        jPanel3 = new javax.swing.JPanel();
+        jRadioButtonResponderOn = new javax.swing.JRadioButton();
+        jPanelResponderDetails = new javax.swing.JPanel();
+        jPanelLeft = new javax.swing.JPanel();
+        jPanelResponderMain = new javax.swing.JPanel();
+        jPanelDates = new javax.swing.JPanel();
+        jLabelDateFrom = new javax.swing.JLabel();
+        jXDatePickerBegin = new org.jdesktop.swingx.JXDatePicker();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelDateUntil = new javax.swing.JLabel();
+        jXDatePickerEnd = new org.jdesktop.swingx.JXDatePicker();
+        jPanelSubjectContainer = new javax.swing.JPanel();
+        jPanelLabelSubject = new javax.swing.JPanel();
+        jLabelSubject = new javax.swing.JLabel();
+        jPanelSep5b = new javax.swing.JPanel();
+        jPanelSubject = new javax.swing.JPanel();
+        jTextFieldSubject = new javax.swing.JTextField();
+        jPanelBody = new javax.swing.JPanel();
+        jPanelLabelMessage = new javax.swing.JPanel();
+        jLabelMessage = new javax.swing.JLabel();
+        jPanelSep5b1 = new javax.swing.JPanel();
+        jScrollPaneBody = new javax.swing.JScrollPane();
+        jTextAreaBody = new javax.swing.JTextArea();
+        jPanelRight2 = new javax.swing.JPanel();
+        jPanelSep3 = new javax.swing.JPanel();
+        jPanelSepLine = new javax.swing.JPanel();
+        jPanelSep1 = new javax.swing.JPanel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jPanelSep = new javax.swing.JPanel();
+        jPanelButtons = new javax.swing.JPanel();
+        jButtonApply = new javax.swing.JButton();
+        jButtonClose = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(440, 440));
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
+
+        jPanelUp.setMaximumSize(new java.awt.Dimension(32767, 10));
+        getContentPane().add(jPanelUp);
+
+        jPanelBorderTop.setLayout(new javax.swing.BoxLayout(jPanelBorderTop, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel6.setMaximumSize(new java.awt.Dimension(32767, 38));
+        jPanel6.setLayout(new java.awt.GridLayout(1, 0));
+
+        jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 3));
+
+        jLabelLogoTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabelLogoTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/telephone.png"))); // NOI18N
+        jLabelLogoTitle.setText("Vacation Responder");
+        jPanel12.add(jLabelLogoTitle);
+
+        jPanel6.add(jPanel12);
+
+        jPanelBorderTop.add(jPanel6);
+
+        getContentPane().add(jPanelBorderTop);
+
+        jPanelSep2.setMaximumSize(new java.awt.Dimension(32767, 10));
+        jPanelSep2.setPreferredSize(new java.awt.Dimension(1000, 10));
+        getContentPane().add(jPanelSep2);
+
+        jPanelSepLine1.setLayout(new javax.swing.BoxLayout(jPanelSepLine1, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanelSep4.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanelSepLine1.add(jPanelSep4);
+
+        jSeparator3.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator3.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator3.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanelSepLine1.add(jSeparator3);
+
+        jPanelSep5.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanelSepLine1.add(jPanelSep5);
+
+        getContentPane().add(jPanelSepLine1);
+
+        jPanelMain.setLayout(new javax.swing.BoxLayout(jPanelMain, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanelLetf2.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanelMain.add(jPanelLetf2);
+
+        jPaneMain.setLayout(new javax.swing.BoxLayout(jPaneMain, javax.swing.BoxLayout.Y_AXIS));
 
-	jPanelResponderOffOn.setMaximumSize(new java.awt.Dimension(32767, 33));
-	jPanelResponderOffOn.setLayout(new javax.swing.BoxLayout(jPanelResponderOffOn, javax.swing.BoxLayout.Y_AXIS));
+        jPanelResponderOffOn.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelResponderOffOn.setLayout(new javax.swing.BoxLayout(jPanelResponderOffOn, javax.swing.BoxLayout.Y_AXIS));
 
-	jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-	jRadioButtonResponderOff.setText("Vacation responder off");
-	jPanel2.add(jRadioButtonResponderOff);
+        jRadioButtonResponderOff.setText("Vacation responder off");
+        jPanel2.add(jRadioButtonResponderOff);
 
-	jPanelResponderOffOn.add(jPanel2);
+        jPanelResponderOffOn.add(jPanel2);
 
-	jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-	jRadioButtonResponderOn.setText("Vacation responder on");
-	jRadioButtonResponderOn.addItemListener(new java.awt.event.ItemListener() {
-	    public void itemStateChanged(java.awt.event.ItemEvent evt) {
-		jRadioButtonResponderOnItemStateChanged(evt);
-	    }
-	});
-	jPanel3.add(jRadioButtonResponderOn);
+        jRadioButtonResponderOn.setText("Vacation responder on");
+        jRadioButtonResponderOn.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButtonResponderOnItemStateChanged(evt);
+            }
+        });
+        jPanel3.add(jRadioButtonResponderOn);
 
-	jPanelResponderOffOn.add(jPanel3);
+        jPanelResponderOffOn.add(jPanel3);
 
-	jPaneMain.add(jPanelResponderOffOn);
+        jPaneMain.add(jPanelResponderOffOn);
 
-	jPanelResponderDetails
-		.setLayout(new javax.swing.BoxLayout(jPanelResponderDetails, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelResponderDetails.setLayout(new javax.swing.BoxLayout(jPanelResponderDetails, javax.swing.BoxLayout.LINE_AXIS));
 
-	jPanelLeft.setMaximumSize(new java.awt.Dimension(20, 10));
-	jPanelLeft.setMinimumSize(new java.awt.Dimension(20, 10));
-	jPanelLeft.setPreferredSize(new java.awt.Dimension(20, 10));
-	jPanelLeft.setLayout(new javax.swing.BoxLayout(jPanelLeft, javax.swing.BoxLayout.LINE_AXIS));
-	jPanelResponderDetails.add(jPanelLeft);
+        jPanelLeft.setMaximumSize(new java.awt.Dimension(20, 10));
+        jPanelLeft.setMinimumSize(new java.awt.Dimension(20, 10));
+        jPanelLeft.setPreferredSize(new java.awt.Dimension(20, 10));
+        jPanelLeft.setLayout(new javax.swing.BoxLayout(jPanelLeft, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelResponderDetails.add(jPanelLeft);
 
-	jPanelResponderMain.setLayout(new javax.swing.BoxLayout(jPanelResponderMain, javax.swing.BoxLayout.Y_AXIS));
+        jPanelResponderMain.setLayout(new javax.swing.BoxLayout(jPanelResponderMain, javax.swing.BoxLayout.Y_AXIS));
 
-	jPanelDates.setMaximumSize(new java.awt.Dimension(32767, 32));
-	jPanelDates.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanelDates.setMaximumSize(new java.awt.Dimension(32767, 32));
+        jPanelDates.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-	jLabelDateFrom.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-	jLabelDateFrom.setText("From");
-	jLabelDateFrom.setMaximumSize(new java.awt.Dimension(50, 16));
-	jLabelDateFrom.setMinimumSize(new java.awt.Dimension(50, 16));
-	jLabelDateFrom.setPreferredSize(new java.awt.Dimension(50, 16));
-	jPanelDates.add(jLabelDateFrom);
-	jPanelDates.add(jXDatePickerBegin);
-	jPanelDates.add(jPanel1);
+        jLabelDateFrom.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelDateFrom.setText("From");
+        jLabelDateFrom.setMaximumSize(new java.awt.Dimension(50, 16));
+        jLabelDateFrom.setMinimumSize(new java.awt.Dimension(50, 16));
+        jLabelDateFrom.setPreferredSize(new java.awt.Dimension(50, 16));
+        jPanelDates.add(jLabelDateFrom);
+        jPanelDates.add(jXDatePickerBegin);
+        jPanelDates.add(jPanel1);
 
-	jLabelDateUntil.setText("Until");
-	jPanelDates.add(jLabelDateUntil);
-	jPanelDates.add(jXDatePickerEnd);
+        jLabelDateUntil.setText("Until");
+        jPanelDates.add(jLabelDateUntil);
+        jPanelDates.add(jXDatePickerEnd);
 
-	jPanelResponderMain.add(jPanelDates);
+        jPanelResponderMain.add(jPanelDates);
 
-	jPanelSubjectContainer.setMaximumSize(new java.awt.Dimension(2147483647, 32));
-	jPanelSubjectContainer.setMinimumSize(new java.awt.Dimension(73, 32));
-	jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 32));
-	jPanelSubjectContainer
-		.setLayout(new javax.swing.BoxLayout(jPanelSubjectContainer, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelSubjectContainer.setMaximumSize(new java.awt.Dimension(2147483647, 32));
+        jPanelSubjectContainer.setMinimumSize(new java.awt.Dimension(73, 32));
+        jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 32));
+        jPanelSubjectContainer.setLayout(new javax.swing.BoxLayout(jPanelSubjectContainer, javax.swing.BoxLayout.LINE_AXIS));
 
-	jPanelLabelSubject.setMaximumSize(new java.awt.Dimension(55, 24));
-	jPanelLabelSubject.setMinimumSize(new java.awt.Dimension(55, 24));
-	jPanelLabelSubject.setPreferredSize(new java.awt.Dimension(55, 24));
-	jPanelLabelSubject.setLayout(new javax.swing.BoxLayout(jPanelLabelSubject, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelLabelSubject.setMaximumSize(new java.awt.Dimension(55, 24));
+        jPanelLabelSubject.setMinimumSize(new java.awt.Dimension(55, 24));
+        jPanelLabelSubject.setPreferredSize(new java.awt.Dimension(55, 24));
+        jPanelLabelSubject.setLayout(new javax.swing.BoxLayout(jPanelLabelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
-	jLabelSubject.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-	jLabelSubject.setText("Subject");
-	jLabelSubject.setMaximumSize(new java.awt.Dimension(55, 16));
-	jLabelSubject.setMinimumSize(new java.awt.Dimension(55, 16));
-	jLabelSubject.setPreferredSize(new java.awt.Dimension(55, 16));
-	jPanelLabelSubject.add(jLabelSubject);
+        jLabelSubject.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelSubject.setText("Subject");
+        jLabelSubject.setMaximumSize(new java.awt.Dimension(55, 16));
+        jLabelSubject.setMinimumSize(new java.awt.Dimension(55, 16));
+        jLabelSubject.setPreferredSize(new java.awt.Dimension(55, 16));
+        jPanelLabelSubject.add(jLabelSubject);
 
-	jPanelSubjectContainer.add(jPanelLabelSubject);
+        jPanelSubjectContainer.add(jPanelLabelSubject);
 
-	jPanelSep5b.setMaximumSize(new java.awt.Dimension(5, 10));
-	jPanelSep5b.setMinimumSize(new java.awt.Dimension(5, 10));
-	jPanelSep5b.setPreferredSize(new java.awt.Dimension(5, 10));
-	jPanelSubjectContainer.add(jPanelSep5b);
+        jPanelSep5b.setMaximumSize(new java.awt.Dimension(5, 10));
+        jPanelSep5b.setMinimumSize(new java.awt.Dimension(5, 10));
+        jPanelSep5b.setPreferredSize(new java.awt.Dimension(5, 10));
+        jPanelSubjectContainer.add(jPanelSep5b);
 
-	jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 31));
-	jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 31));
-	jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 31));
-	jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 31));
+        jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 31));
+        jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 31));
+        jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
-	jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 22));
-	jTextFieldSubject.addActionListener(new java.awt.event.ActionListener() {
-	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		jTextFieldSubjectActionPerformed(evt);
-	    }
-	});
-	jPanelSubject.add(jTextFieldSubject);
+        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 22));
+        jTextFieldSubject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldSubjectActionPerformed(evt);
+            }
+        });
+        jPanelSubject.add(jTextFieldSubject);
 
-	jPanelSubjectContainer.add(jPanelSubject);
+        jPanelSubjectContainer.add(jPanelSubject);
 
-	jPanelResponderMain.add(jPanelSubjectContainer);
+        jPanelResponderMain.add(jPanelSubjectContainer);
 
-	jPanelBody.setLayout(new javax.swing.BoxLayout(jPanelBody, javax.swing.BoxLayout.X_AXIS));
+        jPanelBody.setLayout(new javax.swing.BoxLayout(jPanelBody, javax.swing.BoxLayout.X_AXIS));
 
-	jPanelLabelMessage.setMaximumSize(new java.awt.Dimension(55, 24));
-	jPanelLabelMessage.setMinimumSize(new java.awt.Dimension(55, 24));
-	jPanelLabelMessage.setPreferredSize(new java.awt.Dimension(55, 24));
-	jPanelLabelMessage.setLayout(new javax.swing.BoxLayout(jPanelLabelMessage, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelLabelMessage.setMaximumSize(new java.awt.Dimension(55, 24));
+        jPanelLabelMessage.setMinimumSize(new java.awt.Dimension(55, 24));
+        jPanelLabelMessage.setPreferredSize(new java.awt.Dimension(55, 24));
+        jPanelLabelMessage.setLayout(new javax.swing.BoxLayout(jPanelLabelMessage, javax.swing.BoxLayout.LINE_AXIS));
 
-	jLabelMessage.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-	jLabelMessage.setText("Message");
-	jLabelMessage.setMaximumSize(new java.awt.Dimension(55, 16));
-	jLabelMessage.setMinimumSize(new java.awt.Dimension(55, 16));
-	jLabelMessage.setPreferredSize(new java.awt.Dimension(55, 16));
-	jPanelLabelMessage.add(jLabelMessage);
+        jLabelMessage.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelMessage.setText("Message");
+        jLabelMessage.setMaximumSize(new java.awt.Dimension(55, 16));
+        jLabelMessage.setMinimumSize(new java.awt.Dimension(55, 16));
+        jLabelMessage.setPreferredSize(new java.awt.Dimension(55, 16));
+        jPanelLabelMessage.add(jLabelMessage);
 
-	jPanelBody.add(jPanelLabelMessage);
+        jPanelBody.add(jPanelLabelMessage);
 
-	jPanelSep5b1.setMaximumSize(new java.awt.Dimension(5, 10));
-	jPanelSep5b1.setMinimumSize(new java.awt.Dimension(5, 10));
-	jPanelSep5b1.setPreferredSize(new java.awt.Dimension(5, 10));
-	jPanelBody.add(jPanelSep5b1);
+        jPanelSep5b1.setMaximumSize(new java.awt.Dimension(5, 10));
+        jPanelSep5b1.setMinimumSize(new java.awt.Dimension(5, 10));
+        jPanelSep5b1.setPreferredSize(new java.awt.Dimension(5, 10));
+        jPanelBody.add(jPanelSep5b1);
 
-	jScrollPaneBody.setBackground(new java.awt.Color(255, 255, 255));
-	jScrollPaneBody.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPaneBody.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPaneBody.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-	jTextAreaBody.setLineWrap(true);
-	jTextAreaBody.setWrapStyleWord(true);
-	jScrollPaneBody.setViewportView(jTextAreaBody);
+        jTextAreaBody.setLineWrap(true);
+        jTextAreaBody.setWrapStyleWord(true);
+        jScrollPaneBody.setViewportView(jTextAreaBody);
 
-	jPanelBody.add(jScrollPaneBody);
+        jPanelBody.add(jScrollPaneBody);
 
-	jPanelResponderMain.add(jPanelBody);
+        jPanelResponderMain.add(jPanelBody);
 
-	jPanelResponderDetails.add(jPanelResponderMain);
+        jPanelResponderDetails.add(jPanelResponderMain);
 
-	jPaneMain.add(jPanelResponderDetails);
+        jPaneMain.add(jPanelResponderDetails);
 
-	jPanelMain.add(jPaneMain);
+        jPanelMain.add(jPaneMain);
 
-	jPanelRight2.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanelMain.add(jPanelRight2);
+        jPanelRight2.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanelMain.add(jPanelRight2);
 
-	getContentPane().add(jPanelMain);
+        getContentPane().add(jPanelMain);
 
-	jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 10));
-	jPanelSep3.setPreferredSize(new java.awt.Dimension(1000, 10));
-	getContentPane().add(jPanelSep3);
+        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 10));
+        jPanelSep3.setPreferredSize(new java.awt.Dimension(1000, 10));
+        getContentPane().add(jPanelSep3);
 
-	jPanelSepLine.setLayout(new javax.swing.BoxLayout(jPanelSepLine, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelSepLine.setLayout(new javax.swing.BoxLayout(jPanelSepLine, javax.swing.BoxLayout.LINE_AXIS));
 
-	jPanelSep1.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanelSepLine.add(jPanelSep1);
+        jPanelSep1.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanelSepLine.add(jPanelSep1);
 
-	jSeparator2.setMaximumSize(new java.awt.Dimension(32767, 6));
-	jSeparator2.setMinimumSize(new java.awt.Dimension(0, 6));
-	jSeparator2.setPreferredSize(new java.awt.Dimension(0, 6));
-	jPanelSepLine.add(jSeparator2);
+        jSeparator2.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator2.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator2.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanelSepLine.add(jSeparator2);
 
-	jPanelSep.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanelSepLine.add(jPanelSep);
+        jPanelSep.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanelSepLine.add(jPanelSep);
 
-	getContentPane().add(jPanelSepLine);
+        getContentPane().add(jPanelSepLine);
 
-	jPanelButtons.setMaximumSize(new java.awt.Dimension(32767, 43));
-	jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 10));
+        jPanelButtons.setMaximumSize(new java.awt.Dimension(32767, 43));
+        jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 10));
 
-	jButtonApply.setText("OK");
-	jButtonApply.addActionListener(new java.awt.event.ActionListener() {
-	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		jButtonApplyActionPerformed(evt);
-	    }
-	});
-	jPanelButtons.add(jButtonApply);
+        jButtonApply.setText("OK");
+        jButtonApply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonApplyActionPerformed(evt);
+            }
+        });
+        jPanelButtons.add(jButtonApply);
 
-	jButtonClose.setText("Cancel");
-	jButtonClose.addActionListener(new java.awt.event.ActionListener() {
-	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		jButtonCloseActionPerformed(evt);
-	    }
-	});
-	jPanelButtons.add(jButtonClose);
+        jButtonClose.setText("Cancel");
+        jButtonClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseActionPerformed(evt);
+            }
+        });
+        jPanelButtons.add(jButtonClose);
 
-	jPanel4.setPreferredSize(new java.awt.Dimension(1, 10));
-	jPanelButtons.add(jPanel4);
+        jPanel4.setPreferredSize(new java.awt.Dimension(1, 10));
+        jPanelButtons.add(jPanel4);
 
-	getContentPane().add(jPanelButtons);
+        getContentPane().add(jPanelButtons);
 
-	pack();
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCloseActionPerformed

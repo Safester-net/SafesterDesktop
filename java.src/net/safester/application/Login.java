@@ -45,7 +45,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Connection;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -71,7 +70,6 @@ import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.install.AskForDownloadJframe;
-import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ConnectionParms;
 import net.safester.application.parms.Parms;

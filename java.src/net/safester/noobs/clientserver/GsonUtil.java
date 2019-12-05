@@ -34,15 +34,36 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import net.safester.clientserver.AutoresponderLocal;
+import net.safester.clientserver.AutoresponderLocal2;
 import net.safester.clientserver.UserPhotoLocal;
 
 /**
  * @author Alexandre Becquereau
  */
-
 public class GsonUtil {
-    
-    
+
+    public static AutoresponderLocal2 autoresponder2FromGson(String jsonString) {
+        Gson gsonOut = new Gson();
+        Type type = new TypeToken<AutoresponderLocal2>() {
+        }.getType();
+        AutoresponderLocal2 autoresponder2 = gsonOut.fromJson(jsonString, type);
+        return autoresponder2;
+    }
+
+    /**
+     * Update the local Autoresponder2 local instance from remote value
+     *
+     * @param autoresponderLocal2
+     * @return
+     */
+    public static String autoresponder2ToGson(AutoresponderLocal2 autoresponderLocal2) {
+        Gson gsonOut = new Gson();
+        Type type = new TypeToken<AutoresponderLocal2>() {
+        }.getType();
+        String jsonString = gsonOut.toJson(autoresponderLocal2, type);
+        return jsonString;
+    }
+
     public static String autoresponderToGson(AutoresponderLocal autoresponder) {
         Gson gsonOut = new Gson();
         Type type = new TypeToken<AutoresponderLocal>() {
@@ -50,15 +71,15 @@ public class GsonUtil {
         String jsonString = gsonOut.toJson(autoresponder, type);
         return jsonString;
     }
-    
-    public static AutoresponderLocal autoresponderFromGson(String jsonString ) {
+
+    public static AutoresponderLocal autoresponderFromGson(String jsonString) {
         Gson gsonOut = new Gson();
         Type type = new TypeToken<AutoresponderLocal>() {
         }.getType();
         AutoresponderLocal autoresponder = gsonOut.fromJson(jsonString, type);
         return autoresponder;
     }
-    
+
     public static String userPhotoToGson(UserPhotoLocal userPhotoLocal) {
         Gson gsonOut = new Gson();
         Type type = new TypeToken<UserPhotoLocal>() {
@@ -66,15 +87,14 @@ public class GsonUtil {
         String jsonString = gsonOut.toJson(userPhotoLocal, type);
         return jsonString;
     }
-    
-    public static UserPhotoLocal userPhotoFromGson(String jsonString ) {
+
+    public static UserPhotoLocal userPhotoFromGson(String jsonString) {
         Gson gsonOut = new Gson();
         Type type = new TypeToken<UserPhotoLocal>() {
         }.getType();
         UserPhotoLocal userPhotoLocal = gsonOut.fromJson(jsonString, type);
         return userPhotoLocal;
     }
-    
 
     public static String listIntegerToGson(List<Integer> listInteger) {
         Gson gsonOut = new Gson();
@@ -91,8 +111,7 @@ public class GsonUtil {
         List<Integer> listInteger = gsonOut.fromJson(jsonString, listOfInteger);
         return listInteger;
     }
-    
-    
+
     public static String listToGson(List<FolderLocal> folderLocals) {
         Gson gsonOut = new Gson();
         Type listOfFolderLocal = new TypeToken<List<FolderLocal>>() {
@@ -108,26 +127,25 @@ public class GsonUtil {
         List<FolderLocal> folderLocalList = gsonOut.fromJson(jsonString, listOfFolderLocal);
         return folderLocalList;
     }
-   
-    public static String messageLocalToGson(MessageLocal messageLocal)
-    {
+
+    public static String messageLocalToGson(MessageLocal messageLocal) {
         Gson gsonOut = new Gson();
-        Type typeOfMessageLocal = new TypeToken<MessageLocal>(){}.getType();
+        Type typeOfMessageLocal = new TypeToken<MessageLocal>() {
+        }.getType();
         String jsonString = gsonOut.toJson(messageLocal, typeOfMessageLocal);
         return jsonString;
     }
-        
 
-
-    public static String emailGroupLocalToGson(EmailGroupLocal emailGroupLocal){
+    public static String emailGroupLocalToGson(EmailGroupLocal emailGroupLocal) {
         Gson gsonOut = new Gson();
-        Type typeOfEmailGroupLocal = new TypeToken<EmailGroupLocal>(){}.getType();
+        Type typeOfEmailGroupLocal = new TypeToken<EmailGroupLocal>() {
+        }.getType();
         String jsonString = gsonOut.toJson(emailGroupLocal, typeOfEmailGroupLocal);
 
         return jsonString;
     }
 
-    public static String listGroupMemberLocalToGson(List<GroupMemberLocal> groupMembersLocal){
+    public static String listGroupMemberLocalToGson(List<GroupMemberLocal> groupMembersLocal) {
         Gson gsonOut = new Gson();
 
         Type listOfGroupMembersLocal = new TypeToken<List<GroupMemberLocal>>() {
@@ -137,11 +155,11 @@ public class GsonUtil {
         return jsonString;
     }
 
-       public static List<GroupMemberLocal> gsonToListGroupMemberLocal(String jsonString) throws JsonParseException {
+    public static List<GroupMemberLocal> gsonToListGroupMemberLocal(String jsonString) throws JsonParseException {
         Gson gsonOut = new Gson();
         Type listOfGroupMembersLocal = new TypeToken<List<GroupMemberLocal>>() {
         }.getType();
-        
+
         List<GroupMemberLocal> groupMembersLocal = gsonOut.fromJson(jsonString, listOfGroupMembersLocal);
         return groupMembersLocal;
     }
@@ -153,8 +171,7 @@ public class GsonUtil {
         String jsonString = gsonOut.toJson(messageIdSet, setType);
         return jsonString;
     }
-    
-    
+
     public static Set<Integer> jsonToMessageIdSet(String jsonMessageIds) {
         Gson gsonOut = new Gson();
         Type setType = new TypeToken<Set<Integer>>() {
@@ -162,25 +179,25 @@ public class GsonUtil {
         Set<Integer> messageIdSet = gsonOut.fromJson(jsonMessageIds, setType);
         return messageIdSet;
     }
-    
+
     public static Map<Integer, List<AttachmentLocal>> attachmentLocalFromGson(String jsonString) {
-                
+
         Gson gsonOut = new Gson();
         Type typeAttachmentMap = new TypeToken<Map<Integer, List<AttachmentLocal>>>() {
         }.getType();
         Map<Integer, List<AttachmentLocal>> attachmentLocalMap = gsonOut.fromJson(jsonString, typeAttachmentMap);
         return attachmentLocalMap;
-        
+
     }
-    
+
     public static Map<String, Set<Integer>> senderUserNumbersPerHostFromGson(String jsonString) {
         Gson gsonOut = new Gson();
         Type type = new TypeToken<Map<String, Set<Integer>>>() {
         }.getType();
         Map<String, Set<Integer>> senderUserNumbersPerHost = gsonOut.fromJson(jsonString, type);
-        return senderUserNumbersPerHost;   
+        return senderUserNumbersPerHost;
     }
-    
+
     public static String senderUserNumbersToGson(Set<Integer> senderUserNumbers) {
         Gson gsonOut = new Gson();
         Type type = new TypeToken<Set<Integer>>() {
@@ -194,25 +211,25 @@ public class GsonUtil {
         Type type = new TypeToken<Properties>() {
         }.getType();
         Properties properties = gsonOut.fromJson(jsonString, type);
-        return properties; 
+        return properties;
     }
 
     public static String messageBodyLocalToGson(MessageBodyLocal messageBodyLocal) {
         Gson gsonOut = new Gson();
-        Type typeOfMessageLocal = new TypeToken<MessageBodyLocal>(){}.getType();
+        Type typeOfMessageLocal = new TypeToken<MessageBodyLocal>() {
+        }.getType();
         String jsonString = gsonOut.toJson(messageBodyLocal, typeOfMessageLocal);
         return jsonString;
     }
-        
-    
-    public static MessageBodyLocal gsonToMessageBodyLocal(String jsonString) throws JsonParseException
-    {
+
+    public static MessageBodyLocal gsonToMessageBodyLocal(String jsonString) throws JsonParseException {
         Gson gsonOut = new Gson();
-        Type typeBodyMessageLocal = new TypeToken<MessageBodyLocal>() {}.getType();
+        Type typeBodyMessageLocal = new TypeToken<MessageBodyLocal>() {
+        }.getType();
         MessageBodyLocal messageLocal = gsonOut.fromJson(jsonString, typeBodyMessageLocal);
         return messageLocal;
     }
-    
+
     public static String attachFilenamesToGson(List<String> attachFilenames) {
         Gson gsonOut = new Gson();
         Type listOfString = new TypeToken<List<String>>() {
@@ -222,20 +239,19 @@ public class GsonUtil {
     }
 
     public static UserSettingsLocal userSettingsLocalfromGson(String jsonString) {
-	Gson gsonOut = new Gson();
-	Type theType = new TypeToken<UserSettingsLocal>() {
-	}.getType();
-	UserSettingsLocal userSettingsLocal = gsonOut.fromJson(jsonString, theType);
-	return userSettingsLocal;
+        Gson gsonOut = new Gson();
+        Type theType = new TypeToken<UserSettingsLocal>() {
+        }.getType();
+        UserSettingsLocal userSettingsLocal = gsonOut.fromJson(jsonString, theType);
+        return userSettingsLocal;
     }
-    
+
     public static String toGson(UserSettingsLocal userSettingsLocal) {
-	Gson gsonOut = new Gson();
-	Type theType = new TypeToken<UserSettingsLocal>() {
-	}.getType();
+        Gson gsonOut = new Gson();
+        Type theType = new TypeToken<UserSettingsLocal>() {
+        }.getType();
         String jsonString = gsonOut.toJson(userSettingsLocal, theType);
         return jsonString;
     }
-        
-    
+
 }
