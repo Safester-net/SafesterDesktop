@@ -46,6 +46,7 @@ import net.safester.application.engines.MessageDownloadEngineListener;
 import net.safester.application.engines.WaiterEngine;
 import net.safester.application.messages.MessagesManager;
 import net.safester.clientserver.FolderListTransfer;
+import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
 
 
@@ -175,6 +176,16 @@ public class MessageSearch {
             String subject = messageLocal.getSubject();
             subject = HtmlConverter.fromHtml(subject);
             
+//            //HACK 17/12
+//            List<AttachmentLocal> attachments = messageLocal.getAttachmentLocal();
+//            for (AttachmentLocal attachment : attachments) {
+//                String name = attachment.getFileName();
+//                name = HtmlConverter.fromHtml(name);
+//                attachment.setFileName(name);
+//            }
+           
+            //System.out.println("messageLocal: " + messageLocal);
+
             boolean found = Pattern.compile(quotedSearchString, Pattern.CASE_INSENSITIVE).matcher(subject).find();
 
             if (!found && searchOnBody) {

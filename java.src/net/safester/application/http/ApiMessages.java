@@ -5,25 +5,26 @@ package net.safester.application.http;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.awakefw.commons.api.client.RemoteException;
 
 import com.google.api.client.util.Preconditions;
 import com.kawansoft.httpclient.KawanHttpClient;
-import java.util.ArrayList;
-import java.util.List;
+
 import net.safester.application.http.dto.AddressBookEntryDTO;
 import net.safester.application.http.dto.AddressBookEntryListDTO;
 import net.safester.application.http.dto.ErrorDTO;
-
 import net.safester.application.http.dto.ErrorFullDTO;
 import net.safester.application.http.dto.GsonWsUtil;
 import net.safester.application.http.dto.MessageCountDTO;
 import net.safester.application.http.dto.MessageDTO;
 import net.safester.application.http.dto.MessageHeaderDTO;
 import net.safester.application.http.dto.MessageListDTO;
+import net.safester.application.http.dto.SystemInfoDTO;
 import net.safester.clientserver.ServerParms;
 
 /**
@@ -377,6 +378,42 @@ public class ApiMessages {
 	}
 
     }
+    
+    /**
+     * Allows to get the remote java, to be sure of version.
+     * @return
+     * @throws Exception
+     */
+    public SystemInfoDTO getSystemInfo() throws Exception {
+	String url = getUrlWithFinalSlash();
+	url += "api/getSystemInfo";
+
+	Map<String, String> parametersMap = new HashMap<>();
+	parametersMap.put("username", username);
+	parametersMap.put("token", token);
+
+	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+
+	SystemInfoDTO systemInfoDTO = null;
+
+	if (resultAnalyzer.isStatusOk()) {
+	    systemInfoDTO = GsonWsUtil.fromJson(jsonResult, SystemInfoDTO.class);
+	} else {
+	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
+	    this.errorMessage = errorFullDTO.getErrorMessage();
+	    this.exceptionName = errorFullDTO.getExceptionName();
+	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+            System.err.println("getMessageHeader errorMessage : " + this.errorMessage );
+            System.err.println("getMessageHeader exceptionName: " + this.exceptionName );
+            System.err.println("getMessageHeader exceptionStackTrace: " + this.exceptionStackTrace );
+                        
+	    throw new RemoteException(errorMessage, new Exception(this.exceptionName), exceptionStackTrace);
+	}
+
+	return systemInfoDTO;
+    }
+    
     public static String getUrlWithFinalSlash() {
 	String url = ServerParms.getHOST();
 	if (!url.endsWith("/")) {

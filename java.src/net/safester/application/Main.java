@@ -101,6 +101,7 @@ import net.safester.application.compose.api.drafts.MessageDraftManager;
 import net.safester.application.engines.BackgroundDownloaderEngine;
 import net.safester.application.http.ApiMessages;
 import net.safester.application.http.KawanHttpClientBuilder;
+import net.safester.application.http.dto.SystemInfoDTO;
 import net.safester.application.install.AskForDownloadJframe;
 import net.safester.application.install.NewVersionInstaller;
 import net.safester.application.messages.MessagesManager;
@@ -4190,8 +4191,18 @@ public class Main extends javax.swing.JFrame {
                 sslCertificateDisplayer.dispose();
             }
 
-            sslCertificateDisplayer = new SslCertificateDisplayer(this, host, httpProxy);
-
+            KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+            ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                    awakeFileSession.getAuthenticationToken());
+                   
+            try {
+                SystemInfoDTO systemInfoDTO = apiMessages.getSystemInfo();
+                sslCertificateDisplayer = new SslCertificateDisplayer(this, host, httpProxy, systemInfoDTO);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPaneNewCustom.showException(rootPane, e);
+            }
+     
         }
 
     }// GEN-LAST:event_jButtonHostLockActionPerformed

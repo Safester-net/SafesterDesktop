@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
+import net.safester.application.addrbooknew.tools.ProcessUtil;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.awakefw.file.api.client.AwakeFileSession;
@@ -40,6 +41,7 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import net.safester.application.installpolicy.PolicyInstallerV1;
 import net.safester.application.mac.MacOsXFullPolicyFiles;
 import net.safester.application.messages.LanguageManager;
+import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.JOptionPaneHtml;
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -100,6 +102,13 @@ public class Safester {
             // });
             SafesterLookAndFeelManager.setLookAndFeel();
 
+            if (SystemUtils.IS_OS_WINDOWS && ProcessUtil.countWindowsInstanceRunning("Safester.exe") > 1) {
+                MessagesManager messagesManager = new MessagesManager();
+                String message = messagesManager.getMessage("safester_already_running_use_task_bar");
+                JOptionPane.showMessageDialog(null, message, "Safester", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            }
+            
             doMain(args);
         } catch (Throwable t) {
             t.printStackTrace();

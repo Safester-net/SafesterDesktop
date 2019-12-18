@@ -128,6 +128,7 @@ public class SystemPropDisplayer extends javax.swing.JFrame {
      *
      */
     private void createTable() {
+        
         SystemPropsTableCreator systemPropsTableCreator = new SystemPropsTableCreator(m_font);
         jTable1 = systemPropsTableCreator.create();
 

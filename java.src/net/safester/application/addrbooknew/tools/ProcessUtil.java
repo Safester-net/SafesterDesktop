@@ -26,6 +26,10 @@ package net.safester.application.addrbooknew.tools;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -36,52 +40,90 @@ import org.apache.commons.lang3.SystemUtils;
  */
 public class ProcessUtil {
 
+    public static int countWindowsInstanceRunning(String programName) throws IOException {
+        if (!SystemUtils.IS_OS_WINDOWS) {
+            return 0;
+        }
+
+        if (programName == null) {
+            throw new NullPointerException("programName can not be null!");
+        }
+
+        String line;
+        List<String> pidInfoSet = new ArrayList<>();
+
+        Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
+
+        BufferedReader input = null;
+
+        try {
+            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            while ((line = input.readLine()) != null) {
+
+                if (line.toLowerCase().contains(programName.toLowerCase())) {
+                    pidInfoSet.add(line);
+                }
+            }
+        } finally {
+            IOUtils.closeQuietly(input);
+        }
+        
+        return pidInfoSet.size();
+
+    }
+
     /**
-     * 
+     *
      */
     protected ProcessUtil() {
     }
 
     /**
      * Says if the program name is running. Check is done independent of caps.
+     *
      * @param programName	the program name to check
-     * @return			true if the program name String is contained in task lists
+     * @return	true if the program name String is contained in task lists
      * @throws IOException
      */
     public static boolean isWindowsProgramRunning(String programName) throws IOException {
-	
-	if (! SystemUtils.IS_OS_WINDOWS) {
-	    return false;
-	}
-	
+
+        if (!SystemUtils.IS_OS_WINDOWS) {
+            return false;
+        }
+
         if (programName == null) {
             throw new NullPointerException("programName can not be null!");
         }
-        
-	String line;
-	String pidInfo ="";
 
-	Process p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
+        String line;
+        Set<String> pidInfoSet = new TreeSet<>();
 
-	BufferedReader input =  null;
-	
-	try {
-	    input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
 
-	    while ((line = input.readLine()) != null) {
-	        pidInfo+=line; 
-	    }
-	} finally  {
-	    IOUtils.closeQuietly(input);
-	}
+        BufferedReader input = null;
 
-	if(pidInfo.toLowerCase().contains(programName.toLowerCase()))
-	{
-	    return true;
-	}	
-	else {
-	    return false;
-	}
+        try {
+            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            while ((line = input.readLine()) != null) {
+                pidInfoSet.add(line);
+            }
+        } finally {
+            IOUtils.closeQuietly(input);
+        }
+
+        for (String pidInfo : pidInfoSet) {
+            System.out.println("==> " + pidInfo);
+        }
+
+        for (String pidInfo : pidInfoSet) {
+            if (pidInfo.toLowerCase().contains(programName.toLowerCase())) {
+                return true;
+            }
+        }
+
+        return false;
     }
-    
+
 }

@@ -94,7 +94,9 @@ public class SystemPropsTableCreator
         
         Collections.sort(listKeys);
 
-        int lineNumber = listKeys.size() + 2;
+        int supplementaryLines = 2;
+        
+        int lineNumber = listKeys.size() + supplementaryLines;
 
         Object [][] data = new Object[lineNumber][columnsNumber];
 
@@ -106,7 +108,7 @@ public class SystemPropsTableCreator
         data[1][0] = "Log Err";
         data[1][1] = SystemInit.getSAFESTER_ERR_LOG();
         
-        for(i = 2; i< listKeys.size(); i++)
+        for(i = supplementaryLines; i< listKeys.size(); i++)
         {            
             String key      = listKeys.get(i);
             String value    =  p.getProperty(key);     

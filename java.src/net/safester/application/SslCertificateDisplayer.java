@@ -53,6 +53,7 @@ import javax.swing.table.JTableHeader;
 import org.awakefw.commons.api.client.HttpProxy;
 
 import com.swing.util.SwingUtil;
+import net.safester.application.http.dto.SystemInfoDTO;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -90,9 +91,14 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
 
     /** The http proxy to use for access to host */
     private HttpProxy httpProxy = null;
+    private SystemInfoDTO systemInfoDTO = null;
     
-    /** Creates new form NewsFrame */
-    public SslCertificateDisplayer(JFrame parentJframe, String host, HttpProxy httpProxy) {
+    /** Creates new form NewsFrame
+     * @param parentJframe
+     * @param host
+     * @param httpProxy
+     * @param systemInfoDTO */
+    public SslCertificateDisplayer(JFrame parentJframe, String host, HttpProxy httpProxy, SystemInfoDTO systemInfoDTO) {
         this.parentJframe = parentJframe;
 
         if (host == null || ! host.toLowerCase().startsWith("https://"))
@@ -106,6 +112,7 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         thisOne = this;
         this.host = host;
         this.httpProxy = httpProxy;
+        this.systemInfoDTO = systemInfoDTO;
 
         initializeCompany();
         this.setVisible(true);
@@ -129,8 +136,9 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         this.jLabelTitle.setText(titleMessage);
         this.setTitle(titleMessage);
 
-        this.jButtonClose.setText(messages.getMessage("ok"));
-
+        this.jButtonClose.setText(messages.getMessage("ok"));   
+        this.jButtonRemoteSystemInfo.setText(messages.getMessage("remote_system_info"));   
+        
         this.keyListenerAdder();
         this.setLocationByPlatform(true);
 
@@ -332,6 +340,7 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         jPanelWest = new javax.swing.JPanel();
         jPanelSouth = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jButtonRemoteSystemInfo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButtonClose = new javax.swing.JButton();
         jPanelEast = new javax.swing.JPanel();
@@ -433,6 +442,15 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         jPanelSouth.setLayout(new java.awt.GridLayout(1, 2));
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10));
+
+        jButtonRemoteSystemInfo.setText("Remote System Info");
+        jButtonRemoteSystemInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoteSystemInfoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonRemoteSystemInfo);
+
         jPanelSouth.add(jPanel1);
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 10, 10));
@@ -469,6 +487,14 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     dispose();
 }//GEN-LAST:event_jButtonCloseActionPerformed
 
+    private void jButtonRemoteSystemInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoteSystemInfoActionPerformed
+
+        String crLf = System.getProperty("line.separator");
+        String message = "javaRuntimeName=" + systemInfoDTO.getJavaRuntimeName() + crLf + "javaVendor=" + systemInfoDTO.getJavaVendor() + crLf + "javaVersion=" + systemInfoDTO.getJavaVersion();
+
+        JOptionPane.showMessageDialog(parentJframe, message, "Safester", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButtonRemoteSystemInfoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -486,12 +512,13 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             @Override
             public void run() {
                 String url = ServerParms.getHOST();
-                new SslCertificateDisplayer(null, url, null);
+                new SslCertificateDisplayer(null, url, null, null);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonClose;
+    private javax.swing.JButton jButtonRemoteSystemInfo;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
