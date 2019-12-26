@@ -15,6 +15,7 @@ import net.safester.application.http.dto.ErrorFullDTO;
 import net.safester.application.http.dto.GsonWsUtil;
 import net.safester.application.http.dto.LoginOkNew;
 import net.safester.application.util.crypto.PassphraseUtil;
+import net.safester.application.util.crypto.PassphraseUtilLegacy;
 import net.safester.clientserver.ServerParms;
 
 /**
@@ -86,6 +87,26 @@ public class ApiLogin {
             this.userNumber = loginOk.getUserNumber();
             this.endDate = new Timestamp(loginOk.getEndDate());
 	} else {
+            
+            // Try with the legacy < 5.6.7 computeHashAndSaltedPassphrase that was 
+            // different in Java from C#
+            connectionPassword = PassphraseUtilLegacy.computeHashAndSaltedPassphrase(username, password);
+            parametersMap.put("passphrase", connectionPassword);
+        
+            String jsonResultLegacy = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+            debug("jsonResult: " + jsonResult);
+
+            ResultAnalyzer resultAnalyzerLegacy = new ResultAnalyzer(jsonResultLegacy);
+            if (resultAnalyzerLegacy.isStatusOk()) {
+                LoginOkNew loginOk = GsonWsUtil.fromJson(jsonResultLegacy, LoginOkNew.class);
+                this.token = loginOk.getToken();
+                this.product = loginOk.getProduct();
+                this.userNumber = loginOk.getUserNumber();
+                this.endDate = new Timestamp(loginOk.getEndDate());
+                return true; //
+            }
+            
+            // Back no regular error flow
 	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
 	    this.errorMessage = errorFullDTO.getErrorMessage();
 	    this.exceptionName = errorFullDTO.getExceptionName();

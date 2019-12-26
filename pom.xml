@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.safester</groupId>
     <artifactId>Safester</artifactId>
-    <version>5.6.6</version>
+    <version>5.6.7</version>
     <name>Safester</name>
     <description>Easy OpenPGP encryption for all</description>
     <build>
@@ -249,6 +249,11 @@
 		    <artifactId>commons-net</artifactId>
 		    <version>3.6</version>
 		</dependency>
+        <dependency>
+            <groupId>org.unbescape</groupId>
+            <artifactId>unbescape</artifactId>
+            <version>1.1.6.RELEASE</version>
+        </dependency>
 
     </dependencies>
     <properties>
