@@ -81,7 +81,7 @@ public class Test {
     public static void main(String[] args) throws Exception {
 
 	String email = "test@test.com";
-	String password = "avancée1234&<_%[@?\"%+*#'(-_^%*!:/;.,?%*!";
+	String password = "avancée1234&<_%[@?\"%+*#'(-_^%*!:/;.,?%*!=";
 
 	String result = PassphraseUtil.computeHashAndSaltedPassphrase(email, password.toCharArray());
 	String toPrint = new Date() + " In Java " + email + " " + password + ": " + CR_LF + result;

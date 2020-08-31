@@ -128,7 +128,22 @@ public class SafesterLookAndFeelManager {
     }
         
     public static void setNimbusLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            return;
+        } catch (Exception e ) {
+            e.printStackTrace();
+
+        } 
+        
+        // Try another one 
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
     
         public static void cleanNimbusBackground() {
