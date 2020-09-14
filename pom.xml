@@ -93,6 +93,8 @@
             <groupId>org.awake-file</groupId>
             <artifactId>awake-file</artifactId>
             <version>1.1.1i</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/awake-file-1.1.1i.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -155,84 +157,112 @@
             <groupId>cgeep_api</groupId>
             <artifactId>cgeep_api</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/cgeep_api.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>cgeep_crypto</groupId>
             <artifactId>cgeep_crypto</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/cgeep_crypto.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>cgeep_provider</groupId>
             <artifactId>cgeep_provider</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/cgeep_provider.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>filedrop</groupId>
             <artifactId>filedrop</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/filedrop.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>joc-v3.0.4-basic</groupId>
             <artifactId>joc-v3.0.4-basic</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/joc-v3.0.4-basic.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>jsr305-1.3.9</groupId>
             <artifactId>jsr305-1.3.9</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jsr305-1.3.9.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>JTattooKawan</groupId>
             <artifactId>JTattooKawan</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/JTattooKawan.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>jtidy-8.0</groupId>
             <artifactId>jtidy-8.0</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jtidy-8.0.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>moyocore</groupId>
             <artifactId>moyocore</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/moyocore.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>novaworx-syntax-0.0.7</groupId>
             <artifactId>novaworx-syntax-0.0.7</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/novaworx-syntax-0.0.7.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>RapidSpell</groupId>
             <artifactId>RapidSpell</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/RapidSpell.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>RapidSpellMDict</groupId>
             <artifactId>RapidSpellMDict</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/RapidSpellMDict.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>sam</groupId>
             <artifactId>sam</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/sam.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>SHEF</groupId>
             <artifactId>SHEF</artifactId>
             <version>1.x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/SHEF.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.swinglabs</groupId>
