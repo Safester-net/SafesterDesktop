@@ -499,26 +499,7 @@ public class Main extends javax.swing.JFrame {
         jSplitPaneFolders.setOneTouchExpandable(false);
         jSplitPaneMessage.setOneTouchExpandable(false);
 
-        try {
-            MainStatusBarUpdater mainStatusBarUpdater = new MainStatusBarUpdater(connection, keyId, userNumber);
-            this.jLabelPlan.setText(MainStatusBarUpdater.getAccount());
-
-            String storageInfo = mainStatusBarUpdater.getStorageInfo();
-            this.jLabelStorage.setText(storageInfo);
-            if (storageInfo.isEmpty()) {
-                jLabelSep.setText(null);
-            }
-
-            this.jLabelLastLogin.setText(mainStatusBarUpdater.getLastLoginAgo());
-
-            if (mainStatusBarUpdater.getLastLoginAgo().isEmpty()) {
-                this.jButtonDetail.setVisible(false);
-                jPanelSepVerticalLastLogin.setVisible(false);
-            }
-
-        } catch (Exception ex) {
-            JOptionPaneNewCustom.showException(rootPane, ex);
-        }
+        updateStatusBar();
 
         // Build table
         Color tableBackground = null;
@@ -689,6 +670,29 @@ public class Main extends javax.swing.JFrame {
         subjectDecryptionClient.updateSubjectsInThread();
 
         initDone = true;
+    }
+
+    private void updateStatusBar() {
+        try {
+            MainStatusBarUpdater mainStatusBarUpdater = new MainStatusBarUpdater(connection, keyId, userNumber);
+            this.jLabelPlan.setText(MainStatusBarUpdater.getAccount());
+            
+            String storageInfo = mainStatusBarUpdater.getStorageInfo();
+            this.jLabelStorage.setText(storageInfo);
+            if (storageInfo.isEmpty()) {
+                jLabelSep.setText(null);
+            }
+            
+            this.jLabelLastLogin.setText(mainStatusBarUpdater.getLastLoginAgo());
+            
+            if (mainStatusBarUpdater.getLastLoginAgo().isEmpty()) {
+                this.jButtonDetail.setVisible(false);
+                jPanelSepVerticalLastLogin.setVisible(false);
+            }
+            
+        } catch (Exception ex) {
+            JOptionPaneNewCustom.showException(rootPane, ex);
+        }
     }
 
     private void buildAccountsMenu() {
@@ -1388,7 +1392,7 @@ public class Main extends javax.swing.JFrame {
         // Refresh the table
         // createTable();
         deleteMessages(selectedMessages, folderId);
-
+        
         this.setCursor(Cursor.getDefaultCursor());
     }
 
@@ -1692,6 +1696,8 @@ public class Main extends javax.swing.JFrame {
             jProgressBar1.setVisible(false);
             createTableThreadRunning = false;
             this.setEnabledRestrictedAcces(true);
+            updateStatusBar();
+            
         }
 
     }
