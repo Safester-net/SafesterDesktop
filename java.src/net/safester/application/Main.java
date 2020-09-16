@@ -71,8 +71,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -1659,6 +1662,15 @@ public class Main extends javax.swing.JFrame {
             // Build the table
             MessagesTableCreator messagesTableCreator = new MessagesTableCreator(this, messageLocalStore, isOutBox,
                     idFolder);
+            int sortedColumnIndex = -1;
+            SortOrder sortOrder = null;
+            
+            //Backup of sorted column and sort order
+            final RowSorter<?> rowSorter = this.jTable1.getRowSorter();
+            if(rowSorter != null) {
+            	sortedColumnIndex = rowSorter.getSortKeys().get(0).getColumn();
+            	sortOrder = rowSorter.getSortKeys().get(0).getSortOrder();
+            }
             this.jTable1 = messagesTableCreator.create();
             buildJTablePopupMenu();
 
@@ -1666,7 +1678,13 @@ public class Main extends javax.swing.JFrame {
             if (folderNode != null) {
                 customJtree.getTree().setSelectionPath(new TreePath(folderNode.getPath()));
             }
-
+            //Restore previous sort of messages
+            if(sortedColumnIndex != -1) {
+            	RowSorter<?> sorter =  jTable1.getRowSorter();
+            	List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+            	sortKeys.add(new SortKey(sortedColumnIndex, sortOrder));
+            	sorter.setSortKeys(sortKeys);
+            }
             // Reset message pane
             resetMessagePane();
             jScrollPane1.setViewportView(jTable1);
