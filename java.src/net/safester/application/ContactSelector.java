@@ -700,7 +700,7 @@ public class ContactSelector extends javax.swing.JFrame {
         jLabelIn.setText("jLabel1");
         jPanel2.add(jLabelIn);
 
-        jComboBoxSearch.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel2.add(jComboBoxSearch);
 
         jPanelSearch.add(jPanel2);

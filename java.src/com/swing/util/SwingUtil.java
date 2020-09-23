@@ -214,7 +214,7 @@ public class SwingUtil
      */
     public static List<Component> getAllComponants(Container container)
     {
-        List<Component> componentList  = new Vector();
+        List<Component> componentList  = new Vector<>();
         
         getAllComponents(container, componentList);
         
@@ -242,7 +242,7 @@ public class SwingUtil
      * @param c              The Component
      * @param collection     The collection to store in the result 
      */
-    private static void getAllComponents(Component c, Collection collection) {
+    private static void getAllComponents(Component c, Collection<Component> collection) {
         collection.add(c);
         if (c instanceof Container) {
           Component[] kids = ((Container)c).getComponents();

@@ -74,7 +74,10 @@ import javax.swing.text.JTextComponent;
 
 public class PowerEditor extends JPanel
 {
-    public static boolean DEBUG = false;
+    
+	private static final long serialVersionUID = 9053274198450193568L;
+
+	public static boolean DEBUG = false;
     
     private Set<String> theSet;
 
@@ -165,9 +168,11 @@ public class PowerEditor extends JPanel
 
     private class WordMenuWindow extends JWindow
     {
-        public JList theList;
+		private static final long serialVersionUID = 7646767713027983185L;
 
-        private DefaultListModel theModel;
+		public JList<?> theList;
+
+        private DefaultListModel<String> theModel;
 
         private Point theRelativePosition;
 
@@ -198,7 +203,7 @@ public class PowerEditor extends JPanel
         public WordMenuWindow()
         {
             super(theOwner);
-            theModel = new DefaultListModel();
+            theModel = new DefaultListModel<>();
             theRelativePosition = new Point(0, 0);
             loadUIElements();
             setEventManagement();
@@ -206,9 +211,11 @@ public class PowerEditor extends JPanel
 
         private void loadUIElements()
         {
-            theList = new JList(theModel)
+            theList = new JList<>(theModel)
             {
-                public int getVisibleRowCount()
+				private static final long serialVersionUID = -2357183904884548144L;
+
+				public int getVisibleRowCount()
                 {
                     return Math.min(theModel.getSize(), 10);
                 }
@@ -346,7 +353,7 @@ public class PowerEditor extends JPanel
         }
     }
 
-    public PowerEditor(Set aLexiconSet, JFrame anOwner,
+    public PowerEditor(Set<String> aLexiconSet, JFrame anOwner,
             JTextComponent aTextComponent)
     {
         super(new BorderLayout());
@@ -425,14 +432,18 @@ public class PowerEditor extends JPanel
 
         theTextComponent.getActionMap().put("home", new AbstractAction()
         {
-            public void actionPerformed(ActionEvent e)
+			private static final long serialVersionUID = -1372095964257826576L;
+
+			public void actionPerformed(ActionEvent e)
             {
                 theWordMenu.moveStart();
             }
         });
         theTextComponent.getActionMap().put("end", new AbstractAction()
         {
-            public void actionPerformed(ActionEvent e)
+			private static final long serialVersionUID = -4698429261639389935L;
+
+			public void actionPerformed(ActionEvent e)
             {
                 theWordMenu.moveEnd();
             }

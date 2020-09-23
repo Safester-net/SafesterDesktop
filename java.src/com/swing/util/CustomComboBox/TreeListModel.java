@@ -34,7 +34,11 @@ import javax.swing.tree.TreeModel;
  * @author Alexandre Becquereau
  */
 public class TreeListModel extends AbstractListModel implements ComboBoxModel{
-    private TreeModel treeModel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2876955012273694027L;
+	private TreeModel treeModel;
     private Object selectedObject;
 
     public TreeListModel(TreeModel treeModel){
@@ -44,7 +48,7 @@ public class TreeListModel extends AbstractListModel implements ComboBoxModel{
     @Override
     public int getSize(){
         int count = 0;
-        Enumeration enumer = new PreorderEnumeration(treeModel);
+        Enumeration<?> enumer = new PreorderEnumeration(treeModel);
         while(enumer.hasMoreElements()){
             enumer.nextElement();
             count++;
@@ -54,7 +58,7 @@ public class TreeListModel extends AbstractListModel implements ComboBoxModel{
 
     @Override
     public Object getElementAt(int index){
-        Enumeration enumer = new PreorderEnumeration(treeModel);
+        Enumeration<?> enumer = new PreorderEnumeration(treeModel);
         for(int i=0; i<index; i++)
             enumer.nextElement();
         return enumer.nextElement();

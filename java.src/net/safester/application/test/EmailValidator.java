@@ -45,10 +45,10 @@ public class EmailValidator {
       return;
       }
     
-    private static ArrayList getMX( String hostName )
+    private static ArrayList<String> getMX( String hostName )
           throws NamingException {
       // Perform a DNS lookup for MX records in the domain
-      Hashtable env = new Hashtable();
+      Hashtable<String, String> env = new Hashtable<>();
       env.put("java.naming.factory.initial",
               "com.sun.jndi.dns.DnsContextFactory");
       DirContext ictx = new InitialDirContext( env );
@@ -68,8 +68,8 @@ public class EmailValidator {
       // Huzzah! we have machines to try. Return them as an array list
       // NOTE: We SHOULD take the preference into account to be absolutely
       //   correct. This is left as an exercise for anyone who cares.
-      ArrayList res = new ArrayList();
-      NamingEnumeration en = attr.getAll();
+      ArrayList<String> res = new ArrayList<>();
+      NamingEnumeration<?> en = attr.getAll();
 
       while ( en.hasMore() ) {
          String x = (String) en.next();
@@ -90,7 +90,7 @@ public class EmailValidator {
 
       // Isolate the domain/machine name and get a list of mail exchangers
       String domain = address.substring( ++pos );
-      ArrayList mxList = null;
+      ArrayList<String> mxList = null;
       try {
          mxList = getMX( domain );
       } 
@@ -109,9 +109,10 @@ public class EmailValidator {
       // to take the preference into account.
       for ( int mx = 0 ; mx < mxList.size() ; mx++ ) {
           boolean valid = false;
+          Socket skt = null;
           try {
               int res;
-              Socket skt = new Socket( (String) mxList.get( mx ), 25 );
+              skt = new Socket( (String) mxList.get( mx ), 25 );
               BufferedReader rdr = new BufferedReader
                  ( new InputStreamReader( skt.getInputStream() ) );
               BufferedWriter wtr = new BufferedWriter
@@ -147,6 +148,12 @@ public class EmailValidator {
             // Do nothing but try next host
           } 
           finally {
+        	  if(skt != null)
+				try {
+					skt.close();
+				} catch (IOException e) {
+					//Ok
+				}
             if ( valid ) return true;
           }
       }

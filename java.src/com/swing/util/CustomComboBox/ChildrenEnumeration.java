@@ -31,7 +31,7 @@ import javax.swing.tree.TreeModel;
  *
  * @author Alexandre Becquereau
  */
-public class ChildrenEnumeration implements Enumeration{
+public class ChildrenEnumeration implements Enumeration<Object>{
     TreeModel treeModel;
     Object node;
     int index = -1;

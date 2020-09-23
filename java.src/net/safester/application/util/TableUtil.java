@@ -339,20 +339,20 @@ public class TableUtil {
      * @param clazz the class, used for preference id
      * @param jTable the jTable to sort
      */
-    public static void setSortOrderFromPrefs(Class clazz, JTable jTable) {
+    public static void setSortOrderFromPrefs(Class<?> clazz, JTable jTable) {
 
         String idTable = clazz.getSimpleName() + "_" + jTable.getName();
 
-        int columnSort = new UserPrefManager().getIntegerPreference(DEFAULT_COLUMN_SORT + "_" + idTable);
-        String sortOrderStr = new UserPrefManager().getPreference(SORT_ORDER + "_" + idTable);
+        int columnSort = UserPrefManager.getIntegerPreference(DEFAULT_COLUMN_SORT + "_" + idTable);
+        String sortOrderStr = UserPrefManager.getPreference(SORT_ORDER + "_" + idTable);
 
         SortOrder theSortOrder = SortOrder.ASCENDING;
         if (sortOrderStr != null && sortOrderStr.equals("DESCENDING")) {
             theSortOrder = SortOrder.DESCENDING;
         }
 
-        DefaultRowSorter sorter = ((DefaultRowSorter) jTable.getRowSorter());
-        ArrayList list = new ArrayList();
+        DefaultRowSorter<?,?> sorter = ((DefaultRowSorter<?,?>) jTable.getRowSorter());
+        ArrayList<RowSorter.SortKey> list = new ArrayList<>();
         list.add(new RowSorter.SortKey(columnSort, theSortOrder));
         sorter.setSortKeys(list);
         sorter.sort();
@@ -440,7 +440,7 @@ public class TableUtil {
      * @param clazz the class, used for preference id
      * @param jTable the jTable to sorte
      */
-    public static void rememberSortColumn(Class clazz, JTable jTable) {
+    public static void rememberSortColumn(Class<?> clazz, JTable jTable) {
 
         JTableHeader jTableHeader = jTable.getTableHeader();
         jTableHeader.setReorderingAllowed(false);
@@ -466,8 +466,8 @@ public class TableUtil {
                     debug("sortKey.getColumn(): " + sortKey.getColumn());
                     debug("sortKey.getSortOrder(): " + sortKey.getSortOrder());
 
-                    new UserPrefManager().setPreference(DEFAULT_COLUMN_SORT + "_" + idTable, sortKey.getColumn());
-                    new UserPrefManager().setPreference(SORT_ORDER + "_" + idTable, sortKey.getSortOrder().toString());
+                    UserPrefManager.setPreference(DEFAULT_COLUMN_SORT + "_" + idTable, sortKey.getColumn());
+                    UserPrefManager.setPreference(SORT_ORDER + "_" + idTable, sortKey.getSortOrder().toString());
 
                     break;
                 }

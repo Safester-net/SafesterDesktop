@@ -128,7 +128,7 @@ public class StringMgr
             return new String[0];
         }
 
-        ArrayList arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         int nLen = sExpression.length();
         int nIndex = 0;
 

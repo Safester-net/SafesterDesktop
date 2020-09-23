@@ -83,7 +83,7 @@ public class TreePathBuilder
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getLastPathComponent();
         
         if (node.getChildCount() >= 0) {
-          for (Enumeration e = node.children(); e.hasMoreElements();) {
+          for (Enumeration<?> e = node.children(); e.hasMoreElements();) {
               DefaultMutableTreeNode n = (DefaultMutableTreeNode) e.nextElement();
             TreePath path = parent.pathByAddingChild(n);
             getPaths(tree, path, list);

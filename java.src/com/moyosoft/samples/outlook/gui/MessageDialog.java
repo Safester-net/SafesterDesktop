@@ -41,7 +41,9 @@ import javax.swing.JPanel;
 
 public class MessageDialog extends JDialog
 {
-    public static final int BUTTON_OK = 1;
+	private static final long serialVersionUID = -5322375068557695043L;
+	
+	public static final int BUTTON_OK = 1;
     public static final int BUTTON_CANCEL = 2;
     public static final int BUTTON_YES = 4;
     public static final int BUTTON_NO = 8;
@@ -84,7 +86,7 @@ public class MessageDialog extends JDialog
 
     private JButton[] getButtons()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<JButton> list = new ArrayList<>();
         if((mButtons & BUTTON_OK) != 0)
         {
             list.add(mButtonOk);

@@ -36,7 +36,8 @@ import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 
 public abstract class AbstractFolderTreeNode extends DefaultMutableTreeNode implements FolderTreeNode {
 
-    private boolean childrensCreated = false;
+	private static final long serialVersionUID = -6214909711006942692L;
+	private boolean childrensCreated = false;
 
     public AbstractFolderTreeNode(String name) {
         super(name);
@@ -49,9 +50,9 @@ public abstract class AbstractFolderTreeNode extends DefaultMutableTreeNode impl
 
         try {
             if (folders != null && folders.size() > 0) {
-                List foldersList = new ArrayList();
+                List<OutlookFolder> foldersList = new ArrayList<>();
 
-                for (Iterator it = folders.iterator(); it.hasNext();) {
+                for (Iterator<?> it = folders.iterator(); it.hasNext();) {
                     OutlookFolder folder = (OutlookFolder) it.next();
                     foldersList.add(folder);
                 }
@@ -60,8 +61,8 @@ public abstract class AbstractFolderTreeNode extends DefaultMutableTreeNode impl
                         foldersList,
                         OutlookFolderComparator.getInstance());
 
-                for (Iterator it = foldersList.iterator(); it.hasNext();) {
-                    OutlookFolder folder = (OutlookFolder) it.next();
+                for (Iterator<OutlookFolder> it = foldersList.iterator(); it.hasNext();) {
+                    OutlookFolder folder = it.next();
                     FolderTreeNode node = new OutlookFolderTreeNode(folder);
                     add(node);
                 }

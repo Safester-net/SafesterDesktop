@@ -31,7 +31,7 @@ import net.safester.noobs.clientserver.specs.Local;
  * <br>
  */ 
 
-public class AddressBookNewLocal implements Local, Comparable
+public class AddressBookNewLocal implements Local, Comparable<AddressBookNewLocal>
 {		
     
 	/** Table columns */
@@ -149,7 +149,7 @@ public class AddressBookNewLocal implements Local, Comparable
     } 
     
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(AddressBookNewLocal o) {
         
         if (name == null && o == null) {
             return 0;
@@ -163,7 +163,7 @@ public class AddressBookNewLocal implements Local, Comparable
             return 1;
         }
         
-        return name.toUpperCase().compareTo(((AddressBookNewLocal) o).getName().toUpperCase());
+        return name.toUpperCase().compareTo(o.getName().toUpperCase());
     }
     
     

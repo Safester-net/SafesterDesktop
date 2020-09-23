@@ -27,7 +27,7 @@ import java.util.Comparator;
 
 import com.moyosoft.connector.ms.outlook.folder.OutlookFolder;
 
-class OutlookFolderComparator implements Comparator
+class OutlookFolderComparator implements Comparator<OutlookFolder>
 {
     private static OutlookFolderComparator mInstance = null;
 
@@ -44,10 +44,10 @@ class OutlookFolderComparator implements Comparator
         return mInstance;
     }
 
-    public int compare(Object o1, Object o2)
+    public int compare(OutlookFolder o1, OutlookFolder o2)
     {
-        OutlookFolder child1 = (OutlookFolder) o1;
-        OutlookFolder child2 = (OutlookFolder) o2;
+        OutlookFolder child1 = o1;
+        OutlookFolder child2 = o2;
 
         if(child1.getName() == null)
         {

@@ -115,7 +115,7 @@ private static final String LOG_DIR = System.getProperty("user.home") + File.sep
     private static void printSystemProperties()
     {
         Properties p = System.getProperties();
-        Enumeration keys = p.keys() ;
+        Enumeration<Object> keys = p.keys() ;
         List<String> listKeys = new Vector<String>();
 
         while(keys.hasMoreElements())

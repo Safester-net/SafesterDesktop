@@ -91,7 +91,7 @@ import java.util.NoSuchElementException;
  *
  * @author abupon
  */
-public class CSVTokenizer implements Enumeration
+public class CSVTokenizer implements Enumeration<Object>
 {
   /**
    * The complete record that should be separated into elements.

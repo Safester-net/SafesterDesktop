@@ -54,7 +54,7 @@ public class UI_Utils {
  public static void setUIScale(double scale)
     {
         UIDefaults defaults = UIManager.getDefaults();
-        Enumeration keys = defaults.keys();
+        Enumeration<?> keys = defaults.keys();
 
         while (keys.hasMoreElements())
         {

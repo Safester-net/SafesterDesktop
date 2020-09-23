@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 
@@ -55,7 +56,7 @@ public class UILister {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             
             UIDefaults defaults1 = UIManager.getDefaults();
-            Enumeration keys = defaults1.keys();
+            Enumeration<?> keys = defaults1.keys();
 
             Color color = (Color) defaults1.getColor("Label.background");
             System.out.println(color.getGreen());
@@ -83,7 +84,7 @@ public class UILister {
             
             //if (true) return;
             
-            Set defaults = UIManager.getLookAndFeelDefaults().entrySet();
+            Set<Entry<Object, Object>> defaults = UIManager.getLookAndFeelDefaults().entrySet();
 
 
 
@@ -104,15 +105,14 @@ public class UILister {
 //                }
 //            });
 //            
-            Set ts = new HashSet();
+            Set<Entry<Object, Object>> ts = new HashSet<>();
             
             ts.addAll(defaults);
             Object[][] kvPairs = new Object[defaults.size()][2];
             Object[] columnNames = new Object[] { "Key", "Value" };
             int row = 0;
-            for (Iterator i = ts.iterator(); i.hasNext();) {
-                Object o = i.next();
-                Map.Entry entry = (Map.Entry) o;
+            for (Iterator<Map.Entry<Object, Object>> i = ts.iterator(); i.hasNext();) {
+                Entry<Object, Object> entry = i.next();
                 kvPairs[row][0] = entry.getKey();
                 kvPairs[row][1] = entry.getValue();
                 row++;

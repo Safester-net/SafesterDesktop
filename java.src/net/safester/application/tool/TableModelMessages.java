@@ -120,7 +120,7 @@ public class TableModelMessages extends DefaultTableModel
     messages.getMessage("size")
     */
     
-    Class[] types = new Class [] {
+    Class<?>[] types = new Class [] {
         java.lang.Object.class,
         java.lang.Object.class,
         java.lang.Object.class,
@@ -132,7 +132,7 @@ public class TableModelMessages extends DefaultTableModel
     };
 
     @Override
-    public Class getColumnClass(int columnIndex) {
+    public Class<?> getColumnClass(int columnIndex) {
         return types [columnIndex];
     }
        

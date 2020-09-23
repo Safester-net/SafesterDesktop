@@ -217,9 +217,9 @@ public class Util
      * @param string     a string in format of HashMap.toString()
      * @return          a Map rebuilded from the String
      */
-    public static Map toMap(String string)
+    public static Map<String, String> toMap(String string)
     {        
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         
         if (string == null )
         {
@@ -265,7 +265,7 @@ public class Util
             return map;
         }
         
-        Enumeration keys = prop.keys() ;
+        Enumeration<?> keys = prop.keys() ;
         
         String key = null;
         String value = null;
@@ -288,7 +288,7 @@ public class Util
      */
     public static void debug(String s)
     {
-        if (new Util().DEBUG)
+        if (Util.DEBUG)
         {
             System.out.println(s);
             //System.out.println(this.getClass().getName() + " " + new Date() + " " + s);

@@ -29,7 +29,7 @@ import net.safester.noobs.clientserver.specs.Local;
  * @author Nicolas de Pomereu Defines an instance of AddressBook
  * <br>
  */
-public class PhotoAddressBookLocal implements Local, Comparable {
+public class PhotoAddressBookLocal implements Local, Comparable<PhotoAddressBookLocal> {
 
     @Override
     public int hashCode() {
@@ -195,7 +195,7 @@ public class PhotoAddressBookLocal implements Local, Comparable {
 
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(PhotoAddressBookLocal o) {
         
         if (name == null && o == null) {
             return 0;
@@ -209,7 +209,7 @@ public class PhotoAddressBookLocal implements Local, Comparable {
             return 1;
         }
         
-        return name.toUpperCase().compareTo(((PhotoAddressBookLocal) o).getName().toUpperCase());
+        return name.toUpperCase().compareTo(o.getName().toUpperCase());
     }
 
    

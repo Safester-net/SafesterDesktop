@@ -227,7 +227,7 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         SslCertExtractor sslCertExtractor = new SslCertExtractor(host, httpProxy);
         Map<String, String> map = sslCertExtractor.getCertInfo();
 
-        Iterator keys = sslCertExtractor.getCertInfo().keySet().iterator();
+        Iterator<?> keys = sslCertExtractor.getCertInfo().keySet().iterator();
 
         List<String> listKeys = new ArrayList<String>();
 

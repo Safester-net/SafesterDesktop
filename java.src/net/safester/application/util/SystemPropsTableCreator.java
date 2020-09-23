@@ -82,7 +82,7 @@ public class SystemPropsTableCreator
         
         Properties p = System.getProperties();
         
-        Enumeration keys = p.keys() ;
+        Enumeration<?> keys = p.keys() ;
                  
         List<String> listKeys = new Vector<String>();
         

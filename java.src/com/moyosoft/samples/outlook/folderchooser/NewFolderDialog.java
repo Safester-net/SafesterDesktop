@@ -89,7 +89,7 @@ public class NewFolderDialog extends JDialog
     protected void init()
     {
         mFieldFolderType
-                .setModel(new DefaultComboBoxModel(mFolderTypeLabelList));
+                .setModel(new DefaultComboBoxModel<>(mFolderTypeLabelList));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 

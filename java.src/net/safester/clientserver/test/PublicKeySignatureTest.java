@@ -83,7 +83,7 @@ public class PublicKeySignatureTest {
 
         List<PGPSignature> signatures = new ArrayList<PGPSignature>();
         
-        Iterator iter = pubKey.getSignatures();
+        Iterator<?> iter = pubKey.getSignatures();
 
         while(iter.hasNext())
         {

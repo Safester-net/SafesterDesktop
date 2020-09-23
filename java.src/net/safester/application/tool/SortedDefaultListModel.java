@@ -36,8 +36,9 @@ import javax.swing.DefaultListModel;
  */
 public class SortedDefaultListModel extends DefaultListModel
 {
-
-    /** Store the ascending/descending setting */
+	private static final long serialVersionUID = -416943099758365933L;
+	
+	/** Store the ascending/descending setting */
     private boolean sortAscending = true;
     
     /**

@@ -33,29 +33,29 @@ import javax.swing.tree.TreeModel;
  *
  * @author Alexandre Becquereau
  */
-public class PreorderEnumeration implements Enumeration{
+public class PreorderEnumeration implements Enumeration<Object>{
     private TreeModel treeModel;
-    protected Stack stack;
+    protected Stack<Object>stack;
     private int depth = 0;
 
 
     public PreorderEnumeration(TreeModel treeModel){
         this.treeModel = treeModel;
-        Vector v = new Vector(1);
+        Vector<Object> v = new Vector<>(1);
         v.addElement(treeModel.getRoot());
-        stack = new Stack();
+        stack = new Stack<>();
         stack.push(v.elements());
     }
 
     @Override
     public boolean hasMoreElements(){
         return (!stack.empty() &&
-                ((Enumeration)stack.peek()).hasMoreElements());
+                ((Enumeration<?>)stack.peek()).hasMoreElements());
     }
 
     @Override
     public Object nextElement(){
-        Enumeration enumer = (Enumeration)stack.peek();
+        Enumeration<?> enumer = (Enumeration<?>)stack.peek();
         Object node = enumer.nextElement();
         depth = enumer instanceof ChildrenEnumeration
                 ? ((ChildrenEnumeration)enumer).depth

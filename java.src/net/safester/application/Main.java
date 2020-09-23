@@ -1667,7 +1667,7 @@ public class Main extends javax.swing.JFrame {
             
             //Backup of sorted column and sort order
             final RowSorter<?> rowSorter = this.jTable1.getRowSorter();
-            if(rowSorter != null) {
+            if(rowSorter != null && !rowSorter.getSortKeys().isEmpty()) {
             	sortedColumnIndex = rowSorter.getSortKeys().get(0).getColumn();
             	sortOrder = rowSorter.getSortKeys().get(0).getSortOrder();
             }
