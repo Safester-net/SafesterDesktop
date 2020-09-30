@@ -69,16 +69,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.RowSorter.SortKey;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -1501,7 +1503,7 @@ public class Main extends javax.swing.JFrame {
         this.jButtonNext.setVisible(false);
         this.jLabelNbElements.setText(null);
 
-        createTable(true);
+        createTable(true, -1);
     }
 
     /**
@@ -1546,7 +1548,7 @@ public class Main extends javax.swing.JFrame {
      *
      * @param reset
      */
-    private void createTable(boolean reset) {
+    private void createTable(final boolean reset, final int selectionRow) {
         if (lockCreateTableThreadRunning()) {
             return;
         }
@@ -1556,12 +1558,10 @@ public class Main extends javax.swing.JFrame {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         jProgressBar1.setVisible(true);
 
-        final boolean finalReset = reset;
-
         Thread t = new Thread() {
             @Override
             public void run() {
-                createTableAsThread(finalReset);
+                createTableAsThread(reset, selectionRow);
             }
         };
         t.start();
@@ -1573,7 +1573,7 @@ public class Main extends javax.swing.JFrame {
      * @param reset if true, all datas are asked back. Should be use for init,
      * all other cases are for <prev or next> button
      */
-    private void createTableAsThread(boolean reset) {
+    private void createTableAsThread(boolean reset, final int selectionRow) {
 
         try {
 
@@ -1704,7 +1704,9 @@ public class Main extends javax.swing.JFrame {
             }
 
             debug(new Date() + " Safester... jScrollPane1.setViewportView(jTable) end...");
-
+            if(selectionRow != -1) {
+            	jTable1.setRowSelectionInterval(selectionRow, selectionRow);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             this.setCursor(Cursor.getDefaultCursor());
@@ -1914,7 +1916,45 @@ public class Main extends javax.swing.JFrame {
         
     }
 
-    /**
+    public void updateMessageIsStarredInThread() {
+    	setSelectedMessages();
+        int selectedRow = this.jTable1.getSelectedRow();
+        final Integer messageId = (Integer)this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_MSG_ID);
+    	final MessageLocal messageLocal = messageLocalStore.get(messageId);
+    	if (messageLocal == null) {
+            return;
+        }
+    	final Boolean starred = Boolean.parseBoolean((String)this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_STARRED));
+    	messageLocal.setIsStarred(!starred.booleanValue());
+    	
+    	Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                	updateMessageIsStarred(getConnection(), messageLocal.getSenderUserEmail(), messageId, !starred.booleanValue());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPaneNewCustom.showException(null, e);
+                }
+            }
+        };
+        t.start();
+        createTable(false, selectedRow);
+    }
+
+
+    private static synchronized void updateMessageIsStarred(final Connection connection, final String messageSenderEmailAddress, Integer messageId, boolean starred) throws Exception {
+    	  AwakeConnection awakeConnection = (AwakeConnection)connection;
+          AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
+          
+          KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+          ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                  awakeFileSession.getAuthenticationToken());
+          apiMessages.setMessageStarred(messageId, messageSenderEmailAddress, starred);
+		
+	}
+
+	/**
      * Reset message preview panel
      */
     private void resetMessagePane() {
@@ -2357,6 +2397,10 @@ public class Main extends javax.swing.JFrame {
 
     public CustomJTree getCustomJTree() {
         return this.customJtree;
+    }
+    
+    public JTable getJTable1() {
+    	return jTable1;
     }
 
     /**
@@ -4112,12 +4156,12 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonPrevActionPerformed
         offset = offset - limit;
-        createTable(false);
+        createTable(false, -1);
     }// GEN-LAST:event_jButtonPrevActionPerformed
 
     private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNextActionPerformed
         offset = offset + limit;
-        createTable(false);
+        createTable(false, -1);
     }// GEN-LAST:event_jButtonNextActionPerformed
 
     private void jMenuItemSystemInfoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemSystemInfoActionPerformed
@@ -4688,8 +4732,5 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
-
-
-
 
 }

@@ -52,6 +52,7 @@ public class MessageLocal implements Local, Serializable
     private boolean is_with_attachment;
     private boolean is_encrypted;
     private boolean is_signed;
+    private boolean is_starred;
     
     //private Timestamp date_message;
     private long date_message = 0;
@@ -431,6 +432,14 @@ public class MessageLocal implements Local, Serializable
     public void setUpdateComplete(boolean updateComplete) {
         this.updateComplete = updateComplete;
     }
+
+	public boolean isStarred() {
+		return is_starred;
+	}
+
+	public void setIsStarred(boolean is_starred) {
+		this.is_starred = is_starred;
+	}
           
 }
 

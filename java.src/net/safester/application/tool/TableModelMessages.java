@@ -113,6 +113,7 @@ public class TableModelMessages extends DefaultTableModel
     messages.getMessage("folder"),
     messages.getMessage(" "),
     messages.getMessage(" "),
+    messages.getMessage(" "),
     messages.getMessage("to_col"),
     
     messages.getMessage("sent"),
@@ -121,6 +122,7 @@ public class TableModelMessages extends DefaultTableModel
     */
     
     Class<?>[] types = new Class [] {
+        java.lang.Object.class,
         java.lang.Object.class,
         java.lang.Object.class,
         java.lang.Object.class,

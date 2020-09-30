@@ -35,6 +35,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -106,6 +107,7 @@ public class MessagesTableCreator {
                         messages.getMessage("folder"),
                         messages.getMessage(" "),
                         messages.getMessage(" "),
+                        "stared", // String not displayed
                         messages.getMessage("to_col"),
                         messages.getMessage("subject"),                        
                         messages.getMessage("sent"),
@@ -117,6 +119,7 @@ public class MessagesTableCreator {
                         messages.getMessage("folder"),
                         messages.getMessage(" "),
                         messages.getMessage(" "),
+                        "stared", // String not displayed
                         messages.getMessage("to_col"),
                         messages.getMessage("subject"),
                         messages.getMessage("saved"),                        
@@ -128,6 +131,7 @@ public class MessagesTableCreator {
                         messages.getMessage("folder"),
                         "read", // String Not displayed
                         "att",  // String Not displayed
+                        "stared", // String not displayed
                         messages.getMessage("from"),
                         messages.getMessage("subject"),                        
                         messages.getMessage("sent"),
@@ -161,6 +165,7 @@ public class MessagesTableCreator {
 
             ImageIcon headersIcon = Parms.createImageIcon("images/files_2/16x16/document_empty.png");
             ImageIcon headersIcon2= Parms.createImageIcon(Parms.PAPERCLIP_ICON);
+            ImageIcon headersIconStar = Parms.createImageIcon(Parms.STARRED_ICON);
             JLabel renderer;
 
             renderer = (JLabel)jTable1.getColumn(colName[2]).getHeaderRenderer();
@@ -195,7 +200,18 @@ public class MessagesTableCreator {
             headersIcon2.setImageObserver(new HeaderImageObserver(jTableHeader, 3));
             jTable1.getColumn(colName[3]).setHeaderRenderer(tr);
             jTable1.getColumn(colName[3]).setHeaderValue(renderer2);
-
+            
+            JLabel renderedHeaderStarred;
+            renderedHeaderStarred = (JLabel)jTable1.getColumn(colName[4]).getHeaderRenderer();
+            if(renderedHeaderStarred == null) {
+            	renderedHeaderStarred = new JLabel();
+            }
+            renderedHeaderStarred.setIcon(headersIconStar);
+            renderedHeaderStarred.setText("");
+            headersIconStar.setImageObserver(new HeaderImageObserver(jTableHeader, 4));
+            jTable1.getColumn(colName[4]).setHeaderRenderer(tr);
+            jTable1.getColumn(colName[4]).setHeaderValue(renderedHeaderStarred);
+            
             jTable1.setTableHeader(jTableHeader);
 
             //jTable1.getTableHeader().setPreferredSize(new Dimension(25,35));
@@ -228,6 +244,10 @@ public class MessagesTableCreator {
             jTable1.getColumnModel().getColumn(3).setMinWidth(25);
             jTable1.getColumnModel().getColumn(3).setMaxWidth(25);
 
+            jTable1.getColumnModel().getColumn(4).setResizable(false);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(25);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(25);
+            
             ListSelectionModel rowSM = jTable1.getSelectionModel();
             rowSM.addListSelectionListener(new ListSelectionListener() {
 
@@ -319,7 +339,12 @@ public class MessagesTableCreator {
             } else {
                 data[i][j++] = "false";
             }
-
+            //TODO : ABE add Starred flag here!
+            if(message.isStarred()) {
+            	data[i][j++] = "true";
+            } else {
+                data[i][j++] = "false";
+            }
             if (!isOutBox  && folderId != Parms.DRAFT_ID) {
 
                 String sender = null;
@@ -393,7 +418,9 @@ public class MessagesTableCreator {
 
         if (parent instanceof Main) {
             Main caller = (Main) parent;
-
+            if(caller.getJTable1().getSelectedColumn() == MessageTableCellRenderer.COL_INDEX_STARRED) {
+            	caller.updateMessageIsStarredInThread();
+            }
             if (e.getClickCount() >= 2) {
                 debug("CLICKED: caller.openSelectedMessage()");
                 caller.openSelectedMessage();

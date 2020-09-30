@@ -189,7 +189,7 @@ public class MessageStoreExtractor implements StoreExtractor<MessageLocalStore>
     private MessageLocalStore selectAndBuildStore() throws SQLException, IOException
     {
         MessageLocalStore messageLocalStore = null;
-	MessageSelectCaller messageSelectCaller = new MessageSelectCaller(userNumber, folderId, limitClause, connection);
+        MessageSelectCaller messageSelectCaller = new MessageSelectCaller(userNumber, folderId, limitClause, connection);
         
         if (folderId == Parms.DRAFT_ID) {
             MessageSelectCallerDraft messageSelectCallerDraft = new MessageSelectCallerDraft(userNumber, passphrase, connection);

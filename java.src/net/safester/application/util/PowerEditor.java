@@ -614,11 +614,12 @@ public class PowerEditor extends JPanel
         {
         }
         
-        debug("rect.height: " + rect.height);
-        debug("index      : " + index);
-        
         if (rect == null)
             return;
+        
+        debug("rect.height: " + rect.height);
+        debug("index      : " + index);
+
 
         theWordMenu.theList.setSelectedIndex(0);
         theWordMenu.display(new Point(rect.x, rect.y + rect.height));

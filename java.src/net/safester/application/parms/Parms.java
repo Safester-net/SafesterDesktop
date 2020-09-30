@@ -70,9 +70,13 @@ public class Parms {
 
     public static String PAPERCLIP_ICON = "images/files_2/16x16/paperclip2.png";
     
+    public static String STARRED_ICON = "images/files/star.png";
+    public static String STARRED_OFF_ICON = "images/files/star_off.png";
+    
     public static final int INBOX_ID = 1;
     public static final int OUTBOX_ID = 2;
     public static final int DRAFT_ID = 3;
+    public static final int STARRED_ID = 0;
 
     public static final int RECIPIENT_TO = 1;
     public static final int RECIPIENT_CC = 2;

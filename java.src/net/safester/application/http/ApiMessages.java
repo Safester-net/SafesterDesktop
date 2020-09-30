@@ -25,6 +25,7 @@ import net.safester.application.http.dto.MessageDTO;
 import net.safester.application.http.dto.MessageHeaderDTO;
 import net.safester.application.http.dto.MessageListDTO;
 import net.safester.application.http.dto.SystemInfoDTO;
+import net.safester.application.parms.Parms;
 import net.safester.clientserver.ServerParms;
 
 /**
@@ -233,28 +234,28 @@ public class ApiMessages {
     public boolean setMessageRead(int messageId, String senderEmailAddress, boolean messageUnread)
 	    throws Exception {
 	
-	String url = getUrlWithFinalSlash();
-	url += "api/setMessageRead";
-
-	Map<String, String> parametersMap = new HashMap<>();
-	parametersMap.put("username", username);
-	parametersMap.put("token", token);
-        parametersMap.put("messageId", messageId + "");
-	parametersMap.put("senderEmailAddress", senderEmailAddress);
-	parametersMap.put("message_unread", messageUnread + "");
-        
-	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
-	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
-
-	if (resultAnalyzer.isStatusOk()) {
-	    return true;
-	} else {
-	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
-	    this.errorMessage = errorFullDTO.getErrorMessage();
-	    this.exceptionName = errorFullDTO.getExceptionName();
-	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
-	    throw new RemoteException(errorMessage, new SQLException(this.exceptionName), exceptionStackTrace);
-	}
+		String url = getUrlWithFinalSlash();
+		url += "api/setMessageRead";
+	
+		Map<String, String> parametersMap = new HashMap<>();
+		parametersMap.put("username", username);
+		parametersMap.put("token", token);
+	        parametersMap.put("messageId", messageId + "");
+		parametersMap.put("senderEmailAddress", senderEmailAddress);
+		parametersMap.put("message_unread", messageUnread + "");
+	        
+		String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+		ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+	
+		if (resultAnalyzer.isStatusOk()) {
+		    return true;
+		} else {
+		    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
+		    this.errorMessage = errorFullDTO.getErrorMessage();
+		    this.exceptionName = errorFullDTO.getExceptionName();
+		    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+		    throw new RemoteException(errorMessage, new SQLException(this.exceptionName), exceptionStackTrace);
+		}
 
     }
     /**
@@ -414,6 +415,77 @@ public class ApiMessages {
 	return systemInfoDTO;
     }
     
+    /**
+     * Says that a message is starred/not starred
+     * @param messageId
+     * @param isStarred
+     * @return
+     * @throws Exception 
+     */
+    public boolean setMessageStarred(final int messageId, final String senderEmailAddress, final boolean isStarred)
+	    throws Exception {
+	
+		String url = getUrlWithFinalSlash();
+		url += "api/setMessageStarred";
+	
+		Map<String, String> parametersMap = new HashMap<>();
+		parametersMap.put("username", username);
+		parametersMap.put("token", token);
+	        parametersMap.put("messageId", messageId + "");
+		parametersMap.put("senderEmailAddress", senderEmailAddress);
+		parametersMap.put("messageIsStarred", isStarred + "");
+	        
+		String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+		ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+	
+		if (resultAnalyzer.isStatusOk()) {
+		    return true;
+		} else {
+		    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
+		    this.errorMessage = errorFullDTO.getErrorMessage();
+		    this.exceptionName = errorFullDTO.getExceptionName();
+		    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+		    throw new RemoteException(errorMessage, new SQLException(this.exceptionName), exceptionStackTrace);
+		}
+
+    }
+    
+    public MessageListDTO listMessagesStarred(int limit, int offset)
+    	    throws Exception {
+    	
+    	//NO! on Desktop there are many folders
+    	//Preconditions.checkArgument(directoryId >= 1 && directoryId <= 3, "Wrong directoryId!");
+    	
+    	String url = getUrlWithFinalSlash();
+    	url += "api/listMessagesStarred";
+
+    	Map<String, String> parametersMap = new HashMap<>();
+    	parametersMap.put("username", username);
+    	parametersMap.put("token", token);
+    	parametersMap.put("directoryId", "-1");
+    	parametersMap.put("limit", limit + "");
+    	parametersMap.put("offset", offset + "");
+
+    	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
+    	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
+    	debug("jsonResult: " + jsonResult);
+    	
+    	MessageListDTO messageListDTO = null;
+
+    	if (resultAnalyzer.isStatusOk()) {
+    	    messageListDTO = GsonWsUtil.fromJson(jsonResult, MessageListDTO.class);
+    	} else {
+    	    ErrorFullDTO errorFullDTO = GsonWsUtil.fromJson(jsonResult, ErrorFullDTO.class);
+    	    this.errorMessage = errorFullDTO.getErrorMessage();
+    	    this.exceptionName = errorFullDTO.getExceptionName();
+    	    this.exceptionStackTrace = errorFullDTO.getExceptionStackTrace();
+    	    throw new RemoteException(errorMessage, new Exception(this.exceptionName), exceptionStackTrace);
+    	}
+
+    	return messageListDTO;
+
+        }
+    
     public static String getUrlWithFinalSlash() {
 	String url = ServerParms.getHOST();
 	if (!url.endsWith("/")) {
@@ -443,6 +515,5 @@ public class ApiMessages {
 	    System.out.println(new java.util.Date() + " " + ApiMessages.class.getName() + " " + s);
 	}
     }
-
 
 }

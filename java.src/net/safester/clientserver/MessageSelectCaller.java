@@ -100,13 +100,19 @@ public class MessageSelectCaller {
         ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
                 awakeFileSession.getAuthenticationToken());
         MessageListDTO messageListDTO = null;
-
-        try {
-            messageListDTO = apiMessages.listMessages(this.folderId, limitClause.getLimit(), limitClause.getOffset());
-        } catch (Exception e) {
-            throw new SQLException(e);
+        if( this.folderId == Parms.STARRED_ID ) {
+        	try {
+        		messageListDTO = apiMessages.listMessagesStarred(limitClause.getLimit(), limitClause.getOffset());
+        	} catch (Exception e) {
+	            throw new SQLException(e);
+	        }
+        } else {
+	        try {
+	            messageListDTO = apiMessages.listMessages(this.folderId, limitClause.getLimit(), limitClause.getOffset());
+	        } catch (Exception e) {
+	            throw new SQLException(e);
+	        }
         }
-
         List<MessageHeaderDTO> messages = messageListDTO.getMessages();
 
         MessageLocalStore messageLocalStore = new MessageLocalStore();
@@ -119,14 +125,16 @@ public class MessageSelectCaller {
             boolean is_encrypted = message.isEncrypted();
             boolean is_signed = message.isSigned();
             Timestamp date_message = new Timestamp(message.getDate());
-
+			
             boolean printable = message.isPrintable();
             boolean fowardable = message.isFowardable();
 
-            int folder_id = this.folderId;
+            //TODO ABE: use only message.getFolderId() when API is updated 
+            int folder_id = this.folderId == Parms.STARRED_ID ? message.getFolderId() : this.folderId;
             boolean is_read = message.isRead();
             int sender_user_number = message.getSenderUserNumber();
-
+            boolean isStarred = message.isStarred();
+            
             String senderEmail = message.getSenderEmailAddr();
             String senderUserName = message.getSenderName();
 
@@ -136,6 +144,7 @@ public class MessageSelectCaller {
             messageLocal.setIsWithAttachment(is_with_attachment);
             messageLocal.setIsEncrypted(is_encrypted);
             messageLocal.setIsSigned(is_signed);
+            messageLocal.setIsStarred(isStarred);
             messageLocal.setDateMessage(date_message);
 
             messageLocal.setSenderUserEmail(senderEmail);

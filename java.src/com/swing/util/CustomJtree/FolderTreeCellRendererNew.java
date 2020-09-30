@@ -54,6 +54,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
     Icon outBoxIcon;
     Icon draftIcon;
     Icon expandedIcon;
+    Icon starredIcon;
 
     public FolderTreeCellRendererNew(final JTree tree) {
         //Init icons
@@ -63,6 +64,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         this.draftIcon = Parms.createImageIcon("images/files_2/16x16/inbox.png");
         this.closedIcon = Parms.createImageIcon("images/files_2/16x16/folder.png");
         this.expandedIcon = Parms.createImageIcon("images/files_2/16x16/folder_open.png");
+        this.starredIcon = Parms.createImageIcon(Parms.STARRED_ICON);
 
       // BEGIN FOR HIGHLIGHT HOVER LINE
         Color selectionColor = UIManager.getDefaults().getColor("Tree.selectionBackground");
@@ -167,7 +169,9 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
             setIcon(homeIcon);
             return this;
         }
-        if (id == Parms.INBOX_ID) {
+        if(id == Parms.STARRED_ID) {
+        	setIcon(starredIcon);
+        } else if (id == Parms.INBOX_ID) {
             //Set inbox icon
             setIcon(inboxIcon);
         } else if (id == Parms.OUTBOX_ID) {

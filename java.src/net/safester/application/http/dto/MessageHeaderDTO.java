@@ -10,224 +10,237 @@ import java.util.List;
  */
 public final class MessageHeaderDTO {
 
-    private final String status = "OK";
-    
-    private long messageId;
-    private String senderEmailAddr;
-    private String senderName;
-    private List<RecipientDTO> recipients;
-    private long date;
-    private long size;
-    private String subject;
-    private boolean hasAttachs;
-    private boolean isRead;
-    
-    // New values as of 07/09/19
-    private int senderUserNumber;
-    private String priority;
-    private boolean printable;
-    private boolean fowardable;
-    private boolean isEncrypted;
-    private boolean isSigned;
-    
-    public MessageHeaderDTO() {
+	private final String status = "OK";
 
-    }
+	private long messageId;
+	private int folderId;
+	private String senderEmailAddr;
+	private String senderName;
+	private List<RecipientDTO> recipients;
+	private long date;
+	private long size;
+	private String subject;
+	private boolean hasAttachs;
+	private boolean isRead;
 
-    /**
-     * @return the messageId
-     */
-    public long getMessageId() {
-	return messageId;
-    }
+	// New values as of 07/09/19
+	private int senderUserNumber;
+	private String priority;
+	private boolean printable;
+	private boolean fowardable;
+	private boolean isEncrypted;
+	private boolean isSigned;
 
-    /**
-     * @param messageId
-     *            the messageId to set
-     */
-    public void setMessageId(long messageId) {
-	this.messageId = messageId;
-    }
+	private boolean isStarred;
 
-    /**
-     * @return the senderEmailAddr
-     */
-    public String getSenderEmailAddr() {
-	return senderEmailAddr;
-    }
+	public MessageHeaderDTO() {
 
-    /**
-     * @param senderEmailAddr
-     *            the senderEmailAddr to set
-     */
-    public void setSenderEmailAddr(String senderEmailAddr) {
-	this.senderEmailAddr = senderEmailAddr;
-    }
+	}
 
-    /**
-     * @return the senderName
-     */
-    public String getSenderName() {
-	return senderName;
-    }
+	/**
+	 * @return the messageId
+	 */
+	public long getMessageId() {
+		return messageId;
+	}
 
-    /**
-     * @param senderName
-     *            the senderName to set
-     */
-    public void setSenderName(String senderName) {
-	this.senderName = senderName;
-    }
+	/**
+	 * @param messageId the messageId to set
+	 */
+	public void setMessageId(long messageId) {
+		this.messageId = messageId;
+	}
 
-    /**
-     * @return the recipients
-     */
-    public List<RecipientDTO> getRecipients() {
-	return recipients;
-    }
+	/**
+	 * @return the senderEmailAddr
+	 */
+	public String getSenderEmailAddr() {
+		return senderEmailAddr;
+	}
 
-    /**
-     * @param recipients
-     *            the recipients to set
-     */
-    public void setRecipients(List<RecipientDTO> recipients) {
-	this.recipients = recipients;
-    }
+	/**
+	 * @param senderEmailAddr the senderEmailAddr to set
+	 */
+	public void setSenderEmailAddr(String senderEmailAddr) {
+		this.senderEmailAddr = senderEmailAddr;
+	}
 
-    /**
-     * @return the date
-     */
-    public long getDate() {
-	return date;
-    }
+	/**
+	 * @return the senderName
+	 */
+	public String getSenderName() {
+		return senderName;
+	}
 
-    /**
-     * @param date
-     *            the date to set
-     */
-    public void setDate(long date) {
-	this.date = date;
-    }
+	/**
+	 * @param senderName the senderName to set
+	 */
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
 
-    /**
-     * @return the size
-     */
-    public long getSize() {
-	return size;
-    }
+	/**
+	 * @return the recipients
+	 */
+	public List<RecipientDTO> getRecipients() {
+		return recipients;
+	}
 
-    /**
-     * @param size
-     *            the size to set
-     */
-    public void setSize(long size) {
-	this.size = size;
-    }
+	/**
+	 * @param recipients the recipients to set
+	 */
+	public void setRecipients(List<RecipientDTO> recipients) {
+		this.recipients = recipients;
+	}
 
-    /**
-     * @return the subject
-     */
-    public String getSubject() {
-	return subject;
-    }
+	/**
+	 * @return the date
+	 */
+	public long getDate() {
+		return date;
+	}
 
-    /**
-     * @param subject
-     *            the subject to set
-     */
-    public void setSubject(String subject) {
-	this.subject = subject;
-    }
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(long date) {
+		this.date = date;
+	}
 
-    /**
-     * @return the hasAttachs
-     */
-    public boolean isHasAttachs() {
-	return hasAttachs;
-    }
+	/**
+	 * @return the size
+	 */
+	public long getSize() {
+		return size;
+	}
 
-    /**
-     * @param hasAttachs
-     *            the hasAttachs to set
-     */
-    public void setHasAttachs(boolean hasAttachs) {
-	this.hasAttachs = hasAttachs;
-    }
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(long size) {
+		this.size = size;
+	}
 
-    /**
-     * @return the isRead
-     */
-    public boolean isRead() {
-	return isRead;
-    }
+	/**
+	 * @return the subject
+	 */
+	public String getSubject() {
+		return subject;
+	}
 
-    /**
-     * @param isRead
-     *            the isRead to set
-     */
-    public void setRead(boolean isRead) {
-	this.isRead = isRead;
-    }
-    
-    
-    public int getSenderUserNumber() {
-        return senderUserNumber;
-    }
+	/**
+	 * @param subject the subject to set
+	 */
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
 
-    public void setSenderUserNumber(int senderUserNumber) {
-        this.senderUserNumber = senderUserNumber;
-    }
+	/**
+	 * @return the hasAttachs
+	 */
+	public boolean isHasAttachs() {
+		return hasAttachs;
+	}
 
-    public String getPriority() {
-        return priority;
-    }
+	/**
+	 * @param hasAttachs the hasAttachs to set
+	 */
+	public void setHasAttachs(boolean hasAttachs) {
+		this.hasAttachs = hasAttachs;
+	}
 
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
+	/**
+	 * @return the isRead
+	 */
+	public boolean isRead() {
+		return isRead;
+	}
 
-    public boolean isPrintable() {
-        return printable;
-    }
+	/**
+	 * @param isRead the isRead to set
+	 */
+	public void setRead(boolean isRead) {
+		this.isRead = isRead;
+	}
 
-    public void setPrintable(boolean printable) {
-        this.printable = printable;
-    }
+	public int getSenderUserNumber() {
+		return senderUserNumber;
+	}
 
-    public boolean isFowardable() {
-        return fowardable;
-    }
+	public void setSenderUserNumber(int senderUserNumber) {
+		this.senderUserNumber = senderUserNumber;
+	}
 
-    public void setFowardable(boolean fowardable) {
-        this.fowardable = fowardable;
-    }
+	public String getPriority() {
+		return priority;
+	}
 
-    public boolean isEncrypted() {
-        return isEncrypted;
-    }
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
 
-    public void setEncrypted(boolean isEncrypted) {
-        this.isEncrypted = isEncrypted;
-    }
+	public boolean isPrintable() {
+		return printable;
+	}
 
-    public boolean isSigned() {
-        return isSigned;
-    }
+	public void setPrintable(boolean printable) {
+		this.printable = printable;
+	}
 
-    public void setSigned(boolean isSigned) {
-        this.isSigned = isSigned;
-    }
+	public boolean isFowardable() {
+		return fowardable;
+	}
 
-    /**
-     * @return the status
-     */
-    public String getStatus() {
-	return status;
-    }
+	public void setFowardable(boolean fowardable) {
+		this.fowardable = fowardable;
+	}
 
-    @Override
-    public String toString() {
-        return "MessageHeaderDTO{" + "status=" + status + ", messageId=" + messageId + ", senderEmailAddr=" + senderEmailAddr + ", senderName=" + senderName + ", recipients=" + recipients + ", date=" + date + ", size=" + size + ", subject=" + subject + ", hasAttachs=" + hasAttachs + ", isRead=" + isRead + ", senderUserNumber=" + senderUserNumber + ", priority=" + priority + ", printable=" + printable + ", fowardable=" + fowardable + ", isEncrypted=" + isEncrypted + ", isSigned=" + isSigned + '}';
-    }    
- 
+	public boolean isEncrypted() {
+		return isEncrypted;
+	}
+
+	public void setEncrypted(boolean isEncrypted) {
+		this.isEncrypted = isEncrypted;
+	}
+
+	public boolean isSigned() {
+		return isSigned;
+	}
+
+	public void setSigned(boolean isSigned) {
+		this.isSigned = isSigned;
+	}
+
+	public boolean isStarred() {
+		return isStarred;
+	}
+
+	public void setStarred(boolean isStarred) {
+		this.isStarred = isStarred;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	public int getFolderId() {
+		return folderId;
+	}
+
+	public void setFolderId(int folderId) {
+		this.folderId = folderId;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageHeaderDTO{" + "status=" + status + ", messageId=" + messageId + ", folderId=" + folderId + ", senderEmailAddr="
+				+ senderEmailAddr + ", senderName=" + senderName + ", recipients=" + recipients + ", date=" + date
+				+ ", size=" + size + ", subject=" + subject + ", hasAttachs=" + hasAttachs + ", isRead=" + isRead
+				+ ", senderUserNumber=" + senderUserNumber + ", priority=" + priority + ", printable=" + printable
+				+ ", fowardable=" + fowardable + ", isEncrypted=" + isEncrypted + ", isSigned=" + isSigned + '}';
+	}
+
 }

@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.FolderListTransfer;
 import net.safester.noobs.clientserver.FolderLocal;
@@ -42,6 +44,8 @@ public class FoldersHandler {
 
     private List<FolderLocal> rootFolders;
     private Map<Integer, FolderLocal> folders;
+
+    private MessagesManager messages = new MessagesManager();
 
     public FoldersHandler(Connection connection, int userId)
     {
@@ -76,8 +80,13 @@ public class FoldersHandler {
             FolderListTransfer folderListTransfer = new FolderListTransfer(connection, userId);
             
             //System.out.println( new Date() + " before folderListTransfer.getList()");
+            final FolderLocal starredFolder = new FolderLocal();
+            starredFolder.setFolderId(Parms.STARRED_ID);
+            starredFolder.setName(messages.getMessage("starred"));
+            starredFolder.setRootFolder(true);
+            foldersList.add(starredFolder);
             
-            foldersList = folderListTransfer.getList();
+            foldersList.addAll(folderListTransfer.getList());
             
             //System.out.println( new Date() + " end    folderListTransfer.getList()");
             
