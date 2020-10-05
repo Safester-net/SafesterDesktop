@@ -145,7 +145,7 @@ public class MessageStoreExtractor implements StoreExtractor<MessageLocalStore>
         MessageLocalStore messageLocalStore = null;
 
         // No cache for Draft folders
-        if (folderId == Parms.DRAFT_ID)
+        if(folderId == Parms.DRAFT_ID || folderId == Parms.STARRED_ID)
         {
             messageLocalStore =  selectAndBuildStore();
             return messageLocalStore;
