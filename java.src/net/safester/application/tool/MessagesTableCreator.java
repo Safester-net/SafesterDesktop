@@ -420,6 +420,7 @@ public class MessagesTableCreator {
             Main caller = (Main) parent;
             if(caller.getJTable1().getSelectedColumn() == MessageTableCellRenderer.COL_INDEX_STARRED) {
             	caller.updateMessageIsStarredInThread();
+                return;
             }
             if (e.getClickCount() >= 2) {
                 debug("CLICKED: caller.openSelectedMessage()");

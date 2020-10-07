@@ -1365,7 +1365,7 @@ public class Main extends javax.swing.JFrame {
         }
         
         // Refresh the table
-        createTable();
+        //createTable();
 
     }
 
@@ -1704,7 +1704,7 @@ public class Main extends javax.swing.JFrame {
             }
 
             debug(new Date() + " Safester... jScrollPane1.setViewportView(jTable) end...");
-            if(selectionRow != -1) {
+            if(selectionRow != -1 && jTable1.getRowCount()-1 > selectionRow) {
             	jTable1.setRowSelectionInterval(selectionRow, selectionRow);
             }
         } catch (Exception e) {
