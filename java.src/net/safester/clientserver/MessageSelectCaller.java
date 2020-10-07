@@ -44,6 +44,7 @@ import net.safester.application.http.dto.MessageHeaderDTO;
 import net.safester.application.http.dto.MessageListDTO;
 import net.safester.application.http.dto.RecipientDTO;
 import net.safester.application.parms.Parms;
+import net.safester.application.tool.MessageTableCellRenderer;
 import net.safester.noobs.clientserver.MessageLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 
@@ -145,6 +146,9 @@ public class MessageSelectCaller {
             messageLocal.setIsEncrypted(is_encrypted);
             messageLocal.setIsSigned(is_signed);
             messageLocal.setIsStarred(isStarred);
+            if(messageLocal.isStarred()) {
+            	MessageTableCellRenderer.starredMessages.add(message_id);
+            }
             messageLocal.setDateMessage(date_message);
 
             messageLocal.setSenderUserEmail(senderEmail);

@@ -1927,6 +1927,13 @@ public class Main extends javax.swing.JFrame {
     	final Boolean starred = Boolean.parseBoolean((String)this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_STARRED));
     	messageLocal.setIsStarred(!starred.booleanValue());
     	
+    	if (messageLocal.isStarred()) {
+            MessageTableCellRenderer.starredMessages.add(messageId);
+       }
+       else {
+    	   MessageTableCellRenderer.starredMessages.remove(messageId);
+       }
+    	
     	Thread t = new Thread() {
             @Override
             public void run() {

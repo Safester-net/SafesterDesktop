@@ -62,6 +62,9 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
 	
 	/** The Set that stores all the read messages */
 	public static Set<Integer> readMessages = new HashSet<Integer>();
+	
+	/** The Set that stores all the starred messages */
+	public static Set<Integer> starredMessages = new HashSet<Integer>();
 
 	private Icon iconAttach = Parms.createImageIcon(Parms.PAPERCLIP_ICON);
 	private Icon iconRead = Parms.createImageIcon("images/files_2/16x16/mail_open2.png");
@@ -107,10 +110,10 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
 			setToolTipText(messagesManager.getMessage("message_id") + " " + table.getValueAt(row, 0) + "");
 		}
 
+		
 		String read = (String) table.getValueAt(row, COL_INDEX_READ);
 		String attachValue = (String) table.getValueAt(row, COL_INDEX_ATTACH);
 		String starred = (String) table.getValueAt(row, COL_INDEX_STARRED);
-
 		if (read == null || attachValue == null || starred == null) {
 			return this;
 		}
@@ -119,7 +122,11 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
 		if (readMessages.contains(messageId)) {
 			read = "true";
 		}
-
+		
+		if(!starredMessages.contains(messageId)) {
+			starred = "false";
+		} 
+		
 		if (column == COL_INDEX_ATTACH && attachValue.equals("true")) {
 			// return new JLabel(iconAttach);
 			// table.setValueAt(label, row, column);
