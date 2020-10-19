@@ -27,10 +27,10 @@ package net.safester.application.version;
 public class Version
 {
     /** Version value to increment */    
-    public static String VERSION    = "v5.7.1";
+    public static String VERSION    = "v5.7.2";
 
     /** Version date to increment */
-    public static String DATE       = "07-Oct-20";
+    public static String DATE       = "19-Oct-20";
 
     public static String NAME       = "Safester" ;
     public static String COPYRIGHT  = "Copyright &copy; 2020 KawanSoft";

@@ -80,6 +80,8 @@ public class Test {
 
     public static void main(String[] args) throws Exception {
 
+
+
 	String email = "test@test.com";
 	String password = "avancée1234&<_%[@?\"%+*#'(-_^%*!:/;.,?%*!=";
 
