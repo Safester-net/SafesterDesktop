@@ -155,6 +155,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jLabelLanguage.setText(messages.getMessage("default_language"));
         this.jLabelSpellCheckDefaultLanguage.setText(messages.getMessage("spell_check_default_language"));
         this.jCheckBoxHideDecrypDialog.setText(messages.getMessage("hide_decrypting_progess_bar"));
+        this.jCheckBoxAskForConfirm.setText(messages.getMessage("ask_for_confirmation_before_sending"));
         this.jCheckBoxHideEncryptionDiscardableWindow.setText(messages.getMessage("hide_encrypted_warning_on_send"));
         this.jLabelNbMessagesPerPage.setText(messages.getMessage("nb_message_per_page"));
         this.jCheckBoxSendNotifyEmail.setText(messages.getMessage("activate_notification"));
@@ -179,7 +180,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jCheckBoxInsertSignature.setText(messages.getMessage("add_a_signature"));
         
         jLabelEmailPref.setText(messages.getMessage("mail_preferences"));
-        jLabelSpellCheck.setText(messages.getMessage("spell_check"));
         
         this.jButtonSignature.setText(messages.getMessage("signature"));
         this.jButtonSignature.setToolTipText(messages.getMessage("add_a_signature_tooltip"));
@@ -391,6 +391,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         boolean playSound = ! UserPrefManager.getBooleanPreference(UserPrefManager.NOTIFY_NO_PLAY_SOUND);
         jCheckBoxPlaySound.setSelected(playSound);
         
+        boolean askForConfirm = UserPrefManager.getBooleanPreference(UserPrefManager.ASK_FOR_CONFIRM);
+        jCheckBoxAskForConfirm.setSelected(askForConfirm);
+        
         boolean hideDecryptingDialog = UserPrefManager.getBooleanPreference(UserPrefManager.HIDE_DECRYPTING_DIALOG);
         jCheckBoxHideDecrypDialog.setSelected(hideDecryptingDialog);
 
@@ -402,7 +405,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         
         UserPrefManager userPreferencesManager = new UserPrefManager();
         Preferences prefs = Preferences.userNodeForPackage(userPreferencesManager.getClass());
-
+        
         String message = messages.getMessage("message_encrypted");
         Sha1 hashcode = new Sha1();
         String hashMessage = null;
@@ -581,14 +584,14 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         UserPrefManager.setPreference(UserPrefManager.NOTIFY_NO_POPUP_ON_TASKBAR, ! popUpOnTaskbar);
         UserPrefManager.setPreference(UserPrefManager.NOTIFY_NO_PLAY_SOUND, !playSound);
         
-        
+        UserPrefManager.setPreference(UserPrefManager.ASK_FOR_CONFIRM, jCheckBoxAskForConfirm.isSelected());
+                
         boolean hideDecryptingDialog = jCheckBoxHideDecrypDialog.isSelected();
         boolean hideEncryptionDiscardableWindow = jCheckBoxHideEncryptionDiscardableWindow.isSelected();
 
         UserPrefManager.setPreference(UserPrefManager.HIDE_DECRYPTING_DIALOG, hideDecryptingDialog);
         UserPrefManager.setPreference(UserPrefManager.INSERT_SIGNATURE, jCheckBoxInsertSignature.isSelected());
-        
-              
+                       
         int languageSpellCheck = LanguageType.ENGLISH;
         if(jComboSpellCheckDefaulltLanguage.getSelectedItem().equals(messages.getMessage("french"))){
             languageSpellCheck = LanguageType.FRENCH;
@@ -726,6 +729,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jLabelDefaultLanguage = new javax.swing.JLabel();
         jComboDefaulltLanguage = new javax.swing.JComboBox();
         jPanelSep3 = new javax.swing.JPanel();
+        jLabelSpellCheckDefaultLanguage = new javax.swing.JLabel();
+        jComboSpellCheckDefaulltLanguage = new javax.swing.JComboBox();
+        jButtonSpellCheckOptions = new javax.swing.JButton();
         jPanelSepBlanc8 = new javax.swing.JPanel();
         jPaneSepNotify = new javax.swing.JPanel();
         jSeparator5 = new javax.swing.JSeparator();
@@ -746,11 +752,14 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jLabelEmailPref = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
         jPanelCheckBox = new javax.swing.JPanel();
+        jPanelAskForConfirm = new javax.swing.JPanel();
+        jCheckBoxAskForConfirm = new javax.swing.JCheckBox();
+        jPanelHideEncryptDiscard = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jCheckBoxHideEncryptionDiscardableWindow = new javax.swing.JCheckBox();
         jPanelHideAndAnon = new javax.swing.JPanel();
         jCheckBoxHideDecrypDialog = new javax.swing.JCheckBox();
         jCheckBoxSendAnonymousNotifications = new javax.swing.JCheckBox();
-        jPanelHideEncryptDiscard = new javax.swing.JPanel();
-        jCheckBoxHideEncryptionDiscardableWindow = new javax.swing.JCheckBox();
         jPanelHidensertSignature = new javax.swing.JPanel();
         jCheckBoxInsertSignature = new javax.swing.JCheckBox();
         jButtonSignature = new javax.swing.JButton();
@@ -761,15 +770,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jLabelFontSizeBody = new javax.swing.JLabel();
         jComboFontSizeBody = new javax.swing.JComboBox();
         jPanelSepBlanc6 = new javax.swing.JPanel();
-        jPaneSepSpellCheck = new javax.swing.JPanel();
-        jSeparator9 = new javax.swing.JSeparator();
-        jLabelSpellCheck = new javax.swing.JLabel();
-        jSeparator10 = new javax.swing.JSeparator();
         jPanelSpellCheck = new javax.swing.JPanel();
-        jLabelSpellCheckDefaultLanguage = new javax.swing.JLabel();
-        jComboSpellCheckDefaulltLanguage = new javax.swing.JComboBox();
         jPanelSep2 = new javax.swing.JPanel();
-        jButtonSpellCheckOptions = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jPanelSepBlank = new javax.swing.JPanel();
         jPanelSepLine = new javax.swing.JPanel();
@@ -942,7 +944,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPaneSepLanguage.add(jSeparator11);
 
         jLabelLanguage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/24x24/keyboard.png"))); // NOI18N
-        jLabelLanguage.setText("Spell Check");
+        jLabelLanguage.setText("Language");
         jLabelLanguage.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
         jPaneSepLanguage.add(jLabelLanguage);
 
@@ -968,6 +970,38 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelSep3.setMinimumSize(new java.awt.Dimension(1, 10));
         jPanelSep3.setPreferredSize(new java.awt.Dimension(1, 10));
         jPanelLanguage.add(jPanelSep3);
+
+        jLabelSpellCheckDefaultLanguage.setText("jLabelSpellCheckDefaultLanguage");
+        jPanelLanguage.add(jLabelSpellCheckDefaultLanguage);
+
+        jComboSpellCheckDefaulltLanguage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboSpellCheckDefaulltLanguageActionPerformed(evt);
+            }
+        });
+        jPanelLanguage.add(jComboSpellCheckDefaulltLanguage);
+
+        jButtonSpellCheckOptions.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonSpellCheckOptions.setText("jButtonSpellCheckOptions");
+        jButtonSpellCheckOptions.setBorder(null);
+        jButtonSpellCheckOptions.setBorderPainted(false);
+        jButtonSpellCheckOptions.setContentAreaFilled(false);
+        jButtonSpellCheckOptions.setFocusPainted(false);
+        jButtonSpellCheckOptions.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        jButtonSpellCheckOptions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonSpellCheckOptionsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonSpellCheckOptionsMouseExited(evt);
+            }
+        });
+        jButtonSpellCheckOptions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSpellCheckOptionsActionPerformed(evt);
+            }
+        });
+        jPanelLanguage.add(jButtonSpellCheckOptions);
 
         jPanelCenter.add(jPanelLanguage);
 
@@ -1076,6 +1110,30 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelCheckBox.setLayout(new javax.swing.BoxLayout(jPanelCheckBox, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanelAskForConfirm.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jCheckBoxAskForConfirm.setText("jCheckBoxAskForConfirm");
+        jCheckBoxAskForConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxAskForConfirmActionPerformed(evt);
+            }
+        });
+        jPanelAskForConfirm.add(jCheckBoxAskForConfirm);
+
+        jPanelCheckBox.add(jPanelAskForConfirm);
+
+        jPanelHideEncryptDiscard.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jPanel5.setMaximumSize(new java.awt.Dimension(20, 10));
+        jPanel5.setMinimumSize(new java.awt.Dimension(20, 10));
+        jPanel5.setPreferredSize(new java.awt.Dimension(20, 10));
+        jPanelHideEncryptDiscard.add(jPanel5);
+
+        jCheckBoxHideEncryptionDiscardableWindow.setText("jCheckBoxHideEncryptionDiscardableWindow");
+        jPanelHideEncryptDiscard.add(jCheckBoxHideEncryptionDiscardableWindow);
+
+        jPanelCheckBox.add(jPanelHideEncryptDiscard);
+
         jPanelHideAndAnon.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jCheckBoxHideDecrypDialog.setText("jCheckBoxHideDecryptDialog");
@@ -1085,13 +1143,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelHideAndAnon.add(jCheckBoxSendAnonymousNotifications);
 
         jPanelCheckBox.add(jPanelHideAndAnon);
-
-        jPanelHideEncryptDiscard.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jCheckBoxHideEncryptionDiscardableWindow.setText("jCheckBoxHideEncryptionDiscardableWindow");
-        jPanelHideEncryptDiscard.add(jCheckBoxHideEncryptionDiscardableWindow);
-
-        jPanelCheckBox.add(jPanelHideEncryptDiscard);
 
         jPanelHidensertSignature.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -1140,62 +1191,12 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelSepBlanc6.setPreferredSize(new java.awt.Dimension(10, 8));
         jPanelCenter.add(jPanelSepBlanc6);
 
-        jPaneSepSpellCheck.setLayout(new javax.swing.BoxLayout(jPaneSepSpellCheck, javax.swing.BoxLayout.LINE_AXIS));
-
-        jSeparator9.setMaximumSize(new java.awt.Dimension(24, 6));
-        jSeparator9.setMinimumSize(new java.awt.Dimension(24, 6));
-        jSeparator9.setPreferredSize(new java.awt.Dimension(24, 6));
-        jPaneSepSpellCheck.add(jSeparator9);
-
-        jLabelSpellCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/24x24/spellcheck2.png"))); // NOI18N
-        jLabelSpellCheck.setText("Spell Check");
-        jLabelSpellCheck.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
-        jPaneSepSpellCheck.add(jLabelSpellCheck);
-
-        jSeparator10.setMaximumSize(new java.awt.Dimension(27000, 6));
-        jSeparator10.setPreferredSize(new java.awt.Dimension(27000, 6));
-        jPaneSepSpellCheck.add(jSeparator10);
-
-        jPanelCenter.add(jPaneSepSpellCheck);
-
         jPanelSpellCheck.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 5));
-
-        jLabelSpellCheckDefaultLanguage.setText("jLabelSpellCheckDefaultLanguage");
-        jPanelSpellCheck.add(jLabelSpellCheckDefaultLanguage);
-
-        jComboSpellCheckDefaulltLanguage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboSpellCheckDefaulltLanguageActionPerformed(evt);
-            }
-        });
-        jPanelSpellCheck.add(jComboSpellCheckDefaulltLanguage);
 
         jPanelSep2.setMaximumSize(new java.awt.Dimension(1, 10));
         jPanelSep2.setMinimumSize(new java.awt.Dimension(1, 10));
         jPanelSep2.setPreferredSize(new java.awt.Dimension(1, 10));
         jPanelSpellCheck.add(jPanelSep2);
-
-        jButtonSpellCheckOptions.setForeground(new java.awt.Color(0, 0, 255));
-        jButtonSpellCheckOptions.setText("jButtonSpellCheckOptions");
-        jButtonSpellCheckOptions.setBorder(null);
-        jButtonSpellCheckOptions.setBorderPainted(false);
-        jButtonSpellCheckOptions.setContentAreaFilled(false);
-        jButtonSpellCheckOptions.setFocusPainted(false);
-        jButtonSpellCheckOptions.setMargin(new java.awt.Insets(2, 10, 2, 10));
-        jButtonSpellCheckOptions.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButtonSpellCheckOptionsMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButtonSpellCheckOptionsMouseExited(evt);
-            }
-        });
-        jButtonSpellCheckOptions.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSpellCheckOptionsActionPerformed(evt);
-            }
-        });
-        jPanelSpellCheck.add(jButtonSpellCheckOptions);
 
         jPanelCenter.add(jPanelSpellCheck);
 
@@ -1357,6 +1358,16 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboDefaulltLanguageActionPerformed
 
+    private void jCheckBoxAskForConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxAskForConfirmActionPerformed
+       if (jCheckBoxAskForConfirm.isSelected()) {
+           jCheckBoxHideEncryptionDiscardableWindow.setSelected(true);
+           //jCheckBoxHideEncryptionDiscardableWindow.setEnabled(false); // Maybe in later version
+       }
+       else {
+           jCheckBoxHideEncryptionDiscardableWindow.setEnabled(true);
+       }
+    }//GEN-LAST:event_jCheckBoxAskForConfirmActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1383,6 +1394,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSelectSound;
     private javax.swing.JButton jButtonSignature;
     private javax.swing.JButton jButtonSpellCheckOptions;
+    private javax.swing.JCheckBox jCheckBoxAskForConfirm;
     private javax.swing.JCheckBox jCheckBoxHideDecrypDialog;
     private javax.swing.JCheckBox jCheckBoxHideEncryptionDiscardableWindow;
     private javax.swing.JCheckBox jCheckBoxInsertSignature;
@@ -1406,7 +1418,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelNbMessagesPerPage;
     private javax.swing.JLabel jLabelNotify;
-    private javax.swing.JLabel jLabelSpellCheck;
     private javax.swing.JLabel jLabelSpellCheckDefaultLanguage;
     private javax.swing.JLabel jLabelStorage;
     private javax.swing.JLabel jLabelTitle;
@@ -1414,14 +1425,15 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPaneSepEmailPref;
     private javax.swing.JPanel jPaneSepLanguage;
     private javax.swing.JPanel jPaneSepNotify;
-    private javax.swing.JPanel jPaneSepSpellCheck;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelAccountTop;
+    private javax.swing.JPanel jPanelAskForConfirm;
     private javax.swing.JPanel jPanelButtonsLeft;
     private javax.swing.JPanel jPanelCenter;
     private javax.swing.JPanel jPanelCheckBox;
@@ -1458,7 +1470,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelTop;
     private javax.swing.JPanel jPanelWest;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
@@ -1468,7 +1479,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTextField jTextFieldAccount;
     private javax.swing.JTextField jTextFieldCoupon;
     private javax.swing.JTextField jTextFieldCryptoSettings;

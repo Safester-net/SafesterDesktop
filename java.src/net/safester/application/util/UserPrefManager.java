@@ -99,6 +99,7 @@ public class UserPrefManager {
     public static String FOLDER_SECTION_IS_INACTIVE = "FOLDER_SECTION_IS_INACTIVE";
 
     public static String ACCOUNTS_LIST= "ACCOUNTS_LIST";
+    public static String ASK_FOR_CONFIRM = "ASK_FOR_CONFIRM";
     
     /**
       * Get a  preference

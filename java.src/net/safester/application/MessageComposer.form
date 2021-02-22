@@ -1196,37 +1196,46 @@
                 <Component class="javax.swing.JToggleButton" name="jToggleButtonNoFoward">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/net/safester/application/images/files_2/32x32/mail_forward_forbidden.png"/>
+                      <Image iconType="3" name="/net/safester/application/images/files_2/32x32/mail_forward.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="jToggleButtonNoFoward"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButtonNoFowardActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="jToggleButtonNoPrint">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/net/safester/application/images/files_2/32x32/printer_forbidden.png"/>
+                      <Image iconType="3" name="/net/safester/application/images/files_2/32x32/printer.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="jToggleButtonNoPrint"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButtonNoPrintActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="jSeparatorSendAnonymous">
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="jToggleButtonSendAnonymousNotification">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/net/safester/application/images/files_2/32x32/id_card_forbidden.png"/>
+                      <Image iconType="3" name="/net/safester/application/images/files_2/32x32/id_card.png"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="jToggleButton1"/>
+                    <Property name="text" type="java.lang.String" value="jToggleButtonSendAnonymousNotification"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButtonSendAnonymousNotificationActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="jSeparatorSendAnonymous1">
                 </Component>

@@ -94,6 +94,7 @@ import com.keyoti.rapidSpell.LanguageType;
 import com.keyoti.rapidSpell.desktop.RapidSpellAsYouType;
 import com.safelogic.utilx.StringMgr;
 import com.swing.util.SwingUtil;
+import javax.swing.Icon;
 
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
@@ -163,7 +164,7 @@ public class MessageComposer extends javax.swing.JFrame {
     /**
      * The debug flag
      */
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     /**
      * The visual debug flag, if we want to see tthe html content
@@ -229,6 +230,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
     private int folderId = -1;
     private int messageId = -1;
+    private static boolean TEST_CLASSIC_HTML = false;
     
     /**
      * Creates new form MailComposer
@@ -286,7 +288,7 @@ public class MessageComposer extends javax.swing.JFrame {
             jToggleButtonNoFoward.setSelected(! message.isFowardable());
             jToggleButtonNoPrint.setSelected(! message.isPrintable());
             jToggleButtonSendAnonymousNotification.setSelected(message.isAnonymousNotification());
-            
+            jToggleButtonSendAnonymousNotificationActionPerformed(null); // Force action
             //If we just opened a Draft no need to indicate that message had been changed
             isChanged = false;
             String title = thisOne.getTitle();
@@ -520,7 +522,9 @@ public class MessageComposer extends javax.swing.JFrame {
                 if (UserPrefManager.getBooleanPreference(UserPrefManager.INSERT_SIGNATURE)) {
                     signature = userSettingsLocal.getSignature();
                 }
+               
                 jToggleButtonSendAnonymousNotification.setSelected(userSettingsLocal.getSend_anonymous_notification_on());
+                jToggleButtonSendAnonymousNotificationActionPerformed(null); // Force action
             }
 
             htmlEditor =  new HTMLEditorPane();
@@ -1092,6 +1096,8 @@ public class MessageComposer extends javax.swing.JFrame {
 
             EmailUser emailUser = new EmailUser(message.getSenderUserName(), message.getSenderUserEmail());
             String sender = emailUser.getNameAndEmailAddress();
+            
+            sender = HtmlConverter.fromHtml(sender);
 
             jTextAreaRecipientsTo.setText(sender);
             if (!message.getSubject().startsWith("Re: ")) {
@@ -1177,7 +1183,11 @@ public class MessageComposer extends javax.swing.JFrame {
             if (recipient.getTypeRecipient() == typeRecipient) {
                 try {
                     EmailUser emailUser = new EmailUser(recipient.getNameRecipient(), recipient.getEmail());
-                    recipientsAdresses += emailUser.getNameAndEmailAddress() + "; ";
+                    
+                    //recipientsAdresses += emailUser.getNameAndEmailAddress() + "; ";
+                    String sender = emailUser.getNameAndEmailAddress();
+                    sender = HtmlConverter.fromHtml(sender);
+                    recipientsAdresses += sender  + "; ";
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1212,7 +1222,8 @@ public class MessageComposer extends javax.swing.JFrame {
 
             EmailUser emailUser = new EmailUser(message.getSenderUserName(), message.getSenderUserEmail());
             String sender = emailUser.getNameAndEmailAddress();
-
+            sender = HtmlConverter.fromHtml(sender);
+            
             if (!to.contains(sender) && !cc.contains(sender)) {
                 to = sender + "; " + to;
             }
@@ -1550,6 +1561,14 @@ public class MessageComposer extends javax.swing.JFrame {
             if (!checkForDateCoherence()) {
                 return;
             }
+            
+            boolean askForConfirm = UserPrefManager.getBooleanPreference(UserPrefManager.ASK_FOR_CONFIRM);
+            if (askForConfirm) {
+                boolean sendConfirmed = doSendAfterAskForConfirm();
+                if (!sendConfirmed) {
+                    return;
+                }
+            }
 
             //Does user authorized to send a message because of total folders size
             long actualStorage = MessageTransfer.getTotalMailboxSize(connection, userNumber);
@@ -1723,11 +1742,24 @@ public class MessageComposer extends javax.swing.JFrame {
         String rawText = htmlEditor.getText();
         String text = TextCleanUtil.cleanSpecialChars(rawText);
         
- 
-        debug("rawText:");
-        debug(rawText);
-        debug("text:");
+        //debug("rawText:");
+        //debug(rawText);
+        //bug("text:");
+        //bug(text);
+        
+        // Test that any HTML encoding pass
+        // Ceci est une cha&#238;ne accentu&#233;e.
+        // Ceci est une cha&icirc;ne accentu&eacute;e
+        if (TEST_CLASSIC_HTML) {
+            text = text.replace("&#238;", "&icirc;");
+            text = text.replace("&#233;", "&eacute;");
+            debug("text classic HTML");
+        } else {
+            debug("text HTML");
+        }
+
         debug(text);
+        
         
         // 23/10/19 HACK NDP: for drafts, do not repeat operation
         if (folderId != Parms.DRAFT_ID) {
@@ -2161,6 +2193,23 @@ public class MessageComposer extends javax.swing.JFrame {
         }
     }
 
+    private boolean doSendAfterAskForConfirm() {
+        Object[] options = {this.messages.getMessage("yes"),
+            this.messages.getMessage("no")};
+
+        int result = JOptionPane.showOptionDialog(rootPane,
+                this.messages.getMessage("are_you_sure_you_want_to_send"), 
+                this.messages.getMessage("warning"), 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.WARNING_MESSAGE,
+                null, 
+                options, 
+                options[0]
+        );
+				
+        return (result == JOptionPane.YES_OPTION);
+    }
+    
     /**
      * debug tool
      */
@@ -2777,26 +2826,41 @@ public class MessageComposer extends javax.swing.JFrame {
         jToolBar1.add(jToggleButtonBcc2);
         jToolBar1.add(jSeparator7);
 
-        jToggleButtonNoFoward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/mail_forward_forbidden.png"))); // NOI18N
+        jToggleButtonNoFoward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/mail_forward.png"))); // NOI18N
         jToggleButtonNoFoward.setText("jToggleButtonNoFoward");
         jToggleButtonNoFoward.setFocusable(false);
         jToggleButtonNoFoward.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButtonNoFoward.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButtonNoFoward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonNoFowardActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jToggleButtonNoFoward);
 
-        jToggleButtonNoPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/printer_forbidden.png"))); // NOI18N
+        jToggleButtonNoPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/printer.png"))); // NOI18N
         jToggleButtonNoPrint.setText("jToggleButtonNoPrint");
         jToggleButtonNoPrint.setFocusable(false);
         jToggleButtonNoPrint.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButtonNoPrint.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButtonNoPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonNoPrintActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jToggleButtonNoPrint);
         jToolBar1.add(jSeparatorSendAnonymous);
 
-        jToggleButtonSendAnonymousNotification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/id_card_forbidden.png"))); // NOI18N
-        jToggleButtonSendAnonymousNotification.setText("jToggleButton1");
+        jToggleButtonSendAnonymousNotification.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/id_card.png"))); // NOI18N
+        jToggleButtonSendAnonymousNotification.setText("jToggleButtonSendAnonymousNotification");
         jToggleButtonSendAnonymousNotification.setFocusable(false);
         jToggleButtonSendAnonymousNotification.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButtonSendAnonymousNotification.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButtonSendAnonymousNotification.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonSendAnonymousNotificationActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jToggleButtonSendAnonymousNotification);
         jToolBar1.add(jSeparatorSendAnonymous1);
 
@@ -2849,7 +2913,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
-        jMenuItemSend.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSend.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_out.png"))); // NOI18N
         jMenuItemSend.setText("jMenuItemSend");
         jMenuItemSend.addActionListener(new java.awt.event.ActionListener() {
@@ -2859,7 +2923,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemSend);
 
-        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/floppy_disk.png"))); // NOI18N
         jMenuItemSave.setText("jMenuItemSave");
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
@@ -2869,7 +2933,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemSave);
 
-        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/printer.png"))); // NOI18N
         jMenuItemPrint.setText("jMenuItemPrint");
         jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -2879,7 +2943,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemPrint);
 
-        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/close.png"))); // NOI18N
         jMenuItemClose.setText("jMenuItemClose");
         jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
@@ -2893,7 +2957,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         jMenuEdit.setText("Edit");
 
-        cancelMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        cancelMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         cancelMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/undo.png"))); // NOI18N
         cancelMenuItem.setText("Cancel");
         cancelMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -2904,7 +2968,7 @@ public class MessageComposer extends javax.swing.JFrame {
         jMenuEdit.add(cancelMenuItem);
         jMenuEdit.add(jSeparator4);
 
-        cutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        cutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         cutMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/cut.png"))); // NOI18N
         cutMenuItem.setText("Cut");
         cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -2914,7 +2978,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuEdit.add(cutMenuItem);
 
-        copyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        copyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         copyMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/copy.png"))); // NOI18N
         copyMenuItem.setText("Copy");
         copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -2924,7 +2988,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuEdit.add(copyMenuItem);
 
-        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         pasteMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/clipboard_paste_no_format.png"))); // NOI18N
         pasteMenuItem.setText("Paste");
         pasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -2935,7 +2999,7 @@ public class MessageComposer extends javax.swing.JFrame {
         jMenuEdit.add(pasteMenuItem);
         jMenuEdit.add(jSeparator6);
 
-        selectAlljMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        selectAlljMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         selectAlljMenuItem.setText("Select All");
         selectAlljMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2948,7 +3012,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         jMenuTools.setText("Tools");
 
-        jMenuItemFind.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemFind.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemFind.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/binocular.png"))); // NOI18N
         jMenuItemFind.setText("Find");
         jMenuItemFind.addActionListener(new java.awt.event.ActionListener() {
@@ -2958,7 +3022,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuTools.add(jMenuItemFind);
 
-        jMenuItemReplace.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemReplace.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemReplace.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/find_replace.png"))); // NOI18N
         jMenuItemReplace.setText("Replace");
         jMenuItemReplace.addActionListener(new java.awt.event.ActionListener() {
@@ -2972,7 +3036,7 @@ public class MessageComposer extends javax.swing.JFrame {
 
         jMenuSpellCheck.setText("Spell Check");
 
-        jRadioButtonMenuItemEnglish.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jRadioButtonMenuItemEnglish.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         buttonGroupLanguage.add(jRadioButtonMenuItemEnglish);
         jRadioButtonMenuItemEnglish.setSelected(true);
         jRadioButtonMenuItemEnglish.setText("English");
@@ -2989,7 +3053,7 @@ public class MessageComposer extends javax.swing.JFrame {
         });
         jMenuSpellCheck.add(jRadioButtonMenuItemEnglish);
 
-        jRadioButtonMenuItemFrench.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jRadioButtonMenuItemFrench.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         buttonGroupLanguage.add(jRadioButtonMenuItemFrench);
         jRadioButtonMenuItemFrench.setText("French");
         jRadioButtonMenuItemFrench.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/flags/fr.png"))); // NOI18N
@@ -3022,7 +3086,7 @@ public class MessageComposer extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, htmlEditor.getText());
             return;
         }
-
+        
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         enableSendAction(false);
@@ -3253,6 +3317,43 @@ public class MessageComposer extends javax.swing.JFrame {
             jPanelSepRecipientsBcc.setVisible(false);
         }
     }//GEN-LAST:event_jToggleButtonBcc2ActionPerformed
+
+    private void jToggleButtonNoPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonNoPrintActionPerformed
+        
+        Icon icon = Parms.createImageIcon("images/files_2/32x32/printer.png");
+        Icon forbiddenIcon = Parms.createImageIcon("images/files_2/32x32/printer_forbidden.png");
+                                
+        if (jToggleButtonNoPrint.isSelected()) {
+            jToggleButtonNoPrint.setIcon(forbiddenIcon);
+        }
+        else {
+            jToggleButtonNoPrint.setIcon(icon); 
+        }
+    }//GEN-LAST:event_jToggleButtonNoPrintActionPerformed
+
+    private void jToggleButtonNoFowardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonNoFowardActionPerformed
+        Icon icon = Parms.createImageIcon("images/files_2/32x32/mail_forward.png");
+        Icon forbiddenIcon = Parms.createImageIcon("images/files_2/32x32/mail_forward_forbidden.png");
+                                
+        if (jToggleButtonNoFoward.isSelected()) {
+            jToggleButtonNoFoward .setIcon(forbiddenIcon);
+        }
+        else {
+            jToggleButtonNoFoward.setIcon(icon); 
+        }
+    }//GEN-LAST:event_jToggleButtonNoFowardActionPerformed
+
+    private void jToggleButtonSendAnonymousNotificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonSendAnonymousNotificationActionPerformed
+        Icon icon = Parms.createImageIcon("images/files_2/32x32/id_card.png");
+        Icon forbiddenIcon = Parms.createImageIcon("images/files_2/32x32/id_card_forbidden.png");
+                                
+        if (jToggleButtonSendAnonymousNotification.isSelected()) {
+            jToggleButtonSendAnonymousNotification .setIcon(forbiddenIcon);
+        }
+        else {
+            jToggleButtonSendAnonymousNotification.setIcon(icon); 
+        }
+    }//GEN-LAST:event_jToggleButtonSendAnonymousNotificationActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -3382,9 +3483,5 @@ public class MessageComposer extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem selectAlljMenuItem;
     // End of variables declaration//GEN-END:variables
-
-
-
-
 
 }
