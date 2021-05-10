@@ -48,6 +48,7 @@ import javax.swing.border.LineBorder;
 import org.apache.commons.lang3.SystemUtils;
 
 import com.safelogic.utilx.io.stream.LineInputStream;
+import javax.swing.JRootPane;
 
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
@@ -172,6 +173,11 @@ public class SwingUtil
      * @param container
      */
     public static void resizeJComponentsForNimbusAndMacOsX(Container container){
+        
+        if (SystemUtils.IS_OS_WINDOWS) {
+            resizeJComponentsFlatlaf(container);
+            return;
+        }
         
          // To be done for all Nimbus + Mac OS X
          if (! UI_Util.isNimbus() && ! SystemUtils.IS_OS_MAC_OSX)
@@ -350,6 +356,34 @@ public class SwingUtil
         }
 
         return content;
+    }
+
+    public static void resizeJComponentsFlatlaf(Container container) {
+        List<Component> components = SwingUtil.getAllComponants(container);
+        for (Component component : components) {
+            int maxWidth = (int)component.getMaximumSize().getWidth();
+            int minWidth = (int)component.getMinimumSize().getWidth();
+            int prefWidth = (int)component.getPreferredSize().getWidth();
+
+            int newHeight = 26;
+            
+            if(component instanceof JTextField || component instanceof JPasswordField){
+                component.setMaximumSize(new Dimension(maxWidth, newHeight));
+                component.setMinimumSize(new Dimension(minWidth, newHeight));
+                component.setPreferredSize(new Dimension(prefWidth, newHeight));
+            }else if(component instanceof JLabel){
+                
+                int maxHeigth = (int)component.getMaximumSize().getHeight();
+                int minHeigth = (int)component.getMinimumSize().getHeight();
+                int prefHeigth = (int)component.getPreferredSize().getHeight();
+                //int heigth = (int)component.getSize().getHeight();
+
+                component.setMaximumSize(new Dimension(maxWidth, maxHeigth + 2));
+                component.setMinimumSize(new Dimension(minWidth, minHeigth + 2));
+                component.setPreferredSize(new Dimension(prefWidth, prefHeigth + 2));
+                //component.setSize(new Dimension(prefWidth, heigth + 2));
+            }
+        }
     }
 
 }

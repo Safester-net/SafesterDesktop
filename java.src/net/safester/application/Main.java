@@ -2964,10 +2964,8 @@ public class Main extends javax.swing.JFrame {
         jPanelMessageMain.setBackground(new java.awt.Color(255, 255, 255));
         jPanelMessageMain.setLayout(new javax.swing.BoxLayout(jPanelMessageMain, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelMessageContainer.setBackground(new java.awt.Color(255, 255, 255));
         jPanelMessageContainer.setLayout(new java.awt.BorderLayout());
 
-        jPanelMessage.setBackground(new java.awt.Color(255, 255, 255));
         jPanelMessage.setLayout(new java.awt.BorderLayout());
 
         jPanelNorth.setOpaque(false);
@@ -3276,7 +3274,6 @@ public class Main extends javax.swing.JFrame {
 
         jPanelMessage.add(jPanelNorth, java.awt.BorderLayout.NORTH);
 
-        jPanelScrollPane.setBackground(new java.awt.Color(255, 255, 255));
         jPanelScrollPane.setMinimumSize(new java.awt.Dimension(31, 0));
         jPanelScrollPane.setLayout(new javax.swing.BoxLayout(jPanelScrollPane, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -3546,7 +3543,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
-        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_write.png"))); // NOI18N
         jMenuItemNew.setText("jMenuItemNew");
         jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
@@ -3556,7 +3553,7 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemNew);
 
-        jMenuItemNewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemNewFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/folder_open_plus.png"))); // NOI18N
         jMenuItemNewFolder.setText("jMenuItemNewFolder");
         jMenuItemNewFolder.addActionListener(new java.awt.event.ActionListener() {
@@ -3567,7 +3564,7 @@ public class Main extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemNewFolder);
         jMenuFile.add(jSeparator11);
 
-        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/printer.png"))); // NOI18N
         jMenuItemPrint.setText("jMenuItemPrint");
         jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -3628,7 +3625,7 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemGetNewMessage);
         jMenuMessage.add(jSeparator8);
 
-        jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemReply.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_reply.png"))); // NOI18N
         jMenuItemReply.setText("jMenuItemReply");
         jMenuItemReply.addActionListener(new java.awt.event.ActionListener() {
@@ -3647,7 +3644,7 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuMessage.add(jMenuItemReplyAll);
 
-        jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemFoward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_forward.png"))); // NOI18N
         jMenuItemFoward.setText("jMenuItemFoward");
         jMenuItemFoward.addActionListener(new java.awt.event.ActionListener() {
@@ -3695,7 +3692,7 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemDelete);
         jMenuMessage.add(jSeparator15);
 
-        jMenuItemSearch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSearch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/binocular.png"))); // NOI18N
         jMenuItemSearch.setText("jMenuItemSearch");
         jMenuItemSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -3839,7 +3836,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuContacts.setText("jMenuContacts");
 
-        jMenuItemImportAddrBook.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemImportAddrBook.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemImportAddrBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/book_telephone.png"))); // NOI18N
         jMenuItemImportAddrBook.setText("jMenuItemImportAddrBook");
         jMenuItemImportAddrBook.addActionListener(new java.awt.event.ActionListener() {

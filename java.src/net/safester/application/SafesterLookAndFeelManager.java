@@ -23,6 +23,8 @@
  */
 package net.safester.application;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.File;
@@ -68,7 +70,9 @@ public class SafesterLookAndFeelManager {
         if (SystemUtils.IS_OS_MAC) {
             setSystemLookAndfeel();
         } else if (SystemUtils.IS_OS_WINDOWS) {
-            setJTatoolLookAndFeel();
+            //setJTatoolLookAndFeel();
+            FlatIntelliJLaf.install();
+            //FlatDarculaLaf.install();
         } else if (SystemUtils.IS_OS_LINUX) {
             setNimbusLookAndFeel();
         } else {
@@ -90,41 +94,7 @@ public class SafesterLookAndFeelManager {
         
         UIManager.setLookAndFeel(
                 "com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-        
-        
-        //UIManager.setLookAndFeel(
-        //        "com.jtattoo.plaf.noire.NoireLookAndFeel");
-        
-        boolean isDarkMode = false;
-        if (isDarkMode) {
-            setDarkTheme();
-        }
-
-    }
-
-    private static void setDarkTheme() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-         UIManager.put( "control", new Color( 128, 128, 128) );
-         UIManager.put( "info", new Color(128,128,128) );
-         UIManager.put( "nimbusBase", new Color( 18, 30, 49) );
-         UIManager.put( "nimbusAlertYellow", new Color( 248, 187, 0) );
-         UIManager.put( "nimbusDisabledText", new Color( 128, 128, 128) );
-         UIManager.put( "nimbusFocus", new Color(115,164,209) );
-         UIManager.put( "nimbusGreen", new Color(176,179,50) );
-         UIManager.put( "nimbusInfoBlue", new Color( 66, 139, 221) );
-         UIManager.put( "nimbusLightBackground", new Color( 18, 30, 49) );
-         UIManager.put( "nimbusOrange", new Color(191,98,4) );
-         UIManager.put( "nimbusRed", new Color(169,46,34) );
-         UIManager.put( "nimbusSelectedText", new Color( 255, 255, 255) );
-         UIManager.put( "nimbusSelectionBackground", new Color( 104, 93, 156) );
-         UIManager.put( "text", new Color( 230, 230, 230) );
-
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-        }
-
+       
     }
         
     public static void setNimbusLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {

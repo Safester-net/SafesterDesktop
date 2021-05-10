@@ -101,7 +101,7 @@ public class Safester {
             // }
             // });
             SafesterLookAndFeelManager.setLookAndFeel();
-
+            
             if (SystemUtils.IS_OS_WINDOWS && ProcessUtil.countWindowsInstanceRunning("Safester.exe") > 1) {
                 MessagesManager messagesManager = new MessagesManager();
                 String message = messagesManager.getMessage("safester_already_running_use_task_bar");
