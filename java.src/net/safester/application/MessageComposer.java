@@ -650,6 +650,11 @@ public class MessageComposer extends javax.swing.JFrame {
         jTextAreaRecipientsCc.setFont(jTextFieldSubject.getFont());
         jTextAreaRecipientsBcc.setFont(jTextFieldSubject.getFont());
 
+        resizePanelHeigthForWindows(jPanelRecipientsTo, 40);
+        resizePanelHeigthForWindows(jPanelRecipientsCc, 40);
+        resizePanelHeigthForWindows(jPanelRecipientsBcc, 40);
+        resizePanelHeigthForWindows(jPanelFiles, 56);
+        
         // Mac settings
         resizePanelHeigthForMac(jPanelRecipientsTo, 50);
         resizePanelHeigthForMac(jPanelRecipientsCc, 50);
@@ -754,6 +759,18 @@ public class MessageComposer extends javax.swing.JFrame {
 
     }
 
+    private void resizePanelHeigthForWindows(JComponent component, int preferedHeight) {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            int maxWidth = (int) component.getMaximumSize().getWidth();
+            int minWidth = (int) component.getMinimumSize().getWidth();
+            int prefWidth = (int) component.getPreferredSize().getWidth();
+
+            component.setMaximumSize(new Dimension(maxWidth, preferedHeight));
+            component.setMinimumSize(new Dimension(minWidth, preferedHeight));
+            component.setPreferredSize(new Dimension(prefWidth, preferedHeight));
+        }
+    }
+        
     private void resizePanelHeigthForMac(JComponent component, int preferedHeight) {
         if (SystemUtils.IS_OS_MAC_OSX) {
             int maxWidth = (int) component.getMaximumSize().getWidth();

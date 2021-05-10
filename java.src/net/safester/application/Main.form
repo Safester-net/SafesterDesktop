@@ -927,7 +927,7 @@
                     <Property name="dividerLocation" type="int" value="120"/>
                     <Property name="orientation" type="int" value="0"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                      <Color id="Curseur par d&#xe9;faut"/>
+                      <Color id="Default Cursor"/>
                     </Property>
                     <Property name="lastDividerLocation" type="int" value="120"/>
                   </Properties>
@@ -995,10 +995,20 @@
                       </Layout>
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="jPanelMessageContainer">
+                          <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                          </Properties>
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                           <SubComponents>
                             <Container class="javax.swing.JPanel" name="jPanelMessage">
+                              <Properties>
+                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                </Property>
+                              </Properties>
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                                   <BorderConstraints direction="Center"/>
@@ -1677,6 +1687,9 @@
                                 </Container>
                                 <Container class="javax.swing.JPanel" name="jPanelScrollPane">
                                   <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                       <Dimension value="[31, 0]"/>
                                     </Property>
