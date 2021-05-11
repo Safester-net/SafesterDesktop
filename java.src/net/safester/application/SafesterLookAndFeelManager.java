@@ -23,7 +23,7 @@
  */
 package net.safester.application;
 
-import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +32,7 @@ import javax.swing.JComponent;
 import javax.swing.Painter;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import net.safester.application.parms.Parms;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -45,35 +46,31 @@ import net.safester.application.tool.UI_Util;
  */
 public class SafesterLookAndFeelManager {
 
-
-    public SafesterLookAndFeelManager() {
-
-    }
-
     public static void setLookAndFeel()
             throws IOException, ClassNotFoundException, InstantiationException,
             IllegalAccessException, UnsupportedLookAndFeelException {
 
         // Allows to define a specific look & feel for testss
-        File fileLookAndFeel = new File(SystemUtils.USER_DIR + File.separator + "safester_look_and_feel.txt");
+        File fileLookAndFeel = new File(getLafPath() + File.separator + "safester_look_and_feel.txt");
 
         if (fileLookAndFeel.exists()) {
             String className = FileUtils.readFileToString(fileLookAndFeel);
             className = className.trim();
+                       
             UIManager.setLookAndFeel(className);
             cleanNimbusBackground();
             return;
         }
 
         // Same for all!
-        FlatIntelliJLaf.install();
-                    
+        //com.formdev.flatlaf.FlatLightLaf
+        FlatLightLaf.install();
+        
         /*
         if (SystemUtils.IS_OS_MAC) {
             setSystemLookAndfeel();
         } else if (SystemUtils.IS_OS_WINDOWS) {
             //setJTatoolLookAndFeel();
-            //FlatArcOrangeIJTheme.install();
             //FlatDarculaLaf.install();
         } else if (SystemUtils.IS_OS_LINUX) {
             setNimbusLookAndFeel();
@@ -82,9 +79,26 @@ public class SafesterLookAndFeelManager {
         }
         */
         
-        cleanNimbusBackground();
+        //cleanNimbusBackground();
     }
 
+    /**
+     * Returns the path to dir where english and french dictionnaires are to be
+     * stored
+     *
+     * @return
+     */
+    public static String getLafPath() {
+
+        String filepath = SystemUtils.getUserHome() + File.separator + ".kawansoft" + File.separator + Parms.PRODUCT_NAME + File.separator + "laf";
+        File dictFiles = new File(filepath);
+        if (!dictFiles.exists()) {
+            dictFiles.mkdirs();
+        }
+
+        return filepath;
+    }
+    
     public static void setSystemLookAndfeel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         UIManager.setLookAndFeel(
                 UIManager.getSystemLookAndFeelClassName());

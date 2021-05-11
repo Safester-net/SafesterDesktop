@@ -179,8 +179,6 @@ public class Register extends javax.swing.JFrame {
     private void initCompany() {
 
         //clipboardManager = new ClipboardManager(rootPane);
-
-        
         messages = new MessagesManager();
 
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
@@ -212,6 +210,11 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
+        // Add + 2 to JEditorPane fonts
+        Font fontNewJEditorPane = new Font(jEditorPane.getFont().getName(), jEditorPane.getFont().getStyle(), jEditorPane.getFont().getSize() + 2);
+        
+        jEditorPaneEmail.setFont(fontNewJEditorPane);
+        
         jEditorPaneEmail.setBackground(Color.WHITE);
         jEditorPane.setBackground(Color.WHITE);
 
@@ -241,9 +244,10 @@ public class Register extends javax.swing.JFrame {
         jButtonCancel.setText(messages.getMessage("cancel"));
 
         jButtonCreate.setText(messages.getMessage("create"));
-        Font f = jButtonCreate.getFont();
-        Font fontNew = new Font(f.getName(), f.getStyle(), f.getSize());
+        //Font f = jButtonCreate.getFont();
+        //Font fontNew = new Font(f.getName(), f.getStyle(), f.getSize());
 
+        jEditorPane.setFont(fontNewJEditorPane);
         jEditorPane.setContentType("text/html");
         jEditorPane.setEditable(false);
         jEditorPane.setText(Help.getHtmlHelpContent("register_passphrase"));
