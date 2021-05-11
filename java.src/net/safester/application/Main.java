@@ -515,8 +515,6 @@ public class Main extends javax.swing.JFrame {
         jTable1.getParent().setBackground(colorToSet);
         jTable1.getParent().remove(jTable1);
 
-        setHostLabelAndIcon();
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -967,20 +965,6 @@ public class Main extends javax.swing.JFrame {
             component.setMaximumSize(new Dimension(maxWidth, preferedHeight));
             component.setMinimumSize(new Dimension(minWidth, preferedHeight));
             component.setPreferredSize(new Dimension(prefWidth, preferedHeight));
-        }
-    }
-
-    private void setHostLabelAndIcon() {
-        if (connection instanceof AwakeConnection) {
-            AwakeConnection awakeConnection = (AwakeConnection) connection;
-            AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-            String url = awakeFileSession.getUrl();
-            url = StringUtils.substringBeforeLast(url, "/");
-            jLabelHost.setText(" " + url + " "); // one blank for clean display on green background
-
-            Color greenSecurity = new Color(164, 220, 144);
-            jLabelHost.setBackground(greenSecurity);
-
         }
     }
 
@@ -2636,8 +2620,6 @@ public class Main extends javax.swing.JFrame {
         jPanelSep = new javax.swing.JPanel();
         jPaneStatusBar = new javax.swing.JPanel();
         jPanelSslCert = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabelHost = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButtonHostLock = new javax.swing.JButton();
         jPanelSepVertical2 = new javax.swing.JPanel();
@@ -3340,14 +3322,6 @@ public class Main extends javax.swing.JFrame {
 
         jPanelSslCert.setLayout(new javax.swing.BoxLayout(jPanelSslCert, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(10, 10));
-        jPanelSslCert.add(jPanel1);
-
-        jLabelHost.setBackground(new java.awt.Color(164, 220, 144));
-        jLabelHost.setText("jLabelHost");
-        jLabelHost.setOpaque(true);
-        jPanelSslCert.add(jLabelHost);
-
         jPanel2.setMaximumSize(new java.awt.Dimension(5, 10));
         jPanel2.setMinimumSize(new java.awt.Dimension(5, 10));
         jPanel2.setPreferredSize(new java.awt.Dimension(5, 10));
@@ -3546,7 +3520,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
-        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_write.png"))); // NOI18N
         jMenuItemNew.setText("jMenuItemNew");
         jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
@@ -3556,7 +3530,7 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemNew);
 
-        jMenuItemNewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemNewFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/folder_open_plus.png"))); // NOI18N
         jMenuItemNewFolder.setText("jMenuItemNewFolder");
         jMenuItemNewFolder.addActionListener(new java.awt.event.ActionListener() {
@@ -3567,7 +3541,7 @@ public class Main extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemNewFolder);
         jMenuFile.add(jSeparator11);
 
-        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/printer.png"))); // NOI18N
         jMenuItemPrint.setText("jMenuItemPrint");
         jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -3628,7 +3602,7 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemGetNewMessage);
         jMenuMessage.add(jSeparator8);
 
-        jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemReply.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_reply.png"))); // NOI18N
         jMenuItemReply.setText("jMenuItemReply");
         jMenuItemReply.addActionListener(new java.awt.event.ActionListener() {
@@ -3647,7 +3621,7 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuMessage.add(jMenuItemReplyAll);
 
-        jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemFoward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_forward.png"))); // NOI18N
         jMenuItemFoward.setText("jMenuItemFoward");
         jMenuItemFoward.addActionListener(new java.awt.event.ActionListener() {
@@ -3695,7 +3669,7 @@ public class Main extends javax.swing.JFrame {
         jMenuMessage.add(jMenuItemDelete);
         jMenuMessage.add(jSeparator15);
 
-        jMenuItemSearch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSearch.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/binocular.png"))); // NOI18N
         jMenuItemSearch.setText("jMenuItemSearch");
         jMenuItemSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -3839,7 +3813,7 @@ public class Main extends javax.swing.JFrame {
 
         jMenuContacts.setText("jMenuContacts");
 
-        jMenuItemImportAddrBook.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemImportAddrBook.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemImportAddrBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/book_telephone.png"))); // NOI18N
         jMenuItemImportAddrBook.setText("jMenuItemImportAddrBook");
         jMenuItemImportAddrBook.addActionListener(new java.awt.event.ActionListener() {
@@ -4574,7 +4548,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCc;
     private javax.swing.JLabel jLabelDate;
     private javax.swing.JLabel jLabelFrom;
-    private javax.swing.JLabel jLabelHost;
     private javax.swing.JLabel jLabelLastLogin;
     private javax.swing.JLabel jLabelNbElements;
     private javax.swing.JLabel jLabelPlan;
@@ -4631,7 +4604,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JMenu jMenuWindow;
     private javax.swing.JPanel jPaneStatusBar;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel3;
