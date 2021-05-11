@@ -290,7 +290,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.setLocationRelativeTo(parent);
         this.setSize(new Dimension(606, 751));
        
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
         
         WindowSettingManager.load(this);
         

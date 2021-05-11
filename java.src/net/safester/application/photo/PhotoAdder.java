@@ -148,7 +148,7 @@ public class PhotoAdder extends javax.swing.JDialog {
 
 	this.keyListenerAdder();
 
-	SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+	SwingUtil.resizeJComponentsForAll(rootPane);
 
 	/**
 	 * Handle a Drag & drop for files Will open automatically the file encryption or

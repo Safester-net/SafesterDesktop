@@ -103,7 +103,7 @@ public class DialogProxyAuth extends javax.swing.JDialog {
         keyListenerAdder();
         ButtonResizer buttonResizer = new ButtonResizer();
         buttonResizer.setWidthToMax(SwingUtil.getAllComponants(jPanelSouth));
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
     }
 
     /**

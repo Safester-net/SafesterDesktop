@@ -157,7 +157,7 @@ public class Double2FaActivationStatus extends javax.swing.JDialog {
         
         this.keyListenerAdder();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         //getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         this.setLocationByPlatform(true);

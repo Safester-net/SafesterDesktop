@@ -341,7 +341,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
             }
         });
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
         SwingUtil.setBackgroundColor(this, Color.white);
         
         // Exception

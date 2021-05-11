@@ -425,7 +425,7 @@ public class GroupListNew extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(this.getParent());
         
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);        
+        SwingUtil.resizeJComponentsForAll(rootPane);        
         SwingUtil.setBackgroundColor(this, Color.WHITE);
         
         jPanelToolbar.setBackground(new Color(240, 240, 240));        

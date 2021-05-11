@@ -146,7 +146,7 @@ public class TreeNodeAdder extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
         keyListenerAdder();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
     }
 
     /**

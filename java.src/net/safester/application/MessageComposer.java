@@ -671,7 +671,7 @@ public class MessageComposer extends javax.swing.JFrame {
         alignFieldsOnRightForAllOs();
 
         // Nimbus settings
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         this.jTextAreaRecipientsTo.requestFocusInWindow();
         //this.htmlEditor.getEditor().requestFocusInWindow();

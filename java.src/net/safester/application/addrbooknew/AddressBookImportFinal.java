@@ -285,7 +285,7 @@ public class AddressBookImportFinal extends javax.swing.JDialog {
         ButtonResizer br = new ButtonResizer(jPanelButtons);
         br.setWidthToMax();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         this.setLocationRelativeTo(parent);
         WindowSettingManager.load(this);

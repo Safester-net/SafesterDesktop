@@ -108,7 +108,7 @@ public class ConfirmAccountDeleteDialog extends javax.swing.JDialog {
         ButtonResizer br = new ButtonResizer(jPanelButton);
         br.setWidthToMax();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
         
         this.setSize(460, 330);
         this.setLocationRelativeTo(this.parent);

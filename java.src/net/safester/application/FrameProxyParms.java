@@ -190,7 +190,7 @@ public class FrameProxyParms extends javax.swing.JFrame {
  
         this.keyListenerAdder();       
         
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
         
         this.setLocationByPlatform(true);
         this.setLocationRelativeTo(parent);

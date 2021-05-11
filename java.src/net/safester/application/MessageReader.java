@@ -354,7 +354,7 @@ public class MessageReader extends javax.swing.JFrame {
 
         setTextFieldsPopup();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         setLabelBackgroundToFields();
 

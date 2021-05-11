@@ -269,7 +269,7 @@ public class Register extends javax.swing.JFrame {
 
         keyListenerAdder();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         //if (SystemUtils.IS_OS_LINUX)
         if (UI_Util.isNimbus()) {

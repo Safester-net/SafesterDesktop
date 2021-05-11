@@ -171,7 +171,7 @@ public class Double2FaDisplayQrCode extends javax.swing.JDialog {
         
         this.keyListenerAdder();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         SwingUtilities.invokeLater(new Runnable() {
 

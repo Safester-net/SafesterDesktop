@@ -23,9 +23,7 @@
  */
 package net.safester.application;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
@@ -67,18 +65,23 @@ public class SafesterLookAndFeelManager {
             return;
         }
 
+        // Same for all!
+        FlatIntelliJLaf.install();
+                    
+        /*
         if (SystemUtils.IS_OS_MAC) {
             setSystemLookAndfeel();
         } else if (SystemUtils.IS_OS_WINDOWS) {
             //setJTatoolLookAndFeel();
-            FlatIntelliJLaf.install();
+            //FlatArcOrangeIJTheme.install();
             //FlatDarculaLaf.install();
         } else if (SystemUtils.IS_OS_LINUX) {
             setNimbusLookAndFeel();
         } else {
             setSystemLookAndfeel();
         }
-
+        */
+        
         cleanNimbusBackground();
     }
 

@@ -169,7 +169,7 @@ public class AddressBookImportStart extends javax.swing.JDialog {
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);
         buttonResizer.setWidthToMax();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentMoved(ComponentEvent e) {

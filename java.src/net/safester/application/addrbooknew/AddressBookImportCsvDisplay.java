@@ -150,7 +150,7 @@ public class AddressBookImportCsvDisplay extends javax.swing.JDialog {
             }
         });
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
         
         ButtonResizer br = new ButtonResizer(jPanelSouth);
         br.setWidthToMax();

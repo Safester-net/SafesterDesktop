@@ -225,7 +225,7 @@ public class Login extends javax.swing.JFrame {
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);
         buttonResizer.setWidthToMax();
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
 
         if (UI_Util.isNimbus()) {
             //Linux version specific

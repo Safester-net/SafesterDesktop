@@ -172,19 +172,20 @@ public class SwingUtil
      * Resize jComponents for Nimbus look and feel
      * @param container
      */
-    public static void resizeJComponentsForNimbusAndMacOsX(Container container){
-        
+    public static void resizeJComponentsForAll(Container container){
+        resizeJComponentsFlatlaf(container);
+    }
+
+    @SuppressWarnings("unused")
+    private static boolean resizeJComponentsForNimbus(Container container) {
         if (SystemUtils.IS_OS_WINDOWS) {
             resizeJComponentsFlatlaf(container);
-            return;
+            return true;
         }
-        
-         // To be done for all Nimbus + Mac OS X
-         if (! UI_Util.isNimbus() && ! SystemUtils.IS_OS_MAC_OSX)
-         {
-             return;
-         }
-
+        // To be done for all Nimbus + Mac OS X
+        if (! UI_Util.isNimbus() && ! SystemUtils.IS_OS_MAC_OSX) {
+            return true;
+        }
         List<Component> components = SwingUtil.getAllComponants(container);
         for (Component component : components) {
             int maxWidth = (int)component.getMaximumSize().getWidth();
@@ -210,6 +211,7 @@ public class SwingUtil
                 //component.setSize(new Dimension(prefWidth, heigth + 2));
             }
         }
+        return false;
     }
     
     /**

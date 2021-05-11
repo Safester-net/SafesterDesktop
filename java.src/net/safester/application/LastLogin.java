@@ -138,7 +138,7 @@ public class LastLogin extends javax.swing.JFrame {
 
         WindowSettingManager.load(this);
         
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
     }
 
 

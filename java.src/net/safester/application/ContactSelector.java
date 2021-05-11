@@ -177,7 +177,7 @@ public class ContactSelector extends javax.swing.JFrame {
             }
         });
 
-        SwingUtil.resizeJComponentsForNimbusAndMacOsX(rootPane);
+        SwingUtil.resizeJComponentsForAll(rootPane);
         SwingUtil.setBackgroundColor(this, Color.WHITE);
         
         this.setLocationRelativeTo(parent);
