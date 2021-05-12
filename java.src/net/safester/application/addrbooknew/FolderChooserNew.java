@@ -218,7 +218,7 @@ public class FolderChooserNew extends javax.swing.JDialog implements TreeSelecti
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);
         buttonResizer.setWidthToMax();
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         WindowSettingManager.load(this);
         

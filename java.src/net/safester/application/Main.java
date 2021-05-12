@@ -618,7 +618,7 @@ public class Main extends javax.swing.JFrame {
 
         System.out.println(new Date() + " SafeShareItMain... initCompany end...");
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         // if(SystemUtils.IS_OS_LINUX)
         if (UI_Util.isNimbus()) {

@@ -115,7 +115,7 @@ public class MacOsXPasswordAsk extends javax.swing.JDialog {
         
         ButtonResizer buttonResizer = new ButtonResizer();
         buttonResizer.setWidthToMax(SwingUtil.getAllComponants(jPanelSouth));
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         this.jPasswordField.requestFocus();
 

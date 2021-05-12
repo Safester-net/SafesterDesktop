@@ -155,7 +155,7 @@ public class ChangePassphrase extends javax.swing.JDialog {
         this.setLocationRelativeTo(caller);
         WindowSettingManager.load(this);
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         testCapsOn();
 

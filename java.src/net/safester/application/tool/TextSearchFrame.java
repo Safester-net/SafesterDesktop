@@ -102,7 +102,7 @@ public class TextSearchFrame extends javax.swing.JFrame {
         // Until we finish navigation algorithm
         jPanelDirection.setVisible(false);
     
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentMoved(ComponentEvent e) {

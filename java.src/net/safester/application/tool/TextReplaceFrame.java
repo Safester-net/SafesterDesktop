@@ -96,7 +96,7 @@ public class TextReplaceFrame extends javax.swing.JFrame {
         // Add a Clipboard Manager
         clipboard = new ClipboardManager(jPanelMain);
                         
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentMoved(ComponentEvent e) {

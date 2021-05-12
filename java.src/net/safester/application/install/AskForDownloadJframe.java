@@ -113,7 +113,7 @@ public class AskForDownloadJframe extends javax.swing.JDialog {
         t.start();
         */
                 
-        com.swing.util.SwingUtil.resizeJComponentsForAll(rootPane);
+        com.swing.util.SwingUtil.applySwingUpdates(rootPane);
 
         this.setVisible(true);
 

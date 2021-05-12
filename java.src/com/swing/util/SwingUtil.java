@@ -23,7 +23,6 @@
  */
 package com.swing.util;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -56,71 +55,73 @@ import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.UI_Util;
 
-
-
 /**
  * @author Nicolas de Pomereu
  */
+public class SwingUtil {
 
-public class SwingUtil
-{
-    public static final String CR_LF = System.getProperty("line.separator") ;
+    public static final String CR_LF = System.getProperty("line.separator");
     private static final boolean SET_BACKGROUND_NOT_ACTIVE = true;
 
     /**
      * Format the HTML content for Synthetica ==> increase font size per +1
-     * @param content   the html content to format 
+     *
+     * @param content the html content to format
      * @return the formated html content
      */
     public static String formatHtmlContentForSyntheticaAndNimbus(String content) {
-        if (UI_Util.isSynthetica() || UI_Util.isNimbus() ) {
+        if (UI_Util.isSynthetica() || UI_Util.isNimbus()) {
             content = content.replaceAll("size=4", "size=5");
             content = content.replaceAll("size=6", "size=7");
         }
         return content;
     }
-    
+
     /**
      * Format the JPanel for Synthetica ==> remove border
+     *
      * @param jpanel the panel to format
-     * 
+     *
      * @return the JPanel without border
      */
     public static void formatJpanelBorderForSynthetica(JPanel jpanel) {
         if (UI_Util.isSynthetica()) {
-         jpanel.setBorder(null);
+            jpanel.setBorder(null);
         }
     }
-    
+
     /**
-     * Format the JPanel containing a JXTextField for Synthetica
-     * ==> add a line border thickness 1 and rounded
+     * Format the JPanel containing a JXTextField for Synthetica ==> add a line
+     * border thickness 1 and rounded
+     *
      * @param jPanel
-     * @param jpanel the panel containing the JXTextField to  format
+     * @param jpanel the panel containing the JXTextField to format
      */
     public static void formatJXTextFieldForSynthetica(JPanel jPanel) {
         if (UI_Util.isSynthetica()) {
-         jPanel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+            jPanel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
         }
-    }    
-    
-     /**
+    }
+
+    /**
      * Allows to set the background color for the window
+     *
      * @param window
-     * @param color the color 
+     * @param color the color
      */
     public static void setBackgroundColor(Window window, Color color) {
-        
+
         if (SET_BACKGROUND_NOT_ACTIVE) {
             return;
         }
-        
+
         setBackgroundColor(window, color, true);
-    } 
-    
-     /**
+    }
+
+    /**
      * Allows to set the background color for the window
-     * @param color the color 
+     *
+     * @param color the color
      */
     public static void setBackgroundColor(Window window, Color color, boolean includeJTextField) {
         java.util.List<Component> components = SwingUtil.getAllComponants(window);
@@ -131,21 +132,20 @@ public class SwingUtil
             if (comp instanceof JPanel || comp instanceof JCheckBox || comp instanceof JRadioButton) {
                 comp.setBackground(color);
             }
-            
+
             if (includeJTextField) {
-             if (comp instanceof JTextField) {
-                 JTextField jTextField = (JTextField)comp;
-                 if (! jTextField.isEditable()) {
-                     jTextField.setBackground(color);
-                     jTextField.setBorder(null);
-                     jTextField = addColonBeforeDisplay(jTextField);
-                 }
-             }                 
-            }                       
-        }        
-    }     
-    
-    
+                if (comp instanceof JTextField) {
+                    JTextField jTextField = (JTextField) comp;
+                    if (!jTextField.isEditable()) {
+                        jTextField.setBackground(color);
+                        jTextField.setBorder(null);
+                        jTextField = addColonBeforeDisplay(jTextField);
+                    }
+                }
+            }
+        }
+    }
+
     public static JTextField addColonBeforeDisplay(JTextField jTextField) {
         String text = jTextField.getText();
 
@@ -156,7 +156,7 @@ public class SwingUtil
 
         return jTextField;
     }
-    
+
     public static JLabel addColonBeforeDisplay(JLabel jLabel) {
         String text = jLabel.getText();
 
@@ -166,36 +166,42 @@ public class SwingUtil
         }
 
         return jLabel;
-    }    
-    
-    
-        
+    }
+
     /**
-     * Resize jComponents for Nimbus look and feel
+     * Apply Swing updates to resize components, change hyperlink colors
+     *
      * @param container
      */
-    public static void resizeJComponentsForAll(Container container){
+    public static void applySwingUpdates(Container container) {
         resizeJComponentsFlatlaf(container);
+        // Set URL button Foreground Color
+        SwingColorUtil.setHyperLinkButtonsTextColor(container);
     }
-    
+
+    /**
+     * Resize jComponents for Nimbus look and feel
+     *
+     * @param container
+     */
     public static void resizeJComponentsFlatlaf(Container container) {
         List<Component> components = SwingUtil.getAllComponants(container);
         for (Component component : components) {
-            int maxWidth = (int)component.getMaximumSize().getWidth();
-            int minWidth = (int)component.getMinimumSize().getWidth();
-            int prefWidth = (int)component.getPreferredSize().getWidth();
+            int maxWidth = (int) component.getMaximumSize().getWidth();
+            int minWidth = (int) component.getMinimumSize().getWidth();
+            int prefWidth = (int) component.getPreferredSize().getWidth();
 
             int newHeight = 26;
-            
-            if(component instanceof JTextField || component instanceof JPasswordField){
+
+            if (component instanceof JTextField || component instanceof JPasswordField) {
                 component.setMaximumSize(new Dimension(maxWidth, newHeight));
                 component.setMinimumSize(new Dimension(minWidth, newHeight));
                 component.setPreferredSize(new Dimension(prefWidth, newHeight));
-            }else if(component instanceof JLabel){
-                
-                int maxHeigth = (int)component.getMaximumSize().getHeight();
-                int minHeigth = (int)component.getMinimumSize().getHeight();
-                int prefHeigth = (int)component.getPreferredSize().getHeight();
+            } else if (component instanceof JLabel) {
+
+                int maxHeigth = (int) component.getMaximumSize().getHeight();
+                int minHeigth = (int) component.getMinimumSize().getHeight();
+                int prefHeigth = (int) component.getPreferredSize().getHeight();
                 //int heigth = (int)component.getSize().getHeight();
 
                 component.setMaximumSize(new Dimension(maxWidth, maxHeigth + 2));
@@ -204,42 +210,10 @@ public class SwingUtil
                 //component.setSize(new Dimension(prefWidth, heigth + 2));
             }
         }
-        
-        // Set URL button clor
-        setHyperLinkButtonsTextColor(container);
-    }
-    
-    public static Color HYPERLINK_LIGHT =  new Color(38, 117, 191);
-    public static Color HYPERLINK_DARK_MODE =  new Color(88, 157, 246);
-    
-    private static void setHyperLinkButtonsTextColor(Container container) {
-        List<Component> components = SwingUtil.getAllComponants(container);
-        for (Component component : components) {
-            if (component instanceof JButton) {
-                JButton jButton = (JButton)component;
-                if (! isAnHyperLinkButton(jButton)) {
-                    continue;
-                }
-                    
-                if (isDarkMode()) {
-                    jButton.setForeground(HYPERLINK_DARK_MODE);
-                }
-                else {
-                     jButton.setForeground(HYPERLINK_LIGHT);              
-                }
-            }
-        }
-    }
-    private static boolean isAnHyperLinkButton(JButton jButton) {
-       return (! jButton.isContentAreaFilled() && ! jButton.isBorderPainted());
-    }
-    
-     private static boolean isDarkMode() {
-         String lookAndFeel = UIManager.getLookAndFeel().toString();
-         return lookAndFeel.contains("Darcula") || lookAndFeel.toLowerCase().contains("Dark");
+
     }
 
-        
+
     @SuppressWarnings("unused")
     private static boolean resizeJComponentsForNimbus(Container container) {
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -247,26 +221,26 @@ public class SwingUtil
             return true;
         }
         // To be done for all Nimbus + Mac OS X
-        if (! UI_Util.isNimbus() && ! SystemUtils.IS_OS_MAC_OSX) {
+        if (!UI_Util.isNimbus() && !SystemUtils.IS_OS_MAC_OSX) {
             return true;
         }
         List<Component> components = SwingUtil.getAllComponants(container);
         for (Component component : components) {
-            int maxWidth = (int)component.getMaximumSize().getWidth();
-            int minWidth = (int)component.getMinimumSize().getWidth();
-            int prefWidth = (int)component.getPreferredSize().getWidth();
+            int maxWidth = (int) component.getMaximumSize().getWidth();
+            int minWidth = (int) component.getMinimumSize().getWidth();
+            int prefWidth = (int) component.getPreferredSize().getWidth();
 
             int newHeight = 26;
-            
-            if(component instanceof JTextField || component instanceof JPasswordField){
+
+            if (component instanceof JTextField || component instanceof JPasswordField) {
                 component.setMaximumSize(new Dimension(maxWidth, newHeight));
                 component.setMinimumSize(new Dimension(minWidth, newHeight));
                 component.setPreferredSize(new Dimension(prefWidth, newHeight));
-            }else if(component instanceof JLabel){
-                
-                int maxHeigth = (int)component.getMaximumSize().getHeight();
-                int minHeigth = (int)component.getMinimumSize().getHeight();
-                int prefHeigth = (int)component.getPreferredSize().getHeight();
+            } else if (component instanceof JLabel) {
+
+                int maxHeigth = (int) component.getMaximumSize().getHeight();
+                int minHeigth = (int) component.getMinimumSize().getHeight();
+                int prefHeigth = (int) component.getPreferredSize().getHeight();
                 //int heigth = (int)component.getSize().getHeight();
 
                 component.setMaximumSize(new Dimension(maxWidth, maxHeigth + 2));
@@ -277,69 +251,67 @@ public class SwingUtil
         }
         return false;
     }
-    
+
     /**
      * Return all Components contained in a Container
-     * 
-     * @param container The Container        
-     * @return          The complete list of inside Components                     
+     *
+     * @param container The Container
+     * @return The complete list of inside Components
      */
-    public static List<Component> getAllComponants(Container container)
-    {
-        List<Component> componentList  = new Vector<>();
+    public static List<Component> getAllComponants(Container container) {
+        List<Component> componentList = new Vector<>();
         getAllComponents(container, componentList);
         return componentList;
     }
 
     /**
      * Disable or enablez a Tool bar
-     * @param enable        true or false
-     * @param jToolBar      the tool bar to enable disable
+     *
+     * @param enable true or false
+     * @param jToolBar the tool bar to enable disable
      */
-    public static void enableToolbar( JToolBar jToolBar, boolean enable)
-    {
-        for(Component comp : jToolBar.getComponents())
-        {
-           comp.setEnabled(enable);
+    public static void enableToolbar(JToolBar jToolBar, boolean enable) {
+        for (Component comp : jToolBar.getComponents()) {
+            comp.setEnabled(enable);
         }
     }
-    
+
     /**
-     *     
+     *
      * Get all the components inside a component and put it in a collection.
      * Recursiv method
-     * 
-     * @param c              The Component
-     * @param collection     The collection to store in the result 
+     *
+     * @param c The Component
+     * @param collection The collection to store in the result
      */
     private static void getAllComponents(Component c, Collection<Component> collection) {
         collection.add(c);
         if (c instanceof Container) {
-          Component[] kids = ((Container)c).getComponents();
-          for(int i=0; i<kids.length; i++)
-            getAllComponents(kids[i], collection);
+            Component[] kids = ((Container) c).getComponents();
+            for (int i = 0; i < kids.length; i++) {
+                getAllComponents(kids[i], collection);
+            }
         }
-      }
+    }
 
-       /**
-     * Return  the  content of a  Text resource file in the message file package
-     * @param fileReference    The key word for text file retrieve
-     * @return  the text content of a  Text resource file in the message file package
+    /**
+     * Return the content of a Text resource file in the message file package
+     *
+     * @param fileReference The key word for text file retrieve
+     * @return the text content of a Text resource file in the message file
+     * package
      *
      * @throws IOException
      */
-    public static String  getTextContent(String fileReference)
-    {
+    public static String getTextContent(String fileReference) {
         String language = LanguageManager.getLanguage();
         return getTextContent(fileReference, language);
     }
 
     public static String getTextContent(String fileReference, String language) {
         String content;
-        try
-        {
-            if (fileReference == null)
-            {
+        try {
+            if (fileReference == null) {
                 throw new IllegalArgumentException("fileReference can not be null!");
             }
 
@@ -350,43 +322,37 @@ public class SwingUtil
             // KEEP THIS CODE AS MODEL
             //java.net.URL myURL
             //  = ResourceBundleTest.class.getResource("/com/safelogic/pgp/test/MyResource_fr.properties");
-            String helpFile =  fileReference + "_" + language + ".txt";
+            String helpFile = fileReference + "_" + language + ".txt";
             String urlResource = resource + "/" + helpFile;
             //debug(urlResource);
 
             java.net.URL myURL = SwingUtil.class.getResource(urlResource);
 
-            if (myURL == null)
-            {
+            if (myURL == null) {
                 return "<font face=\"Arial\" size=4><br>"
-                      + "<b>Please apologize. <br>  "
-                      + "Help is not yet available for this topic. </b> <br>"
-                      + "<br>"
-                      + "(" +  helpFile + ")";
+                        + "<b>Please apologize. <br>  "
+                        + "Help is not yet available for this topic. </b> <br>"
+                        + "<br>"
+                        + "(" + helpFile + ")";
             }
 
             InputStream is = myURL.openStream();
 
-            BufferedInputStream bisIn = new BufferedInputStream(is) ;
-            LineInputStream lisIn = new LineInputStream(bisIn) ;
+            BufferedInputStream bisIn = new BufferedInputStream(is);
+            LineInputStream lisIn = new LineInputStream(bisIn);
 
-            String sLine = new String() ;
+            String sLine = new String();
 
             content = "";
 
             //int cpt = 0;
-
-            while( (sLine = lisIn.readLine()) != null)
-            {
-                sLine = sLine.trim() ;
+            while ((sLine = lisIn.readLine()) != null) {
+                sLine = sLine.trim();
                 //debug(sLine);
 
-                if (content.equals(""))
-                {
+                if (content.equals("")) {
                     content = sLine;
-                }
-                else
-                {
+                } else {
                     content += CR_LF + sLine;
                 }
 
@@ -400,13 +366,10 @@ public class SwingUtil
 //                }
 //
 //                cpt++;
-
             }
 
-            lisIn.close() ;
-        }
-        catch (IOException e)
-        {
+            lisIn.close();
+        } catch (IOException e) {
             e.printStackTrace();
             content = e.getMessage();
         }
@@ -414,13 +377,8 @@ public class SwingUtil
         return content;
     }
 
-
-
-
-
-
 }
 
 /**
- * 
+ *
  */

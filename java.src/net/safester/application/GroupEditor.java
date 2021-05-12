@@ -276,7 +276,7 @@ public class GroupEditor extends javax.swing.JFrame {
             }
         });
 
-        SwingUtil.resizeJComponentsForAll(rootPane);        
+        SwingUtil.applySwingUpdates(rootPane);        
         SwingUtil.setBackgroundColor(this, Color.WHITE);
         
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);

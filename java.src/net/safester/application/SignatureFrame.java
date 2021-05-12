@@ -156,7 +156,7 @@ public class SignatureFrame extends javax.swing.JFrame {
 //        });
 	this.keyListenerAdder();
 
-	SwingUtil.resizeJComponentsForAll(rootPane);
+	SwingUtil.applySwingUpdates(rootPane);
 
 	this.jTextArea.moveCaretPosition(0);
 	this.jTextArea.setSelectionEnd(0);

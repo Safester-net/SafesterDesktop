@@ -178,7 +178,7 @@ public class Search extends javax.swing.JFrame {
 
         this.setSize(new Dimension(892, 495));
         
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
                 
         WindowSettingManager.load(this);
 

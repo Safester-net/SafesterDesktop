@@ -142,7 +142,7 @@ public class AddressBookImportCsv1 extends javax.swing.JDialog {
         ButtonResizer br = new ButtonResizer(jPanelSouth);
         br.setWidthToMax();
         
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
                 
         new FileDrop(this, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {

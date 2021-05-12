@@ -166,7 +166,7 @@ public class SearchContactSelector extends javax.swing.JFrame {
             }
         });
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
         SwingUtil.setBackgroundColor(this, Color.WHITE);
 
         this.setLocationRelativeTo(parent);

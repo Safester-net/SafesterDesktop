@@ -125,7 +125,7 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
 
         ButtonResizer br = new ButtonResizer(jPanelSouth);
         br.setWidthToMax();
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         this.setSize(500, 500);
 

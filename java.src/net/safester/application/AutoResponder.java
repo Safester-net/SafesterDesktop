@@ -181,7 +181,7 @@ public class AutoResponder extends javax.swing.JDialog {
 
 	this.keyListenerAdder();
 
-	SwingUtil.resizeJComponentsForAll(rootPane);
+	SwingUtil.applySwingUpdates(rootPane);
 
 	this.setLocationByPlatform(true);
 	this.setLocationRelativeTo(parent);

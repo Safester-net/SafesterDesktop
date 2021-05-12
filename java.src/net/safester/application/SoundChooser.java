@@ -168,7 +168,7 @@ public class SoundChooser extends javax.swing.JFrame {
 
         WindowSettingManager.load(this);
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
     }
     /**
      * Plays the stored chosen noftify sound

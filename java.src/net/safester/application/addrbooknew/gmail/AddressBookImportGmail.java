@@ -155,7 +155,7 @@ public class AddressBookImportGmail extends javax.swing.JDialog {
         ButtonResizer br = new ButtonResizer(jPanelSouth);
         br.setWidthToMax();
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
 
         this.setLocationRelativeTo(parent);
         WindowSettingManager.load(this);

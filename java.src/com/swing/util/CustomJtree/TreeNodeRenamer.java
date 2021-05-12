@@ -90,7 +90,7 @@ public class TreeNodeRenamer extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
         keyListenerAdder();
 
-        SwingUtil.resizeJComponentsForAll(rootPane);
+        SwingUtil.applySwingUpdates(rootPane);
     }
 
     /**
