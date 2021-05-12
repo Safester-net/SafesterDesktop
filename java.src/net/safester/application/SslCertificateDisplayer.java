@@ -132,13 +132,16 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
             this.setLocationRelativeTo(parentJframe);
         }
         
-        String titleMessage =  host + " - " + messages.getMessage("ssl_certificate_info");        
+        String titleMessage =  messages.getMessage("ssl_certificate_info");        
         this.jLabelTitle.setText(titleMessage);
         this.setTitle(titleMessage);
 
         this.jButtonClose.setText(messages.getMessage("ok"));   
         this.jButtonRemoteSystemInfo.setText(messages.getMessage("remote_system_info"));   
         
+        this.jButtonRemoteSystemInfo.setEnabled(false);
+        this.jButtonRemoteSystemInfo.setVisible(false);
+                
         this.keyListenerAdder();
         this.setLocationByPlatform(true);
 
