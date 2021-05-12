@@ -48,7 +48,9 @@ import javax.swing.border.LineBorder;
 import org.apache.commons.lang3.SystemUtils;
 
 import com.safelogic.utilx.io.stream.LineInputStream;
+import javax.swing.JButton;
 import javax.swing.JRootPane;
+import javax.swing.UIManager;
 
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
@@ -175,7 +177,69 @@ public class SwingUtil
     public static void resizeJComponentsForAll(Container container){
         resizeJComponentsFlatlaf(container);
     }
+    
+    public static void resizeJComponentsFlatlaf(Container container) {
+        List<Component> components = SwingUtil.getAllComponants(container);
+        for (Component component : components) {
+            int maxWidth = (int)component.getMaximumSize().getWidth();
+            int minWidth = (int)component.getMinimumSize().getWidth();
+            int prefWidth = (int)component.getPreferredSize().getWidth();
 
+            int newHeight = 26;
+            
+            if(component instanceof JTextField || component instanceof JPasswordField){
+                component.setMaximumSize(new Dimension(maxWidth, newHeight));
+                component.setMinimumSize(new Dimension(minWidth, newHeight));
+                component.setPreferredSize(new Dimension(prefWidth, newHeight));
+            }else if(component instanceof JLabel){
+                
+                int maxHeigth = (int)component.getMaximumSize().getHeight();
+                int minHeigth = (int)component.getMinimumSize().getHeight();
+                int prefHeigth = (int)component.getPreferredSize().getHeight();
+                //int heigth = (int)component.getSize().getHeight();
+
+                component.setMaximumSize(new Dimension(maxWidth, maxHeigth + 2));
+                component.setMinimumSize(new Dimension(minWidth, minHeigth + 2));
+                component.setPreferredSize(new Dimension(prefWidth, prefHeigth + 2));
+                //component.setSize(new Dimension(prefWidth, heigth + 2));
+            }
+        }
+        
+        // Set URL button clor
+        setHyperLinkButtonsTextColor(container);
+    }
+    
+    public static Color HYPERLINK_LIGHT =  new Color(38, 117, 191);
+    public static Color HYPERLINK_DARK_MODE =  new Color(88, 157, 246);
+    
+    private static void setHyperLinkButtonsTextColor(Container container) {
+        List<Component> components = SwingUtil.getAllComponants(container);
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                JButton jButton = (JButton)component;
+                if (! isAnHyperLinkButton(jButton)) {
+                    continue;
+                }
+                    
+                if (isDarkMode()) {
+                    jButton.setForeground(HYPERLINK_DARK_MODE);
+                }
+                else {
+                     jButton.setForeground(HYPERLINK_LIGHT);              
+                }
+            }
+        }
+    }
+    private static boolean isAnHyperLinkButton(JButton jButton) {
+       return (! jButton.isContentAreaFilled() && ! jButton.isBorderPainted());
+    }
+    
+     private static boolean isDarkMode() {
+         String lookAndFeel = UIManager.getLookAndFeel().toString();
+         return lookAndFeel.contains("Darcula") || lookAndFeel.toLowerCase().contains("Dark");
+    }
+
+        
     @SuppressWarnings("unused")
     private static boolean resizeJComponentsForNimbus(Container container) {
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -223,9 +287,7 @@ public class SwingUtil
     public static List<Component> getAllComponants(Container container)
     {
         List<Component> componentList  = new Vector<>();
-        
         getAllComponents(container, componentList);
-        
         return componentList;
     }
 
@@ -276,28 +338,20 @@ public class SwingUtil
         String content;
         try
         {
-
             if (fileReference == null)
             {
                 throw new IllegalArgumentException("fileReference can not be null!");
             }
 
             fileReference = fileReference.toLowerCase();
-
-
-
             String resource = "/" + MessagesManager.MESSAGE_FILES_PACKAGE;
             resource = resource.replace(".", "/");
 
             // KEEP THIS CODE AS MODEL
             //java.net.URL myURL
             //  = ResourceBundleTest.class.getResource("/com/safelogic/pgp/test/MyResource_fr.properties");
-
-
-
             String helpFile =  fileReference + "_" + language + ".txt";
             String urlResource = resource + "/" + helpFile;
-
             //debug(urlResource);
 
             java.net.URL myURL = SwingUtil.class.getResource(urlResource);
@@ -360,33 +414,10 @@ public class SwingUtil
         return content;
     }
 
-    public static void resizeJComponentsFlatlaf(Container container) {
-        List<Component> components = SwingUtil.getAllComponants(container);
-        for (Component component : components) {
-            int maxWidth = (int)component.getMaximumSize().getWidth();
-            int minWidth = (int)component.getMinimumSize().getWidth();
-            int prefWidth = (int)component.getPreferredSize().getWidth();
 
-            int newHeight = 26;
-            
-            if(component instanceof JTextField || component instanceof JPasswordField){
-                component.setMaximumSize(new Dimension(maxWidth, newHeight));
-                component.setMinimumSize(new Dimension(minWidth, newHeight));
-                component.setPreferredSize(new Dimension(prefWidth, newHeight));
-            }else if(component instanceof JLabel){
-                
-                int maxHeigth = (int)component.getMaximumSize().getHeight();
-                int minHeigth = (int)component.getMinimumSize().getHeight();
-                int prefHeigth = (int)component.getPreferredSize().getHeight();
-                //int heigth = (int)component.getSize().getHeight();
 
-                component.setMaximumSize(new Dimension(maxWidth, maxHeigth + 2));
-                component.setMinimumSize(new Dimension(minWidth, minHeigth + 2));
-                component.setPreferredSize(new Dimension(prefWidth, prefHeigth + 2));
-                //component.setSize(new Dimension(prefWidth, heigth + 2));
-            }
-        }
-    }
+
+
 
 }
 

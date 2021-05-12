@@ -27,6 +27,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import javax.swing.JComponent;
 import javax.swing.Painter;
@@ -54,7 +55,7 @@ public class SafesterLookAndFeelManager {
         File fileLookAndFeel = new File(getLafPath() + File.separator + "safester_look_and_feel.txt");
 
         if (fileLookAndFeel.exists()) {
-            String className = FileUtils.readFileToString(fileLookAndFeel);
+            String className = FileUtils.readFileToString(fileLookAndFeel, Charset.defaultCharset());
             className = className.trim();
                        
             UIManager.setLookAndFeel(className);

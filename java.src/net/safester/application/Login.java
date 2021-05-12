@@ -220,7 +220,7 @@ public class Login extends javax.swing.JFrame {
             this.jPasswordField.requestFocus();
         }
 
-              testCapsOn();
+        testCapsOn();
 
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);
         buttonResizer.setWidthToMax();
