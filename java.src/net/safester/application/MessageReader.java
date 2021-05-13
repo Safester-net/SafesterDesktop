@@ -333,7 +333,7 @@ public class MessageReader extends javax.swing.JFrame {
         this.jTextAreaRecipientsTo.setCaretPosition(0);
         this.jTextAreaRecipientsCc.setText(recipientCc);
         this.jTextAreaRecipientsCc.setCaretPosition(0);
-
+        
         if (jTextAreaRecipientsCc.getText().length() <= 1) {
             jPanelCc.setVisible(false);
         }
@@ -420,8 +420,14 @@ public class MessageReader extends javax.swing.JFrame {
         jTextFieldUserFrom.setBackground(theBackground);
         jTextFieldObject.setBackground(theBackground);
         jTextFieldDate.setBackground(theBackground);
+                
         jTextAreaRecipientsTo.setBackground(theBackground);
         jTextAreaRecipientsCc.setBackground(theBackground);
+        
+        //NDP 13/05/21
+        jScrollPaneTo.getViewport().setBackground(theBackground);
+        jScrollPaneCc.getViewport().setBackground(theBackground);
+        
     }
 
     private void setAllPanelsWithtextAreaHeightForMac() {
@@ -894,14 +900,14 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelToLeft = new javax.swing.JPanel();
         jLabelTo = new javax.swing.JLabel();
         jPanelToRight = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPaneTo = new javax.swing.JScrollPane();
         jTextAreaRecipientsTo = new javax.swing.JTextArea();
         jPanelSep = new javax.swing.JPanel();
         jPanelCc = new javax.swing.JPanel();
         jPanelCcLeft = new javax.swing.JPanel();
         jLabelCc = new javax.swing.JLabel();
         jPanelCcRight = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPaneCc = new javax.swing.JScrollPane();
         jTextAreaRecipientsCc = new javax.swing.JTextArea();
         jPanelSep3 = new javax.swing.JPanel();
         jPanelSubjectLabel = new javax.swing.JPanel();
@@ -1116,13 +1122,12 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelToRight.setAutoscrolls(true);
         jPanelToRight.setMaximumSize(new java.awt.Dimension(32767, 30));
         jPanelToRight.setMinimumSize(new java.awt.Dimension(21, 30));
-        jPanelToRight.setOpaque(false);
         jPanelToRight.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanelToRight.setLayout(new javax.swing.BoxLayout(jPanelToRight, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setOpaque(false);
+        jScrollPaneTo.setBorder(null);
+        jScrollPaneTo.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPaneTo.setOpaque(false);
 
         jTextAreaRecipientsTo.setColumns(20);
         jTextAreaRecipientsTo.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -1130,9 +1135,9 @@ public class MessageReader extends javax.swing.JFrame {
         jTextAreaRecipientsTo.setText("jTextAreaRecipientsTo");
         jTextAreaRecipientsTo.setWrapStyleWord(true);
         jTextAreaRecipientsTo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 3));
-        jScrollPane1.setViewportView(jTextAreaRecipientsTo);
+        jScrollPaneTo.setViewportView(jTextAreaRecipientsTo);
 
-        jPanelToRight.add(jScrollPane1);
+        jPanelToRight.add(jScrollPaneTo);
 
         jPanelTo.add(jPanelToRight);
 
@@ -1163,9 +1168,9 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelCcRight.setPreferredSize(new java.awt.Dimension(100, 30));
         jPanelCcRight.setLayout(new javax.swing.BoxLayout(jPanelCcRight, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jScrollPane2.setBorder(null);
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane2.setOpaque(false);
+        jScrollPaneCc.setBorder(null);
+        jScrollPaneCc.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPaneCc.setOpaque(false);
 
         jTextAreaRecipientsCc.setColumns(20);
         jTextAreaRecipientsCc.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -1173,9 +1178,9 @@ public class MessageReader extends javax.swing.JFrame {
         jTextAreaRecipientsCc.setText("jTextAreaRecipientsCc");
         jTextAreaRecipientsCc.setWrapStyleWord(true);
         jTextAreaRecipientsCc.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 3));
-        jScrollPane2.setViewportView(jTextAreaRecipientsCc);
+        jScrollPaneCc.setViewportView(jTextAreaRecipientsCc);
 
-        jPanelCcRight.add(jScrollPane2);
+        jPanelCcRight.add(jScrollPaneCc);
 
         jPanelCc.add(jPanelCcRight);
 
@@ -1607,10 +1612,10 @@ public class MessageReader extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelToRight;
     private javax.swing.JPanel jPanelTop;
     private javax.swing.JPanel jPanelTopButtons;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneAttach;
     private javax.swing.JScrollPane jScrollPaneBody;
+    private javax.swing.JScrollPane jScrollPaneCc;
+    private javax.swing.JScrollPane jScrollPaneTo;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JToolBar.Separator jSeparator2;
