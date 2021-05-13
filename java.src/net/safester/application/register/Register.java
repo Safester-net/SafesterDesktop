@@ -237,7 +237,7 @@ public class Register extends javax.swing.JFrame {
         //jLabelQualityText.setText("null");
         setCryptographicSettingsLabel();
 
-        jButtonCryptoSettings.setText("<html><u>" + messages.getMessage("more_info") + "</u></html>");
+        jButtonCryptoSettings.setText("<html>" + messages.getMessage("more_info") + "</html>");
 
         //jButtonAdvencedSettings.setText("<html><u>" + messages.getMessage("advanced_settings") + "</u></html>");
         jLabelPassphraseQuality.setText(messages.getMessage("passphrase_quality"));
