@@ -39,6 +39,7 @@ import com.kawansoft.crypt.util.sms.PhoneCountryLookup;
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.parms.RendererParms;
 import net.safester.application.util.TableUtil;
 
 /**
@@ -112,12 +113,14 @@ public class PhotoAddresBookTableCellRendererNew extends DefaultTableCellRendere
         
         // This is done to set alternate colors on table background
         // Always set if no rows selected
-        if (row % 2 == 0)
-        {
-            c.setBackground(new Color(243, 243, 255));
+        if (RendererParms.ALTERNATE_LINES) {
+            if (row % 2 == 0) {
+                c.setBackground(Parms.LIGHT_BLUE);
+            } else {
+                c.setBackground(Color.white);
+            }
         }
-        else
-        {
+        else {
             c.setBackground(Color.white);
         }
         

@@ -38,6 +38,7 @@ import com.kawansoft.crypt.util.sms.PhoneCountryLookup;
 
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.parms.RendererParms;
 import net.safester.application.util.TableUtil;
 
 /**
@@ -114,14 +115,19 @@ public class RecipientsImportTableCellRenderer extends DefaultTableCellRenderer 
             }
         }
         
-       
         // This is done to set alternate colors on table background
         // Always set if no rows rowSelected
-        if (row % 2 == 0) {
-            c.setBackground(TableUtil.LIGHT_BLUE);
-        } else {
+        if (RendererParms.ALTERNATE_LINES) {
+            if (row % 2 == 0) {
+                c.setBackground(TableUtil.LIGHT_BLUE);
+            } else {
+                c.setBackground(Color.white);
+            }
+        }
+        else {
             c.setBackground(Color.white);
         }
+
 
         boolean rowSelected = false;
         int[] selRows = table.getSelectedRows();
