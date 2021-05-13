@@ -978,7 +978,6 @@ public class Login extends javax.swing.JFrame {
         jLabelErrorMessage.setText("jLabelErrorMessage");
         jLabelErrorMessage.setMaximumSize(new java.awt.Dimension(300, 16));
         jLabelErrorMessage.setMinimumSize(new java.awt.Dimension(300, 16));
-        jLabelErrorMessage.setOpaque(true);
         jLabelErrorMessage.setPreferredSize(new java.awt.Dimension(300, 16));
         jPanelErrorMessage2.add(jLabelErrorMessage);
 
