@@ -55,11 +55,14 @@ public class SwingColorUtil {
                     continue;
                 }
 
-                if (LookAndFeelHelper.isDarkMode()) {
-                    jButton.setForeground(HYPERLINK_DARK_MODE);
-                } else {
-                    jButton.setForeground(HYPERLINK_LIGHT);
-                }
+//                if (LookAndFeelHelper.isDarkMode()) {
+//                    jButton.setForeground(HYPERLINK_DARK_MODE);
+//                } else {
+//                    jButton.setForeground(HYPERLINK_LIGHT);
+//                }
+            
+            jButton.setForeground(UIManager.getColor("TextField.selectionBackground"));
+                
             }
         }
     }

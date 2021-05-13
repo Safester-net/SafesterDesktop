@@ -70,6 +70,7 @@ import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.StringMgr;
+import com.swing.util.SwingColorUtil;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -150,6 +151,9 @@ public class MessageReader extends javax.swing.JFrame {
     private void initCompany() {
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
 
+        this.jSeparatorColored1.setForeground(SwingColorUtil.getSeparatorColor());
+        this.jSeparatorColored2.setForeground(SwingColorUtil.getSeparatorColor());
+                
         //clipboardManager = new ClipboardManager(rootPane);
         this.jMenuFile.setText(messages.getMessage("file"));
         this.jMenuMessage.setText(messages.getMessage("message"));
@@ -885,7 +889,7 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelMessage = new javax.swing.JPanel();
         jPanelTop = new javax.swing.JPanel();
         jPanelSepToolbar = new javax.swing.JPanel();
-        jSeparator3 = new javax.swing.JSeparator();
+        jSeparatorColored1 = new javax.swing.JSeparator();
         jPanelInfoMessage = new javax.swing.JPanel();
         jPanelFromNew = new javax.swing.JPanel();
         jPanelLeft5 = new javax.swing.JPanel();
@@ -916,7 +920,7 @@ public class MessageReader extends javax.swing.JFrame {
         jTextFieldObject = new javax.swing.JTextField();
         jPanelSep4 = new javax.swing.JPanel();
         jPanelAttachSepRecipients = new javax.swing.JPanel();
-        jSeparator4 = new javax.swing.JSeparator();
+        jSeparatorColored2 = new javax.swing.JSeparator();
         jPanelSepAttach1 = new javax.swing.JPanel();
         jPanelAttach = new javax.swing.JPanel();
         jScrollPaneAttach = new javax.swing.JScrollPane();
@@ -1041,11 +1045,11 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelSepToolbar.setPreferredSize(new java.awt.Dimension(0, 10));
         jPanelSepToolbar.setLayout(new javax.swing.BoxLayout(jPanelSepToolbar, javax.swing.BoxLayout.LINE_AXIS));
 
-        jSeparator3.setForeground(new java.awt.Color(102, 102, 255));
-        jSeparator3.setMaximumSize(new java.awt.Dimension(32767, 6));
-        jSeparator3.setMinimumSize(new java.awt.Dimension(0, 6));
-        jSeparator3.setPreferredSize(new java.awt.Dimension(0, 6));
-        jPanelSepToolbar.add(jSeparator3);
+        jSeparatorColored1.setForeground(new java.awt.Color(102, 102, 255));
+        jSeparatorColored1.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparatorColored1.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparatorColored1.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanelSepToolbar.add(jSeparatorColored1);
 
         jPanelMessage.add(jPanelSepToolbar);
 
@@ -1229,12 +1233,12 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelAttachSepRecipients.setPreferredSize(new java.awt.Dimension(10, 6));
         jPanelAttachSepRecipients.setLayout(new javax.swing.BoxLayout(jPanelAttachSepRecipients, javax.swing.BoxLayout.LINE_AXIS));
 
-        jSeparator4.setBackground(new java.awt.Color(240, 240, 240));
-        jSeparator4.setForeground(new java.awt.Color(102, 102, 255));
-        jSeparator4.setMaximumSize(new java.awt.Dimension(32767, 6));
-        jSeparator4.setMinimumSize(new java.awt.Dimension(0, 6));
-        jSeparator4.setPreferredSize(new java.awt.Dimension(0, 6));
-        jPanelAttachSepRecipients.add(jSeparator4);
+        jSeparatorColored2.setBackground(new java.awt.Color(240, 240, 240));
+        jSeparatorColored2.setForeground(new java.awt.Color(102, 102, 255));
+        jSeparatorColored2.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparatorColored2.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparatorColored2.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanelAttachSepRecipients.add(jSeparatorColored2);
 
         jPanelMessage.add(jPanelAttachSepRecipients);
 
@@ -1619,10 +1623,10 @@ public class MessageReader extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JSeparator jSeparatorColored1;
+    private javax.swing.JSeparator jSeparatorColored2;
     private javax.swing.JTextArea jTextAreaRecipientsCc;
     private javax.swing.JTextArea jTextAreaRecipientsTo;
     private javax.swing.JTextField jTextFieldDate;
