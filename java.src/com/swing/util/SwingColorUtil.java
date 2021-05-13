@@ -28,6 +28,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.UIManager;
 
 /**
  * Methods for Color management. For Light & Dark Mode, etc.
@@ -37,6 +38,7 @@ public class SwingColorUtil {
 
     public static Color HYPERLINK_LIGHT = new Color(38, 117, 191);
     public static Color HYPERLINK_DARK_MODE = new Color(88, 157, 246);
+   
 
     /**
      * Changes the hyperlink buttons blue foreground depending if we are in
@@ -71,5 +73,10 @@ public class SwingColorUtil {
      */
     private static boolean isAnHyperLinkButton(JButton jButton) {
         return (!jButton.isContentAreaFilled() && !jButton.isBorderPainted());
+    }
+    
+    public static Color getSeparatorColor() {
+        Color separatorColor = UIManager.getColor("TextField.selectionBackground");
+        return separatorColor;
     }
 }

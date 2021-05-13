@@ -23,6 +23,8 @@
  */
 package com.swing.util;
 
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.UIManager;
 
 /**
@@ -37,6 +39,7 @@ public class LookAndFeelHelper {
      */
     public static boolean isDarkMode() {
         String lookAndFeel = UIManager.getLookAndFeel().toString();
-        return lookAndFeel.contains("Darcula") || lookAndFeel.toLowerCase().contains("Dark");
+        List<String> themesArray = Arrays.asList(Themes.LIGT_THEMES);
+        return themesArray.contains(lookAndFeel);
     }
 }

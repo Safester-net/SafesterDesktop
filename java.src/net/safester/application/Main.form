@@ -6,6 +6,8 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="buttonGroupFolderSection">
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroupAppearance">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuFile">
@@ -249,6 +251,66 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemUserSettingsActionPerformed"/>
               </Events>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="jMenuAppearance">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jMenuAppearance"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="jMenuItemThemeFlatIntelliJLaf">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="buttonGroupAppearance"/>
+                    </Property>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="FlatLaf IntelliJ"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jMenuItemThemeFlatIntelliJLafItemStateChanged"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemThemeFlatIntelliJLafActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="jMenuItemThemeFlatArcOrangeIJTheme">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="buttonGroupAppearance"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Arc - Orange"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jMenuItemThemeFlatArcOrangeIJThemeItemStateChanged"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemThemeFlatArcOrangeIJThemeActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator24">
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="jMenuItemThemeFlatLafDarcula">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="buttonGroupAppearance"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="FlatLaf Darcula"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jMenuItemThemeFlatLafDarculaItemStateChanged"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemThemeFlatLafDarculaActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="jMenuItemThemeFlatDarkPurpleIJTheme">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="buttonGroupAppearance"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Dark Purple"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jMenuItemThemeFlatDarkPurpleIJThemeItemStateChanged"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator23">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemChangePassphrase">
               <Properties>
@@ -1528,7 +1590,7 @@
 
                                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
                                         </Container>
-                                        <Component class="javax.swing.JSeparator" name="jSeparator2">
+                                        <Component class="javax.swing.JSeparator" name="jSeparatorColored">
                                           <Properties>
                                             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                               <Color blue="ff" green="66" red="66" type="rgb"/>

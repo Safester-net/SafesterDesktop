@@ -80,7 +80,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -100,6 +99,10 @@ import com.safelogic.utilx.StringMgr;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.CustomJTree;
 import com.swing.util.CustomJtree.TreeNodeAdder;
+import com.swing.util.SwingColorUtil;
+import com.swing.util.Themes;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.safester.application.addrbooknew.AddressBookImportStart;
 import net.safester.application.compose.api.drafts.MessageDraftManager;
@@ -294,6 +297,11 @@ public class Main extends javax.swing.JFrame {
 //            this.jMenuMessage.remove(jSeparator15);
 //            this.jToolBar1.remove(jButtonSearch);
 //        }
+
+        setSelectedThemeRadioButton();
+        
+        this.jSeparatorColored.setForeground(SwingColorUtil.getSeparatorColor());
+        
         this.jLabelFrom.setText(messages.getMessage("from"));
         this.jLabelTo.setText(messages.getMessage("to"));
         this.jLabelCc.setText(messages.getMessage("cc"));
@@ -345,6 +353,7 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemProxySettings.setText(messages.getMessage("proxy_settings"));
         this.jMenuItemAutoresponder.setText(messages.getMessage("vacation_responder"));
         this.jMenuItemUserSettings.setText(messages.getMessage("user_settings"));
+        this.jMenuAppearance.setText(messages.getMessage("appearance")); 
         this.jMenuItemImportAddrBook.setText(messages.getMessage("importing_contacts"));
         this.jMenuItemSearch.setText(messages.getMessage("search_message"));
         this.jMenuItemDeleteAccount.setText(messages.getMessage("menu_delete_account"));
@@ -2512,7 +2521,59 @@ public class Main extends javax.swing.JFrame {
             System.out.println(s);
         }
     }
-
+    
+    private void setSelectedThemeRadioButton() {   
+        
+        String className = UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
+        
+        if (className.equals(Themes.FLAT_INTELLIJ_LAF)) {
+            this.jMenuItemThemeFlatIntelliJLaf.setSelected(true);
+        }
+        else if (className.equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
+            this.jMenuItemThemeFlatArcOrangeIJTheme.setSelected(true);
+        }
+        else if (className.equals(Themes.FLAT_DARCULA_LAF)) {
+            this.jMenuItemThemeFlatLafDarcula.setSelected(true);
+        }
+        else if (className.equals(Themes.FLAT_DARK_PURPLEIJ_THEME)) {
+            this.jMenuItemThemeFlatDarkPurpleIJTheme.setSelected(true);
+        }
+        else {
+            // Ignore
+        }
+    }
+        
+    private void updateLookAndFeel() {
+                
+        String className = Themes.DEFAULT_THEME;
+        if (jMenuItemThemeFlatIntelliJLaf.isSelected()){
+            className = Themes.FLAT_INTELLIJ_LAF;
+        }
+        else if (jMenuItemThemeFlatArcOrangeIJTheme.isSelected()){
+            className = Themes.FLAT_ARCORANGEIJ_THEME;
+        }
+        else if (jMenuItemThemeFlatLafDarcula.isSelected()){
+            className = Themes.FLAT_DARCULA_LAF;
+        }
+        else if (jMenuItemThemeFlatDarkPurpleIJTheme.isSelected()){
+            className = Themes.FLAT_DARK_PURPLEIJ_THEME;
+        }
+        
+        try {
+            UIManager.setLookAndFeel(className);
+            UserPrefManager.setPreference(UserPrefManager.LOOK_AND_FEEL_THEME, className);
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        SwingUtilities.updateComponentTreeUI(jMenuBar1);
+        SwingUtilities.updateComponentTreeUI(jPanelToolbar);
+        SwingUtilities.updateComponentTreeUI(jPaneStatusBar);
+        
+        // Will do all clean reset!
+        initCompany();
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -2525,6 +2586,7 @@ public class Main extends javax.swing.JFrame {
 
         buttonGroupReadingPane = new javax.swing.ButtonGroup();
         buttonGroupFolderSection = new javax.swing.ButtonGroup();
+        buttonGroupAppearance = new javax.swing.ButtonGroup();
         jPanelCenter = new javax.swing.JPanel();
         jPanelToolbar = new javax.swing.JPanel();
         jPanelToolbarMain = new javax.swing.JPanel();
@@ -2601,7 +2663,7 @@ public class Main extends javax.swing.JFrame {
         jPanelSepAttach1 = new javax.swing.JPanel();
         jPanelSepRecipients = new javax.swing.JPanel();
         jPanelSepBorder = new javax.swing.JPanel();
-        jSeparator2 = new javax.swing.JSeparator();
+        jSeparatorColored = new javax.swing.JSeparator();
         jPanelSepBorder1 = new javax.swing.JPanel();
         jPanelAttach = new javax.swing.JPanel();
         jScrollPaneAttach = new javax.swing.JScrollPane();
@@ -2674,6 +2736,13 @@ public class Main extends javax.swing.JFrame {
         jMenuItemSearch = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemUserSettings = new javax.swing.JMenuItem();
+        jMenuAppearance = new javax.swing.JMenu();
+        jMenuItemThemeFlatIntelliJLaf = new javax.swing.JRadioButtonMenuItem();
+        jMenuItemThemeFlatArcOrangeIJTheme = new javax.swing.JRadioButtonMenuItem();
+        jSeparator24 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemThemeFlatLafDarcula = new javax.swing.JRadioButtonMenuItem();
+        jMenuItemThemeFlatDarkPurpleIJTheme = new javax.swing.JRadioButtonMenuItem();
+        jSeparator23 = new javax.swing.JPopupMenu.Separator();
         jMenuItemChangePassphrase = new javax.swing.JMenuItem();
         jMenuItemPassphraseRecoverySettings = new javax.swing.JMenuItem();
         jMenuItemForgetPassphrase = new javax.swing.JMenuItem();
@@ -3193,11 +3262,11 @@ public class Main extends javax.swing.JFrame {
         jPanelSepBorder.setPreferredSize(new java.awt.Dimension(5, 10));
         jPanelSepRecipients.add(jPanelSepBorder);
 
-        jSeparator2.setForeground(new java.awt.Color(102, 102, 255));
-        jSeparator2.setMaximumSize(new java.awt.Dimension(32767, 6));
-        jSeparator2.setMinimumSize(new java.awt.Dimension(0, 6));
-        jSeparator2.setPreferredSize(new java.awt.Dimension(0, 6));
-        jPanelSepRecipients.add(jSeparator2);
+        jSeparatorColored.setForeground(new java.awt.Color(102, 102, 255));
+        jSeparatorColored.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparatorColored.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparatorColored.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanelSepRecipients.add(jSeparatorColored);
 
         jPanelSepBorder1.setMaximumSize(new java.awt.Dimension(5, 5));
         jPanelSepBorder1.setMinimumSize(new java.awt.Dimension(5, 10));
@@ -3693,6 +3762,69 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuSettings.add(jMenuItemUserSettings);
 
+        jMenuAppearance.setText("jMenuAppearance");
+
+        buttonGroupAppearance.add(jMenuItemThemeFlatIntelliJLaf);
+        jMenuItemThemeFlatIntelliJLaf.setSelected(true);
+        jMenuItemThemeFlatIntelliJLaf.setText("FlatLaf IntelliJ");
+        jMenuItemThemeFlatIntelliJLaf.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jMenuItemThemeFlatIntelliJLafItemStateChanged(evt);
+            }
+        });
+        jMenuItemThemeFlatIntelliJLaf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemThemeFlatIntelliJLafActionPerformed(evt);
+            }
+        });
+        jMenuAppearance.add(jMenuItemThemeFlatIntelliJLaf);
+
+        buttonGroupAppearance.add(jMenuItemThemeFlatArcOrangeIJTheme);
+        jMenuItemThemeFlatArcOrangeIJTheme.setText("Arc - Orange");
+        jMenuItemThemeFlatArcOrangeIJTheme.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jMenuItemThemeFlatArcOrangeIJThemeItemStateChanged(evt);
+            }
+        });
+        jMenuItemThemeFlatArcOrangeIJTheme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemThemeFlatArcOrangeIJThemeActionPerformed(evt);
+            }
+        });
+        jMenuAppearance.add(jMenuItemThemeFlatArcOrangeIJTheme);
+        jMenuAppearance.add(jSeparator24);
+
+        buttonGroupAppearance.add(jMenuItemThemeFlatLafDarcula);
+        jMenuItemThemeFlatLafDarcula.setText("FlatLaf Darcula");
+        jMenuItemThemeFlatLafDarcula.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jMenuItemThemeFlatLafDarculaItemStateChanged(evt);
+            }
+        });
+        jMenuItemThemeFlatLafDarcula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemThemeFlatLafDarculaActionPerformed(evt);
+            }
+        });
+        jMenuAppearance.add(jMenuItemThemeFlatLafDarcula);
+
+        buttonGroupAppearance.add(jMenuItemThemeFlatDarkPurpleIJTheme);
+        jMenuItemThemeFlatDarkPurpleIJTheme.setText("Dark Purple");
+        jMenuItemThemeFlatDarkPurpleIJTheme.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jMenuItemThemeFlatDarkPurpleIJThemeItemStateChanged(evt);
+            }
+        });
+        jMenuItemThemeFlatDarkPurpleIJTheme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed(evt);
+            }
+        });
+        jMenuAppearance.add(jMenuItemThemeFlatDarkPurpleIJTheme);
+
+        jMenuSettings.add(jMenuAppearance);
+        jMenuSettings.add(jSeparator23);
+
         jMenuItemChangePassphrase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/key.png"))); // NOI18N
         jMenuItemChangePassphrase.setText("jMenuItemChangePassphrase");
         jMenuItemChangePassphrase.addActionListener(new java.awt.event.ActionListener() {
@@ -3954,6 +4086,38 @@ public class Main extends javax.swing.JFrame {
     private void jMenuItemMarkUnreadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMarkUnreadActionPerformed
         markRead(true);
     }//GEN-LAST:event_jMenuItemMarkUnreadActionPerformed
+
+    private void jMenuItemThemeFlatIntelliJLafItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatIntelliJLafItemStateChanged
+        //updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatIntelliJLafItemStateChanged
+
+    private void jMenuItemThemeFlatArcOrangeIJThemeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatArcOrangeIJThemeItemStateChanged
+        //updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatArcOrangeIJThemeItemStateChanged
+
+    private void jMenuItemThemeFlatLafDarculaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatLafDarculaItemStateChanged
+        //updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatLafDarculaItemStateChanged
+
+    private void jMenuItemThemeFlatDarkPurpleIJThemeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatDarkPurpleIJThemeItemStateChanged
+        //updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatDarkPurpleIJThemeItemStateChanged
+
+    private void jMenuItemThemeFlatIntelliJLafActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatIntelliJLafActionPerformed
+        updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatIntelliJLafActionPerformed
+
+    private void jMenuItemThemeFlatArcOrangeIJThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatArcOrangeIJThemeActionPerformed
+        updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatArcOrangeIJThemeActionPerformed
+
+    private void jMenuItemThemeFlatLafDarculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatLafDarculaActionPerformed
+       updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatLafDarculaActionPerformed
+
+    private void jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed
+        updateLookAndFeel();
+    }//GEN-LAST:event_jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed
 
     private void jButtonNewMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNewMessageActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -4523,6 +4687,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupAppearance;
     private javax.swing.ButtonGroup buttonGroupFolderSection;
     private javax.swing.ButtonGroup buttonGroupReadingPane;
     private javax.swing.JButton jButtonAddressBook;
@@ -4558,6 +4723,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2FA;
     private javax.swing.JMenu jMenuAbout;
     private javax.swing.JMenu jMenuAccounts;
+    private javax.swing.JMenu jMenuAppearance;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuConnectToAccount;
     private javax.swing.JMenu jMenuContacts;
@@ -4596,6 +4762,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemReset;
     private javax.swing.JMenuItem jMenuItemSearch;
     private javax.swing.JMenuItem jMenuItemSystemInfo;
+    private javax.swing.JRadioButtonMenuItem jMenuItemThemeFlatArcOrangeIJTheme;
+    private javax.swing.JRadioButtonMenuItem jMenuItemThemeFlatDarkPurpleIJTheme;
+    private javax.swing.JRadioButtonMenuItem jMenuItemThemeFlatIntelliJLaf;
+    private javax.swing.JRadioButtonMenuItem jMenuItemThemeFlatLafDarcula;
     private javax.swing.JMenuItem jMenuItemUpgrade;
     private javax.swing.JMenuItem jMenuItemUserSettings;
     private javax.swing.JMenuItem jMenuItemWhatsNew;
@@ -4689,10 +4859,11 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator17;
     private javax.swing.JSeparator jSeparator18;
     private javax.swing.JSeparator jSeparator19;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator20;
     private javax.swing.JPopupMenu.Separator jSeparator21;
     private javax.swing.JPopupMenu.Separator jSeparator22;
+    private javax.swing.JPopupMenu.Separator jSeparator23;
+    private javax.swing.JPopupMenu.Separator jSeparator24;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
@@ -4701,6 +4872,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JToolBar.Separator jSeparatorButtonBuy;
+    private javax.swing.JSeparator jSeparatorColored;
     private javax.swing.JSplitPane jSplitPaneFolders;
     private javax.swing.JSplitPane jSplitPaneMessage;
     private javax.swing.JTable jTable1;
@@ -4711,5 +4883,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+
 
 }

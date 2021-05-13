@@ -24,6 +24,7 @@
 package net.safester.application;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.swing.util.Themes;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +40,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import net.safester.application.tool.UI_Util;
+import net.safester.application.util.UserPrefManager;
 
 /**
  * Allows to easely test and define lool & feels.
@@ -63,9 +65,9 @@ public class SafesterLookAndFeelManager {
             return;
         }
 
-        // Same for all!
-        //com.formdev.flatlaf.FlatLightLaf
-        FlatLightLaf.install();
+        System.setProperty("sun.java2d.uiScale", "1.0");
+        String lookAndFeel =  UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
+        UIManager.setLookAndFeel(lookAndFeel);
         
         /*
         if (SystemUtils.IS_OS_MAC) {
@@ -82,6 +84,7 @@ public class SafesterLookAndFeelManager {
         
         //cleanNimbusBackground();
     }
+
 
     /**
      * Returns the path to dir where english and french dictionnaires are to be

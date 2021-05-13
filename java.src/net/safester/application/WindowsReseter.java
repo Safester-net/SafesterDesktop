@@ -50,6 +50,7 @@ public class WindowsReseter {
         
         UserPrefManager.removePreference(UserPrefManager.USER_LOGIN);
         UserPrefManager.removePreference(UserPrefManager.ACCOUNTS_LIST);
+        UserPrefManager.removePreference(UserPrefManager.LOOK_AND_FEEL_THEME);
         
         try {
             WindowSettingManager.resetAll();

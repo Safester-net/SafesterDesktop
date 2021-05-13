@@ -101,6 +101,8 @@ public class UserPrefManager {
     public static String ACCOUNTS_LIST= "ACCOUNTS_LIST";
     public static String ASK_FOR_CONFIRM = "ASK_FOR_CONFIRM";
     
+    public static String LOOK_AND_FEEL_THEME = "LOOK_AND_FEEL_THEME";
+    
     /**
       * Get a  preference
       * @param prefName  the preference name
@@ -127,6 +129,14 @@ public class UserPrefManager {
          return prefs.get(prefName, null);
      }
 
+     public static String getPreference(String prefName, String defaultValue)
+     {
+         UserPrefManager userPreferencesManager = new UserPrefManager();
+         Preferences prefs = Preferences.userNodeForPackage(userPreferencesManager.getClass());
+
+         return prefs.get(prefName, defaultValue);
+     }
+          
      /**
       * Remove preference
       */
