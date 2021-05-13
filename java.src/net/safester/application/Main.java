@@ -2679,7 +2679,7 @@ public class Main extends javax.swing.JFrame {
         jEditorPaneBody = new javax.swing.JEditorPane();
         jPanelRigthSpace2 = new javax.swing.JPanel();
         jSeparator13 = new javax.swing.JSeparator();
-        jPanelSep = new javax.swing.JPanel();
+        jPanelSepStatusBar = new javax.swing.JPanel();
         jPaneStatusBar = new javax.swing.JPanel();
         jPanelSslCert = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -3378,12 +3378,11 @@ public class Main extends javax.swing.JFrame {
 
         getContentPane().add(jPanelCenter);
 
-        jPanelSep.setMaximumSize(new java.awt.Dimension(32767, 2));
-        jPanelSep.setMinimumSize(new java.awt.Dimension(10, 2));
-        jPanelSep.setPreferredSize(new java.awt.Dimension(10, 2));
-        getContentPane().add(jPanelSep);
+        jPanelSepStatusBar.setMaximumSize(new java.awt.Dimension(32767, 2));
+        jPanelSepStatusBar.setMinimumSize(new java.awt.Dimension(10, 2));
+        jPanelSepStatusBar.setPreferredSize(new java.awt.Dimension(10, 2));
+        getContentPane().add(jPanelSepStatusBar);
 
-        jPaneStatusBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPaneStatusBar.setMaximumSize(new java.awt.Dimension(32767, 40));
         jPaneStatusBar.setMinimumSize(new java.awt.Dimension(152, 40));
         jPaneStatusBar.setPreferredSize(new java.awt.Dimension(344, 40));
@@ -4813,7 +4812,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelRightSep2;
     private javax.swing.JPanel jPanelRigthSpace2;
     private javax.swing.JPanel jPanelScrollPane;
-    private javax.swing.JPanel jPanelSep;
     private javax.swing.JPanel jPanelSepAttach1;
     private javax.swing.JPanel jPanelSepBorder;
     private javax.swing.JPanel jPanelSepBorder1;
@@ -4823,6 +4821,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSepRecip1;
     private javax.swing.JPanel jPanelSepRecip2;
     private javax.swing.JPanel jPanelSepRecipients;
+    private javax.swing.JPanel jPanelSepStatusBar;
     private javax.swing.JPanel jPanelSepVertical2;
     private javax.swing.JPanel jPanelSepVerticalLastLogin;
     private javax.swing.JPanel jPanelSeparator;
