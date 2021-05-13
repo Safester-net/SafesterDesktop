@@ -64,7 +64,7 @@
         <Component class="javax.swing.JLabel" name="jLabelTitle">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/net/safester/application/images/files_2/32x32/lock_ok.png"/>
+              <Image iconType="3" name="/net/safester/application/images/files_2/32x32/lock_ok.png.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="jLabelTitle"/>
           </Properties>
@@ -195,7 +195,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="400" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="398" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -265,7 +265,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="400" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="398" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>

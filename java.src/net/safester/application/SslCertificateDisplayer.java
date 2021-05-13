@@ -369,7 +369,7 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
 
         jPanelNorth.add(jPanel3);
 
-        jLabelTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/lock_ok.png"))); // NOI18N
+        jLabelTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/lock_ok.png.png"))); // NOI18N
         jLabelTitle.setText("jLabelTitle");
         jPanelNorth.add(jLabelTitle);
 
@@ -437,7 +437,7 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         );
         jPanelWestLayout.setVerticalGroup(
             jPanelWestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 398, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelWest, java.awt.BorderLayout.WEST);
@@ -478,7 +478,7 @@ public class SslCertificateDisplayer extends javax.swing.JFrame {
         );
         jPanelEastLayout.setVerticalGroup(
             jPanelEastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 398, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelEast, java.awt.BorderLayout.LINE_END);
