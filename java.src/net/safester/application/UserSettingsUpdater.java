@@ -696,8 +696,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelCenter = new javax.swing.JPanel();
         jPanelTop = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
-        jPanelSepLine2 = new javax.swing.JPanel();
-        jSeparator4 = new javax.swing.JSeparator();
         jPaneSepAccountInfo = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabelAccountInfo = new javax.swing.JLabel();
@@ -802,15 +800,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelTop.add(jLabelTitle);
 
         jPanelCenter.add(jPanelTop);
-
-        jPanelSepLine2.setLayout(new javax.swing.BoxLayout(jPanelSepLine2, javax.swing.BoxLayout.LINE_AXIS));
-
-        jSeparator4.setMaximumSize(new java.awt.Dimension(32767, 6));
-        jSeparator4.setMinimumSize(new java.awt.Dimension(0, 6));
-        jSeparator4.setPreferredSize(new java.awt.Dimension(0, 6));
-        jPanelSepLine2.add(jSeparator4);
-
-        jPanelCenter.add(jPanelSepLine2);
 
         jPaneSepAccountInfo.setLayout(new javax.swing.BoxLayout(jPaneSepAccountInfo, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1464,7 +1453,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSepBlanc8;
     private javax.swing.JPanel jPanelSepBlank;
     private javax.swing.JPanel jPanelSepLine;
-    private javax.swing.JPanel jPanelSepLine2;
     private javax.swing.JPanel jPanelSouth;
     private javax.swing.JPanel jPanelSpellCheck;
     private javax.swing.JPanel jPanelTop;
@@ -1474,7 +1462,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;

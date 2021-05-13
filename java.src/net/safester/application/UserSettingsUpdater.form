@@ -82,25 +82,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanelSepLine2">
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JSeparator" name="jSeparator4">
-              <Properties>
-                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 6]"/>
-                </Property>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[0, 6]"/>
-                </Property>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[0, 6]"/>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
         <Container class="javax.swing.JPanel" name="jPaneSepAccountInfo">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
