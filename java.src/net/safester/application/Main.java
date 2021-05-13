@@ -2785,7 +2785,6 @@ public class Main extends javax.swing.JFrame {
 
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelToolbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanelToolbar.setLayout(new javax.swing.BoxLayout(jPanelToolbar, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelToolbarMain.setLayout(new java.awt.GridLayout(1, 0));
@@ -3585,6 +3584,8 @@ public class Main extends javax.swing.JFrame {
         jPaneStatusBar.add(jPanelButtonsNav);
 
         getContentPane().add(jPaneStatusBar);
+
+        jMenuBar1.setBorder(null);
 
         jMenuFile.setText("File");
 
