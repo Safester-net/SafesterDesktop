@@ -2569,7 +2569,8 @@ public class Main extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(jMenuBar1);
         SwingUtilities.updateComponentTreeUI(jPanelToolbar);
         SwingUtilities.updateComponentTreeUI(jPaneStatusBar);
-        
+        SwingUtilities.updateComponentTreeUI(jPanelSepStatusBar);
+                
         // Will do all clean reset!
         initCompany();
     }
