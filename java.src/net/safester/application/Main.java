@@ -235,6 +235,7 @@ public class Main extends javax.swing.JFrame {
     private Set<UserAccount> userAccounts = new TreeSet<>();
 
     private int typeSubscription;
+    private boolean alreadyAccountMenuBuilt;
 
     /**
      * Creates new form SafeShareMain
@@ -416,7 +417,12 @@ public class Main extends javax.swing.JFrame {
 
         this.jMenuAccounts.setText(messages.getMessage("accounts"));
         this.jMenuConnectToAccount.setText(messages.getMessage("connect_to_account"));
-        buildAccountsMenu();
+        
+        if (! this.alreadyAccountMenuBuilt) {
+          buildAccountsMenu();     
+          this.alreadyAccountMenuBuilt = true;
+        }
+
 
         this.jButtonAddressBook.setToolTipText(messages.getMessage("address_book"));
         this.jButtonDeleteSelectedMessage.setToolTipText(messages.getMessage("delete"));
@@ -710,6 +716,7 @@ public class Main extends javax.swing.JFrame {
     private void buildAccountsMenu() {
 
         JMenu jMenuSwitchTo = new JMenu(messages.getMessage("switch_to_account"));
+        jMenuAccounts.remove(jMenuSwitchTo);
         jMenuAccounts.add(jMenuSwitchTo);
         this.jMenuItemConnectToAccount.setText(messages.getMessage("new"));
 
@@ -773,6 +780,7 @@ public class Main extends javax.swing.JFrame {
             }
 
             JMenuItem item = new JMenuItem(theKeyId);
+            jMenuConnectToAccount.remove(item);
             jMenuConnectToAccount.add(item);
 
             item.addActionListener(new java.awt.event.ActionListener() {

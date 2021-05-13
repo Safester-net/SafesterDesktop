@@ -61,6 +61,7 @@ import com.google.gson.reflect.TypeToken;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomComboBox.TreeListCellRenderer;
 import com.swing.util.CustomComboBox.TreeListModel;
+import java.awt.Color;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -156,7 +157,10 @@ public class Search extends javax.swing.JFrame {
         jXDatePickerEnd.setDate(now.getTime());
         now.add(Calendar.MONTH, -1);
         jXDatePickerStart.setDate(now.getTime());
-
+        
+        //jXDatePickerStart.getMonthView().setMonthStringBackground(Color.red);
+        //jXDatePickerStart.getMonthView().setTodayBackground(Color.red);
+        
         this.jComboBoxContentType.addItem(messages.getMessage("subject"));
         this.jComboBoxContentType.addItem(messages.getMessage("subject_and_body"));
         jComboBoxContentType.setSelectedIndex(0);
