@@ -1373,7 +1373,6 @@ public class Register extends javax.swing.JFrame {
         jLabelQualityText.setText("jLabelQualityText");
         jLabelQualityText.setMaximumSize(new java.awt.Dimension(295, 16));
         jLabelQualityText.setMinimumSize(new java.awt.Dimension(295, 16));
-        jLabelQualityText.setOpaque(true);
         jLabelQualityText.setPreferredSize(new java.awt.Dimension(295, 16));
         jPanel23.add(jLabelQualityText);
 
