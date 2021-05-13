@@ -1122,6 +1122,7 @@ public class MessageReader extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setOpaque(false);
 
         jTextAreaRecipientsTo.setColumns(20);
         jTextAreaRecipientsTo.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -1164,6 +1165,7 @@ public class MessageReader extends javax.swing.JFrame {
 
         jScrollPane2.setBorder(null);
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setOpaque(false);
 
         jTextAreaRecipientsCc.setColumns(20);
         jTextAreaRecipientsCc.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -1329,7 +1331,7 @@ public class MessageReader extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
-        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_write.png"))); // NOI18N
         jMenuItemNew.setText("jMenuItem1");
         jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
@@ -1340,7 +1342,7 @@ public class MessageReader extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemNew);
         jMenuFile.add(jSeparator11);
 
-        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/printer.png"))); // NOI18N
         jMenuItemPrint.setText("jMenuItem2");
         jMenuItemPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -1351,7 +1353,7 @@ public class MessageReader extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemPrint);
         jMenuFile.add(jSeparator7);
 
-        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/close.png"))); // NOI18N
         jMenuItemClose.setText("jMenuItem1");
         jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
@@ -1365,7 +1367,7 @@ public class MessageReader extends javax.swing.JFrame {
 
         jMenuMessage.setText("Message");
 
-        jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemReply.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemReply.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_reply.png"))); // NOI18N
         jMenuItemReply.setText("jMenuItem2");
         jMenuItemReply.addActionListener(new java.awt.event.ActionListener() {
@@ -1384,7 +1386,7 @@ public class MessageReader extends javax.swing.JFrame {
         });
         jMenuMessage.add(jMenuItemReplyAll);
 
-        jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemFoward.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemFoward.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/mail_forward.png"))); // NOI18N
         jMenuItemFoward.setText("jMenuItem2");
         jMenuItemFoward.addActionListener(new java.awt.event.ActionListener() {

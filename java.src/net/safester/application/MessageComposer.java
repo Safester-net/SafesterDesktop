@@ -1011,19 +1011,26 @@ public class MessageComposer extends javax.swing.JFrame {
         jScrollPaneTo = new JScrollPane(powerEditorTo);
         jPanelScrollPaneTo.add(jScrollPaneTo);
         jScrollPaneTo.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+        
+        //KawanSoft NDP 13/05/21
+        jScrollPaneTo.setViewportView(jTextAreaRecipientsTo);
+        
         powerEditorCc = new PowerEditor(lexicon, this, jTextAreaRecipientsCc);
         jPanelScrollPaneCc.remove(jScrollPaneCc);
         jScrollPaneCc = new JScrollPane(powerEditorCc);
         jPanelScrollPaneCc.add(jScrollPaneCc);
         jScrollPaneCc.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+        //KawanSoft NDP 13/05/21
+        jScrollPaneCc.setViewportView(jTextAreaRecipientsCc);
+        
         powerEditorBcc = new PowerEditor(lexicon, this, jTextAreaRecipientsBcc);
         jPanelScrollPaneBcc.remove(jScrollPanelBcc);
         jScrollPanelBcc = new JScrollPane(powerEditorBcc);
         jPanelScrollPaneBcc.add(jScrollPanelBcc);
         jScrollPanelBcc.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+        //KawanSoft NDP 13/05/21
+        jScrollPanelBcc.setViewportView(jTextAreaRecipientsBcc);
+        
         releaseCompletion();
     }
 
