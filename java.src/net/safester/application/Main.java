@@ -284,6 +284,12 @@ public class Main extends javax.swing.JFrame {
 
         System.out.println(new Date() + "Safester... initCompany begin...");
 
+        if (! Themes.DARK_MODE_ON) {
+            jMenuItemThemeFlatDarkPurpleIJTheme.setVisible(false);
+            jMenuItemThemeFlatLafDarcula.setVisible(false);
+            jSeparatorThemes.setVisible(false);
+        }
+        
         // clipboardManager = new ClipboardManager(rootPane);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -2750,7 +2756,7 @@ public class Main extends javax.swing.JFrame {
         jMenuAppearance = new javax.swing.JMenu();
         jMenuItemThemeFlatIntelliJLaf = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatArcOrangeIJTheme = new javax.swing.JRadioButtonMenuItem();
-        jSeparator24 = new javax.swing.JPopupMenu.Separator();
+        jSeparatorThemes = new javax.swing.JPopupMenu.Separator();
         jMenuItemThemeFlatLafDarcula = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatDarkPurpleIJTheme = new javax.swing.JRadioButtonMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
@@ -3803,7 +3809,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenuAppearance.add(jMenuItemThemeFlatArcOrangeIJTheme);
-        jMenuAppearance.add(jSeparator24);
+        jMenuAppearance.add(jSeparatorThemes);
 
         buttonGroupAppearance.add(jMenuItemThemeFlatLafDarcula);
         jMenuItemThemeFlatLafDarcula.setText("FlatLaf Darcula");
@@ -4880,7 +4886,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator21;
     private javax.swing.JPopupMenu.Separator jSeparator22;
     private javax.swing.JPopupMenu.Separator jSeparator23;
-    private javax.swing.JPopupMenu.Separator jSeparator24;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
@@ -4890,6 +4895,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JToolBar.Separator jSeparatorButtonBuy;
     private javax.swing.JSeparator jSeparatorColored;
+    private javax.swing.JPopupMenu.Separator jSeparatorThemes;
     private javax.swing.JSplitPane jSplitPaneFolders;
     private javax.swing.JSplitPane jSplitPaneMessage;
     private javax.swing.JTable jTable1;

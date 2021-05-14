@@ -25,13 +25,14 @@ package com.swing.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.safester.application.util.UserPrefManager;
 
 /**
  * Themes management for Safester Look & Feel
  * @author ndepo
  */
 public class Themes {
+    
+    public static boolean DARK_MODE_ON;
     
     // Ligt
     public static final String FLAT_INTELLIJ_LAF = com.formdev.flatlaf.FlatIntelliJLaf.class.getName();
