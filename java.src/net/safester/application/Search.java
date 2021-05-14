@@ -61,6 +61,7 @@ import com.google.gson.reflect.TypeToken;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomComboBox.TreeListCellRenderer;
 import com.swing.util.CustomComboBox.TreeListModel;
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingColorUtil;
 import com.swing.util.Themes;
 import java.awt.Color;
@@ -160,7 +161,7 @@ public class Search extends javax.swing.JFrame {
         now.add(Calendar.MONTH, -1);
         jXDatePickerStart.setDate(now.getTime());
 
-        if (Themes.getCurrentTheme().equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
+        if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
             Color color = SwingColorUtil.getThemeColor();
             jXDatePickerStart.getMonthView().setMonthStringBackground(color);
             jXDatePickerStart.getMonthView().setSelectionBackground(color);

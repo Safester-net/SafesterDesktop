@@ -99,6 +99,7 @@ import com.safelogic.utilx.StringMgr;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.CustomJTree;
 import com.swing.util.CustomJtree.TreeNodeAdder;
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingColorUtil;
 import com.swing.util.Themes;
 import java.util.logging.Level;
@@ -2532,7 +2533,7 @@ public class Main extends javax.swing.JFrame {
     
     private void setSelectedThemeRadioButton() {   
         
-        String className = UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
+        String className = LookAndFeelHelper.getCurrentTheme();
         
         if (className.equals(Themes.FLAT_INTELLIJ_LAF)) {
             this.jMenuItemThemeFlatIntelliJLaf.setSelected(true);

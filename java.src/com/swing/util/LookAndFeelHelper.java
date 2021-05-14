@@ -26,6 +26,7 @@ package com.swing.util;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.UIManager;
+import net.safester.application.util.UserPrefManager;
 
 /**
  * Says if is Dark Mode, will contains getter for Colors, etc.
@@ -34,7 +35,7 @@ import javax.swing.UIManager;
 public class LookAndFeelHelper {
 
     /**
-     * Temporary dirty implementation, to be seriously enhanced!
+     * Analyses if the Theme is in Dark mode.
      * @return true if Dark Mode.
      */
     public static boolean isDarkMode() {
@@ -42,4 +43,13 @@ public class LookAndFeelHelper {
         List<String> themesArray = Arrays.asList(Themes.LIGT_THEMES);
         return themesArray.contains(lookAndFeel);
     }
+    
+    /**
+     * Returns the current Theme in use
+     * @return the current Theme in use
+     */
+    public static String getCurrentTheme() {
+        return UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
+    }
+    
 }
