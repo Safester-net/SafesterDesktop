@@ -319,13 +319,9 @@ public class About extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelLogos.setBackground(new java.awt.Color(255, 255, 255));
         jPanelLogos.setMaximumSize(new java.awt.Dimension(32767, 93));
         jPanelLogos.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 12, 12));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabelLogo.setBackground(new java.awt.Color(255, 255, 255));
         jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-blue-on-white-300x99.png"))); // NOI18N
         jLabelLogo.setOpaque(true);
         jPanel1.add(jLabelLogo);
@@ -334,10 +330,8 @@ public class About extends javax.swing.JFrame {
 
         getContentPane().add(jPanelLogos);
 
-        jPanelMain.setBackground(new java.awt.Color(255, 255, 255));
         jPanelMain.setLayout(new javax.swing.BoxLayout(jPanelMain, javax.swing.BoxLayout.X_AXIS));
 
-        jPanelBorderLeft.setBackground(new java.awt.Color(255, 255, 255));
         jPanelBorderLeft.setMaximumSize(new java.awt.Dimension(10, 10));
         jPanelMain.add(jPanelBorderLeft);
 
@@ -345,7 +339,6 @@ public class About extends javax.swing.JFrame {
         jPanelCenter.setMinimumSize(new java.awt.Dimension(290, 600));
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelAbout.setBackground(new java.awt.Color(255, 255, 255));
         jPanelAbout.setBorder(javax.swing.BorderFactory.createTitledBorder("About"));
         jPanelAbout.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
 
@@ -354,11 +347,9 @@ public class About extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelAbout);
 
-        jPanelSep.setBackground(new java.awt.Color(255, 255, 255));
         jPanelSep.setMaximumSize(new java.awt.Dimension(32767, 10));
         jPanelCenter.add(jPanelSep);
 
-        jPanelCredits.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCredits.setBorder(javax.swing.BorderFactory.createTitledBorder("Credits"));
         jPanelCredits.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
 
@@ -370,13 +361,11 @@ public class About extends javax.swing.JFrame {
 
         jPanelMain.add(jPanelCenter);
 
-        jPanelBorderRight.setBackground(new java.awt.Color(255, 255, 255));
         jPanelBorderRight.setMaximumSize(new java.awt.Dimension(10, 10));
         jPanelMain.add(jPanelBorderRight);
 
         getContentPane().add(jPanelMain);
 
-        jPanelButtons.setBackground(new java.awt.Color(255, 255, 255));
         jPanelButtons.setMaximumSize(new java.awt.Dimension(32767, 65));
         jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 10));
 
