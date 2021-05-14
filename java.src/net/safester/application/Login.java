@@ -67,6 +67,7 @@ import org.awakefw.file.api.client.AwakeUrl;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.syntax.EmailChecker;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.install.AskForDownloadJframe;
@@ -1271,10 +1272,12 @@ public class Login extends javax.swing.JFrame {
 
     private void jButtonVersionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonVersionMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonVersionMouseEntered
 
     private void jButtonVersionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonVersionMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonVersionMouseExited
 
     private void jMenuItemSystemInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSystemInfoActionPerformed

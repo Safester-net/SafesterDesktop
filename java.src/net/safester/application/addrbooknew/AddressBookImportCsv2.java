@@ -23,6 +23,7 @@
  */
 package net.safester.application.addrbooknew;
 
+import com.swing.util.ButtonUrlOver;
 import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_HEIGHT;
 import static net.safester.application.addrbooknew.AddressBookImportCsv1.ADDR_WIDTH;
 import static net.safester.application.addrbooknew.tools.AddressBookUtil.getSeparator;
@@ -1184,10 +1185,12 @@ private void jButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//G
 
 private void jButtonDisplayFileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDisplayFileMouseEntered
     this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    ButtonUrlOver.enter(evt);
 }//GEN-LAST:event_jButtonDisplayFileMouseEntered
 
 private void jButtonDisplayFileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDisplayFileMouseExited
     this.setCursor(Cursor.getDefaultCursor());
+    ButtonUrlOver.exit(evt);
 }//GEN-LAST:event_jButtonDisplayFileMouseExited
 
 private void jSpinnerLastnameColStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerLastnameColStateChanged

@@ -96,6 +96,7 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.kawansoft.httpclient.KawanHttpClient;
 import com.safelogic.utilx.StringMgr;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.CustomJTree;
 import com.swing.util.CustomJtree.TreeNodeAdder;
@@ -4295,18 +4296,22 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonPrevMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonPrevMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }// GEN-LAST:event_jButtonPrevMouseEntered
 
     private void jButtonNextMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonNextMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }// GEN-LAST:event_jButtonNextMouseEntered
 
     private void jButtonPrevMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonPrevMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }// GEN-LAST:event_jButtonPrevMouseExited
 
     private void jButtonNextMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonNextMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }// GEN-LAST:event_jButtonNextMouseExited
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonPrevActionPerformed
@@ -4475,10 +4480,12 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonDetailMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonDetailMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }// GEN-LAST:event_jButtonDetailMouseEntered
 
     private void jButtonDetailMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonDetailMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }// GEN-LAST:event_jButtonDetailMouseExited
 
     private void jButtonDetailActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonDetailActionPerformed
