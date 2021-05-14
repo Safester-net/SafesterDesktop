@@ -172,10 +172,10 @@ public class About extends javax.swing.JFrame {
             aboutText += "<br><i>" + subscription + " " + this.messages.getMessage("account") + "</i>";
         }
 
-        String urlEmail = "<a href=mailto:{0}>{1}</a>";
+        String urlEmail = "<a href=\"mailto:{0}\" style=\"text-decoration: none;\">{1}</a>";
         urlEmail = MessageFormat.format(urlEmail, ServerParms.CONTACT_EMAIL, ServerParms.CONTACT_EMAIL);
 
-        String urlWeb = "<a href={0}>{1}</a>";
+        String urlWeb = "<a href=\"{0}\" style=\"text-decoration: none;\">{1}</a>";
         urlWeb = MessageFormat.format(urlWeb, "https://" + ServerParms.CONTACT_WEB, ServerParms.CONTACT_WEB);
 
         aboutText
@@ -211,9 +211,9 @@ public class About extends javax.swing.JFrame {
                 = "<P ALIGN=RIGHT><font face=\"Arial\" size=4>"
                 + this.messages.getMessage("this_product_includes_software_developped_by")
                 + "<br>"
-                + "<br><a href=http://www.apache.org>The Apache Software Foundation</a>"
-                + "<br><a href=http://www.bouncycastle.org>The Legion Of The Bouncy Castle</a>"
-                + "<br><a href=http://iharder.sourceforge.net/current/java/filedrop>iHarder.net</a>"
+                + "<br><a href=\"http://www.apache.org\" style=\"text-decoration: none;\">The Apache Software Foundation</a>"
+                + "<br><a href=\"http://www.bouncycastle.org\" style=\"text-decoration: none;\">The Legion Of The Bouncy Castle</a>"
+                + "<br><a href=\"http://iharder.sourceforge.net/current/java/filedrop\" style=\"text-decoration: none;\">iHarder.net</a>"
                 + "<br>";
 
         jEditorPaneCredits.setText(creditText);
