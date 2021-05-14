@@ -78,8 +78,18 @@ public class SwingColorUtil {
         return (!jButton.isContentAreaFilled() && !jButton.isBorderPainted());
     }
     
-    public static Color getSeparatorColor() {
+    public static Color getSeparatorColor() {        
+        return getThemeColor();
+    }
+
+    /**
+     * The background selection color is in fact the Theme Color
+     * @return The background selection color
+     */
+    public static Color getThemeColor() {
         Color separatorColor = UIManager.getColor("TextField.selectionBackground");
         return separatorColor;
     }
+    
+    
 }

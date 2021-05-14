@@ -26,6 +26,7 @@ package com.swing.util;
 import com.google.common.collect.HashBiMap;
 import java.util.HashMap;
 import java.util.Map;
+import net.safester.application.util.UserPrefManager;
 
 /**
  * Themes management for Safester Look & Feel
@@ -76,6 +77,10 @@ public class Themes {
         }
         
         return map;
+    }
+    
+    public static String getCurrentTheme() {
+        return UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, DEFAULT_THEME);
     }
 }
     
