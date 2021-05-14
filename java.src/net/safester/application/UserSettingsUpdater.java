@@ -288,7 +288,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.jTextFieldUserName.requestFocus();
                
         this.setLocationRelativeTo(parent);
-        this.setSize(new Dimension(606, 751));
+        this.setSize(new Dimension(611, 759));
        
         SwingUtil.applySwingUpdates(rootPane);
         
