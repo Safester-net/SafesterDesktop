@@ -40,7 +40,7 @@ public class LookAndFeelHelper {
      */
     public static boolean isDarkMode() {
         String lookAndFeel = UIManager.getLookAndFeel().toString();
-        List<String> themesArray = Arrays.asList(Themes.LIGT_THEMES);
+        List<String> themesArray = Arrays.asList(Themes.DARK_THEMES);
         return themesArray.contains(lookAndFeel);
     }
     
