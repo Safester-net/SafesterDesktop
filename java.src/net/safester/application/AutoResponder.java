@@ -110,7 +110,7 @@ public class AutoResponder extends javax.swing.JDialog {
     public void initializeCompany() {
 	clipboardManager = new ClipboardManager(rootPane);
 
-	Dimension dim = new Dimension(495, 495);
+	Dimension dim = new Dimension(530, 530);
 	this.setSize(dim);
 	this.setPreferredSize(dim);
 

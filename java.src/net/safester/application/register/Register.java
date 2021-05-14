@@ -213,7 +213,13 @@ public class Register extends javax.swing.JFrame {
         });
 
         // Add + 2 to JEditorPane fonts
-        Font fontNewJEditorPane = new Font(jEditorPane.getFont().getName(), jEditorPane.getFont().getStyle(), jEditorPane.getFont().getSize() + 2);
+        int increaseFont = 0;
+        
+        if ( !SystemUtils.IS_OS_LINUX) {
+            increaseFont = 2;
+        }
+     
+        Font fontNewJEditorPane = new Font(jEditorPane.getFont().getName(), jEditorPane.getFont().getStyle(), jEditorPane.getFont().getSize() + increaseFont);
         
         jEditorPaneEmail.setFont(fontNewJEditorPane);
         
