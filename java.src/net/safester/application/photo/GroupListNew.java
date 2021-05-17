@@ -186,11 +186,11 @@ public class GroupListNew extends javax.swing.JFrame {
                     }
                 });
 
-            jXTreeTable.setBackground(Color.WHITE);      
+           // jXTreeTable.setBackground(Color.WHITE);      
             jXTreeTable.expandAll();
                     
             this.jScrollPane1.setViewportView(jXTreeTable);
-            jScrollPane1.getViewport().setBackground(Color.WHITE);
+          //  jScrollPane1.getViewport().setBackground(Color.WHITE);
 
             this.setCursor(Cursor.getDefaultCursor());
         } catch (SQLException ex) {

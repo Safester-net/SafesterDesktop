@@ -51,6 +51,7 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.Base64;
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -136,9 +137,9 @@ public class ContactSelector extends javax.swing.JFrame {
         jTextAreaHelp.setText(messages.getMessage("select_and_use_right_click_to_add"));
         //Build popup menu
         popupMenu = new JPopupMenu();
-        if( origin != GroupEditor.BUTTON_ADD){
+        if (origin != GroupEditor.BUTTON_ADD){
             initPopupForComposer();
-        }else{
+        } else {
             initPopupForGroupCreator();
         }
 
@@ -163,7 +164,9 @@ public class ContactSelector extends javax.swing.JFrame {
         jLabelIn.setVisible(false);
         jComboBoxSearch.setVisible(false);
         
-        jTextAreaHelp.setBackground(Color.WHITE);
+
+        jTextAreaHelp.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        jTextAreaHelp.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         this.keyListenerAdder();
         
         clipboard1 = new ClipboardManager(jTextFieldSearch);

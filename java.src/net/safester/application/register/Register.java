@@ -215,8 +215,8 @@ public class Register extends javax.swing.JFrame {
         
         jEditorPaneEmail.setFont(fontNewJEditorPane);
         
-        jEditorPaneEmail.setBackground(Color.WHITE);
-        jEditorPane.setBackground(Color.WHITE);
+//        jEditorPaneEmail.setBackground(Color.WHITE);
+//        jEditorPane.setBackground(Color.WHITE);
 
         jLabelQualityText.setText(null);
 

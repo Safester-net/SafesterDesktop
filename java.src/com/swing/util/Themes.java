@@ -43,7 +43,7 @@ public class Themes {
     
     public static final String DEFAULT_THEME = FLAT_INTELLIJ_LAF;
     
-    public static  String [] LIGT_THEMES = {FLAT_INTELLIJ_LAF, FLAT_ARCORANGEIJ_THEME};
+    public static  String [] LIGHT_THEMES = {FLAT_INTELLIJ_LAF, FLAT_ARCORANGEIJ_THEME};
     public static  String [] DARK_THEMES = {FLAT_DARCULA_LAF, FLAT_DARK_PURPLEIJ_THEME};
     
     public static  String [] THEME_NAMES = {"Flat IntelJ", "Arc Orange", "Flat Darkula", "Dark Purple" };

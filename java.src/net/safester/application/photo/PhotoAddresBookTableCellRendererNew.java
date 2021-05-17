@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.apache.commons.lang3.StringUtils;
 
 import com.kawansoft.crypt.util.sms.PhoneCountryLookup;
+import com.swing.util.LookAndFeelHelper;
 
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
@@ -121,10 +122,10 @@ public class PhotoAddresBookTableCellRendererNew extends DefaultTableCellRendere
             }
         }
         else {
-            c.setBackground(Color.white);
+            c.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         }
         
-        c.setForeground(Color.black);
+        c.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
         
         int [] selRows = table.getSelectedRows();
         if (selRows.length != 0)

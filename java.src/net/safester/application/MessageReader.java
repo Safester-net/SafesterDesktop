@@ -265,7 +265,7 @@ public class MessageReader extends javax.swing.JFrame {
         this.jEditorPaneBody.setContentType("text/html");
         this.jEditorPaneBody.setEditable(false);
 
-        this.jEditorPaneBody.setBackground(Color.WHITE);
+    //    this.jEditorPaneBody.setBackground(Color.WHITE);
 
         this.jEditorPaneBody.setText(text);
 

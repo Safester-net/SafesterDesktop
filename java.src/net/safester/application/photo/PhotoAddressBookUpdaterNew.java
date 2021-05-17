@@ -347,11 +347,11 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         // Exception
         jPanelToobar.setBackground(new Color(240, 240, 240));
 
-        jTextFieldCompany.setBackground(Color.WHITE);
-        jTextFieldMobile.setBackground(Color.WHITE);
-        jTextFieldRecipientEmail1.setBackground(Color.WHITE);
-        jTextFieldRecipientName.setBackground(Color.WHITE);
-        jTextFieldSearch.setBackground(Color.WHITE);
+//        jTextFieldCompany.setBackground(Color.WHITE);
+//        jTextFieldMobile.setBackground(Color.WHITE);
+//        jTextFieldRecipientEmail1.setBackground(Color.WHITE);
+//        jTextFieldRecipientName.setBackground(Color.WHITE);
+//        jTextFieldSearch.setBackground(Color.WHITE);
         
         if (!(parent instanceof Main)) {
             jToolBar1.remove(jButtonSendMessageToContact);
@@ -364,7 +364,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         
         jButtonSave.setEnabled(false);
         jMenuItemSave.setEnabled(false);
-                
+        
         this.setLocationRelativeTo(parent);
         WindowSettingManager.load(this);
     }

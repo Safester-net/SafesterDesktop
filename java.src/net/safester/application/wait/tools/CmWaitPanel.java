@@ -30,6 +30,8 @@ package net.safester.application.wait.tools;
 
 import java.awt.Label;
 
+import com.swing.util.LookAndFeelHelper;
+
 
 public class CmWaitPanel
 	extends Label
@@ -46,7 +48,11 @@ public class CmWaitPanel
 		m_cpPal = cpPal ;
 		if(m_cpPal == null)
 			m_cpPal = CmPalette.getDefaultInstance() ;
-		this.setBackground(m_cpPal.getColor("cm.comp.bgcolor")) ;
+		if(LookAndFeelHelper.isDarkMode()) {
+			this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+		} else {
+			this.setBackground(m_cpPal.getColor("cm.comp.bgcolor")) ;
+		}
 		this.setForeground(m_cpPal.getColor("cm.bar.fgcolor")) ;
 	}
 	

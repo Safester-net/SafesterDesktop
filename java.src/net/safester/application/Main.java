@@ -161,7 +161,9 @@ import net.safester.noobs.clientserver.SubjectDecryptionClient;
  */
 public class Main extends javax.swing.JFrame {
 
-    public static boolean DEBUG = false;
+	private static final long serialVersionUID = 5509970971378302525L;
+
+	public static boolean DEBUG = false;
 
     public static final int STANDARD_DIVIDER_SIZE = 5;
 
@@ -512,14 +514,13 @@ public class Main extends javax.swing.JFrame {
         }
 
         this.customJtree.setBorder(new EmptyBorder(2, 5, 2, 2));
-        this.customJtree.setBackground(Color.WHITE);
+        this.customJtree.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
 
         // this.jPanelFolders.add(customJtree, BorderLayout.CENTER);
         // this.jPanelFoldersTree.add(customJtree);
         this.jScrollPane2.setViewportView(customJtree);
         jSplitPaneFolders.setOneTouchExpandable(false);
         jSplitPaneMessage.setOneTouchExpandable(false);
-
         updateStatusBar();
 
         // Build table
@@ -687,8 +688,9 @@ public class Main extends javax.swing.JFrame {
         SubjectDecryptionClient subjectDecryptionClient = new SubjectDecryptionClient(userNumber, passphrase,
                 connection);
         subjectDecryptionClient.updateSubjectsInThread();
-
         initDone = true;
+        
+        applyTheme();
     }
 
     private void updateStatusBar() {
@@ -2168,7 +2170,72 @@ public class Main extends javax.swing.JFrame {
         // this.jButtonPrev.setVisible(false);
         // this.jButtonNext.setVisible(false);
         // this.jLabelNbElements.setText(null);
+
+
+        jEditorPaneBody.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jEditorPaneBody.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+
     }
+
+	private void applyTheme() {
+		jPanelMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelMessage.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+
+        jPanelMessageMain.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelMessageMain.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jTextFieldSubject.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jTextFieldSubject.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jPanelSubject.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelSubject.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+
+        jTextFieldDate.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jTextFieldDate.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jTextAreaRecipientsTo.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jTextAreaRecipientsTo.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+
+        jTextAreaRecipientsCc.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jTextAreaRecipientsCc.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+      
+        jPanelFromAndRecip.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelFromAndRecip.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jPanelNorth.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelNorth.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jPanelMessageContainer.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelMessageContainer.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jPanelAttachSepMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelAttachSepMessage.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+
+        jListAttach.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jListAttach.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jPanelAttach.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelAttach.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+           
+        jPanelScrollPane.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelScrollPane.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jSplitPaneMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jSplitPaneMessage.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jSplitPaneFolders.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jSplitPaneFolders.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        
+        jPanelSeparator.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        
+        if(!LookAndFeelHelper.isDarkMode()) {
+        	jSeparatorColored.setForeground(new java.awt.Color(102, 102, 255));
+        } else {
+        	jSeparatorColored.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+        }
+        
+        jPanelSepRecipients.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+	}
 
     /**
      * @param messageId
@@ -2244,7 +2311,7 @@ public class Main extends javax.swing.JFrame {
         JListUtil.selectItemWhenMouverOver(jListAttach);
 
         jListAttach.setCellRenderer(new ReceivedAttachmentListRenderer(attachments));
-
+        
         // HACK NDP 17/03/18
         JListUtil.formatSpacing(jListAttach);
 

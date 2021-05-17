@@ -41,6 +41,8 @@ import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 
+import com.swing.util.LookAndFeelHelper;
+
 import net.safester.application.parms.Parms;
 import net.safester.application.util.GroupTreeTableElement;
 import net.safester.application.util.TableUtil;
@@ -138,8 +140,10 @@ public class GroupTreeCellRendererNew extends DefaultTreeCellRenderer {
         this.setOpaque(true);
         boolean highlight = (oldSelectedPath != null) && (value == oldSelectedPath.getLastPathComponent());
 
-        this.setBackground(highlight ? TableUtil.HOVER_COLOR : tree.getBackground());
-        this.setForeground(highlight ? Color.BLACK : tree.getForeground());
+//        this.setBackground(highlight ? TableUtil.HOVER_COLOR : tree.getBackground());
+//        this.setForeground(highlight ? Color.BLACK : tree.getForeground());
+        this.setBackground(highlight ? TableUtil.HOVER_COLOR : LookAndFeelHelper.getDefaultBackgroundColor());
+        this.setForeground(highlight ? Color.BLACK : LookAndFeelHelper.getDefaultForegroundColor());
 
         if (exited) {
             this.setBackground(tree.getBackground());

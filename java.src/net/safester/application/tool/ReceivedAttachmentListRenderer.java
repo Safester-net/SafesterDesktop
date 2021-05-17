@@ -23,7 +23,6 @@
  */
 package net.safester.application.tool;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,6 +40,8 @@ import javax.swing.border.EmptyBorder;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.swing.util.LookAndFeelHelper;
+
 import net.safester.application.parms.Parms;
 import net.safester.application.util.CacheFileHandler;
 import net.safester.application.util.JListUtil;
@@ -50,7 +51,9 @@ import net.safester.noobs.clientserver.AttachmentLocal;
 
 public class ReceivedAttachmentListRenderer extends JLabel implements ListCellRenderer {
 
-    private Map<Integer, Long> fileSizes = new HashMap<Integer, Long>();
+	private static final long serialVersionUID = -5358785228328177483L;
+
+	private Map<Integer, Long> fileSizes = new HashMap<Integer, Long>();
     
     private static int MAX_WIDTH = 0;
 
@@ -145,8 +148,8 @@ public class ReceivedAttachmentListRenderer extends JLabel implements ListCellRe
                 setForeground(TableUtil.getMouseOverForeground());
             }
             else {
-                setBackground(Color.WHITE); //list.getBackground());
-                setForeground(list.getForeground());               
+                setBackground(LookAndFeelHelper.getDefaultBackgroundColor()); //list.getBackground());
+                setForeground(LookAndFeelHelper.getDefaultForegroundColor());               
             }
 
         

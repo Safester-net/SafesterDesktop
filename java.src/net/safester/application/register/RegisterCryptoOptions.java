@@ -23,7 +23,6 @@
  */
 package net.safester.application.register;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.KeyAdapter;
@@ -33,6 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -115,8 +115,6 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         jComboBoxKeyLength.setSelectedItem(Integer.toString(asymKeyLength));
         jComboBoxAlgoSymmetric.setSelectedItem(this.algoSymmetric);
 
-        jEditorPane.setBackground(Color.WHITE);
-        
         jButtonOk.setText(messages.getMessage("ok"));
         jButtonClose.setText(messages.getMessage("cancel"));
 
@@ -126,6 +124,11 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         addHyperLinkListener();
         keyListenerAdder();
+        
+        jPanelSouth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelNorth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelEast1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelWest1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
 
         this.setSize(470,420);
     }

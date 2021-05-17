@@ -89,6 +89,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.commons.lang3.SystemUtils;
 
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.dragdrop.TreeDataExtractor;
 import com.swing.util.CustomJtree.dragdrop.TreeTransferHandler;
@@ -186,7 +187,7 @@ public class CustomJTree extends JPanel
         
         tree.setModel(treeModel);
 
-        tree.setBackground(Color.white);
+        tree.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         
         FolderTreeCellRendererNew myRenderer = new FolderTreeCellRendererNew(tree);
         tree.setCellRenderer(myRenderer);

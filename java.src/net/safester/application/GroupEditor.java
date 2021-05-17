@@ -283,7 +283,7 @@ public class GroupEditor extends javax.swing.JFrame {
         buttonResizer.setWidthToMax();
         
         jPanelToolbar.setBackground(new Color(240, 240, 240));                  
-        jEditorPaneHelp.setBackground(Color.white);
+    //    jEditorPaneHelp.setBackground(Color.white);
                 
         jEditorPaneHelp.setMargin(new Insets(5, 5, 5, 5));
         jTextAreaMembers.setMargin(new Insets(5, 5, 5, 5));
