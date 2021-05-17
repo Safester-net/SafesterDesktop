@@ -25,6 +25,7 @@ package net.safester.application.addrbooknew.gmail;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleBrowserClientRequestUrl;
 import com.kawansoft.httpclient.KawanHttpClient;
+import com.swing.util.ButtonUrlOver;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -682,10 +683,12 @@ private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
     private void jButtonGetCodeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGetCodeMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonGetCodeMouseEntered
 
     private void jButtonGetCodeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGetCodeMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonGetCodeMouseExited
 
     private void jButtonGetCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGetCodeActionPerformed

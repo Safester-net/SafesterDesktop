@@ -61,6 +61,7 @@ import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.PgeepPrivateKey;
 import com.safelogic.pgp.api.util.crypto.Sha1;
 import com.safelogic.utilx.syntax.EmailChecker;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.http.ApiCoupon;
@@ -1293,10 +1294,12 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
     private void jButtonSpellCheckOptionsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSpellCheckOptionsMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonSpellCheckOptionsMouseEntered
 
     private void jButtonSpellCheckOptionsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSpellCheckOptionsMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonSpellCheckOptionsMouseExited
 
     private void jButtonSignatureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignatureActionPerformed

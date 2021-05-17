@@ -74,6 +74,7 @@ import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.toolkit.CgeepApiTools;
 import com.safelogic.utilx.StringMgr;
 import com.safelogic.utilx.syntax.EmailChecker;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 import java.awt.FocusTraversalPolicy;
 import java.util.Vector;
@@ -95,6 +96,7 @@ import net.safester.application.util.PolicyInstaller;
 import net.safester.application.util.proxy.ProxySessionCheckerNew;
 import net.safester.application.wait.tools.CmWaitDialog;
 import net.safester.clientserver.ServerParms;
+import static com.swing.util.ButtonUrlOver.exit;
 
 public class Register extends javax.swing.JFrame {
 
@@ -211,7 +213,13 @@ public class Register extends javax.swing.JFrame {
         });
 
         // Add + 2 to JEditorPane fonts
-        Font fontNewJEditorPane = new Font(jEditorPane.getFont().getName(), jEditorPane.getFont().getStyle(), jEditorPane.getFont().getSize() + 2);
+        int increaseFont = 0;
+        
+        if ( !SystemUtils.IS_OS_LINUX) {
+            increaseFont = 2;
+        }
+     
+        Font fontNewJEditorPane = new Font(jEditorPane.getFont().getName(), jEditorPane.getFont().getStyle(), jEditorPane.getFont().getSize() + increaseFont);
         
         jEditorPaneEmail.setFont(fontNewJEditorPane);
         
@@ -1526,14 +1534,17 @@ public class Register extends javax.swing.JFrame {
             this.jPassword1.setEchoChar((char) 0);
         }
     }//GEN-LAST:event_jCheckBoxHideTypingItemStateChanged
-
+    
     private void jButtonCryptoSettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCryptoSettingsMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonCryptoSettingsMouseEntered
 
     private void jButtonCryptoSettingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCryptoSettingsMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonCryptoSettingsMouseExited
+
 
     private void jButtonCryptoSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCryptoSettingsActionPerformed
 

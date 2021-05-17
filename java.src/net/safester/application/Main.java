@@ -96,6 +96,7 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.kawansoft.httpclient.KawanHttpClient;
 import com.safelogic.utilx.StringMgr;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.CustomJTree;
 import com.swing.util.CustomJtree.TreeNodeAdder;
@@ -285,6 +286,12 @@ public class Main extends javax.swing.JFrame {
 
         System.out.println(new Date() + "Safester... initCompany begin...");
 
+        if (! Themes.DARK_MODE_ON) {
+            jMenuItemThemeFlatDarkPurpleIJTheme.setVisible(false);
+            jMenuItemThemeFlatLafDarcula.setVisible(false);
+            jSeparatorThemes.setVisible(false);
+        }
+        
         // clipboardManager = new ClipboardManager(rootPane);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -2816,7 +2823,7 @@ public class Main extends javax.swing.JFrame {
         jMenuAppearance = new javax.swing.JMenu();
         jMenuItemThemeFlatIntelliJLaf = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatArcOrangeIJTheme = new javax.swing.JRadioButtonMenuItem();
-        jSeparator24 = new javax.swing.JPopupMenu.Separator();
+        jSeparatorThemes = new javax.swing.JPopupMenu.Separator();
         jMenuItemThemeFlatLafDarcula = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatDarkPurpleIJTheme = new javax.swing.JRadioButtonMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
@@ -3869,7 +3876,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenuAppearance.add(jMenuItemThemeFlatArcOrangeIJTheme);
-        jMenuAppearance.add(jSeparator24);
+        jMenuAppearance.add(jSeparatorThemes);
 
         buttonGroupAppearance.add(jMenuItemThemeFlatLafDarcula);
         jMenuItemThemeFlatLafDarcula.setText("FlatLaf Darcula");
@@ -4362,18 +4369,22 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonPrevMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonPrevMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }// GEN-LAST:event_jButtonPrevMouseEntered
 
     private void jButtonNextMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonNextMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }// GEN-LAST:event_jButtonNextMouseEntered
 
     private void jButtonPrevMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonPrevMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }// GEN-LAST:event_jButtonPrevMouseExited
 
     private void jButtonNextMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonNextMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }// GEN-LAST:event_jButtonNextMouseExited
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonPrevActionPerformed
@@ -4542,10 +4553,12 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonDetailMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonDetailMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }// GEN-LAST:event_jButtonDetailMouseEntered
 
     private void jButtonDetailMouseExited(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButtonDetailMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }// GEN-LAST:event_jButtonDetailMouseExited
 
     private void jButtonDetailActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonDetailActionPerformed
@@ -4940,7 +4953,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator21;
     private javax.swing.JPopupMenu.Separator jSeparator22;
     private javax.swing.JPopupMenu.Separator jSeparator23;
-    private javax.swing.JPopupMenu.Separator jSeparator24;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
@@ -4950,6 +4962,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JToolBar.Separator jSeparatorButtonBuy;
     private javax.swing.JSeparator jSeparatorColored;
+    private javax.swing.JPopupMenu.Separator jSeparatorThemes;
     private javax.swing.JSplitPane jSplitPaneFolders;
     private javax.swing.JSplitPane jSplitPaneMessage;
     private javax.swing.JTable jTable1;

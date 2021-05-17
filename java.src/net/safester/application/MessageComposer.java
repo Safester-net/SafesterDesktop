@@ -784,7 +784,7 @@ public class MessageComposer extends javax.swing.JFrame {
     }
 
     private void resizePanelHeigthForNimbus(JComponent component, int preferedHeight) {
-        if (UI_Util.isNimbus()) {
+        if (SystemUtils.IS_OS_LINUX) {
             int maxWidth = (int) component.getMaximumSize().getWidth();
             int minWidth = (int) component.getMinimumSize().getWidth();
             int prefWidth = (int) component.getPreferredSize().getWidth();

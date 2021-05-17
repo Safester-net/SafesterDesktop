@@ -425,7 +425,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         jLabelAsymAlgo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelAsymAlgo.setText("jLabelAsymAlgo");
-        jLabelAsymAlgo.setPreferredSize(new java.awt.Dimension(130, 15));
+        jLabelAsymAlgo.setPreferredSize(new java.awt.Dimension(150, 15));
         jPanel6.add(jLabelAsymAlgo);
 
         jComboBoxAlgoAsym.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -461,7 +461,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         jLabelAlgoSymmetric.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelAlgoSymmetric.setText("jLabelKeyType");
-        jLabelAlgoSymmetric.setPreferredSize(new java.awt.Dimension(130, 15));
+        jLabelAlgoSymmetric.setPreferredSize(new java.awt.Dimension(150, 15));
         jPanel14.add(jLabelAlgoSymmetric);
 
         jComboBoxAlgoSymmetric.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

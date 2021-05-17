@@ -368,7 +368,7 @@
                             <Property name="horizontalAlignment" type="int" value="11"/>
                             <Property name="text" type="java.lang.String" value="jLabelAsymAlgo"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[130, 15]"/>
+                              <Dimension value="[150, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -445,7 +445,7 @@
                             <Property name="horizontalAlignment" type="int" value="11"/>
                             <Property name="text" type="java.lang.String" value="jLabelKeyType"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[130, 15]"/>
+                              <Dimension value="[150, 15]"/>
                             </Property>
                           </Properties>
                         </Component>

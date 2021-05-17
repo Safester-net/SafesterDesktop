@@ -55,9 +55,9 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.pgp.api.KeyHandlerOne;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 
-import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.register.Register;
@@ -811,10 +811,12 @@ public class ChangePassphrase extends javax.swing.JDialog {
 
     private void jButtonPassphraseQualityMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonPassphraseQualityMouseEntered
 
     private void jButtonPassphraseQualityMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonPassphraseQualityMouseExited
 
     private void jButtonPassphraseQualityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityActionPerformed

@@ -21,43 +21,29 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
+package com.swing.util;
 
-package net.safester.application.version;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
 
-public class Version
-{
-    /** Version value to increment */    
-    public static String VERSION    = "v5.8";
-
-    /** Version date to increment */
-    public static String DATE       = "15-May-21";
-
-    public static String NAME       = "Safester" ;
-    public static String COPYRIGHT  = "Copyright &copy; 2021 Safester";
-
-
-    @Override
-    public String toString()
-    {
-        return VERSION;
+/**
+ * 
+ * @author ndepo
+ */
+public class ButtonUrlOver {
+    
+    public static Color saveColor;
+    
+    public static void enter(MouseEvent evt) {
+        JButton button = (JButton)evt.getSource();
+        saveColor = button.getForeground();
+        button.setForeground(SwingColorUtil.LIGHT_RED);
     }
-
-    /**
-     *
-     * @return the Version in "SafeShareIt vX.YY Copyright (c)" format
-     */
-    public static String getVersionWithCopyright()
-    {
-        return NAME + " " + new Version().toString() + " - " + DATE + " " + COPYRIGHT;
+    
+    public static void exit(MouseEvent evt) {
+        JButton button = (JButton)evt.getSource();
+        button.setForeground(saveColor);
     }
-
-    /**
-     *
-     * @return the Version in "SafeShareIt vX.YY  DD/MM/YY" format
-     */
-    public static String getVersionWithDate()
-    {
-        return NAME + " " + new Version().toString() + " " + DATE;
-    }
-
+    
 }

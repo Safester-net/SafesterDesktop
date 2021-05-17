@@ -66,6 +66,11 @@ public class Safester {
     public static void main(String[] args) {
 
         try {
+            
+            // take the menu bar off the jframe
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            //System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Safester");
+            
             if (new File(SystemInit.getLOG_DIR() + File.separator + "debug.txt").exists()) {
                 Main.DEBUG = true;
                 MessageReader.DEBUG = true;
@@ -84,8 +89,7 @@ public class Safester {
                 languageManager.storeLanguage();
             }
 
-            // take the menu bar off the jframe
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
+
             AwakeFileSession.setUseBase64EncodingForCall();
 
             System.out.println(System.getProperty("user.dir"));

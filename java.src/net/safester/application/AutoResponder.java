@@ -23,6 +23,8 @@
  */
 package net.safester.application;
 
+import com.swing.util.LookAndFeelHelper;
+import com.swing.util.SwingColorUtil;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -48,6 +50,7 @@ import javax.swing.UIManager;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.swing.util.SwingUtil;
+import com.swing.util.Themes;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -110,7 +113,7 @@ public class AutoResponder extends javax.swing.JDialog {
     public void initializeCompany() {
 	clipboardManager = new ClipboardManager(rootPane);
 
-	Dimension dim = new Dimension(495, 495);
+	Dimension dim = new Dimension(530, 530);
 	this.setSize(dim);
 	this.setPreferredSize(dim);
 
@@ -179,6 +182,16 @@ public class AutoResponder extends javax.swing.JDialog {
 	    }
 	});
 
+        if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
+            Color color = SwingColorUtil.getThemeColor();
+            jXDatePickerBegin.getMonthView().setMonthStringBackground(color);
+            jXDatePickerBegin.getMonthView().setSelectionBackground(color);
+            jXDatePickerBegin.getMonthView().setTodayBackground(color);
+
+            jXDatePickerEnd.getMonthView().setMonthStringBackground(color);
+            jXDatePickerEnd.getMonthView().setSelectionBackground(color);
+            jXDatePickerEnd.getMonthView().setTodayBackground(color);
+        }
 	this.keyListenerAdder();
 
 	SwingUtil.applySwingUpdates(rootPane);

@@ -58,6 +58,7 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomComboBox.TreeListCellRenderer;
 import com.swing.util.CustomComboBox.TreeListModel;
@@ -839,10 +840,12 @@ public class Search extends javax.swing.JFrame {
 
     private void jButtonSearchSenderMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSearchSenderMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonSearchSenderMouseEntered
 
     private void jButtonSearchSenderMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSearchSenderMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonSearchSenderMouseExited
 
     private void jButtonSearchSenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchSenderActionPerformed
@@ -857,10 +860,12 @@ public class Search extends javax.swing.JFrame {
 
     private void jButtonSearchRecipientMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSearchRecipientMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonSearchRecipientMouseEntered
 
     private void jButtonSearchRecipientMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSearchRecipientMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonSearchRecipientMouseExited
 
     private void jButtonSearchRecipientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchRecipientActionPerformed

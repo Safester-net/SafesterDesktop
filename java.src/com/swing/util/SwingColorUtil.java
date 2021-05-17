@@ -39,6 +39,7 @@ public class SwingColorUtil {
     public static Color HYPERLINK_LIGHT = new Color(38, 117, 191);
     public static Color HYPERLINK_DARK_MODE = new Color(88, 157, 246);
    
+    public static Color LIGHT_RED = new Color(255, 58,58);
 
     /**
      * Changes the hyperlink buttons blue foreground depending if we are in
