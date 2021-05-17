@@ -27,51 +27,50 @@ package net.safester.application.wait.tools;
 // 02/10/01 17:45 GR - WIP
 // 03/10/01 12:45 GR - WIP
 // 16/10/01 16:15 GR - remove useless old code related to animation/thread
-
 import java.awt.Label;
 
 import com.swing.util.LookAndFeelHelper;
 
-
 public class CmWaitPanel
-	extends Label
-{
-	private String m_sText ;
-	private CmPalette m_cpPal ;
-	
-	public CmWaitPanel(String sText,
-					   CmPalette cpPal)
-	{
-		super() ;
-		super.setAlignment(super.CENTER) ;
-		setText(sText) ;
-		m_cpPal = cpPal ;
-		if(m_cpPal == null)
-			m_cpPal = CmPalette.getDefaultInstance() ;
-		if(LookAndFeelHelper.isDarkMode()) {
-			this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-		} else {
-			this.setBackground(m_cpPal.getColor("cm.comp.bgcolor")) ;
-		}
-		this.setForeground(m_cpPal.getColor("cm.bar.fgcolor")) ;
-	}
-	
-	
-	public void start()
-	{
-		setText(m_sText) ;
-	}
-	
-	public void setText(String sText)
-	{
-		m_sText = sText ;
-		if(m_sText == null)
-			throw new IllegalArgumentException("Wait Dialog text can't be null") ;
-		super.setText(m_sText) ;
-	}
-	
-	public void stop()
-	{
-		//m_atAnim.stop() ;
-	}
+        extends Label {
+
+    private String m_sText;
+    private CmPalette m_cpPal;
+
+    public CmWaitPanel(String sText,
+            CmPalette cpPal) {
+        super();
+        super.setAlignment(super.CENTER);
+        setText(sText);
+        m_cpPal = cpPal;
+        if (m_cpPal == null) {
+            m_cpPal = CmPalette.getDefaultInstance();
+        }
+
+        /*
+        if(LookAndFeelHelper.isDarkMode()) {
+                this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        } else {
+                this.setBackground(m_cpPal.getColor("cm.comp.bgcolor")) ;
+        }
+         */
+        
+        this.setForeground(m_cpPal.getColor("cm.bar.fgcolor"));
+    }
+
+    public void start() {
+        setText(m_sText);
+    }
+
+    public void setText(String sText) {
+        m_sText = sText;
+        if (m_sText == null) {
+            throw new IllegalArgumentException("Wait Dialog text can't be null");
+        }
+        super.setText(m_sText);
+    }
+
+    public void stop() {
+        //m_atAnim.stop() ;
+    }
 }
