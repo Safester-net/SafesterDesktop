@@ -248,10 +248,11 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         jLabelMiniIcon = new javax.swing.JLabel();
         jLabelTitle = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
-        jPanelBlank = new javax.swing.JPanel();
-        jPanelSep = new javax.swing.JPanel();
-        jSeparator2 = new javax.swing.JSeparator();
-        jPanelBlank1 = new javax.swing.JPanel();
+        jPanelSep3 = new javax.swing.JPanel();
+        jPanel28 = new javax.swing.JPanel();
+        jPanel29 = new javax.swing.JPanel();
+        jSeparator6 = new javax.swing.JSeparator();
+        jPanel32 = new javax.swing.JPanel();
         jPanelEditorPane = new javax.swing.JPanel();
         jEditorPane = new javax.swing.JEditorPane();
         jPanelNorth1 = new javax.swing.JPanel();
@@ -259,6 +260,11 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         jPanelEast1 = new javax.swing.JPanel();
         jPanelWest1 = new javax.swing.JPanel();
         jPanelBlank3 = new javax.swing.JPanel();
+        jPanelSep2 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jPanel27 = new javax.swing.JPanel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jPanel31 = new javax.swing.JPanel();
         jPanelCryptpValues = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -273,8 +279,11 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         jComboBoxAlgoSymmetric = new javax.swing.JComboBox();
         jPanelBlank2 = new javax.swing.JPanel();
         jPanelBlank4 = new javax.swing.JPanel();
-        jPanelSep1 = new javax.swing.JPanel();
-        jSeparator4 = new javax.swing.JSeparator();
+        jPanelSep4 = new javax.swing.JPanel();
+        jPanel33 = new javax.swing.JPanel();
+        jPanel34 = new javax.swing.JPanel();
+        jSeparator7 = new javax.swing.JSeparator();
+        jPanel36 = new javax.swing.JPanel();
         jPanelButtons = new javax.swing.JPanel();
         jButtonOk = new javax.swing.JButton();
         jButtonClose = new javax.swing.JButton();
@@ -304,6 +313,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         jPanelUp.setMaximumSize(new java.awt.Dimension(32767, 48));
         jPanelUp.setMinimumSize(new java.awt.Dimension(83, 48));
+        jPanelUp.setPreferredSize(new java.awt.Dimension(111, 48));
         jPanelUp.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelMiniIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/key_plus.png"))); // NOI18N
@@ -317,47 +327,29 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         jPanelCenter.add(jPanelUp);
 
-        jPanelBlank.setMaximumSize(new java.awt.Dimension(32767, 5));
-        jPanelBlank.setMinimumSize(new java.awt.Dimension(5, 5));
-        jPanelBlank.setPreferredSize(new java.awt.Dimension(5, 5));
+        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 20));
+        jPanelSep3.setMinimumSize(new java.awt.Dimension(390, 20));
+        jPanelSep3.setPreferredSize(new java.awt.Dimension(20, 20));
+        jPanelSep3.setLayout(new javax.swing.BoxLayout(jPanelSep3, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanelBlankLayout = new javax.swing.GroupLayout(jPanelBlank);
-        jPanelBlank.setLayout(jPanelBlankLayout);
-        jPanelBlankLayout.setHorizontalGroup(
-            jPanelBlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 527, Short.MAX_VALUE)
-        );
-        jPanelBlankLayout.setVerticalGroup(
-            jPanelBlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 5, Short.MAX_VALUE)
-        );
+        jPanel28.setMaximumSize(new java.awt.Dimension(32787, 10));
+        jPanel28.setMinimumSize(new java.awt.Dimension(390, 10));
+        jPanel28.setLayout(new javax.swing.BoxLayout(jPanel28, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelCenter.add(jPanelBlank);
+        jPanel29.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel28.add(jPanel29);
 
-        jPanelSep.setMinimumSize(new java.awt.Dimension(390, 105));
-        jPanelSep.setLayout(new javax.swing.BoxLayout(jPanelSep, javax.swing.BoxLayout.LINE_AXIS));
+        jSeparator6.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator6.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator6.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanel28.add(jSeparator6);
 
-        jSeparator2.setMaximumSize(new java.awt.Dimension(32767, 2));
-        jPanelSep.add(jSeparator2);
+        jPanel32.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel28.add(jPanel32);
 
-        jPanelCenter.add(jPanelSep);
+        jPanelSep3.add(jPanel28);
 
-        jPanelBlank1.setMaximumSize(new java.awt.Dimension(32767, 10));
-        jPanelBlank1.setMinimumSize(new java.awt.Dimension(5, 10));
-        jPanelBlank1.setPreferredSize(new java.awt.Dimension(527, 10));
-
-        javax.swing.GroupLayout jPanelBlank1Layout = new javax.swing.GroupLayout(jPanelBlank1);
-        jPanelBlank1.setLayout(jPanelBlank1Layout);
-        jPanelBlank1Layout.setHorizontalGroup(
-            jPanelBlank1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 527, Short.MAX_VALUE)
-        );
-        jPanelBlank1Layout.setVerticalGroup(
-            jPanelBlank1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-
-        jPanelCenter.add(jPanelBlank1);
+        jPanelCenter.add(jPanelSep3);
 
         jPanelEditorPane.setLayout(new java.awt.BorderLayout());
 
@@ -402,6 +394,30 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         );
 
         jPanelCenter.add(jPanelBlank3);
+
+        jPanelSep2.setMaximumSize(new java.awt.Dimension(32767, 20));
+        jPanelSep2.setMinimumSize(new java.awt.Dimension(390, 20));
+        jPanelSep2.setPreferredSize(new java.awt.Dimension(20, 20));
+        jPanelSep2.setLayout(new javax.swing.BoxLayout(jPanelSep2, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel26.setMaximumSize(new java.awt.Dimension(32787, 10));
+        jPanel26.setMinimumSize(new java.awt.Dimension(390, 10));
+        jPanel26.setLayout(new javax.swing.BoxLayout(jPanel26, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel27.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel26.add(jPanel27);
+
+        jSeparator5.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator5.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator5.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanel26.add(jSeparator5);
+
+        jPanel31.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel26.add(jPanel31);
+
+        jPanelSep2.add(jPanel26);
+
+        jPanelCenter.add(jPanelSep2);
 
         jPanelCryptpValues.setLayout(new javax.swing.BoxLayout(jPanelCryptpValues, javax.swing.BoxLayout.Y_AXIS));
 
@@ -504,13 +520,29 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         jPanelCenter.add(jPanelBlank4);
 
-        jPanelSep1.setMinimumSize(new java.awt.Dimension(390, 105));
-        jPanelSep1.setLayout(new javax.swing.BoxLayout(jPanelSep1, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelSep4.setMaximumSize(new java.awt.Dimension(32767, 20));
+        jPanelSep4.setMinimumSize(new java.awt.Dimension(390, 20));
+        jPanelSep4.setPreferredSize(new java.awt.Dimension(20, 20));
+        jPanelSep4.setLayout(new javax.swing.BoxLayout(jPanelSep4, javax.swing.BoxLayout.LINE_AXIS));
 
-        jSeparator4.setMaximumSize(new java.awt.Dimension(32767, 2));
-        jPanelSep1.add(jSeparator4);
+        jPanel33.setMaximumSize(new java.awt.Dimension(32787, 10));
+        jPanel33.setMinimumSize(new java.awt.Dimension(390, 10));
+        jPanel33.setLayout(new javax.swing.BoxLayout(jPanel33, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelCenter.add(jPanelSep1);
+        jPanel34.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel33.add(jPanel34);
+
+        jSeparator7.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator7.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator7.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanel33.add(jSeparator7);
+
+        jPanel36.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel33.add(jPanel36);
+
+        jPanelSep4.add(jPanel33);
+
+        jPanelCenter.add(jPanelSep4);
 
         getContentPane().add(jPanelCenter, java.awt.BorderLayout.CENTER);
 
@@ -561,7 +593,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         );
         jPanelRightLayout.setVerticalGroup(
             jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 405, Short.MAX_VALUE)
+            .addGap(0, 420, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelRight, java.awt.BorderLayout.EAST);
@@ -576,7 +608,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         );
         jPanelLeftLayout.setVerticalGroup(
             jPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 405, Short.MAX_VALUE)
+            .addGap(0, 420, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelLeft, java.awt.BorderLayout.WEST);
@@ -660,13 +692,20 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelMiniIcon;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel30;
+    private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel32;
+    private javax.swing.JPanel jPanel33;
+    private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel35;
+    private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPanel jPanelBlank;
-    private javax.swing.JPanel jPanelBlank1;
     private javax.swing.JPanel jPanelBlank2;
     private javax.swing.JPanel jPanelBlank3;
     private javax.swing.JPanel jPanelBlank4;
@@ -679,14 +718,16 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelNorth;
     private javax.swing.JPanel jPanelNorth1;
     private javax.swing.JPanel jPanelRight;
-    private javax.swing.JPanel jPanelSep;
-    private javax.swing.JPanel jPanelSep1;
+    private javax.swing.JPanel jPanelSep2;
+    private javax.swing.JPanel jPanelSep3;
+    private javax.swing.JPanel jPanelSep4;
     private javax.swing.JPanel jPanelSouth1;
     private javax.swing.JPanel jPanelUp;
     private javax.swing.JPanel jPanelWest1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     // End of variables declaration//GEN-END:variables
 
 
