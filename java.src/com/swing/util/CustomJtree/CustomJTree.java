@@ -173,7 +173,7 @@ public class CustomJTree extends JPanel
      */
     private void initComponent() throws HeadlessException {
 
-        String rootNodeText = "Messages";
+        String rootNodeText = ""; //Messages";
         
         if (SystemUtils
                 .IS_OS_LINUX || UI_Util.isNimbus()) {
