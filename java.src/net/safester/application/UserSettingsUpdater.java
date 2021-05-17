@@ -145,14 +145,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jLabelCoupon.setText(messages.getMessage("coupon"));
         jLabelCouponHelp .setText(messages.getMessage("optional") + " ");
 
-        /*
-        if (UI_Util.isNimbus())
-        {
-            this.jLabelFontSizeBody.setMinimumSize(new Dimension(224, 14));
-            this.jLabelFontSizeBody.setPreferredSize(new Dimension(224, 14));
-            this.jPanelNameAndEmail.setMaximumSize(new Dimension(2147483647, 455));
-        }
-        */
         this.jLabelLanguage.setText(messages.getMessage("default_language"));
         this.jLabelSpellCheckDefaultLanguage.setText(messages.getMessage("spell_check_default_language"));
         this.jCheckBoxHideDecrypDialog.setText(messages.getMessage("hide_decrypting_progess_bar"));
@@ -286,8 +278,11 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         });
         
-        this.jTextFieldUserName.requestFocus();
-               
+        //this.jTextFieldUserName.requestFocus();
+        jTextFieldUserName.moveCaretPosition(0);
+        jTextFieldUserName.setSelectionEnd(0);
+        this.repaint();
+        
         this.setLocationRelativeTo(parent);
         this.setSize(new Dimension(611, 759));
        

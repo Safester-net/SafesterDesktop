@@ -116,7 +116,7 @@ public class ChangePassphrase extends javax.swing.JDialog {
         jLabelQualityText.setText(" ");
         jButtonPassphraseQuality.setForeground(new Color(0, 0, 255));
 
-        jButtonPassphraseQuality.setText("<html><u>" + messages.getMessage("passphrase_quality") + "</u></html>");
+        jButtonPassphraseQuality.setText(messages.getMessage("passphrase_quality"));
         jButtonCancel.setText(messages.getMessage("cancel"));
 
         jButtonOk.setText(messages.getMessage("ok"));

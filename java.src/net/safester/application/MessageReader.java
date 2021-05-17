@@ -118,7 +118,6 @@ public class MessageReader extends javax.swing.JFrame {
     private boolean displayDecrypted = true;
     private String decryptedBody = null;
     private String encryptedBody = null;
-    private Color COLOR_DISABLED = new Color(153, 153, 153);
 
     /**
      * Creates new form MessageReader
@@ -345,7 +344,7 @@ public class MessageReader extends javax.swing.JFrame {
         jScrollPaneAttach.remove(jListAttach);
 
         //  jPanelAttachSepRecipients.setBackground(Color.white);
-        jPanelAttach.setBackground(Color.white);
+        //jPanelAttach.setBackground(Color.white);
 
         buildJListAttachment();
 
@@ -1264,6 +1263,7 @@ public class MessageReader extends javax.swing.JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         jListAttach.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
+        jListAttach.setOpaque(false);
         jListAttach.setVisibleRowCount(1);
         jScrollPaneAttach.setViewportView(jListAttach);
 

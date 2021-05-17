@@ -142,9 +142,10 @@ public class BuyDialog extends javax.swing.JDialog {
         br.setWidthToMax();
         //this.setSize(542, 652);
         this.setSize(620, 720);
-        if(LookAndFeelHelper.isDarkMode()) {
-        	jScrollPane1.setBorder(null);
-        }
+        
+//        if(LookAndFeelHelper.isDarkMode()) {
+//        	jScrollPane1.setBorder(null);
+//        }
         
         WindowSettingManager.load(this);
 
@@ -214,7 +215,6 @@ public class BuyDialog extends javax.swing.JDialog {
         jPanelCenter = new javax.swing.JPanel();
         jPanelTitle = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
         jEditorPane = new javax.swing.JEditorPane();
         jPanelSepBottom = new javax.swing.JPanel();
         jPanelSepBottom1 = new javax.swing.JPanel();
@@ -248,20 +248,14 @@ public class BuyDialog extends javax.swing.JDialog {
         jPanelTitle.setPreferredSize(new java.awt.Dimension(80, 70));
         jPanelTitle.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
 
-        jLabelTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-safester-transparent_small.png"))); // NOI18N
+        jLabelTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/safester_logo_small.png"))); // NOI18N
         jPanelTitle.add(jLabelTitle);
 
         jPanelCenter.add(jPanelTitle);
 
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
         jEditorPane.setBorder(null);
         jEditorPane.setMargin(new java.awt.Insets(5, 5, 5, 5));
-        jScrollPane1.setViewportView(jEditorPane);
-
-        jPanelCenter.add(jScrollPane1);
+        jPanelCenter.add(jEditorPane);
 
         jPanelSepBottom.setMaximumSize(new java.awt.Dimension(32767, 4));
         jPanelSepBottom.setMinimumSize(new java.awt.Dimension(10, 4));
@@ -338,7 +332,7 @@ public class BuyDialog extends javax.swing.JDialog {
         activateSubscriptionDialog.setVisible(true);
         if(activateSubscriptionDialog.getNewSubscription() != (short)-1){
             this.newSubscription = activateSubscriptionDialog.getNewSubscription();
-            this.setVisible(false);
+            //this.setVisible(false);
         }
         activateSubscriptionDialog.dispose();
 
@@ -385,7 +379,6 @@ public class BuyDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelSouth;
     private javax.swing.JPanel jPanelTitle;
     private javax.swing.JPanel jPanelWest;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }

@@ -27,7 +27,6 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.UIManager;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import net.safester.application.util.UserPrefManager;
 

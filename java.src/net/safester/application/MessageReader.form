@@ -825,6 +825,7 @@
                           </StringArray>
                         </Property>
                         <Property name="layoutOrientation" type="int" value="2"/>
+                        <Property name="opaque" type="boolean" value="false"/>
                         <Property name="visibleRowCount" type="int" value="1"/>
                       </Properties>
                     </Component>
