@@ -125,10 +125,10 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         addHyperLinkListener();
         keyListenerAdder();
         
-        jPanelSouth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        jPanelNorth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        jPanelEast1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        jPanelWest1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+//        jPanelSouth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+//        jPanelNorth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+//        jPanelEast1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+//        jPanelWest1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
 
         this.setSize(470,420);
     }
@@ -359,31 +359,26 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         jPanelCenter.add(jPanelBlank1);
 
-        jPanelEditorPane.setBackground(new java.awt.Color(255, 255, 255));
         jPanelEditorPane.setLayout(new java.awt.BorderLayout());
 
-        jEditorPane.setBorder(null);
+        jEditorPane.setMargin(new java.awt.Insets(5, 5, 5, 5));
         jPanelEditorPane.add(jEditorPane, java.awt.BorderLayout.CENTER);
 
-        jPanelNorth1.setBackground(new java.awt.Color(255, 255, 255));
         jPanelNorth1.setMaximumSize(new java.awt.Dimension(32767, 5));
         jPanelNorth1.setMinimumSize(new java.awt.Dimension(10, 5));
         jPanelNorth1.setPreferredSize(new java.awt.Dimension(10, 5));
         jPanelEditorPane.add(jPanelNorth1, java.awt.BorderLayout.PAGE_START);
 
-        jPanelSouth1.setBackground(new java.awt.Color(255, 255, 255));
         jPanelSouth1.setMaximumSize(new java.awt.Dimension(32767, 5));
         jPanelSouth1.setMinimumSize(new java.awt.Dimension(10, 5));
         jPanelSouth1.setPreferredSize(new java.awt.Dimension(10, 5));
         jPanelEditorPane.add(jPanelSouth1, java.awt.BorderLayout.SOUTH);
 
-        jPanelEast1.setBackground(new java.awt.Color(255, 255, 255));
         jPanelEast1.setMaximumSize(new java.awt.Dimension(5, 5));
         jPanelEast1.setMinimumSize(new java.awt.Dimension(5, 5));
         jPanelEast1.setPreferredSize(new java.awt.Dimension(5, 5));
         jPanelEditorPane.add(jPanelEast1, java.awt.BorderLayout.EAST);
 
-        jPanelWest1.setBackground(new java.awt.Color(255, 255, 255));
         jPanelWest1.setMaximumSize(new java.awt.Dimension(5, 5));
         jPanelWest1.setMinimumSize(new java.awt.Dimension(5, 5));
         jPanelWest1.setPreferredSize(new java.awt.Dimension(5, 5));
@@ -566,7 +561,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         );
         jPanelRightLayout.setVerticalGroup(
             jPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 405, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelRight, java.awt.BorderLayout.EAST);
@@ -581,7 +576,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
         );
         jPanelLeftLayout.setVerticalGroup(
             jPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 405, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelLeft, java.awt.BorderLayout.WEST);
