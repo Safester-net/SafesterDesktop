@@ -162,9 +162,9 @@ import net.safester.noobs.clientserver.SubjectDecryptionClient;
  */
 public class Main extends javax.swing.JFrame {
 
-	private static final long serialVersionUID = 5509970971378302525L;
+    private static final long serialVersionUID = 5509970971378302525L;
 
-	public static boolean DEBUG = false;
+    public static boolean DEBUG = false;
 
     public static final int STANDARD_DIVIDER_SIZE = 5;
 
@@ -176,7 +176,7 @@ public class Main extends javax.swing.JFrame {
     public static final Color COLOR_MSG_INFO = new Color(132, 192, 252);
 
     public static final boolean NOTIFY_ON = true;
-    
+
     private Connection connection;
     private CustomJTree customJtree;
     private MessagesManager messages = new MessagesManager();
@@ -286,12 +286,12 @@ public class Main extends javax.swing.JFrame {
 
         System.out.println(new Date() + "Safester... initCompany begin...");
 
-        if (! Themes.DARK_MODE_ON) {
+        if (!Themes.DARK_MODE_ON) {
             jMenuItemThemeFlatDarkPurpleIJTheme.setVisible(false);
             jMenuItemThemeFlatLafDarcula.setVisible(false);
             jSeparatorThemes.setVisible(false);
         }
-        
+
         // clipboardManager = new ClipboardManager(rootPane);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -308,11 +308,10 @@ public class Main extends javax.swing.JFrame {
 //            this.jMenuMessage.remove(jSeparator15);
 //            this.jToolBar1.remove(jButtonSearch);
 //        }
-
         setSelectedThemeRadioButton();
-        
+
         this.jSeparatorColored.setForeground(SwingColorUtil.getSeparatorColor());
-        
+
         this.jLabelFrom.setText(messages.getMessage("from"));
         this.jLabelTo.setText(messages.getMessage("to"));
         this.jLabelCc.setText(messages.getMessage("cc"));
@@ -364,7 +363,7 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemProxySettings.setText(messages.getMessage("proxy_settings"));
         this.jMenuItemAutoresponder.setText(messages.getMessage("vacation_responder"));
         this.jMenuItemUserSettings.setText(messages.getMessage("user_settings"));
-        this.jMenuAppearance.setText(messages.getMessage("appearance")); 
+        this.jMenuAppearance.setText(messages.getMessage("appearance"));
         this.jMenuItemImportAddrBook.setText(messages.getMessage("importing_contacts"));
         this.jMenuItemSearch.setText(messages.getMessage("search_message"));
         this.jMenuItemDeleteAccount.setText(messages.getMessage("menu_delete_account"));
@@ -427,12 +426,11 @@ public class Main extends javax.swing.JFrame {
 
         this.jMenuAccounts.setText(messages.getMessage("accounts"));
         this.jMenuConnectToAccount.setText(messages.getMessage("connect_to_account"));
-        
-        if (! this.alreadyAccountMenuBuilt) {
-          buildAccountsMenu();     
-          this.alreadyAccountMenuBuilt = true;
-        }
 
+        if (!this.alreadyAccountMenuBuilt) {
+            buildAccountsMenu();
+            this.alreadyAccountMenuBuilt = true;
+        }
 
         this.jButtonAddressBook.setToolTipText(messages.getMessage("address_book"));
         this.jButtonDeleteSelectedMessage.setToolTipText(messages.getMessage("delete"));
@@ -672,11 +670,11 @@ public class Main extends javax.swing.JFrame {
         t.start();
 
         if (CryptTray.isSupported()) {
-            
+
             if (cryptTray != null) {
                 cryptTray.remove();
             }
-            
+
             cryptTray = new CryptTray();
             cryptTray.startAsTray(this);
         }
@@ -696,7 +694,7 @@ public class Main extends javax.swing.JFrame {
                 connection);
         subjectDecryptionClient.updateSubjectsInThread();
         initDone = true;
-        
+
         applyTheme();
     }
 
@@ -704,20 +702,20 @@ public class Main extends javax.swing.JFrame {
         try {
             MainStatusBarUpdater mainStatusBarUpdater = new MainStatusBarUpdater(connection, keyId, userNumber);
             this.jLabelPlan.setText(MainStatusBarUpdater.getAccount());
-            
+
             String storageInfo = mainStatusBarUpdater.getStorageInfo();
             this.jLabelStorage.setText(storageInfo);
             if (storageInfo.isEmpty()) {
                 jLabelSep.setText(null);
             }
-            
+
             this.jLabelLastLogin.setText(mainStatusBarUpdater.getLastLoginAgo());
-            
+
             if (mainStatusBarUpdater.getLastLoginAgo().isEmpty()) {
                 this.jButtonDetail.setVisible(false);
                 jPanelSepVerticalLastLogin.setVisible(false);
             }
-            
+
         } catch (Exception ex) {
             JOptionPaneNewCustom.showException(rootPane, ex);
         }
@@ -1185,7 +1183,7 @@ public class Main extends javax.swing.JFrame {
         });
         itemFoward.setIcon(jMenuItemFoward.getIcon());
         jTablePopupMenu.add(itemFoward);
-        
+
         JMenuItem itemMarkRead = new JMenuItem(jMenuItemMarkRead.getText());
         itemMarkRead.addActionListener(new ActionListener() {
             @Override
@@ -1195,7 +1193,7 @@ public class Main extends javax.swing.JFrame {
         });
         itemMarkRead.setIcon(jMenuItemMarkRead.getIcon());
         jTablePopupMenu.add(itemMarkRead);
-        
+
         JMenuItem itemMarkUnread = new JMenuItem(jMenuItemMarkUnread.getText());
         itemMarkUnread.addActionListener(new ActionListener() {
             @Override
@@ -1205,7 +1203,7 @@ public class Main extends javax.swing.JFrame {
         });
         itemMarkUnread.setIcon(jMenuItemMarkUnread.getIcon());
         jTablePopupMenu.add(itemMarkUnread);
-        
+
 //        jTablePopupMenu.add(new JMenuItem(jMenuItemFoward));
         jTablePopupMenu.addSeparator();
         // jTablePopupMenu.add(itemAddSender);
@@ -1275,14 +1273,14 @@ public class Main extends javax.swing.JFrame {
         selectedMessages = new ArrayList<Integer>();
         // Get selected rows index
         int[] selRows = jTable1.getSelectedRows();
-        
+
         debug("setSelectedMessages() selRows: " + selRows.length);
-        
+
         if (selRows.length > 0) {
             for (Integer rowIndex : selRows) {
                 // For each row get message
                 // MessageLocal messageLocal = getMessageForRowIndex(rowIndex.intValue());
-                
+
                 if (jTable1.getValueAt(rowIndex, 0) instanceof Integer) {
                     int messageId = (Integer) jTable1.getValueAt(rowIndex, 0);
                     debug("setSelectedMessages() messageId: " + messageId);
@@ -1326,25 +1324,24 @@ public class Main extends javax.swing.JFrame {
 
         int folderId = getSelectedFolderId();
         debug("folderId: " + folderId);
-                
+
         if (folderId != -1) {
             for (Integer messageId : selectedMessages) {
 
                 debug("openSelectedMessage messageId: " + messageId);
-                
+
                 updateMessageIsReadInThread(folderId, messageId, false);
 
                 MessageLocal message = null;
-                
+
                 if (folderId == Parms.DRAFT_ID) {
                     message = messageLocalStore.get(messageId);
-                }
-                else {
+                } else {
                     message = getCompletedMessage(messageId);
                 }
 
                 debug("openSelectedMessage() message: " + message);
-                
+
                 // Open a new window for each message
                 if (folderId != Parms.DRAFT_ID) {
                     new MessageReader(this, this.getConnection(), message, this.getKeyId(), this.userNumber,
@@ -1357,29 +1354,26 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
-    
     private void markRead(boolean messageUnread) {
 
         int folderId = getSelectedFolderId();
         setSelectedMessages();
-        
+
         List<Integer> selectedMessageIds = new ArrayList<>();
         for (int messageId : selectedMessages) {
             selectedMessageIds.add(messageId);
         }
-        
+
         jTable1.getSelectionModel().clearSelection();
-        
+
         for (int messageId : selectedMessageIds) {
             updateMessageIsReadInThread(folderId, messageId, messageUnread);
             MessageLocal message = getCompletedMessage(messageId);
         }
-        
+
         // Refresh the table
         //createTable();
-
     }
-
 
     /**
      * Delete all selected message
@@ -1408,7 +1402,7 @@ public class Main extends javax.swing.JFrame {
         // Refresh the table
         // createTable();
         deleteMessages(selectedMessages, folderId);
-        
+
         this.setCursor(Cursor.getDefaultCursor());
     }
 
@@ -1428,7 +1422,7 @@ public class Main extends javax.swing.JFrame {
                 createTable();
                 return;
             }
-            
+
             String messagesList = messagesId.toString();
 
             // Do the delete on the server, because of security concerns
@@ -1623,9 +1617,9 @@ public class Main extends javax.swing.JFrame {
                     MainNotifier mainNotifier = new MainNotifier(this, cryptTray, userNumber, connection);
                     mainNotifier.notifyNewInbox();
                 }
-                
+
                 debug(new Date() + " Safester... mainNotifier.notifyNewInbox() end...");
-                
+
                 if (idFolder != Parms.DRAFT_ID) {
                     // Start the thread that will fetch the messages Body content in memory
                     // and user settings
@@ -1634,7 +1628,7 @@ public class Main extends javax.swing.JFrame {
                     BackgroundDownloaderEngine.setIsRequestInterrupt(true);
                     backgroundDownloaderEngine.start();
                 }
-                
+
                 debug(new Date() + " Safester... backgroundDownloaderEngine.start() end...");
             }
 
@@ -1675,12 +1669,12 @@ public class Main extends javax.swing.JFrame {
                     idFolder);
             int sortedColumnIndex = -1;
             SortOrder sortOrder = null;
-            
+
             //Backup of sorted column and sort order
             final RowSorter<?> rowSorter = this.jTable1.getRowSorter();
-            if(rowSorter != null && !rowSorter.getSortKeys().isEmpty()) {
-            	sortedColumnIndex = rowSorter.getSortKeys().get(0).getColumn();
-            	sortOrder = rowSorter.getSortKeys().get(0).getSortOrder();
+            if (rowSorter != null && !rowSorter.getSortKeys().isEmpty()) {
+                sortedColumnIndex = rowSorter.getSortKeys().get(0).getColumn();
+                sortOrder = rowSorter.getSortKeys().get(0).getSortOrder();
             }
             this.jTable1 = messagesTableCreator.create();
             buildJTablePopupMenu();
@@ -1690,19 +1684,19 @@ public class Main extends javax.swing.JFrame {
                 customJtree.getTree().setSelectionPath(new TreePath(folderNode.getPath()));
             }
             //Restore previous sort of messages
-            if(sortedColumnIndex != -1) {
-            	RowSorter<?> sorter =  jTable1.getRowSorter();
-            	List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-            	sortKeys.add(new SortKey(sortedColumnIndex, sortOrder));
-            	sorter.setSortKeys(sortKeys);
+            if (sortedColumnIndex != -1) {
+                RowSorter<?> sorter = jTable1.getRowSorter();
+                List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+                sortKeys.add(new SortKey(sortedColumnIndex, sortOrder));
+                sorter.setSortKeys(sortKeys);
             }
             // Reset message pane
             resetMessagePane();
             jScrollPane1.setViewportView(jTable1);
-            
+
             // HACK TRY TO SELCT FIRST MESSAGE
             debug("jTable1.getRowCount(): " + jTable1.getRowCount());
-            if (jTable1.getRowCount() > 0 && ! SystemUtils.IS_OS_LINUX) {
+            if (jTable1.getRowCount() > 0 && !SystemUtils.IS_OS_LINUX) {
                 try {
                     // Build message pane with first message of list
                     if (jTable1.getValueAt(0, 0) instanceof Integer) {
@@ -1715,8 +1709,8 @@ public class Main extends javax.swing.JFrame {
             }
 
             debug(new Date() + " Safester... jScrollPane1.setViewportView(jTable) end...");
-            if(selectionRow != -1 && jTable1.getRowCount()-1 > selectionRow) {
-            	jTable1.setRowSelectionInterval(selectionRow, selectionRow);
+            if (selectionRow != -1 && jTable1.getRowCount() - 1 > selectionRow) {
+                jTable1.setRowSelectionInterval(selectionRow, selectionRow);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1728,7 +1722,7 @@ public class Main extends javax.swing.JFrame {
             createTableThreadRunning = false;
             this.setEnabledRestrictedAcces(true);
             updateStatusBar();
-            
+
         }
 
     }
@@ -1741,7 +1735,7 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void run() {
 
-        	if (NOTIFY_ON ) {
+                if (NOTIFY_ON) {
                     while (true) {
                         try {
                             sleep(Parms.NOTIFY_PERIOD);
@@ -1749,7 +1743,7 @@ public class Main extends javax.swing.JFrame {
                                     connection);
                             boolean doExist = mainNotifierServerInfo.newInboxMessageExists();
                             //System.out.println(new Date() + " Testing if new message exists on server: " + doExist);
-                            
+
                             if (doExist) {
                                 // Select inbox
                                 DefaultMutableTreeNode inBoxFolder = customJtree.searchFolder(Parms.INBOX_ID);
@@ -1763,9 +1757,8 @@ public class Main extends javax.swing.JFrame {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-                    } 
-        	}
-        	
+                    }
+                }
 
             }
 
@@ -1869,13 +1862,11 @@ public class Main extends javax.swing.JFrame {
 //        if (!messageUnread && MessageTableCellRenderer.readMessages.contains(messageId)) {
 //            return;
 //        }
-
         // Ok, update the diplay status *and* the valus isRead on host
         if (messageUnread) {
-             MessageTableCellRenderer.readMessages.remove(messageId);
-             messageLocal.setIsRead(false);
-        }
-        else {
+            MessageTableCellRenderer.readMessages.remove(messageId);
+            messageLocal.setIsRead(false);
+        } else {
             MessageTableCellRenderer.readMessages.add(messageId);
             messageLocal.setIsRead(true);
         }
@@ -1883,14 +1874,14 @@ public class Main extends javax.swing.JFrame {
         final String messageSenderEmailAddress = messageLocal.getSenderUserEmail();
         final int messageIdFinal = messageId;
         final boolean messageUnreadFinal = messageUnread;
-                
+
         Thread t = new Thread() {
             @Override
             public void run() {
                 try {
 
                     updateMessageIsRead(connection, messageSenderEmailAddress, messageIdFinal, messageUnreadFinal);
-                    
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPaneNewCustom.showException(null, e);
@@ -1913,43 +1904,42 @@ public class Main extends javax.swing.JFrame {
         // Update the server saying the message has been read
         //MessageTransfer messageTransfer = new MessageTransfer(connection, userNumber, messageId, folderId);
         //messageTransfer.setMessageIsRead(true);
-        
-        AwakeConnection awakeConnection = (AwakeConnection)connection;
+
+        AwakeConnection awakeConnection = (AwakeConnection) connection;
         AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-        
+
         KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
         ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
                 awakeFileSession.getAuthenticationToken());
         apiMessages.setMessageRead(messageId, messageSenderEmailAddress, messageUnread);
-        
+
         debug("");
         debug("Message " + messageId + " marked as unread: " + messageUnread + " (messageSenderEmailAddress: " + messageSenderEmailAddress + ")");
-        
+
     }
 
     public void updateMessageIsStarredInThread() {
-    	setSelectedMessages();
+        setSelectedMessages();
         int selectedRow = this.jTable1.getSelectedRow();
-        final Integer messageId = (Integer)this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_MSG_ID);
-    	final MessageLocal messageLocal = messageLocalStore.get(messageId);
-    	if (messageLocal == null) {
+        final Integer messageId = (Integer) this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_MSG_ID);
+        final MessageLocal messageLocal = messageLocalStore.get(messageId);
+        if (messageLocal == null) {
             return;
         }
-    	final Boolean starred = Boolean.parseBoolean((String)this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_STARRED));
-    	messageLocal.setIsStarred(!starred.booleanValue());
-    	
-    	if (messageLocal.isStarred()) {
+        final Boolean starred = Boolean.parseBoolean((String) this.jTable1.getValueAt(selectedRow, MessageTableCellRenderer.COL_INDEX_STARRED));
+        messageLocal.setIsStarred(!starred.booleanValue());
+
+        if (messageLocal.isStarred()) {
             MessageTableCellRenderer.starredMessages.add(messageId);
-       }
-       else {
-    	   MessageTableCellRenderer.starredMessages.remove(messageId);
-       }
-    	
-    	Thread t = new Thread() {
+        } else {
+            MessageTableCellRenderer.starredMessages.remove(messageId);
+        }
+
+        Thread t = new Thread() {
             @Override
             public void run() {
                 try {
-                	updateMessageIsStarred(getConnection(), messageLocal.getSenderUserEmail(), messageId, !starred.booleanValue());
+                    updateMessageIsStarred(getConnection(), messageLocal.getSenderUserEmail(), messageId, !starred.booleanValue());
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPaneNewCustom.showException(null, e);
@@ -1960,19 +1950,18 @@ public class Main extends javax.swing.JFrame {
         createTable(false, selectedRow);
     }
 
-
     private static synchronized void updateMessageIsStarred(final Connection connection, final String messageSenderEmailAddress, Integer messageId, boolean starred) throws Exception {
-    	  AwakeConnection awakeConnection = (AwakeConnection)connection;
-          AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
-          
-          KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
-          ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
-                  awakeFileSession.getAuthenticationToken());
-          apiMessages.setMessageStarred(messageId, messageSenderEmailAddress, starred);
-		
-	}
+        AwakeConnection awakeConnection = (AwakeConnection) connection;
+        AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
-	/**
+        KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+        ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                awakeFileSession.getAuthenticationToken());
+        apiMessages.setMessageStarred(messageId, messageSenderEmailAddress, starred);
+
+    }
+
+    /**
      * Reset message preview panel
      */
     private void resetMessagePane() {
@@ -2127,7 +2116,6 @@ public class Main extends javax.swing.JFrame {
 //            e.printStackTrace();
 //            JOptionPaneNewCustom.showException(rootPane, e);
 //        }
-
         // Remove HTML coding
         recipientTo = HtmlConverter.fromHtml(recipientTo);
         recipientCc = HtmlConverter.fromHtml(recipientCc);
@@ -2177,72 +2165,70 @@ public class Main extends javax.swing.JFrame {
         // this.jButtonPrev.setVisible(false);
         // this.jButtonNext.setVisible(false);
         // this.jLabelNbElements.setText(null);
-
-
         jEditorPaneBody.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jEditorPaneBody.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
     }
 
-	private void applyTheme() {
-		jPanelMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+    private void applyTheme() {
+        jPanelMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelMessage.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         jPanelMessageMain.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelMessageMain.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jTextFieldSubject.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jTextFieldSubject.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jPanelSubject.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelSubject.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         jTextFieldDate.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jTextFieldDate.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jTextAreaRecipientsTo.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jTextAreaRecipientsTo.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         jTextAreaRecipientsCc.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jTextAreaRecipientsCc.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-      
+
         jPanelFromAndRecip.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelFromAndRecip.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jPanelNorth.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelNorth.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jPanelMessageContainer.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelMessageContainer.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jPanelAttachSepMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelAttachSepMessage.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         jListAttach.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jListAttach.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jPanelAttach.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelAttach.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-           
+
         jPanelScrollPane.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jPanelScrollPane.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jSplitPaneMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jSplitPaneMessage.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jSplitPaneFolders.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jSplitPaneFolders.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
-        
+
         jPanelSeparator.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        
-        if(!LookAndFeelHelper.isDarkMode()) {
-        	jSeparatorColored.setForeground(new java.awt.Color(102, 102, 255));
+
+        if (!LookAndFeelHelper.isDarkMode()) {
+            jSeparatorColored.setForeground(new java.awt.Color(102, 102, 255));
         } else {
-        	jSeparatorColored.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
+            jSeparatorColored.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
         }
-        
+
         jPanelSepRecipients.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-	}
+    }
 
     /**
      * @param messageId
@@ -2264,7 +2250,7 @@ public class Main extends javax.swing.JFrame {
             if (folderId == Parms.DRAFT_ID) {
                 return message;
             }
-            
+
             if (message.isUpdateComplete()) {
                 break;
             }
@@ -2318,7 +2304,7 @@ public class Main extends javax.swing.JFrame {
         JListUtil.selectItemWhenMouverOver(jListAttach);
 
         jListAttach.setCellRenderer(new ReceivedAttachmentListRenderer(attachments));
-        
+
         // HACK NDP 17/03/18
         JListUtil.formatSpacing(jListAttach);
 
@@ -2481,9 +2467,9 @@ public class Main extends javax.swing.JFrame {
     public CustomJTree getCustomJTree() {
         return this.customJtree;
     }
-    
+
     public JTable getJTable1() {
-    	return jTable1;
+        return jTable1;
     }
 
     /**
@@ -2591,11 +2577,10 @@ public class Main extends javax.swing.JFrame {
         search.setVisible(true);
     }
 
-    
     void updateBottomPlan(String account) {
         this.jLabelPlan.setText(account);
     }
-    
+
     /**
      * debug tool
      */
@@ -2604,66 +2589,59 @@ public class Main extends javax.swing.JFrame {
             System.out.println(s);
         }
     }
-    
-    private void setSelectedThemeRadioButton() {   
-        
+
+    private void setSelectedThemeRadioButton() {
+
         String className = LookAndFeelHelper.getCurrentTheme();
-        
+
         if (className.equals(Themes.FLAT_INTELLIJ_LAF)) {
             this.jMenuItemThemeFlatIntelliJLaf.setSelected(true);
-        }
-        else if (className.equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
+        } else if (className.equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
             this.jMenuItemThemeFlatArcOrangeIJTheme.setSelected(true);
-        }
-        else if (className.equals(Themes.FLAT_DARCULA_LAF)) {
+        } else if (className.equals(Themes.FLAT_DARCULA_LAF)) {
             this.jMenuItemThemeFlatLafDarcula.setSelected(true);
-        }
-        else if (className.equals(Themes.FLAT_DARK_PURPLEIJ_THEME)) {
+        } else if (className.equals(Themes.FLAT_DARK_PURPLEIJ_THEME)) {
             this.jMenuItemThemeFlatDarkPurpleIJTheme.setSelected(true);
-        }
-        else {
+        } else {
             // Ignore
         }
     }
-        
+
     private void updateLookAndFeel() {
-                
+
         String className = Themes.DEFAULT_THEME;
-        if (jMenuItemThemeFlatIntelliJLaf.isSelected()){
+        if (jMenuItemThemeFlatIntelliJLaf.isSelected()) {
             className = Themes.FLAT_INTELLIJ_LAF;
-        }
-        else if (jMenuItemThemeFlatArcOrangeIJTheme.isSelected()){
+        } else if (jMenuItemThemeFlatArcOrangeIJTheme.isSelected()) {
             className = Themes.FLAT_ARCORANGEIJ_THEME;
-        }
-        else if (jMenuItemThemeFlatLafDarcula.isSelected()){
+        } else if (jMenuItemThemeFlatLafDarcula.isSelected()) {
             className = Themes.FLAT_DARCULA_LAF;
-        }
-        else if (jMenuItemThemeFlatDarkPurpleIJTheme.isSelected()){
+        } else if (jMenuItemThemeFlatDarkPurpleIJTheme.isSelected()) {
             className = Themes.FLAT_DARK_PURPLEIJ_THEME;
         }
-        
+
         try {
             UIManager.setLookAndFeel(className);
             UserPrefManager.setPreference(UserPrefManager.LOOK_AND_FEEL_THEME, className);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
+        }
+
         SwingUtilities.updateComponentTreeUI(jMenuBar1);
         SwingUtilities.updateComponentTreeUI(jPanelToolbar);
         SwingUtilities.updateComponentTreeUI(jPaneStatusBar);
         SwingUtilities.updateComponentTreeUI(jPanelSepStatusBar);
         SwingUtilities.updateComponentTreeUI(jPanelMessageContainer);
         SwingUtilities.updateComponentTreeUI(jPanelBody);
-           
+
         SwingUtilities.updateComponentTreeUI(jTextFieldUserFrom);
         SwingUtilities.updateComponentTreeUI(jPanelToRight);
         SwingUtilities.updateComponentTreeUI(jPanelCcRight);
-        
+
         // Will do all clean reset!
         initCompany();
     }
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -4209,7 +4187,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemThemeFlatArcOrangeIJThemeActionPerformed
 
     private void jMenuItemThemeFlatLafDarculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatLafDarculaActionPerformed
-       updateLookAndFeel();
+        updateLookAndFeel();
     }//GEN-LAST:event_jMenuItemThemeFlatLafDarculaActionPerformed
 
     private void jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed
@@ -4508,7 +4486,7 @@ public class Main extends javax.swing.JFrame {
             KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
             ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
                     awakeFileSession.getAuthenticationToken());
-                   
+
             try {
                 SystemInfoDTO systemInfoDTO = apiMessages.getSystemInfo();
                 sslCertificateDisplayer = new SslCertificateDisplayer(this, host, httpProxy, systemInfoDTO);
@@ -4516,7 +4494,7 @@ public class Main extends javax.swing.JFrame {
                 e.printStackTrace();
                 JOptionPaneNewCustom.showException(rootPane, e);
             }
-     
+
         }
 
     }// GEN-LAST:event_jButtonHostLockActionPerformed
@@ -4986,7 +4964,5 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
-
-
 
 }
