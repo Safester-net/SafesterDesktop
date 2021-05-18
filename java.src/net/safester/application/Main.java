@@ -3177,12 +3177,15 @@ public class Main extends javax.swing.JFrame {
         jTextFieldSubject.setBackground(new java.awt.Color(255, 255, 255));
         jTextFieldSubject.setText("jTextField1");
         jTextFieldSubject.setBorder(null);
+        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 22));
+        jTextFieldSubject.setMinimumSize(new java.awt.Dimension(0, 22));
+        jTextFieldSubject.setPreferredSize(new java.awt.Dimension(63, 22));
         jPanelSubject.add(jTextFieldSubject);
 
         jPanelNorth.add(jPanelSubject);
 
         jPanelFromNew.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelFromNew.setMinimumSize(new java.awt.Dimension(39, 0));
+        jPanelFromNew.setMinimumSize(new java.awt.Dimension(39, 31));
         jPanelFromNew.setOpaque(false);
         jPanelFromNew.setPreferredSize(new java.awt.Dimension(465, 31));
         jPanelFromNew.setLayout(new javax.swing.BoxLayout(jPanelFromNew, javax.swing.BoxLayout.LINE_AXIS));
@@ -3207,8 +3210,9 @@ public class Main extends javax.swing.JFrame {
         jPanelFromAndRecip.setLayout(new javax.swing.BoxLayout(jPanelFromAndRecip, javax.swing.BoxLayout.Y_AXIS));
 
         jPanelDate.setMaximumSize(new java.awt.Dimension(32767, 24));
-        jPanelDate.setMinimumSize(new java.awt.Dimension(38, 0));
+        jPanelDate.setMinimumSize(new java.awt.Dimension(38, 24));
         jPanelDate.setOpaque(false);
+        jPanelDate.setPreferredSize(new java.awt.Dimension(185, 24));
         jPanelDate.setLayout(new javax.swing.BoxLayout(jPanelDate, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel20.setMinimumSize(new java.awt.Dimension(38, 0));
