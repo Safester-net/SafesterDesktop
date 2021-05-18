@@ -23,6 +23,7 @@
  */
 package net.safester.application.util;
 
+import com.swing.util.LookAndFeelHelper;
 import static net.safester.application.updater.InstallParameters.debug;
 
 import java.awt.Color;
@@ -40,6 +41,7 @@ import java.util.List;
 import javax.swing.DefaultRowSorter;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.LookAndFeel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.JTableHeader;
@@ -58,8 +60,9 @@ public class TableUtil {
      * To use for background selection
      */
     public static Color LIGHT_BLUE = new Color(243, 243, 255);
-    public static Color VERY_LIGHT_GRAY = new Color(223, 223, 223);
-    public static Color LIGHT_GRAY = new Color(160, 160, 160); 
+    public static Color GRAY_FOR_LIGHT = new Color(223, 223, 223);
+    public static Color GRAY_FOR_DARK = new Color(128, 128, 128);
+    
     public static Color HOVER_COLOR = TableUtil.getMouseOverBackground();
             
     public static void selectRow(JTable jTable, int row) {
@@ -412,24 +415,14 @@ public class TableUtil {
      */
     public static Color getMouseOverBackground() {
 
-        
-
-//        if (SystemUtils.IS_OS_WINDOWS) {
-//            lightColor = COLOR_HOVER_OUTLOOK_OFFICE;
-//        } else {
-//            // No good color on Mac OS & Linux.
-//            UIDefaults defaults = UIManager.getDefaults();
-//            lightColor = defaults.getColor("Table.selectionBackground");
-//        }
-
         Color lightColor = null;
-        if (SystemUtils.IS_OS_MAC){
-            lightColor = COLOR_HOVER_OUTLOOK_OFFICE;   
+        if (LookAndFeelHelper.isDarkMode()) {
+            lightColor = GRAY_FOR_DARK;   
         }
         else {
-            lightColor = VERY_LIGHT_GRAY;
+            lightColor = GRAY_FOR_LIGHT;
         }
-        
+       
         return lightColor;
 
     }
