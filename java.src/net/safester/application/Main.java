@@ -2626,7 +2626,12 @@ public class Main extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        Main mainNew = new Main(connection, keyId, userNumber, passphrase, typeSubscription, userAccounts);
+        mainNew.setVisible(true);
+        this.dispose();
+        
+        /*
         SwingUtilities.updateComponentTreeUI(jMenuBar1);
         SwingUtilities.updateComponentTreeUI(jPanelToolbar);
         SwingUtilities.updateComponentTreeUI(jPaneStatusBar);
@@ -2640,6 +2645,7 @@ public class Main extends javax.swing.JFrame {
 
         // Will do all clean reset!
         initCompany();
+        */
     }
 
     /**
