@@ -32,7 +32,6 @@ import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;

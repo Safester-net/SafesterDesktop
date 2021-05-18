@@ -23,8 +23,6 @@
  */
 package com.swing.util.CustomJtree;
 
-import java.awt.Color;
-
 /*
  * Copyright (c) 1995 - 2008 Sun Microsystems, Inc.  All rights reserved.
  *

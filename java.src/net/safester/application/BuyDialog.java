@@ -31,7 +31,6 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.sql.Connection;
 
-import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -39,8 +38,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.file.api.client.AwakeUrl;
 import org.awakefw.sql.api.client.AwakeConnection;
-
-import com.swing.util.LookAndFeelHelper;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;

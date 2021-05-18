@@ -25,7 +25,6 @@ import net.safester.application.http.dto.MessageDTO;
 import net.safester.application.http.dto.MessageHeaderDTO;
 import net.safester.application.http.dto.MessageListDTO;
 import net.safester.application.http.dto.SystemInfoDTO;
-import net.safester.application.parms.Parms;
 import net.safester.clientserver.ServerParms;
 
 /**

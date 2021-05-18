@@ -24,7 +24,6 @@
 package net.safester.application.util;
 
 
-import java.awt.Color;
 /****************************************************************/ 
 /*                      JDialogDiscardableMessage                             */
 /*                                                              */ 

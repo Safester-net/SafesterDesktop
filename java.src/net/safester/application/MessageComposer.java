@@ -58,6 +58,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -94,7 +95,6 @@ import com.keyoti.rapidSpell.LanguageType;
 import com.keyoti.rapidSpell.desktop.RapidSpellAsYouType;
 import com.safelogic.utilx.StringMgr;
 import com.swing.util.SwingUtil;
-import javax.swing.Icon;
 
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
@@ -128,7 +128,6 @@ import net.safester.application.tool.MessageTableCellRenderer;
 import net.safester.application.tool.SortedDefaultListModel;
 import net.safester.application.tool.TextReplaceFrame;
 import net.safester.application.tool.TextSearchFrame;
-import net.safester.application.tool.UI_Util;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.AppDateFormat;
 import net.safester.application.util.EmailUser;

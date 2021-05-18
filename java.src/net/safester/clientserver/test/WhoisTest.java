@@ -2,8 +2,6 @@ package net.safester.clientserver.test;
 
 import java.io.IOException;
 
-import org.apache.commons.net.whois.WhoisClient;
-
 public class WhoisTest {
 
 

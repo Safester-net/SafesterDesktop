@@ -29,8 +29,6 @@ package net.safester.application.wait.tools;
 // 16/10/01 16:15 GR - remove useless old code related to animation/thread
 import java.awt.Label;
 
-import com.swing.util.LookAndFeelHelper;
-
 public class CmWaitPanel
         extends Label {
 
