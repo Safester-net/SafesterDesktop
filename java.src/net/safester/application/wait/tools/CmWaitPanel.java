@@ -27,6 +27,8 @@ package net.safester.application.wait.tools;
 // 02/10/01 17:45 GR - WIP
 // 03/10/01 12:45 GR - WIP
 // 16/10/01 16:15 GR - remove useless old code related to animation/thread
+import com.swing.util.LookAndFeelHelper;
+import java.awt.Color;
 import java.awt.Label;
 
 public class CmWaitPanel
@@ -45,15 +47,16 @@ public class CmWaitPanel
             m_cpPal = CmPalette.getDefaultInstance();
         }
 
-        /*
-        if(LookAndFeelHelper.isDarkMode()) {
-                this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        } else {
-                this.setBackground(m_cpPal.getColor("cm.comp.bgcolor")) ;
-        }
-         */
-        
-        this.setForeground(m_cpPal.getColor("cm.bar.fgcolor"));
+//        if (LookAndFeelHelper.isDarkMode()) {
+//            this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+//        } else {
+//            this.setBackground(m_cpPal.getColor("cm.comp.bgcolor"));
+//        }
+         
+//        this.setForeground(m_cpPal.getColor("cm.bar.fgcolor"));
+
+        this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        this.setForeground(Color.RED);
     }
 
     public void start() {

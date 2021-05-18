@@ -36,8 +36,9 @@ import net.safester.application.util.UserPrefManager;
  */
 public class LookAndFeelHelper {
 
-	//private static final Color SAFESTER_DARK_BG_COLOR = new Color(69, 73, 74);
-	private static final Color SAFESTER_DARK_FG_COLOR = new Color(187, 187, 187);
+    //private static final Color SAFESTER_DARK_BG_COLOR = new Color(69, 73, 74);
+    //private static final Color SAFESTER_DARK_FG_COLOR = new Color(187, 187, 187);
+    
     /**
      * Analyses if the Theme is in Dark mode.
      * @return true if Dark Mode.
