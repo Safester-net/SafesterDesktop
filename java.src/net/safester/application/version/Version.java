@@ -33,7 +33,7 @@ public class Version
     public static String DATE       = "18-May-21";
 
     public static String NAME       = "Safester" ;
-    public static String COPYRIGHT  = "Copyright &copy; 2021 Safester";
+    public static String COPYRIGHT  = "Copyright © 2021 Safester";
 
 
     @Override
