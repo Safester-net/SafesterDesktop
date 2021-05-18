@@ -3160,6 +3160,9 @@ public class Main extends javax.swing.JFrame {
         jPanelNorth.add(jPanelTopButtons);
 
         jPanelSubject.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 24));
+        jPanelSubject.setMinimumSize(new java.awt.Dimension(10, 24));
+        jPanelSubject.setPreferredSize(new java.awt.Dimension(73, 24));
         jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelLeft8.setMaximumSize(new java.awt.Dimension(10, 10));
