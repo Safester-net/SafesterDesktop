@@ -2655,7 +2655,11 @@ public class Main extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(jPanelSepStatusBar);
         SwingUtilities.updateComponentTreeUI(jPanelMessageContainer);
         SwingUtilities.updateComponentTreeUI(jPanelBody);
-                
+           
+        SwingUtilities.updateComponentTreeUI(jTextFieldUserFrom);
+        SwingUtilities.updateComponentTreeUI(jPanelToRight);
+        SwingUtilities.updateComponentTreeUI(jPanelCcRight);
+        
         // Will do all clean reset!
         initCompany();
     }
