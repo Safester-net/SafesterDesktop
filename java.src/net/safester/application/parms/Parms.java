@@ -153,7 +153,7 @@ public class Parms {
      */
     public static boolean folderRemovable(int idFolder) {
         boolean removable = true;
-        if (idFolder == INBOX_ID || idFolder == OUTBOX_ID || idFolder == DRAFT_ID) {
+        if (idFolder == STARRED_ID || idFolder == INBOX_ID || idFolder == OUTBOX_ID || idFolder == DRAFT_ID) {
             removable = false;
         }
         return removable;
