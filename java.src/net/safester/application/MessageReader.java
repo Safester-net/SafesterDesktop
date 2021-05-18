@@ -70,6 +70,7 @@ import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.StringMgr;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingColorUtil;
 import com.swing.util.SwingUtil;
 
@@ -1497,10 +1498,12 @@ public class MessageReader extends javax.swing.JFrame {
 
     private void jButtonDisplayEncryptedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDisplayEncryptedMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonDisplayEncryptedMouseEntered
 
     private void jButtonDisplayEncryptedMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDisplayEncryptedMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonDisplayEncryptedMouseExited
 
     private void jButtonDisplayEncryptedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDisplayEncryptedActionPerformed

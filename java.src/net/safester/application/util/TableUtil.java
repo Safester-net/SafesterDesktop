@@ -59,6 +59,7 @@ public class TableUtil {
      */
     public static Color LIGHT_BLUE = new Color(243, 243, 255);
     public static Color VERY_LIGHT_GRAY = new Color(223, 223, 223);
+    public static Color LIGHT_GRAY = new Color(160, 160, 160); 
     public static Color HOVER_COLOR = TableUtil.getMouseOverBackground();
             
     public static void selectRow(JTable jTable, int row) {

@@ -240,9 +240,9 @@ public class FolderChooserNew extends javax.swing.JDialog implements TreeSelecti
         
         DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) model.getRoot();
         // Just changing enumeration kind here
-        Enumeration<DefaultMutableTreeNode> en = rootNode.preorderEnumeration();
+        Enumeration<TreeNode> en = rootNode.preorderEnumeration();
         while (en.hasMoreElements()) {
-            DefaultMutableTreeNode node = en.nextElement();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
             
             FolderTreeNode folderTreeNode = (FolderTreeNode) node;
             //System.out.println("folderTreeNode: " + folderTreeNode + ":");

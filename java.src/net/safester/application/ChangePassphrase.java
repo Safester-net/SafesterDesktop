@@ -653,15 +653,14 @@ public class ChangePassphrase extends javax.swing.JDialog {
 
         jCheckBoxHideTyping.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jCheckBoxHideTyping.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        jCheckBoxHideTyping.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jCheckBoxHideTyping.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jCheckBoxHideTypingStateChanged(evt);
-            }
-        });
         jCheckBoxHideTyping.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jCheckBoxHideTypingItemStateChanged(evt);
+            }
+        });
+        jCheckBoxHideTyping.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxHideTypingStateChanged(evt);
             }
         });
         jPanelHideTypingNew.add(jCheckBoxHideTyping);

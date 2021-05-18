@@ -36,7 +36,7 @@ import net.safester.application.util.UserPrefManager;
  */
 public class LookAndFeelHelper {
 
-	private static final Color SAFESTER_DARK_BG_COLOR = new Color(69, 73, 74);
+	//private static final Color SAFESTER_DARK_BG_COLOR = new Color(69, 73, 74);
 	private static final Color SAFESTER_DARK_FG_COLOR = new Color(187, 187, 187);
     /**
      * Analyses if the Theme is in Dark mode.
@@ -60,10 +60,11 @@ public class LookAndFeelHelper {
      * @return Default background color for Dark / Ligth mode
      */
     public static Color getDefaultBackgroundColor() {
-    	return isDarkMode() ? SAFESTER_DARK_BG_COLOR : Color.WHITE;
+    	return isDarkMode() ? UIManager.getColor("Panel.background") : Color.WHITE;
     }
     
     public static Color getDefaultForegroundColor() {
-    	return isDarkMode() ? SAFESTER_DARK_FG_COLOR : Color.black;
+    	//return isDarkMode() ? UIManager.getColor(SAFESTER_DARK_FG_COLOR) : Color.BLACK;
+        return isDarkMode() ? UIManager.getColor("TextField.foreground") : Color.BLACK;
     }
 }
