@@ -280,6 +280,8 @@ public class About extends javax.swing.JFrame {
         jPanelLogos.setMaximumSize(new java.awt.Dimension(32767, 133));
         jPanelLogos.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 12, 12));
 
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 0, 5));
+
         jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-blue-on-white-300x99.png"))); // NOI18N
         jLabelLogo.setOpaque(true);
         jPanel1.add(jLabelLogo);
