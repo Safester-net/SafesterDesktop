@@ -51,12 +51,14 @@ public class WindowsReseter {
         UserPrefManager.removePreference(UserPrefManager.USER_LOGIN);
         UserPrefManager.removePreference(UserPrefManager.ACCOUNTS_LIST);
         UserPrefManager.removePreference(UserPrefManager.LOOK_AND_FEEL_THEME);
+        UserPrefManager.removePreference(UserPrefManager.SCALING);
         
         try {
             WindowSettingManager.resetAll();
         } catch (BackingStoreException ex) {
             Logger.getLogger(UserSettingsUpdater.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         JOptionPane.showMessageDialog(window, messages.getMessage("the_windows_have_been_reset"), Parms.PRODUCT_NAME, JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }

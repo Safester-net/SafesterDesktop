@@ -64,7 +64,10 @@ public class Safester {
      * @param args
      */
     public static void main(String[] args) {
+        mainCall();
+    }
 
+    public static void mainCall() throws HeadlessException {
         try {
             
             // take the menu bar off the jframe
@@ -78,7 +81,7 @@ public class Safester {
 
             // Must be done at each language change
             HTMLEditorPane.setLanguage(LanguageManager.getLanguage());
-
+            
             // Set User-Agent 
             System.setProperty("http.agent", SystemUtils.OS_NAME + " " + SystemUtils.OS_VERSION + " Safester " + Version.getVersionWithDate());
 
@@ -88,8 +91,8 @@ public class Safester {
                 LanguageManager.setLanguage("en");
                 languageManager.storeLanguage();
             }
-
-
+            
+            
             AwakeFileSession.setUseBase64EncodingForCall();
 
             System.out.println(System.getProperty("user.dir"));
@@ -113,7 +116,9 @@ public class Safester {
                 System.exit(0);
             }
             
-            doMain(args);
+            //doMain(args);
+            Login login = new Login();
+            login.setVisible(true);
         } catch (Throwable t) {
             t.printStackTrace();
 
@@ -130,28 +135,27 @@ public class Safester {
                     "An error has occured... ", JOptionPane.ERROR_MESSAGE);
             System.exit(-1);
         }
-
     }
 
-    /**
-     * Safester main launcher
-     *
-     * @param args
-     */
-    public static void doMain(String[] args) {
-
-        /*
-	if (Parms.FEATURE_CACHE_PASSPHRASE) {
-	    // Start the socket server (if necessary if use wants to cache
-	    // passphrase)
-	    SocketClient socketClient = new SocketClient();
-	    socketClient.startSocketServerNoWait();
-	}
-         */
-        Login login = new Login();
-        login.setVisible(true);
-
-    }
+//    /**
+//     * Safester main launcher
+//     *
+//     * @param args
+//     */
+//    public static void doMain(String[] args) {
+//
+//        /*
+//	if (Parms.FEATURE_CACHE_PASSPHRASE) {
+//	    // Start the socket server (if necessary if use wants to cache
+//	    // passphrase)
+//	    SocketClient socketClient = new SocketClient();
+//	    socketClient.startSocketServerNoWait();
+//	}
+//         */
+//        Login login = new Login();
+//        login.setVisible(true);
+//
+//    }
 
     /**
      * Test if policy files can be copied if not display a detailed help message
