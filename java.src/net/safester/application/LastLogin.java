@@ -312,7 +312,7 @@ public class LastLogin extends javax.swing.JFrame {
         jTextFieldDateTime.setText("jTextFieldDateTime");
         jTextFieldDateTime.setMaximumSize(new java.awt.Dimension(2147483647, 22));
         jTextFieldDateTime.setMinimumSize(new java.awt.Dimension(20, 22));
-        jTextFieldDateTime.setPreferredSize(new java.awt.Dimension(150, 22));
+        jTextFieldDateTime.setPreferredSize(new java.awt.Dimension(190, 22));
         jPanelDateTime.add(jTextFieldDateTime);
 
         jPanelNameAndEmail.add(jPanelDateTime);
@@ -330,7 +330,7 @@ public class LastLogin extends javax.swing.JFrame {
         jTextFieldIp.setEditable(false);
         jTextFieldIp.setText("jTextFieldIp");
         jTextFieldIp.setMaximumSize(new java.awt.Dimension(2147483647, 22));
-        jTextFieldIp.setPreferredSize(new java.awt.Dimension(150, 22));
+        jTextFieldIp.setPreferredSize(new java.awt.Dimension(190, 22));
         jPanelIP.add(jTextFieldIp);
 
         jPanelNameAndEmail.add(jPanelIP);
