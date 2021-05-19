@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -30,6 +31,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.sql.Connection;
+import javax.swing.UIManager;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -112,6 +114,9 @@ public class BuyDialog extends javax.swing.JDialog {
                 
         this.setTitle(messages.getMessage("buy_subscription"));
 
+        Color backgroundMain = UIManager.getColor("Panel.background");
+        jEditorPane.setBackground(backgroundMain);
+        
         jEditorPane.setContentType("text/html");
         jEditorPane.setEditable(false);
         jEditorPane.addHyperlinkListener(new HyperlinkListener() {
@@ -212,6 +217,7 @@ public class BuyDialog extends javax.swing.JDialog {
         jPanelCenter = new javax.swing.JPanel();
         jPanelTitle = new javax.swing.JPanel();
         jLabelTitle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jEditorPane = new javax.swing.JEditorPane();
         jPanelSepBottom = new javax.swing.JPanel();
         jPanelSepBottom1 = new javax.swing.JPanel();
@@ -250,9 +256,15 @@ public class BuyDialog extends javax.swing.JDialog {
 
         jPanelCenter.add(jPanelTitle);
 
-        jEditorPane.setBorder(null);
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        jEditorPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jEditorPane.setMargin(new java.awt.Insets(5, 5, 5, 5));
-        jPanelCenter.add(jEditorPane);
+        jScrollPane1.setViewportView(jEditorPane);
+
+        jPanelCenter.add(jScrollPane1);
 
         jPanelSepBottom.setMaximumSize(new java.awt.Dimension(32767, 4));
         jPanelSepBottom.setMinimumSize(new java.awt.Dimension(10, 4));
@@ -376,6 +388,7 @@ public class BuyDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelSouth;
     private javax.swing.JPanel jPanelTitle;
     private javax.swing.JPanel jPanelWest;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
