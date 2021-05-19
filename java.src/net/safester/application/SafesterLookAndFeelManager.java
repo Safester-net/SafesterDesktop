@@ -65,7 +65,9 @@ public class SafesterLookAndFeelManager {
             return;
         }
 
-        System.setProperty("sun.java2d.uiScale", "1.0");
+        //-Dsun.java2d.uiScale=1.0
+        //System.setProperty("flatlaf.uiScale", "1.0");
+        
         String lookAndFeel =  UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
         UIManager.setLookAndFeel(lookAndFeel);
         

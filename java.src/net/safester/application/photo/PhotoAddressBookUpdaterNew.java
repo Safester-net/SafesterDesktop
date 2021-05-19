@@ -1057,10 +1057,14 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jPanelAddRecipient.setMinimumSize(new java.awt.Dimension(144, 26));
         jPanelAddRecipient.setLayout(new javax.swing.BoxLayout(jPanelAddRecipient, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanelTextFields1.setMaximumSize(new java.awt.Dimension(32842, 26));
+        jPanelTextFields1.setMinimumSize(new java.awt.Dimension(114, 26));
+        jPanelTextFields1.setPreferredSize(new java.awt.Dimension(895, 26));
         jPanelTextFields1.setLayout(new javax.swing.BoxLayout(jPanelTextFields1, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelGrid3.setMaximumSize(new java.awt.Dimension(32767, 22));
-        jPanelGrid3.setPreferredSize(new java.awt.Dimension(820, 22));
+        jPanelGrid3.setMaximumSize(new java.awt.Dimension(32767, 30));
+        jPanelGrid3.setMinimumSize(new java.awt.Dimension(39, 30));
+        jPanelGrid3.setPreferredSize(new java.awt.Dimension(820, 30));
         jPanelGrid3.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         jPanelRecipientEmail.setLayout(new javax.swing.BoxLayout(jPanelRecipientEmail, javax.swing.BoxLayout.LINE_AXIS));
@@ -1198,7 +1202,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
-        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/floppy_disk.png"))); // NOI18N
         jMenuItemSave.setText("jMenuItemSave");
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
@@ -1217,7 +1221,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemImport);
         jMenuFile.add(jSeparator2);
 
-        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/close.png"))); // NOI18N
         jMenuItemClose.setText("jMenuItemClose");
         jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {

@@ -309,6 +309,7 @@ public class Main extends javax.swing.JFrame {
 //            this.jToolBar1.remove(jButtonSearch);
 //        }
         setSelectedThemeRadioButton();
+        setSelectedScaleRadioButton();
 
         this.jSeparatorColored.setForeground(SwingColorUtil.getSeparatorColor());
 
@@ -363,11 +364,16 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemProxySettings.setText(messages.getMessage("proxy_settings"));
         this.jMenuItemAutoresponder.setText(messages.getMessage("vacation_responder"));
         this.jMenuItemUserSettings.setText(messages.getMessage("user_settings"));
-        this.jMenuAppearance.setText(messages.getMessage("appearance"));
         this.jMenuItemImportAddrBook.setText(messages.getMessage("importing_contacts"));
         this.jMenuItemSearch.setText(messages.getMessage("search_message"));
         this.jMenuItemDeleteAccount.setText(messages.getMessage("menu_delete_account"));
 
+        jMenuView.setText(messages.getMessage("view"));
+        jMenuScaling.setText(messages.getMessage("scaling"));
+        jRadioButtonMenuItemScale100.setText(messages.getMessage("scaling_100"));
+        jRadioButtonMenuItemScale110.setText(messages.getMessage("scaling_110"));
+        jMenuAppearance.setText(messages.getMessage("appearance"));
+        
         this.jMenuItemPassphraseRecoverySettings.setText(messages.getMessage("passphrase_recovery_settings"));
         this.jMenuItemForgetPassphrase.setText(messages.getMessage("remove_passphrase_from_memory"));
 
@@ -2607,6 +2613,34 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
+    
+    private void setSelectedScaleRadioButton() {
+        String scaling = UserPrefManager.getPreference(UserPrefManager.SCALING, "1.0");
+        if (scaling.equals("1.0")) {
+            this.jRadioButtonMenuItemScale100.setSelected(true);
+        } else if (scaling.equals("1.1")) {
+            this.jRadioButtonMenuItemScale110.setSelected(true);
+        } else {
+            //ignore
+        }
+    }
+    
+    private void updateScaling() {
+        
+        String scaling = "1.0";
+        if (jRadioButtonMenuItemScale100.isSelected()) {
+            scaling = "1.0";
+        }
+        else if (jRadioButtonMenuItemScale110.isSelected()) {
+            scaling = "1.1";
+        }
+        
+        UserPrefManager.setPreference(UserPrefManager.SCALING, scaling);
+        System.setProperty("flatlaf.uiScale", scaling);
+        updateLookAndFeel();
+    }
+
+        
     private void updateLookAndFeel() {
 
         String className = Themes.DEFAULT_THEME;
@@ -2675,6 +2709,7 @@ public class Main extends javax.swing.JFrame {
         buttonGroupReadingPane = new javax.swing.ButtonGroup();
         buttonGroupFolderSection = new javax.swing.ButtonGroup();
         buttonGroupAppearance = new javax.swing.ButtonGroup();
+        buttonGroupScaling = new javax.swing.ButtonGroup();
         jPanelCenter = new javax.swing.JPanel();
         jPanelToolbar = new javax.swing.JPanel();
         jPanelToolbarMain = new javax.swing.JPanel();
@@ -2822,14 +2857,18 @@ public class Main extends javax.swing.JFrame {
         jMenuItemDelete = new javax.swing.JMenuItem();
         jSeparator15 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSearch = new javax.swing.JMenuItem();
-        jMenuSettings = new javax.swing.JMenu();
-        jMenuItemUserSettings = new javax.swing.JMenuItem();
+        jMenuView = new javax.swing.JMenu();
+        jMenuScaling = new javax.swing.JMenu();
+        jRadioButtonMenuItemScale100 = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemScale110 = new javax.swing.JRadioButtonMenuItem();
         jMenuAppearance = new javax.swing.JMenu();
         jMenuItemThemeFlatIntelliJLaf = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatArcOrangeIJTheme = new javax.swing.JRadioButtonMenuItem();
         jSeparatorThemes = new javax.swing.JPopupMenu.Separator();
         jMenuItemThemeFlatLafDarcula = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatDarkPurpleIJTheme = new javax.swing.JRadioButtonMenuItem();
+        jMenuSettings = new javax.swing.JMenu();
+        jMenuItemUserSettings = new javax.swing.JMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
         jMenuItemChangePassphrase = new javax.swing.JMenuItem();
         jMenuItemPassphraseRecoverySettings = new javax.swing.JMenuItem();
@@ -3845,17 +3884,30 @@ public class Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuMessage);
 
-        jMenuSettings.setText("jMenuSettings");
+        jMenuView.setText("jMenuView");
 
-        jMenuItemUserSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-        jMenuItemUserSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/window_gear.png"))); // NOI18N
-        jMenuItemUserSettings.setText("jMenuItemUserSettings");
-        jMenuItemUserSettings.addActionListener(new java.awt.event.ActionListener() {
+        jMenuScaling.setText("jMenuScaling");
+
+        buttonGroupScaling.add(jRadioButtonMenuItemScale100);
+        jRadioButtonMenuItemScale100.setSelected(true);
+        jRadioButtonMenuItemScale100.setText("jRadioButtonMenuItemScale100");
+        jRadioButtonMenuItemScale100.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemUserSettingsActionPerformed(evt);
+                jRadioButtonMenuItemScale100ActionPerformed(evt);
             }
         });
-        jMenuSettings.add(jMenuItemUserSettings);
+        jMenuScaling.add(jRadioButtonMenuItemScale100);
+
+        buttonGroupScaling.add(jRadioButtonMenuItemScale110);
+        jRadioButtonMenuItemScale110.setText("jRadioButtonMenuItemScale110");
+        jRadioButtonMenuItemScale110.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale110ActionPerformed(evt);
+            }
+        });
+        jMenuScaling.add(jRadioButtonMenuItemScale110);
+
+        jMenuView.add(jMenuScaling);
 
         jMenuAppearance.setText("jMenuAppearance");
 
@@ -3917,7 +3969,21 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuAppearance.add(jMenuItemThemeFlatDarkPurpleIJTheme);
 
-        jMenuSettings.add(jMenuAppearance);
+        jMenuView.add(jMenuAppearance);
+
+        jMenuBar1.add(jMenuView);
+
+        jMenuSettings.setText("jMenuSettings");
+
+        jMenuItemUserSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        jMenuItemUserSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/window_gear.png"))); // NOI18N
+        jMenuItemUserSettings.setText("jMenuItemUserSettings");
+        jMenuItemUserSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemUserSettingsActionPerformed(evt);
+            }
+        });
+        jMenuSettings.add(jMenuItemUserSettings);
         jMenuSettings.add(jSeparator23);
 
         jMenuItemChangePassphrase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/key.png"))); // NOI18N
@@ -4213,6 +4279,14 @@ public class Main extends javax.swing.JFrame {
     private void jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed
         updateLookAndFeel();
     }//GEN-LAST:event_jMenuItemThemeFlatDarkPurpleIJThemeActionPerformed
+
+    private void jRadioButtonMenuItemScale100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale100ActionPerformed
+        updateScaling();
+    }//GEN-LAST:event_jRadioButtonMenuItemScale100ActionPerformed
+
+    private void jRadioButtonMenuItemScale110ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale110ActionPerformed
+        updateScaling();
+    }//GEN-LAST:event_jRadioButtonMenuItemScale110ActionPerformed
 
     private void jButtonNewMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNewMessageActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -4791,6 +4865,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupAppearance;
     private javax.swing.ButtonGroup buttonGroupFolderSection;
     private javax.swing.ButtonGroup buttonGroupReadingPane;
+    private javax.swing.ButtonGroup buttonGroupScaling;
     private javax.swing.JButton jButtonAddressBook;
     private javax.swing.JButton jButtonBuy;
     private javax.swing.JButton jButtonDeleteSelectedMessage;
@@ -4872,7 +4947,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemWhatsNew;
     private javax.swing.JMenu jMenuMessage;
     private javax.swing.JMenu jMenuOrientation;
+    private javax.swing.JMenu jMenuScaling;
     private javax.swing.JMenu jMenuSettings;
+    private javax.swing.JMenu jMenuView;
     private javax.swing.JMenu jMenuWindow;
     private javax.swing.JPanel jPaneStatusBar;
     private javax.swing.JPanel jPanel2;
@@ -4943,6 +5020,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemNormal;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemPaneInactive;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemRight;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale100;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale110;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -4984,5 +5063,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+
 
 }
