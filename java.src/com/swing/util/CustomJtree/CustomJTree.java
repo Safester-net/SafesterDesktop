@@ -171,12 +171,13 @@ public class CustomJTree extends JPanel
      */
     private void initComponent() throws HeadlessException {
 
-        String rootNodeText = ""; //Messages";
+        MessagesManager messages = new MessagesManager();
+        String rootNodeText = messages.getMessage("messages");
         
-        if (SystemUtils
-                .IS_OS_LINUX || UI_Util.isNimbus()) {
-            rootNodeText = "";
-        }
+//        if (SystemUtils
+//                .IS_OS_LINUX || UI_Util.isNimbus()) {
+//            rootNodeText = "";
+//        }
         
         rootNode = new DefaultMutableTreeNode(rootNodeText);
         treeModel = new DefaultTreeModel(rootNode);
@@ -307,8 +308,14 @@ public class CustomJTree extends JPanel
                 int folderId = ((FolderLocal) userObject).getFolderId();
 
                 if (! Parms.folderRemovable(folderId)) {
+                    
+                    if (Parms.folderAddable(folderId)) {
+                        addItem.setEnabled(true);
+                    }
+                    else {
+                        addItem.setEnabled(false);
+                    }
                     //Cannot remove the system folders
-                    addItem.setEnabled(true);
                     removeItem.setEnabled(false);
                     renameItem.setEnabled(false);
                 } else {

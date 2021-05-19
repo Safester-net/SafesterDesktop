@@ -164,5 +164,9 @@ public class Parms {
     
     /** String displayed if a recipient is unknown */
     public static String UNKNOWN_RECIPIENT = "????";
+
+    public static boolean folderAddable(int folderId) {
+        return folderId == STARRED_ID ? false:true;
+    }
         
 }

@@ -25,6 +25,7 @@ package com.swing.util.CustomJtree;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
@@ -135,6 +136,16 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         // BEGIN FOR HIGHLIGHT HOVER LINE
         this.setOpaque(true);
         boolean highlight = (oldSelectedPath != null) && (value == oldSelectedPath.getLastPathComponent());
+
+        // BEGIN HACK FOR CUT OFF LEAF 
+        if (leaf) {
+            final Dimension size = this.getPreferredSize(); 
+            int theWidth = Math.min(200, size.width); // because on Search otw leaf takes very long size
+            int theHeight = size.height;
+            this.setMinimumSize(new Dimension(theWidth, theHeight)); 
+            this.setPreferredSize(new Dimension(theWidth, theHeight)); 
+        // END HACK FOR CUT OFF LEAF          
+        }
 
         this.setBackground(highlight ? TableUtil.HOVER_COLOR : tree.getBackground());
         this.setForeground(highlight ? Color.BLACK : tree.getForeground());
