@@ -85,7 +85,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.commons.lang3.SystemUtils;
 
 import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
@@ -96,7 +95,6 @@ import net.safester.application.Main;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.FoldersHandler;
-import net.safester.application.tool.UI_Util;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.FolderListTransfer;
 import net.safester.noobs.clientserver.FolderLocal;

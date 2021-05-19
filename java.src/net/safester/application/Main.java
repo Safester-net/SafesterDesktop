@@ -2858,15 +2858,15 @@ public class Main extends javax.swing.JFrame {
         jSeparator15 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSearch = new javax.swing.JMenuItem();
         jMenuView = new javax.swing.JMenu();
-        jMenuScaling = new javax.swing.JMenu();
-        jRadioButtonMenuItemScale100 = new javax.swing.JRadioButtonMenuItem();
-        jRadioButtonMenuItemScale110 = new javax.swing.JRadioButtonMenuItem();
         jMenuAppearance = new javax.swing.JMenu();
         jMenuItemThemeFlatIntelliJLaf = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatArcOrangeIJTheme = new javax.swing.JRadioButtonMenuItem();
         jSeparatorThemes = new javax.swing.JPopupMenu.Separator();
         jMenuItemThemeFlatLafDarcula = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatDarkPurpleIJTheme = new javax.swing.JRadioButtonMenuItem();
+        jMenuScaling = new javax.swing.JMenu();
+        jRadioButtonMenuItemScale100 = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemScale110 = new javax.swing.JRadioButtonMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemUserSettings = new javax.swing.JMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
@@ -3886,29 +3886,6 @@ public class Main extends javax.swing.JFrame {
 
         jMenuView.setText("jMenuView");
 
-        jMenuScaling.setText("jMenuScaling");
-
-        buttonGroupScaling.add(jRadioButtonMenuItemScale100);
-        jRadioButtonMenuItemScale100.setSelected(true);
-        jRadioButtonMenuItemScale100.setText("jRadioButtonMenuItemScale100");
-        jRadioButtonMenuItemScale100.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonMenuItemScale100ActionPerformed(evt);
-            }
-        });
-        jMenuScaling.add(jRadioButtonMenuItemScale100);
-
-        buttonGroupScaling.add(jRadioButtonMenuItemScale110);
-        jRadioButtonMenuItemScale110.setText("jRadioButtonMenuItemScale110");
-        jRadioButtonMenuItemScale110.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonMenuItemScale110ActionPerformed(evt);
-            }
-        });
-        jMenuScaling.add(jRadioButtonMenuItemScale110);
-
-        jMenuView.add(jMenuScaling);
-
         jMenuAppearance.setText("jMenuAppearance");
 
         buttonGroupAppearance.add(jMenuItemThemeFlatIntelliJLaf);
@@ -3970,6 +3947,29 @@ public class Main extends javax.swing.JFrame {
         jMenuAppearance.add(jMenuItemThemeFlatDarkPurpleIJTheme);
 
         jMenuView.add(jMenuAppearance);
+
+        jMenuScaling.setText("jMenuScaling");
+
+        buttonGroupScaling.add(jRadioButtonMenuItemScale100);
+        jRadioButtonMenuItemScale100.setSelected(true);
+        jRadioButtonMenuItemScale100.setText("jRadioButtonMenuItemScale100");
+        jRadioButtonMenuItemScale100.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale100ActionPerformed(evt);
+            }
+        });
+        jMenuScaling.add(jRadioButtonMenuItemScale100);
+
+        buttonGroupScaling.add(jRadioButtonMenuItemScale110);
+        jRadioButtonMenuItemScale110.setText("jRadioButtonMenuItemScale110");
+        jRadioButtonMenuItemScale110.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale110ActionPerformed(evt);
+            }
+        });
+        jMenuScaling.add(jRadioButtonMenuItemScale110);
+
+        jMenuView.add(jMenuScaling);
 
         jMenuBar1.add(jMenuView);
 

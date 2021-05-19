@@ -140,7 +140,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         // BEGIN HACK FOR CUT OFF LEAF 
         if (leaf) {
             final Dimension size = this.getPreferredSize(); 
-            int theWidth = Math.min(200, size.width); // because on Search otw leaf takes very long size
+            int theWidth = Math.min(250, size.width); // because on Search otw leaf takes very long size
             int theHeight = size.height;
             this.setMinimumSize(new Dimension(theWidth, theHeight)); 
             this.setPreferredSize(new Dimension(theWidth, theHeight)); 
