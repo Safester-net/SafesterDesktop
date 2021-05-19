@@ -142,7 +142,7 @@ public class GroupTreeCellRendererNew extends DefaultTreeCellRenderer {
 
 //        this.setBackground(highlight ? TableUtil.HOVER_COLOR : tree.getBackground());
 //        this.setForeground(highlight ? Color.BLACK : tree.getForeground());
-        this.setBackground(highlight ? TableUtil.HOVER_COLOR : LookAndFeelHelper.getDefaultBackgroundColor());
+        this.setBackground(highlight ? TableUtil.getMouseOverBackground(): LookAndFeelHelper.getDefaultBackgroundColor());
         this.setForeground(highlight ? Color.BLACK : LookAndFeelHelper.getDefaultForegroundColor());
 
         if (exited) {

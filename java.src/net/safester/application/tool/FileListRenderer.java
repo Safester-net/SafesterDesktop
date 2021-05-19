@@ -92,7 +92,7 @@ public class FileListRenderer extends JLabel implements ListCellRenderer {
             //setForeground(list.getForeground());
             
             if (JListUtil.selectedItem > -1 && JListUtil.selectedItem == index && !isSelected) {
-                setBackground(TableUtil.HOVER_COLOR);
+                setBackground(TableUtil.getMouseOverBackground());
                 setForeground(TableUtil.getMouseOverForeground());
             } else {
                 setBackground(Color.WHITE);

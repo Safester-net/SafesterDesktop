@@ -147,7 +147,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         // END HACK FOR CUT OFF LEAF          
         }
 
-        this.setBackground(highlight ? TableUtil.HOVER_COLOR : tree.getBackground());
+        this.setBackground(highlight ? TableUtil.getMouseOverBackground() : tree.getBackground());
         this.setForeground(highlight ? Color.BLACK : tree.getForeground());
 
         if (exited) {

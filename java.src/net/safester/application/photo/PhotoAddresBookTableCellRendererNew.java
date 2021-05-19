@@ -142,7 +142,7 @@ public class PhotoAddresBookTableCellRendererNew extends DefaultTableCellRendere
         }
         
         if (TableUtil.selectedRowAddress > -1 && TableUtil.selectedRowAddress == row && ! isSelected) {
-            c.setBackground(TableUtil.HOVER_COLOR);
+            c.setBackground(TableUtil.getMouseOverBackground());
             c.setForeground(TableUtil.getMouseOverForeground());
         }
         

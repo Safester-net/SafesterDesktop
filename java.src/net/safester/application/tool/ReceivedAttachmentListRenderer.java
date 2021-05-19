@@ -144,7 +144,7 @@ public class ReceivedAttachmentListRenderer extends JLabel implements ListCellRe
         } else {
             
             if (JListUtil.selectedItem > -1 && JListUtil.selectedItem == index && !isSelected) {
-                setBackground(TableUtil.HOVER_COLOR);
+                setBackground(TableUtil.getMouseOverBackground());
                 setForeground(TableUtil.getMouseOverForeground());
             }
             else {

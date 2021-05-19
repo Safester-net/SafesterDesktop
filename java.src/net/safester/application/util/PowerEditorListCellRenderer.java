@@ -37,7 +37,7 @@ public class PowerEditorListCellRenderer extends DefaultListCellRenderer {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         
         if (PowerEditorUtil.selectedLineMouseOver > -1 && PowerEditorUtil.selectedLineMouseOver == index && !isSelected) {
-            setBackground(TableUtil.HOVER_COLOR);
+            setBackground(TableUtil.getMouseOverBackground());
             setForeground(TableUtil.getMouseOverForeground());
         }
         /*

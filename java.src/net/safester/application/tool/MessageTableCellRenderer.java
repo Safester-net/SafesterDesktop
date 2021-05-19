@@ -201,12 +201,12 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
 
         if (!isSearchTable) {
             if (TableUtil.selectedBoxLine > -1 && TableUtil.selectedBoxLine == row && !isSelected) {
-                c.setBackground(TableUtil.HOVER_COLOR);
+                c.setBackground(TableUtil.getMouseOverBackground());
                 c.setForeground(TableUtil.getMouseOverForeground());
             }
         } else {
             if (TableUtil.selectedSearchLine > -1 && TableUtil.selectedSearchLine == row && !isSelected) {
-                c.setBackground(TableUtil.HOVER_COLOR);
+                c.setBackground(TableUtil.getMouseOverBackground());
                 c.setForeground(TableUtil.getMouseOverForeground());
             }
         }
