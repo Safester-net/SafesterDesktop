@@ -243,7 +243,10 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePickerBegin">
+                        <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePickerStart">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                          </AuxValues>
                         </Component>
                         <Container class="javax.swing.JPanel" name="jPanel1">
 
@@ -255,6 +258,9 @@
                           </Properties>
                         </Component>
                         <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePickerEnd">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                          </AuxValues>
                         </Component>
                       </SubComponents>
                     </Container>

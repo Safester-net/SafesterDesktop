@@ -62,13 +62,11 @@ import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomComboBox.TreeListCellRenderer;
 import com.swing.util.CustomComboBox.TreeListModel;
-import com.swing.util.LookAndFeelHelper;
-import com.swing.util.SwingColorUtil;
-import com.swing.util.Themes;
-import java.awt.Color;
+import com.swing.util.JXDateColorUtil;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import static net.safester.application.test.NewJFrame.setCalendarColors;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.SearchResultMessagesTableCreator;
 import net.safester.application.tool.WindowSettingManager;
@@ -161,18 +159,26 @@ public class Search extends javax.swing.JFrame {
         jXDatePickerEnd.setDate(now.getTime());
         now.add(Calendar.MONTH, -1);
         jXDatePickerStart.setDate(now.getTime());
+        
+//        if (! LookAndFeelHelper.getCurrentTheme().equals(Themes.DEFAULT_THEME)) {
+//            Color color = SwingColorUtil.getThemeColor();
+//            jXDatePickerStart.getMonthView().setMonthStringBackground(color);
+//            jXDatePickerStart.getMonthView().setSelectionBackground(color);
+//            jXDatePickerStart.getMonthView().setTodayBackground(color);
+//
+//            jXDatePickerEnd.getMonthView().setMonthStringBackground(color);
+//            jXDatePickerEnd.getMonthView().setSelectionBackground(color);
+//            jXDatePickerEnd.getMonthView().setTodayBackground(color);
+//            
+//            if (LookAndFeelHelper.isDarkMode()) {
+//                jXDatePickerStart.getMonthView().setMonthStringForeground(Color.white);
+//                jXDatePickerEnd.getMonthView().setSelectionForeground(Color.white);
+//            }
+//        }
 
-        if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
-            Color color = SwingColorUtil.getThemeColor();
-            jXDatePickerStart.getMonthView().setMonthStringBackground(color);
-            jXDatePickerStart.getMonthView().setSelectionBackground(color);
-            jXDatePickerStart.getMonthView().setTodayBackground(color);
-
-            jXDatePickerEnd.getMonthView().setMonthStringBackground(color);
-            jXDatePickerEnd.getMonthView().setSelectionBackground(color);
-            jXDatePickerEnd.getMonthView().setTodayBackground(color);
-        }
-
+        JXDateColorUtil.setCalendarColors(jXDatePickerStart);
+        JXDateColorUtil.setCalendarColors(jXDatePickerEnd);
+            
         this.jComboBoxContentType.addItem(messages.getMessage("subject"));
         this.jComboBoxContentType.addItem(messages.getMessage("subject_and_body"));
         jComboBoxContentType.setSelectedIndex(0);
@@ -235,6 +241,8 @@ public class Search extends javax.swing.JFrame {
 
     }
 
+
+        
     private void save() {
         WindowSettingManager.save(this);
     }
@@ -971,8 +979,8 @@ public class Search extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldSearchContent;
     private javax.swing.JTextField jTextFieldSearchRecipient;
     private javax.swing.JTextField jTextFieldSearchSender;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerEnd;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerStart;
+    public org.jdesktop.swingx.JXDatePicker jXDatePickerEnd;
+    public org.jdesktop.swingx.JXDatePicker jXDatePickerStart;
     // End of variables declaration//GEN-END:variables
 
     /**

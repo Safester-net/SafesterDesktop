@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.swing.util.JXDateColorUtil;
 import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingColorUtil;
 import java.awt.Color;
@@ -144,6 +145,9 @@ public class AutoResponder extends javax.swing.JDialog {
 	jButtonApply.setText(messages.getMessage("ok"));
 	jButtonClose.setText(messages.getMessage("cancel"));
 
+        JXDateColorUtil.setCalendarColors(jXDatePickerStart);
+        JXDateColorUtil.setCalendarColors(jXDatePickerEnd);
+        
 	// Set the Send preferences for user Preferences
 
 	jRadioButtonResponderOnItemStateChanged(null);
@@ -184,9 +188,9 @@ public class AutoResponder extends javax.swing.JDialog {
 
         if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
             Color color = SwingColorUtil.getThemeColor();
-            jXDatePickerBegin.getMonthView().setMonthStringBackground(color);
-            jXDatePickerBegin.getMonthView().setSelectionBackground(color);
-            jXDatePickerBegin.getMonthView().setTodayBackground(color);
+            jXDatePickerStart.getMonthView().setMonthStringBackground(color);
+            jXDatePickerStart.getMonthView().setSelectionBackground(color);
+            jXDatePickerStart.getMonthView().setTodayBackground(color);
 
             jXDatePickerEnd.getMonthView().setMonthStringBackground(color);
             jXDatePickerEnd.getMonthView().setSelectionBackground(color);
@@ -233,14 +237,14 @@ public class AutoResponder extends javax.swing.JDialog {
 
 	    if (autoresponderLocal2.getDtBegin() < 0 && autoresponderLocal2.getDtExpire() < 0 ) {
 		this.jRadioButtonResponderOff.setSelected(true);
-		jXDatePickerBegin.setDate(new java.util.Date());
+		jXDatePickerStart.setDate(new java.util.Date());
 		jXDatePickerEnd.setDate(new java.util.Date());
 		this.setCursor(Cursor.getDefaultCursor());
 		return;
 	    }
 
 	    this.jRadioButtonResponderOn.setSelected(autoresponderLocal2.getResponderOn());
-	    this.jXDatePickerBegin.setDate(new Date(autoresponderLocal2.getDtBegin()));
+	    this.jXDatePickerStart.setDate(new Date(autoresponderLocal2.getDtBegin()));
 	    this.jXDatePickerEnd.setDate(new Date(autoresponderLocal2.getDtExpire()));
 
 	    String encryptedSubject = autoresponderLocal2.getSubject();
@@ -273,7 +277,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    return;
 	}
 
-	if (jXDatePickerBegin.getDate() == null) {
+	if (jXDatePickerStart.getDate() == null) {
 	    String errorMsg = messages.getMessage("error");
 	    JOptionPane.showMessageDialog(this, messages.getMessage("please_select_a_from_date"), errorMsg,
 		    JOptionPane.ERROR_MESSAGE);
@@ -287,7 +291,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    return;
 	}
 
-	if (jXDatePickerBegin.getDate().after(jXDatePickerEnd.getDate())) {
+	if (jXDatePickerStart.getDate().after(jXDatePickerEnd.getDate())) {
 	    String errorMsg = messages.getMessage("error");
 	    JOptionPane.showMessageDialog(this, messages.getMessage("from_date_must_be_before_until"), errorMsg,
 		    JOptionPane.ERROR_MESSAGE);
@@ -302,7 +306,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    AutoresponderLocal2 autoresponderLocal2 = new AutoresponderLocal2();
 	    autoresponderLocal2.setUserNumber(userNumber);
 	    autoresponderLocal2.setResponderOn(jRadioButtonResponderOn.isSelected());
-	    autoresponderLocal2.setDtBegin(jXDatePickerBegin.getDate().getTime());
+	    autoresponderLocal2.setDtBegin(jXDatePickerStart.getDate().getTime());
 	    autoresponderLocal2.setDtExpire(jXDatePickerEnd.getDate().getTime());
 
 	    String subject = jTextFieldSubject.getText();
@@ -382,7 +386,7 @@ public class AutoResponder extends javax.swing.JDialog {
 
     private void enableZones(boolean enable) {
 	this.jLabelDateFrom.setEnabled(enable);
-	this.jXDatePickerBegin.setEnabled(enable);
+	this.jXDatePickerStart.setEnabled(enable);
 	this.jLabelDateUntil.setEnabled(enable);
 	this.jXDatePickerEnd.setEnabled(enable);
 	this.jLabelSubject.setEnabled(enable);
@@ -430,7 +434,7 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelResponderMain = new javax.swing.JPanel();
         jPanelDates = new javax.swing.JPanel();
         jLabelDateFrom = new javax.swing.JLabel();
-        jXDatePickerBegin = new org.jdesktop.swingx.JXDatePicker();
+        jXDatePickerStart = new org.jdesktop.swingx.JXDatePicker();
         jPanel1 = new javax.swing.JPanel();
         jLabelDateUntil = new javax.swing.JLabel();
         jXDatePickerEnd = new org.jdesktop.swingx.JXDatePicker();
@@ -551,7 +555,7 @@ public class AutoResponder extends javax.swing.JDialog {
         jLabelDateFrom.setMinimumSize(new java.awt.Dimension(50, 16));
         jLabelDateFrom.setPreferredSize(new java.awt.Dimension(50, 16));
         jPanelDates.add(jLabelDateFrom);
-        jPanelDates.add(jXDatePickerBegin);
+        jPanelDates.add(jXDatePickerStart);
         jPanelDates.add(jPanel1);
 
         jLabelDateUntil.setText("Until");
@@ -779,8 +783,8 @@ public class AutoResponder extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextArea jTextAreaBody;
     private javax.swing.JTextField jTextFieldSubject;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerBegin;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerEnd;
+    public org.jdesktop.swingx.JXDatePicker jXDatePickerEnd;
+    public org.jdesktop.swingx.JXDatePicker jXDatePickerStart;
     // End of variables declaration//GEN-END:variables
 
 }
