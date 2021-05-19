@@ -444,6 +444,7 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSep5b = new javax.swing.JPanel();
         jPanelSubject = new javax.swing.JPanel();
         jTextFieldSubject = new javax.swing.JTextField();
+        jPanelSep6 = new javax.swing.JPanel();
         jPanelBody = new javax.swing.JPanel();
         jPanelLabelMessage = new javax.swing.JPanel();
         jLabelMessage = new javax.swing.JLabel();
@@ -593,7 +594,9 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 31));
         jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 22));
+        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 24));
+        jTextFieldSubject.setMinimumSize(new java.awt.Dimension(6, 24));
+        jTextFieldSubject.setPreferredSize(new java.awt.Dimension(6, 24));
         jTextFieldSubject.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldSubjectActionPerformed(evt);
@@ -604,6 +607,11 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSubjectContainer.add(jPanelSubject);
 
         jPanelResponderMain.add(jPanelSubjectContainer);
+
+        jPanelSep6.setMaximumSize(new java.awt.Dimension(32767, 5));
+        jPanelSep6.setMinimumSize(new java.awt.Dimension(10, 5));
+        jPanelSep6.setPreferredSize(new java.awt.Dimension(1000, 5));
+        jPanelResponderMain.add(jPanelSep6);
 
         jPanelBody.setLayout(new javax.swing.BoxLayout(jPanelBody, javax.swing.BoxLayout.X_AXIS));
 
@@ -771,6 +779,7 @@ public class AutoResponder extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelSep5;
     private javax.swing.JPanel jPanelSep5b;
     private javax.swing.JPanel jPanelSep5b1;
+    private javax.swing.JPanel jPanelSep6;
     private javax.swing.JPanel jPanelSepLine;
     private javax.swing.JPanel jPanelSepLine1;
     private javax.swing.JPanel jPanelSubject;
