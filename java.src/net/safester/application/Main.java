@@ -226,7 +226,7 @@ public class Main extends javax.swing.JFrame {
     private PhotoAddressBookUpdaterNew photoAddressBookUpdaterNew;
     private ConfirmAccountDeleteDialog confirmAccountDeleteDialog;
     private LastLogin lastLogin;
-    private UserSettingsUpdater userSettingsUpdater;
+    public UserSettingsUpdater userSettingsUpdater; // Make public because of restart
     private SslCertificateDisplayer sslCertificateDisplayer;
     private Search search;
     private AutoResponder autoResponder;
@@ -2634,9 +2634,16 @@ public class Main extends javax.swing.JFrame {
      * Allows to restart in cas of settings big change (language, L&f,...)
      */
     public void restart() {
+        
         Main mainNew = new Main(connection, keyId, userNumber, passphrase, typeSubscription, userAccounts);
         mainNew.setVisible(true);
         this.dispose();
+        
+        if (userSettingsUpdater != null) {
+            userSettingsUpdater.dispose();
+            userSettingsUpdater = new UserSettingsUpdater(this, connection, userNumber, keyId);
+            userSettingsUpdater.setVisible(true);
+        }
         
         /*
         SwingUtilities.updateComponentTreeUI(jMenuBar1);
