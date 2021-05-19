@@ -2826,8 +2826,8 @@ public class Main extends javax.swing.JFrame {
         jPanelSepLabels = new javax.swing.JPanel();
         jButtonDetail = new javax.swing.JButton();
         jPanelButtonsNav = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
         jLabelNbElements = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
         jButtonPrev = new javax.swing.JButton();
         jButtonNext = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
@@ -3653,16 +3653,16 @@ public class Main extends javax.swing.JFrame {
         jPanelButtonsNav.setPreferredSize(new java.awt.Dimension(32767, 25));
         jPanelButtonsNav.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 5));
 
-        jPanel4.setMaximumSize(new java.awt.Dimension(10, 10));
-        jPanel4.setOpaque(false);
-        jPanelButtonsNav.add(jPanel4);
-
         jLabelNbElements.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelNbElements.setText("jLabelNbElements");
         jLabelNbElements.setMaximumSize(new java.awt.Dimension(300, 16));
         jLabelNbElements.setMinimumSize(new java.awt.Dimension(300, 16));
         jLabelNbElements.setPreferredSize(new java.awt.Dimension(120, 16));
         jPanelButtonsNav.add(jLabelNbElements);
+
+        jPanel4.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanel4.setOpaque(false);
+        jPanelButtonsNav.add(jPanel4);
 
         jButtonPrev.setBorder(null);
         jButtonPrev.setBorderPainted(false);
