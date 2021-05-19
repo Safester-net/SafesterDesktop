@@ -2627,6 +2627,13 @@ public class Main extends javax.swing.JFrame {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        restart();
+    }
+
+    /**
+     * Allows to restart in cas of settings big change (language, L&f,...)
+     */
+    public void restart() {
         Main mainNew = new Main(connection, keyId, userNumber, passphrase, typeSubscription, userAccounts);
         mainNew.setVisible(true);
         this.dispose();
