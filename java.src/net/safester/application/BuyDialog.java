@@ -242,7 +242,6 @@ public class BuyDialog extends javax.swing.JDialog {
         jPanelEast.setMaximumSize(new java.awt.Dimension(10, 32767));
         getContentPane().add(jPanelEast, java.awt.BorderLayout.EAST);
 
-        jPanelCenter.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCenter.setRequestFocusEnabled(false);
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
