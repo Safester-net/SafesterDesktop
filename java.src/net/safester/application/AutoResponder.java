@@ -547,7 +547,7 @@ public class AutoResponder extends javax.swing.JDialog {
 
         jPanelResponderMain.setLayout(new javax.swing.BoxLayout(jPanelResponderMain, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelDates.setMaximumSize(new java.awt.Dimension(32767, 32));
+        jPanelDates.setMaximumSize(new java.awt.Dimension(32767, 34));
         jPanelDates.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelDateFrom.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -565,9 +565,9 @@ public class AutoResponder extends javax.swing.JDialog {
 
         jPanelResponderMain.add(jPanelDates);
 
-        jPanelSubjectContainer.setMaximumSize(new java.awt.Dimension(2147483647, 32));
-        jPanelSubjectContainer.setMinimumSize(new java.awt.Dimension(73, 32));
-        jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 32));
+        jPanelSubjectContainer.setMaximumSize(new java.awt.Dimension(2147483647, 40));
+        jPanelSubjectContainer.setMinimumSize(new java.awt.Dimension(73, 40));
+        jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 40));
         jPanelSubjectContainer.setLayout(new javax.swing.BoxLayout(jPanelSubjectContainer, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelLabelSubject.setMaximumSize(new java.awt.Dimension(55, 24));
@@ -589,19 +589,15 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSep5b.setPreferredSize(new java.awt.Dimension(5, 10));
         jPanelSubjectContainer.add(jPanelSep5b);
 
-        jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 31));
-        jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 31));
-        jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 31));
+        jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 40));
+        jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 40));
+        jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 40));
         jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 24));
-        jTextFieldSubject.setMinimumSize(new java.awt.Dimension(6, 24));
-        jTextFieldSubject.setPreferredSize(new java.awt.Dimension(6, 24));
-        jTextFieldSubject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldSubjectActionPerformed(evt);
-            }
-        });
+        jTextFieldSubject.setText("jTextField1");
+        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 30));
+        jTextFieldSubject.setMinimumSize(new java.awt.Dimension(6, 30));
+        jTextFieldSubject.setPreferredSize(new java.awt.Dimension(69, 30));
         jPanelSubject.add(jTextFieldSubject);
 
         jPanelSubjectContainer.add(jPanelSubject);
