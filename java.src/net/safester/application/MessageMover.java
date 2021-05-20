@@ -45,6 +45,7 @@ import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.FolderTreeCellRendererNew;
 
 import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -192,6 +193,12 @@ public class MessageMover extends javax.swing.JDialog {
 
                 if (node.getUserObject() instanceof FolderLocal) {
                     FolderLocal folder = (FolderLocal) node.getUserObject();
+                    
+                    if (folder.getFolderId() == Parms.STARRED_ID) {
+                        safeShareMain.setCursor(Cursor.getDefaultCursor());
+                        return;
+                    }
+                    
                     loopMoveMessages(safeShareMain, folder);
                 }
             }
@@ -306,7 +313,7 @@ public class MessageMover extends javax.swing.JDialog {
 
         jPanelSouth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButtonOk.setText("jButton1");
+        jButtonOk.setText("jButtonOk");
         jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOkActionPerformed(evt);
@@ -314,7 +321,7 @@ public class MessageMover extends javax.swing.JDialog {
         });
         jPanelSouth.add(jButtonOk);
 
-        jButtonCancel.setText("jButton2");
+        jButtonCancel.setText("jButtonCancel");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);

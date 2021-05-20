@@ -47,6 +47,8 @@ public class Parms {
         Locale.FRENCH.getLanguage()
     };
     
+    public static final String [] arrayStarredNameI18n = {"starred", "suivis"};
+    
     public static final int NOTIFY_PERIOD = 20000;
     
     /** To use for background selection */
