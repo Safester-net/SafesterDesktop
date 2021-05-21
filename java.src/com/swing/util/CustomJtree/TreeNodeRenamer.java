@@ -135,6 +135,13 @@ public class TreeNodeRenamer extends javax.swing.JDialog {
             return;
         }
 
+        if (dirName.length() > TreeNodeAdder.FOLDER_MAX_LEGNTH) {
+            String message = MessagesManager.get("folder_name_is_limited");
+            message = message.replace("${0}", "" + TreeNodeAdder.FOLDER_MAX_LEGNTH);
+            JOptionPane.showMessageDialog(parent, message, "Safester", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         //Get selected folder
         TreePath currentSelection = parentTree.getTree().getSelectionPath();
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());

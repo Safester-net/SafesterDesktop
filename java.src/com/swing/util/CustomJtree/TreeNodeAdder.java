@@ -61,7 +61,7 @@ public class TreeNodeAdder extends javax.swing.JDialog {
     MessagesManager messages = new MessagesManager();
 
     ClipboardManager clipboard;
-    private static int FOLDER_MAX_LEGNTH = 25;
+    public static int FOLDER_MAX_LEGNTH = 25;
 
     /** Creates new form TreeNodeAdder */
     protected TreeNodeAdder(java.awt.Frame parent, boolean modal) {
@@ -89,7 +89,6 @@ public class TreeNodeAdder extends javax.swing.JDialog {
             return true;
         }
         
-
         if (isStarredLeaf()) {
             String message = MessagesManager.get("cannot_create_folder_in_starred");
             JOptionPane.showMessageDialog(parent, message, "Safester", JOptionPane.WARNING_MESSAGE);
