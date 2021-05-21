@@ -24,7 +24,6 @@
 package net.safester.application.util;
 
 
-import java.awt.Color;
 /****************************************************************/ 
 /*                      JDialogDiscardableMessage                             */
 /*                                                              */ 
@@ -59,6 +58,7 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import com.safelogic.pgp.api.util.crypto.Sha1;
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -351,7 +351,7 @@ public class JDialogDiscardableMessage extends JDialog
         this.jTextAreaMessage.setText(message);
         
         jTextAreaMessage.setFont(jButtonOk.getFont());
-        jTextAreaMessage.setBackground(Color.WHITE);
+        jTextAreaMessage.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         
         Font bold = jTextAreaMessage.getFont().deriveFont(Font.BOLD);
         this.jTextAreaMessage.setFont(bold);

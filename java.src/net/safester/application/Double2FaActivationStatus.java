@@ -48,6 +48,7 @@ import javax.swing.UIManager;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -161,6 +162,12 @@ public class Double2FaActivationStatus extends javax.swing.JDialog {
 
         //getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         this.setLocationByPlatform(true);
+        
+        jPanelPhoto.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelDefaultPhoto1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelDefaultPhoto3.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelDefaultPhoto4.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jPanelDefaultPhoto2.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         WindowSettingManager.load(this);
 
     }
@@ -423,6 +430,8 @@ public class Double2FaActivationStatus extends javax.swing.JDialog {
     public void setActivationOffLabels() {
         jToggleButton.setIcon(Parms.createImageIcon("images/files_2/48x48/lock_open.png"));
         jLabelActivationStatusEnabled.setText(messages.getMessage("double_2fa_activation_off"));
+
+        jLabelActivationStatusEnabled.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jLabelActivationStatusEnabled.setForeground(Color.red);
     }
 
@@ -430,6 +439,8 @@ public class Double2FaActivationStatus extends javax.swing.JDialog {
         //popupItemEdit.setIcon(Parms.createImageIcon("images/files_2/16x16/businessman2_edit.png"));
         jToggleButton.setIcon(Parms.createImageIcon("images/files_2/48x48/lock.png"));
         jLabelActivationStatusEnabled.setText(messages.getMessage("double_2fa_activation_on"));
+
+        jLabelActivationStatusEnabled.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         jLabelActivationStatusEnabled.setForeground(greenEclipse);
     }
 

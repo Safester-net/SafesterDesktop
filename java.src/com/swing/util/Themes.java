@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public class Themes {
     
-    public static boolean DARK_MODE_ON;
+    public static boolean DARK_MODE_ON = true;
     
     // Ligt
     public static final String FLAT_INTELLIJ_LAF = com.formdev.flatlaf.FlatIntelliJLaf.class.getName();

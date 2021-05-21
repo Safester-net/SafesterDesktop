@@ -108,15 +108,15 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
 
     /** Creates new form SafeShareItSettings */
-    public UserSettingsUpdater(JFrame jFrame, Connection theConnection, int theUserNumber, String keyId) {
+    public UserSettingsUpdater(JFrame theParent, Connection theConnection, int theUserNumber, String theKeyId) {
         initComponents();
-        parent = jFrame;
+        parent = theParent;
         
         // Use a dedicated Connection to avoid overlap of result files
         this.connection = ((AwakeConnection)theConnection).clone();
         
         userNumber = theUserNumber;
-        this.keyId = keyId;
+        this.keyId = theKeyId;
         thisOne = this;
         initCompany();
     }
@@ -145,14 +145,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jLabelCoupon.setText(messages.getMessage("coupon"));
         jLabelCouponHelp .setText(messages.getMessage("optional") + " ");
 
-        /*
-        if (UI_Util.isNimbus())
-        {
-            this.jLabelFontSizeBody.setMinimumSize(new Dimension(224, 14));
-            this.jLabelFontSizeBody.setPreferredSize(new Dimension(224, 14));
-            this.jPanelNameAndEmail.setMaximumSize(new Dimension(2147483647, 455));
-        }
-        */
         this.jLabelLanguage.setText(messages.getMessage("default_language"));
         this.jLabelSpellCheckDefaultLanguage.setText(messages.getMessage("spell_check_default_language"));
         this.jCheckBoxHideDecrypDialog.setText(messages.getMessage("hide_decrypting_progess_bar"));
@@ -286,8 +278,11 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         });
         
-        this.jTextFieldUserName.requestFocus();
-               
+        //this.jTextFieldUserName.requestFocus();
+        jTextFieldUserName.moveCaretPosition(0);
+        jTextFieldUserName.setSelectionEnd(0);
+        this.repaint();
+        
         this.setLocationRelativeTo(parent);
         this.setSize(new Dimension(611, 759));
        
@@ -633,11 +628,21 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         if (!language.equals(chosenLanguage)) {
             LanguageManager.setLanguage(chosenLanguage);
             new LanguageManager().storeLanguage();
-            JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed_for_language_change"));
-            System.exit(0);
+//            JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed_for_language_change"));
+//            System.exit(0);
+              if (parent instanceof Main) {
+                  ((Main)parent).restart();
+              }
+
         }
                 
     }
+
+//    private void restart() {
+//        this.setVisible(false);
+//        UserSettingsUpdater userSettingsUpdater = new UserSettingsUpdater(parent, connection, userNumber, keyId);
+//        userSettingsUpdater.setVisible(true);
+//    }
 
     /**
      * Universal key listener

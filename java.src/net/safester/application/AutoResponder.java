@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.swing.util.JXDateColorUtil;
 import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingColorUtil;
 import java.awt.Color;
@@ -144,6 +145,9 @@ public class AutoResponder extends javax.swing.JDialog {
 	jButtonApply.setText(messages.getMessage("ok"));
 	jButtonClose.setText(messages.getMessage("cancel"));
 
+        JXDateColorUtil.setCalendarColors(jXDatePickerStart);
+        JXDateColorUtil.setCalendarColors(jXDatePickerEnd);
+        
 	// Set the Send preferences for user Preferences
 
 	jRadioButtonResponderOnItemStateChanged(null);
@@ -184,9 +188,9 @@ public class AutoResponder extends javax.swing.JDialog {
 
         if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_ARCORANGEIJ_THEME)) {
             Color color = SwingColorUtil.getThemeColor();
-            jXDatePickerBegin.getMonthView().setMonthStringBackground(color);
-            jXDatePickerBegin.getMonthView().setSelectionBackground(color);
-            jXDatePickerBegin.getMonthView().setTodayBackground(color);
+            jXDatePickerStart.getMonthView().setMonthStringBackground(color);
+            jXDatePickerStart.getMonthView().setSelectionBackground(color);
+            jXDatePickerStart.getMonthView().setTodayBackground(color);
 
             jXDatePickerEnd.getMonthView().setMonthStringBackground(color);
             jXDatePickerEnd.getMonthView().setSelectionBackground(color);
@@ -233,14 +237,14 @@ public class AutoResponder extends javax.swing.JDialog {
 
 	    if (autoresponderLocal2.getDtBegin() < 0 && autoresponderLocal2.getDtExpire() < 0 ) {
 		this.jRadioButtonResponderOff.setSelected(true);
-		jXDatePickerBegin.setDate(new java.util.Date());
+		jXDatePickerStart.setDate(new java.util.Date());
 		jXDatePickerEnd.setDate(new java.util.Date());
 		this.setCursor(Cursor.getDefaultCursor());
 		return;
 	    }
 
 	    this.jRadioButtonResponderOn.setSelected(autoresponderLocal2.getResponderOn());
-	    this.jXDatePickerBegin.setDate(new Date(autoresponderLocal2.getDtBegin()));
+	    this.jXDatePickerStart.setDate(new Date(autoresponderLocal2.getDtBegin()));
 	    this.jXDatePickerEnd.setDate(new Date(autoresponderLocal2.getDtExpire()));
 
 	    String encryptedSubject = autoresponderLocal2.getSubject();
@@ -273,7 +277,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    return;
 	}
 
-	if (jXDatePickerBegin.getDate() == null) {
+	if (jXDatePickerStart.getDate() == null) {
 	    String errorMsg = messages.getMessage("error");
 	    JOptionPane.showMessageDialog(this, messages.getMessage("please_select_a_from_date"), errorMsg,
 		    JOptionPane.ERROR_MESSAGE);
@@ -287,7 +291,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    return;
 	}
 
-	if (jXDatePickerBegin.getDate().after(jXDatePickerEnd.getDate())) {
+	if (jXDatePickerStart.getDate().after(jXDatePickerEnd.getDate())) {
 	    String errorMsg = messages.getMessage("error");
 	    JOptionPane.showMessageDialog(this, messages.getMessage("from_date_must_be_before_until"), errorMsg,
 		    JOptionPane.ERROR_MESSAGE);
@@ -302,7 +306,7 @@ public class AutoResponder extends javax.swing.JDialog {
 	    AutoresponderLocal2 autoresponderLocal2 = new AutoresponderLocal2();
 	    autoresponderLocal2.setUserNumber(userNumber);
 	    autoresponderLocal2.setResponderOn(jRadioButtonResponderOn.isSelected());
-	    autoresponderLocal2.setDtBegin(jXDatePickerBegin.getDate().getTime());
+	    autoresponderLocal2.setDtBegin(jXDatePickerStart.getDate().getTime());
 	    autoresponderLocal2.setDtExpire(jXDatePickerEnd.getDate().getTime());
 
 	    String subject = jTextFieldSubject.getText();
@@ -382,7 +386,7 @@ public class AutoResponder extends javax.swing.JDialog {
 
     private void enableZones(boolean enable) {
 	this.jLabelDateFrom.setEnabled(enable);
-	this.jXDatePickerBegin.setEnabled(enable);
+	this.jXDatePickerStart.setEnabled(enable);
 	this.jLabelDateUntil.setEnabled(enable);
 	this.jXDatePickerEnd.setEnabled(enable);
 	this.jLabelSubject.setEnabled(enable);
@@ -430,7 +434,7 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelResponderMain = new javax.swing.JPanel();
         jPanelDates = new javax.swing.JPanel();
         jLabelDateFrom = new javax.swing.JLabel();
-        jXDatePickerBegin = new org.jdesktop.swingx.JXDatePicker();
+        jXDatePickerStart = new org.jdesktop.swingx.JXDatePicker();
         jPanel1 = new javax.swing.JPanel();
         jLabelDateUntil = new javax.swing.JLabel();
         jXDatePickerEnd = new org.jdesktop.swingx.JXDatePicker();
@@ -440,6 +444,7 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSep5b = new javax.swing.JPanel();
         jPanelSubject = new javax.swing.JPanel();
         jTextFieldSubject = new javax.swing.JTextField();
+        jPanelSep6 = new javax.swing.JPanel();
         jPanelBody = new javax.swing.JPanel();
         jPanelLabelMessage = new javax.swing.JPanel();
         jLabelMessage = new javax.swing.JLabel();
@@ -542,7 +547,7 @@ public class AutoResponder extends javax.swing.JDialog {
 
         jPanelResponderMain.setLayout(new javax.swing.BoxLayout(jPanelResponderMain, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelDates.setMaximumSize(new java.awt.Dimension(32767, 32));
+        jPanelDates.setMaximumSize(new java.awt.Dimension(32767, 34));
         jPanelDates.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelDateFrom.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -551,7 +556,7 @@ public class AutoResponder extends javax.swing.JDialog {
         jLabelDateFrom.setMinimumSize(new java.awt.Dimension(50, 16));
         jLabelDateFrom.setPreferredSize(new java.awt.Dimension(50, 16));
         jPanelDates.add(jLabelDateFrom);
-        jPanelDates.add(jXDatePickerBegin);
+        jPanelDates.add(jXDatePickerStart);
         jPanelDates.add(jPanel1);
 
         jLabelDateUntil.setText("Until");
@@ -560,9 +565,9 @@ public class AutoResponder extends javax.swing.JDialog {
 
         jPanelResponderMain.add(jPanelDates);
 
-        jPanelSubjectContainer.setMaximumSize(new java.awt.Dimension(2147483647, 32));
-        jPanelSubjectContainer.setMinimumSize(new java.awt.Dimension(73, 32));
-        jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 32));
+        jPanelSubjectContainer.setMaximumSize(new java.awt.Dimension(2147483647, 40));
+        jPanelSubjectContainer.setMinimumSize(new java.awt.Dimension(73, 40));
+        jPanelSubjectContainer.setPreferredSize(new java.awt.Dimension(126, 40));
         jPanelSubjectContainer.setLayout(new javax.swing.BoxLayout(jPanelSubjectContainer, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelLabelSubject.setMaximumSize(new java.awt.Dimension(55, 24));
@@ -584,22 +589,25 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSep5b.setPreferredSize(new java.awt.Dimension(5, 10));
         jPanelSubjectContainer.add(jPanelSep5b);
 
-        jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 31));
-        jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 31));
-        jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 31));
+        jPanelSubject.setMaximumSize(new java.awt.Dimension(2147483647, 40));
+        jPanelSubject.setMinimumSize(new java.awt.Dimension(6, 40));
+        jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 40));
         jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 22));
-        jTextFieldSubject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldSubjectActionPerformed(evt);
-            }
-        });
+        jTextFieldSubject.setText("jTextField1");
+        jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 30));
+        jTextFieldSubject.setMinimumSize(new java.awt.Dimension(6, 30));
+        jTextFieldSubject.setPreferredSize(new java.awt.Dimension(69, 30));
         jPanelSubject.add(jTextFieldSubject);
 
         jPanelSubjectContainer.add(jPanelSubject);
 
         jPanelResponderMain.add(jPanelSubjectContainer);
+
+        jPanelSep6.setMaximumSize(new java.awt.Dimension(32767, 5));
+        jPanelSep6.setMinimumSize(new java.awt.Dimension(10, 5));
+        jPanelSep6.setPreferredSize(new java.awt.Dimension(1000, 5));
+        jPanelResponderMain.add(jPanelSep6);
 
         jPanelBody.setLayout(new javax.swing.BoxLayout(jPanelBody, javax.swing.BoxLayout.X_AXIS));
 
@@ -767,6 +775,7 @@ public class AutoResponder extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelSep5;
     private javax.swing.JPanel jPanelSep5b;
     private javax.swing.JPanel jPanelSep5b1;
+    private javax.swing.JPanel jPanelSep6;
     private javax.swing.JPanel jPanelSepLine;
     private javax.swing.JPanel jPanelSepLine1;
     private javax.swing.JPanel jPanelSubject;
@@ -779,8 +788,8 @@ public class AutoResponder extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextArea jTextAreaBody;
     private javax.swing.JTextField jTextFieldSubject;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerBegin;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerEnd;
+    public org.jdesktop.swingx.JXDatePicker jXDatePickerEnd;
+    public org.jdesktop.swingx.JXDatePicker jXDatePickerStart;
     // End of variables declaration//GEN-END:variables
 
 }

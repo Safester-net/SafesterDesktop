@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -30,6 +31,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.sql.Connection;
+import javax.swing.UIManager;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -112,6 +114,9 @@ public class BuyDialog extends javax.swing.JDialog {
                 
         this.setTitle(messages.getMessage("buy_subscription"));
 
+        Color backgroundMain = UIManager.getColor("Panel.background");
+        jEditorPane.setBackground(backgroundMain);
+        
         jEditorPane.setContentType("text/html");
         jEditorPane.setEditable(false);
         jEditorPane.addHyperlinkListener(new HyperlinkListener() {
@@ -139,7 +144,11 @@ public class BuyDialog extends javax.swing.JDialog {
         br.setWidthToMax();
         //this.setSize(542, 652);
         this.setSize(620, 720);
-
+        
+//        if(LookAndFeelHelper.isDarkMode()) {
+//        	jScrollPane1.setBorder(null);
+//        }
+        
         WindowSettingManager.load(this);
 
     }
@@ -233,7 +242,6 @@ public class BuyDialog extends javax.swing.JDialog {
         jPanelEast.setMaximumSize(new java.awt.Dimension(10, 32767));
         getContentPane().add(jPanelEast, java.awt.BorderLayout.EAST);
 
-        jPanelCenter.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCenter.setRequestFocusEnabled(false);
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
@@ -242,16 +250,16 @@ public class BuyDialog extends javax.swing.JDialog {
         jPanelTitle.setPreferredSize(new java.awt.Dimension(80, 70));
         jPanelTitle.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
 
-        jLabelTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-safester-transparent_small.png"))); // NOI18N
+        jLabelTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/safester_logo_small.png"))); // NOI18N
         jPanelTitle.add(jLabelTitle);
 
         jPanelCenter.add(jPanelTitle);
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jEditorPane.setBorder(null);
+        jEditorPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jEditorPane.setMargin(new java.awt.Insets(5, 5, 5, 5));
         jScrollPane1.setViewportView(jEditorPane);
 
@@ -332,7 +340,7 @@ public class BuyDialog extends javax.swing.JDialog {
         activateSubscriptionDialog.setVisible(true);
         if(activateSubscriptionDialog.getNewSubscription() != (short)-1){
             this.newSubscription = activateSubscriptionDialog.getNewSubscription();
-            this.setVisible(false);
+            //this.setVisible(false);
         }
         activateSubscriptionDialog.dispose();
 

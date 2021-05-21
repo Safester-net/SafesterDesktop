@@ -35,6 +35,7 @@ import javax.swing.event.HyperlinkListener;
 import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -128,7 +129,8 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
         SwingUtil.applySwingUpdates(rootPane);
 
         this.setSize(500, 500);
-
+        jEditorPane.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        jEditorPane.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
         this.jTextFieldVoucherCode.requestFocus();
     }
 

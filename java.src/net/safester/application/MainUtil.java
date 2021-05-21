@@ -21,46 +21,26 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
+
 package net.safester.application;
 
-import java.awt.Window;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.prefs.BackingStoreException;
-
-import javax.swing.JOptionPane;
-
 import net.safester.application.messages.MessagesManager;
-import net.safester.application.parms.Parms;
-import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.UserPrefManager;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  *
- * @author Nicolas de Pomereu
+ * @author ndepo
  */
-public class WindowsReseter {
-
-    public static void actionResetWindows(Window window) {
-        MessagesManager messages = new MessagesManager();
-        int response = JOptionPane.showConfirmDialog(window, messages.getMessage("the_windows_will_be_reset"), Parms.PRODUCT_NAME, JOptionPane.OK_CANCEL_OPTION);
-        if (response != JOptionPane.OK_OPTION) {
-            return;
-        }
-        
-        UserPrefManager.removePreference(UserPrefManager.USER_LOGIN);
-        UserPrefManager.removePreference(UserPrefManager.ACCOUNTS_LIST);
-        UserPrefManager.removePreference(UserPrefManager.LOOK_AND_FEEL_THEME);
-        UserPrefManager.removePreference(UserPrefManager.SCALING);
-        
-        try {
-            WindowSettingManager.resetAll();
-        } catch (BackingStoreException ex) {
-            Logger.getLogger(UserSettingsUpdater.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        JOptionPane.showMessageDialog(window, messages.getMessage("the_windows_have_been_reset"), Parms.PRODUCT_NAME, JOptionPane.INFORMATION_MESSAGE);
-        System.exit(0);
-    }
+public class MainUtil {
     
+    public static String addRecommanded(String messageScaled) {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            MessagesManager messagesManager = new MessagesManager();
+            return messageScaled + " " + messagesManager.getMessage("recommended");
+        }
+        else {
+            return messageScaled;
+        }
+    }
+        
 }

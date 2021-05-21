@@ -47,9 +47,6 @@ import javax.swing.border.LineBorder;
 import org.apache.commons.lang3.SystemUtils;
 
 import com.safelogic.utilx.io.stream.LineInputStream;
-import javax.swing.JButton;
-import javax.swing.JRootPane;
-import javax.swing.UIManager;
 
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;

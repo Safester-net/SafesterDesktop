@@ -23,8 +23,6 @@
  */
 package com.swing.util.CustomJtree;
 
-import java.awt.Color;
-
 /*
  * Copyright (c) 1995 - 2008 Sun Microsystems, Inc.  All rights reserved.
  *
@@ -87,8 +85,8 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.commons.lang3.SystemUtils;
 
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.dragdrop.TreeDataExtractor;
 import com.swing.util.CustomJtree.dragdrop.TreeTransferHandler;
@@ -97,7 +95,6 @@ import net.safester.application.Main;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.FoldersHandler;
-import net.safester.application.tool.UI_Util;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.clientserver.FolderListTransfer;
 import net.safester.noobs.clientserver.FolderLocal;
@@ -172,12 +169,13 @@ public class CustomJTree extends JPanel
      */
     private void initComponent() throws HeadlessException {
 
-        String rootNodeText = "Messages";
+        MessagesManager messages = new MessagesManager();
+        String rootNodeText = messages.getMessage("messages");
         
-        if (SystemUtils
-                .IS_OS_LINUX || UI_Util.isNimbus()) {
-            rootNodeText = "";
-        }
+//        if (SystemUtils
+//                .IS_OS_LINUX || UI_Util.isNimbus()) {
+//            rootNodeText = "";
+//        }
         
         rootNode = new DefaultMutableTreeNode(rootNodeText);
         treeModel = new DefaultTreeModel(rootNode);
@@ -186,7 +184,7 @@ public class CustomJTree extends JPanel
         
         tree.setModel(treeModel);
 
-        tree.setBackground(Color.white);
+        tree.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         
         FolderTreeCellRendererNew myRenderer = new FolderTreeCellRendererNew(tree);
         tree.setCellRenderer(myRenderer);
@@ -308,8 +306,14 @@ public class CustomJTree extends JPanel
                 int folderId = ((FolderLocal) userObject).getFolderId();
 
                 if (! Parms.folderRemovable(folderId)) {
+                    
+                    if (Parms.folderAddable(folderId)) {
+                        addItem.setEnabled(true);
+                    }
+                    else {
+                        addItem.setEnabled(false);
+                    }
                     //Cannot remove the system folders
-                    addItem.setEnabled(true);
                     removeItem.setEnabled(false);
                     renameItem.setEnabled(false);
                 } else {

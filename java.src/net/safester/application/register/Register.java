@@ -96,7 +96,6 @@ import net.safester.application.util.PolicyInstaller;
 import net.safester.application.util.proxy.ProxySessionCheckerNew;
 import net.safester.application.wait.tools.CmWaitDialog;
 import net.safester.clientserver.ServerParms;
-import static com.swing.util.ButtonUrlOver.exit;
 
 public class Register extends javax.swing.JFrame {
 
@@ -223,8 +222,8 @@ public class Register extends javax.swing.JFrame {
         
         jEditorPaneEmail.setFont(fontNewJEditorPane);
         
-        jEditorPaneEmail.setBackground(Color.WHITE);
-        jEditorPane.setBackground(Color.WHITE);
+//        jEditorPaneEmail.setBackground(Color.WHITE);
+//        jEditorPane.setBackground(Color.WHITE);
 
         jLabelQualityText.setText(null);
 
@@ -321,7 +320,7 @@ public class Register extends javax.swing.JFrame {
         FocusTraversalPolicy focusTraversalPolicy =  new MyOwnFocusTraversalPolicy(focusList);
         this.setFocusTraversalPolicy(focusTraversalPolicy);
         
-        this.setSize(602, 602);
+        this.setSize(611, 611);
 
         testCapsOn();
 
@@ -893,6 +892,12 @@ public class Register extends javax.swing.JFrame {
         jLabelCryptoSettings = new javax.swing.JLabel();
         jTextFieldCryptoSettings = new javax.swing.JTextField();
         jButtonCryptoSettings = new javax.swing.JButton();
+        jPanelBlank1 = new javax.swing.JPanel();
+        jPanelSep3 = new javax.swing.JPanel();
+        jPanel28 = new javax.swing.JPanel();
+        jPanel32 = new javax.swing.JPanel();
+        jSeparator4 = new javax.swing.JSeparator();
+        jPanel33 = new javax.swing.JPanel();
         jPanelBlank = new javax.swing.JPanel();
         jPanelHelpPassphrase = new javax.swing.JPanel();
         jPanelLeftHelp = new javax.swing.JPanel();
@@ -1179,6 +1184,35 @@ public class Register extends javax.swing.JFrame {
         jPanelCryptographySettings.add(jButtonCryptoSettings);
 
         jPanelPassphrase.add(jPanelCryptographySettings);
+
+        jPanelBlank1.setMaximumSize(new java.awt.Dimension(32767, 8));
+        jPanelBlank1.setMinimumSize(new java.awt.Dimension(10, 8));
+        jPanelBlank1.setPreferredSize(new java.awt.Dimension(10, 8));
+        jPanelPassphrase.add(jPanelBlank1);
+
+        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 16));
+        jPanelSep3.setMinimumSize(new java.awt.Dimension(390, 16));
+        jPanelSep3.setPreferredSize(new java.awt.Dimension(20, 16));
+        jPanelSep3.setLayout(new javax.swing.BoxLayout(jPanelSep3, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel28.setMinimumSize(new java.awt.Dimension(390, 6));
+        jPanel28.setPreferredSize(new java.awt.Dimension(20, 6));
+        jPanel28.setLayout(new javax.swing.BoxLayout(jPanel28, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel32.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel28.add(jPanel32);
+
+        jSeparator4.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator4.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator4.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanel28.add(jSeparator4);
+
+        jPanel33.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel28.add(jPanel33);
+
+        jPanelSep3.add(jPanel28);
+
+        jPanelPassphrase.add(jPanelSep3);
 
         jPanelBlank.setMaximumSize(new java.awt.Dimension(32767, 8));
         jPanelBlank.setMinimumSize(new java.awt.Dimension(10, 8));
@@ -1609,15 +1643,19 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel32;
+    private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelBlank;
+    private javax.swing.JPanel jPanelBlank1;
     private javax.swing.JPanel jPanelBlank2;
     private javax.swing.JPanel jPanelBlank3;
     private javax.swing.JPanel jPanelButtons;
@@ -1646,6 +1684,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSep;
     private javax.swing.JPanel jPanelSep1;
     private javax.swing.JPanel jPanelSep2;
+    private javax.swing.JPanel jPanelSep3;
     private javax.swing.JPanel jPanelSepLeft;
     private javax.swing.JPanel jPanelSepRight;
     private javax.swing.JPanel jPanelSouth;
@@ -1655,6 +1694,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPassword1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTextField jTextFieldCryptoSettings;
     private javax.swing.JTextField jTextFieldUserEmail;

@@ -37,8 +37,13 @@ import javax.swing.tree.TreePath;
 
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomJtree.dragdrop.TreeDataExtractor;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.JOptionPane;
 
 import net.safester.application.messages.MessagesManager;
+import net.safester.application.parms.Parms;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -56,6 +61,7 @@ public class TreeNodeAdder extends javax.swing.JDialog {
     MessagesManager messages = new MessagesManager();
 
     ClipboardManager clipboard;
+    public static int FOLDER_MAX_LEGNTH = 25;
 
     /** Creates new form TreeNodeAdder */
     protected TreeNodeAdder(java.awt.Frame parent, boolean modal) {
@@ -71,12 +77,28 @@ public class TreeNodeAdder extends javax.swing.JDialog {
         this.parentTree = parentTree;
         this.parent = parent;
         this.userNumber = theUserNumber;
+        
+
+        
     }
 
     public boolean doIt() {
         String dirName = jTextFieldFolderName.getText();
         
         if (dirName.isEmpty()) {
+            return true;
+        }
+        
+        if (isStarredLeaf()) {
+            String message = MessagesManager.get("cannot_create_folder_in_starred");
+            JOptionPane.showMessageDialog(parent, message, "Safester", JOptionPane.WARNING_MESSAGE);
+            return true;          
+        }
+        
+        if (dirName.length() > FOLDER_MAX_LEGNTH) {
+            String message = MessagesManager.get("folder_name_is_limited");
+            message = message.replace("${0}", "" + FOLDER_MAX_LEGNTH);
+            JOptionPane.showMessageDialog(parent, message, "Safester", JOptionPane.WARNING_MESSAGE);
             return true;
         }
 
@@ -128,8 +150,26 @@ public class TreeNodeAdder extends javax.swing.JDialog {
             //mainWindow.reloadJTree();
         
         this.dispose();
+        return false;
+    }
+
+    public boolean isStarredLeaf() {
+        TreePath currentSelection1 = parentTree.getTree().getSelectionPath();
+        DefaultMutableTreeNode currentNode1 = (DefaultMutableTreeNode) (currentSelection1.getLastPathComponent());
+        
+        //System.out.println("currentSelection.toString(): " + currentSelection.toString());
+        //System.out.println("currentNode.toString()     : " + currentNode.toString());
+        
+        Set<String> starredNames = new HashSet<>(Arrays.asList(Parms.arrayStarredNameI18n));
+        
+        for (String starredName : starredNames) {
+            if (currentNode1.toString().equalsIgnoreCase(starredName)) {
+                return true;
+            }
+        }
 
         return false;
+
     }
 
     public void initCompany() {

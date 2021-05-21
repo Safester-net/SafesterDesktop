@@ -46,7 +46,6 @@ import net.safester.application.engines.MessageDownloadEngineListener;
 import net.safester.application.engines.WaiterEngine;
 import net.safester.application.messages.MessagesManager;
 import net.safester.clientserver.FolderListTransfer;
-import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.MessageLocal;
 
 

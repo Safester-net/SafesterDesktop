@@ -68,9 +68,6 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPanelCenter">
       <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
         <Property name="requestFocusEnabled" type="boolean" value="false"/>
       </Properties>
       <Constraints>
@@ -104,7 +101,7 @@
             <Component class="javax.swing.JLabel" name="jLabelTitle">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/safester/application/images/files/logo-safester-transparent_small.png"/>
+                  <Image iconType="3" name="/net/safester/application/images/files/safester_logo_small.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -117,7 +114,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                <EmptyBorder bottom="3" left="3" right="3" top="3"/>
+                <EmptyBorder/>
               </Border>
             </Property>
             <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
@@ -131,7 +128,9 @@
             <Component class="javax.swing.JEditorPane" name="jEditorPane">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+                  </Border>
                 </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[5, 5, 5, 5]"/>

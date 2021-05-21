@@ -23,22 +23,21 @@
  */
 package net.safester.application;
 
-import com.kawansoft.httpclient.KawanHttpClient;
 import java.awt.TrayIcon;
 import java.sql.Connection;
 import java.util.Date;
-import static net.safester.application.Main.main;
+
+import org.awakefw.file.api.client.AwakeFileSession;
+import org.awakefw.file.api.util.HtmlConverter;
+import org.awakefw.sql.api.client.AwakeConnection;
+
+import com.kawansoft.httpclient.KawanHttpClient;
+
 import net.safester.application.http.ApiMessages;
 import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.http.dto.MessageHeaderDTO;
-
-import org.awakefw.file.api.util.HtmlConverter;
-
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.util.UserPrefManager;
-import net.safester.clientserver.MessageLocalStore;
-import org.awakefw.file.api.client.AwakeFileSession;
-import org.awakefw.sql.api.client.AwakeConnection;
 
 /**
  * 

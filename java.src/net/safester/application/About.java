@@ -23,7 +23,7 @@
  */
 package net.safester.application;
 
-import java.awt.Color;
+import com.swing.util.ButtonUrlOver;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
@@ -39,19 +39,20 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import com.swing.util.SwingUtil;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.HeadlessException;
+import java.net.URI;
+import javax.swing.JOptionPane;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
 import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.tool.ButtonResizer;
-import net.safester.application.tool.DesktopWrapper;
 import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.JEditorPaneLinkDetector;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
 
@@ -143,14 +144,8 @@ public class About extends javax.swing.JFrame {
         jButtonClose.requestFocus();
         this.keyListenerAdder();
 
-        jPanelAbout.setBorder(javax.swing.BorderFactory.createTitledBorder(this.messages.getMessage("about")));
+        jPanelAbout1.setBorder(javax.swing.BorderFactory.createTitledBorder(this.messages.getMessage("about")));
         jPanelCredits.setBorder(javax.swing.BorderFactory.createTitledBorder(this.messages.getMessage("credits")));
-
-        jPanelAbout.remove(jEditorPaneSafeLogic);
-        jEditorPaneSafeLogic = new JEditorPaneLinkDetector();
-
-        jEditorPaneSafeLogic.setContentType("text/html");
-        jEditorPaneSafeLogic.setEditable(false);
 
         /*
         UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -161,82 +156,21 @@ public class About extends javax.swing.JFrame {
         jEditorPaneSafeLogic.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
         */
         
-        String aboutText
-                = "<P ALIGN=RIGHT><font face=\"Arial\" size=4>"
-                + Version.getVersionWithCopyright();
-
+        jLabelCopyRight.setText(Version.getVersionWithCopyright());
+        jLabelSupport.setText(this.messages.getMessage("support_report_a_bug"));
+        jLabelSoftware.setText(this.messages.getMessage("this_product_includes_software_developped_by"));
+  
+      
+        /*
         if (displayEdition) {
             short currentSubscription = SubscriptionLocalStore.getSubscription();
             System.out.println("currentSubscription: " + currentSubscription);
             String subscription = StoreParms.getProductNameForSubscription(currentSubscription);
             aboutText += "<br><i>" + subscription + " " + this.messages.getMessage("account") + "</i>";
         }
-
-        String urlEmail = "<a href=\"mailto:{0}\" style=\"text-decoration: none;\">{1}</a>";
-        urlEmail = MessageFormat.format(urlEmail, ServerParms.CONTACT_EMAIL, ServerParms.CONTACT_EMAIL);
-
-        String urlWeb = "<a href=\"{0}\" style=\"text-decoration: none;\">{1}</a>";
-        urlWeb = MessageFormat.format(urlWeb, "https://" + ServerParms.CONTACT_WEB, ServerParms.CONTACT_WEB);
-
-        aboutText
-                += "<br>" + CR_LF + urlWeb
-                + "<br>" + CR_LF + this.messages.getMessage("support_report_a_bug")
-                + " " + urlEmail.trim() 
-                + "<br>";
-
-        //+ "<br><br><font face=\"Arial\" size=3>"
-        //+ CR_LF + "<i>" + this.messages.getMessage("safester_property") + "</i>";
-        //System.out.println(aboutText);
+        */
         
-        jEditorPaneSafeLogic.setText(aboutText);
-        jPanelAbout.add(jEditorPaneSafeLogic);
-        
-        // Hyperlink listener that will open a new Browser with the given URL
-        jEditorPaneSafeLogic.addHyperlinkListener(new HyperlinkListener() {
-            public void hyperlinkUpdate(HyperlinkEvent r) {
-                if (r.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    DesktopWrapper.browse(r.getURL());
-                }
-            }
-        });
-
-                        
-        jPanelCredits.remove(jEditorPaneCredits);
-        jEditorPaneCredits = new JEditorPaneLinkDetector();
-
-        jEditorPaneCredits.setContentType("text/html");
-        jEditorPaneCredits.setEditable(false);
-
-        String creditText
-                = "<P ALIGN=RIGHT><font face=\"Arial\" size=4>"
-                + this.messages.getMessage("this_product_includes_software_developped_by")
-                + "<br>"
-                + "<br><a href=\"http://www.apache.org\" style=\"text-decoration: none;\">The Apache Software Foundation</a>"
-                + "<br><a href=\"http://www.bouncycastle.org\" style=\"text-decoration: none;\">The Legion Of The Bouncy Castle</a>"
-                + "<br><a href=\"http://iharder.sourceforge.net/current/java/filedrop\" style=\"text-decoration: none;\">iHarder.net</a>"
-                + "<br>";
-
-        jEditorPaneCredits.setText(creditText);
-        jPanelCredits.add(jEditorPaneCredits);
-
-        jEditorPaneCredits.setOpaque(false);
-
-        // Hyperlink listener that will open a new Browser with the given URL
-        jEditorPaneCredits.addHyperlinkListener(new HyperlinkListener() {
-
-            public void hyperlinkUpdate(HyperlinkEvent r) {
-                if (r.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    DesktopWrapper.browse(r.getURL());
-                }
-            }
-        });
-       
-        Color theBackground = jPanelAbout.getBackground();
-        jEditorPaneSafeLogic.setBackground(theBackground);
-        jEditorPaneCredits.setBackground(theBackground);
-
-        jEditorPaneSafeLogic.setOpaque(false);
-        
+        SwingUtil.applySwingUpdates(rootPane);
         
         this.setTitle(this.messages.getMessage("about"));
         this.jButtonClose.setText(this.messages.getMessage("ok"));
@@ -300,17 +234,32 @@ public class About extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelLogos = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabelLogo = new javax.swing.JLabel();
         jPanelMain = new javax.swing.JPanel();
         jPanelBorderLeft = new javax.swing.JPanel();
         jPanelCenter = new javax.swing.JPanel();
-        jPanelAbout = new javax.swing.JPanel();
-        jEditorPaneSafeLogic = new javax.swing.JEditorPane();
+        jPanelLogos = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelLogo = new javax.swing.JLabel();
+        jPanelAbout1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabelCopyRight = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jButtonUrl = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabelSupport = new javax.swing.JLabel();
+        jButtonEmail = new javax.swing.JButton();
+        jPanelSep1 = new javax.swing.JPanel();
         jPanelSep = new javax.swing.JPanel();
         jPanelCredits = new javax.swing.JPanel();
-        jEditorPaneCredits = new javax.swing.JEditorPane();
+        jPanel6 = new javax.swing.JPanel();
+        jLabelSoftware = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jButtonSoftware1 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        jButtonSoftware2 = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jButtonSoftware3 = new javax.swing.JButton();
+        jPanelSep2 = new javax.swing.JPanel();
         jPanelBorderRight = new javax.swing.JPanel();
         jPanelButtons = new javax.swing.JPanel();
         jButtonClose = new javax.swing.JButton();
@@ -318,17 +267,6 @@ public class About extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
-
-        jPanelLogos.setMaximumSize(new java.awt.Dimension(32767, 93));
-        jPanelLogos.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 12, 12));
-
-        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-blue-on-white-300x99.png"))); // NOI18N
-        jLabelLogo.setOpaque(true);
-        jPanel1.add(jLabelLogo);
-
-        jPanelLogos.add(jPanel1);
-
-        getContentPane().add(jPanelLogos);
 
         jPanelMain.setLayout(new javax.swing.BoxLayout(jPanelMain, javax.swing.BoxLayout.X_AXIS));
 
@@ -339,23 +277,203 @@ public class About extends javax.swing.JFrame {
         jPanelCenter.setMinimumSize(new java.awt.Dimension(290, 600));
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelAbout.setBorder(javax.swing.BorderFactory.createTitledBorder("About"));
-        jPanelAbout.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
+        jPanelLogos.setMaximumSize(new java.awt.Dimension(32767, 133));
+        jPanelLogos.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 12, 12));
 
-        jEditorPaneSafeLogic.setMinimumSize(new java.awt.Dimension(106, 80));
-        jPanelAbout.add(jEditorPaneSafeLogic);
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 0, 5));
 
-        jPanelCenter.add(jPanelAbout);
+        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-blue-on-white-300x99.png"))); // NOI18N
+        jLabelLogo.setOpaque(true);
+        jPanel1.add(jLabelLogo);
+
+        jPanelLogos.add(jPanel1);
+
+        jPanelCenter.add(jPanelLogos);
+
+        jPanelAbout1.setBorder(javax.swing.BorderFactory.createTitledBorder("About"));
+        jPanelAbout1.setLayout(new javax.swing.BoxLayout(jPanelAbout1, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel2.setMinimumSize(new java.awt.Dimension(51, 22));
+        jPanel2.setPreferredSize(new java.awt.Dimension(51, 22));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jLabelCopyRight.setText("Safester v5.9 - 18-May-21 Copyright © 2021 Safester");
+        jPanel2.add(jLabelCopyRight);
+
+        jPanelAbout1.add(jPanel2);
+
+        jPanel3.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel3.setMinimumSize(new java.awt.Dimension(114, 22));
+        jPanel3.setPreferredSize(new java.awt.Dimension(114, 22));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButtonUrl.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonUrl.setText("www.safester.net");
+        jButtonUrl.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonUrl.setBorderPainted(false);
+        jButtonUrl.setContentAreaFilled(false);
+        jButtonUrl.setFocusPainted(false);
+        jButtonUrl.setMargin(new java.awt.Insets(2, 0, 2, 0));
+        jButtonUrl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonUrlMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonUrlMouseExited(evt);
+            }
+        });
+        jButtonUrl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUrlActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonUrl);
+
+        jPanelAbout1.add(jPanel3);
+
+        jPanel5.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel5.setMinimumSize(new java.awt.Dimension(114, 22));
+        jPanel5.setPreferredSize(new java.awt.Dimension(114, 22));
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jLabelSupport.setText("Support / Signaler un bug :");
+        jPanel5.add(jLabelSupport);
+
+        jButtonEmail.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonEmail.setText("contact@safester.net");
+        jButtonEmail.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonEmail.setBorderPainted(false);
+        jButtonEmail.setContentAreaFilled(false);
+        jButtonEmail.setFocusPainted(false);
+        jButtonEmail.setMargin(new java.awt.Insets(2, 0, 2, 0));
+        jButtonEmail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonEmailMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonEmailMouseExited(evt);
+            }
+        });
+        jButtonEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEmailActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButtonEmail);
+
+        jPanelAbout1.add(jPanel5);
+
+        jPanelSep1.setMaximumSize(new java.awt.Dimension(32767, 10));
+        jPanelAbout1.add(jPanelSep1);
+
+        jPanelCenter.add(jPanelAbout1);
 
         jPanelSep.setMaximumSize(new java.awt.Dimension(32767, 10));
         jPanelCenter.add(jPanelSep);
 
         jPanelCredits.setBorder(javax.swing.BorderFactory.createTitledBorder("Credits"));
-        jPanelCredits.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
+        jPanelCredits.setLayout(new javax.swing.BoxLayout(jPanelCredits, javax.swing.BoxLayout.Y_AXIS));
 
-        jEditorPaneCredits.setEditable(false);
-        jEditorPaneCredits.setMinimumSize(new java.awt.Dimension(106, 80));
-        jPanelCredits.add(jEditorPaneCredits);
+        jPanel6.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel6.setMinimumSize(new java.awt.Dimension(51, 22));
+        jPanel6.setPreferredSize(new java.awt.Dimension(51, 22));
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jLabelSoftware.setText("Ce produit inclut des logiciels développés par : ");
+        jPanel6.add(jLabelSoftware);
+
+        jPanelCredits.add(jPanel6);
+
+        jPanel7.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel7.setMinimumSize(new java.awt.Dimension(114, 22));
+        jPanel7.setPreferredSize(new java.awt.Dimension(114, 22));
+        jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButtonSoftware1.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonSoftware1.setText("The Apache Software Foundation");
+        jButtonSoftware1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonSoftware1.setBorderPainted(false);
+        jButtonSoftware1.setContentAreaFilled(false);
+        jButtonSoftware1.setFocusPainted(false);
+        jButtonSoftware1.setMargin(new java.awt.Insets(2, 0, 2, 0));
+        jButtonSoftware1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonSoftware1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonSoftware1MouseExited(evt);
+            }
+        });
+        jButtonSoftware1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSoftware1ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButtonSoftware1);
+
+        jPanelCredits.add(jPanel7);
+
+        jPanel9.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel9.setMinimumSize(new java.awt.Dimension(114, 22));
+        jPanel9.setPreferredSize(new java.awt.Dimension(114, 22));
+        jPanel9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButtonSoftware2.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonSoftware2.setText("The Legion Of The Bouncy Castle");
+        jButtonSoftware2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonSoftware2.setBorderPainted(false);
+        jButtonSoftware2.setContentAreaFilled(false);
+        jButtonSoftware2.setFocusPainted(false);
+        jButtonSoftware2.setMargin(new java.awt.Insets(2, 0, 2, 0));
+        jButtonSoftware2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonSoftware2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonSoftware2MouseExited(evt);
+            }
+        });
+        jButtonSoftware2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSoftware2ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(jButtonSoftware2);
+
+        jPanelCredits.add(jPanel9);
+
+        jPanel10.setMaximumSize(new java.awt.Dimension(32767, 22));
+        jPanel10.setMinimumSize(new java.awt.Dimension(114, 22));
+        jPanel10.setPreferredSize(new java.awt.Dimension(114, 22));
+        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButtonSoftware3.setForeground(new java.awt.Color(0, 0, 255));
+        jButtonSoftware3.setText("iHarder.net");
+        jButtonSoftware3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButtonSoftware3.setBorderPainted(false);
+        jButtonSoftware3.setContentAreaFilled(false);
+        jButtonSoftware3.setFocusPainted(false);
+        jButtonSoftware3.setMargin(new java.awt.Insets(2, 0, 2, 0));
+        jButtonSoftware3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonSoftware3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonSoftware3MouseExited(evt);
+            }
+        });
+        jButtonSoftware3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSoftware3ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(jButtonSoftware3);
+
+        jPanelCredits.add(jPanel10);
+
+        jPanelSep2.setMaximumSize(new java.awt.Dimension(32767, 10));
+        jPanelCredits.add(jPanelSep2);
 
         jPanelCenter.add(jPanelCredits);
 
@@ -389,6 +507,103 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     close();
 }//GEN-LAST:event_jButtonCloseActionPerformed
 
+    private void jButtonUrlMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonUrlMouseEntered
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
+    }//GEN-LAST:event_jButtonUrlMouseEntered
+
+    private void jButtonUrlMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonUrlMouseExited
+        this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
+    }//GEN-LAST:event_jButtonUrlMouseExited
+
+    private void jButtonUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUrlActionPerformed
+        // TODO add your handling code here:
+        String web = "https://www.safester.net";
+        callWeb(web);
+    }//GEN-LAST:event_jButtonUrlActionPerformed
+
+    private void callWeb(String web) throws HeadlessException {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            
+            desktop.browse(new URI(web));
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.toString());
+        }
+    }
+
+    private void jButtonEmailMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEmailMouseEntered
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
+    }//GEN-LAST:event_jButtonEmailMouseEntered
+
+    private void jButtonEmailMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEmailMouseExited
+        this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
+    }//GEN-LAST:event_jButtonEmailMouseExited
+
+    private void jButtonEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmailActionPerformed
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            String email = "mailto:contact@safester.net";
+            desktop.mail(new URI(email));
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.toString());
+        }
+    }//GEN-LAST:event_jButtonEmailActionPerformed
+
+    private void jButtonSoftware1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSoftware1MouseEntered
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
+    }//GEN-LAST:event_jButtonSoftware1MouseEntered
+
+    private void jButtonSoftware1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSoftware1MouseExited
+        this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
+    }//GEN-LAST:event_jButtonSoftware1MouseExited
+
+    private void jButtonSoftware1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSoftware1ActionPerformed
+
+        String web = "https://www.apache.org/";
+        callWeb(web);
+    }//GEN-LAST:event_jButtonSoftware1ActionPerformed
+
+    private void jButtonSoftware2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSoftware2MouseEntered
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
+    }//GEN-LAST:event_jButtonSoftware2MouseEntered
+
+    private void jButtonSoftware2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSoftware2MouseExited
+        this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
+    }//GEN-LAST:event_jButtonSoftware2MouseExited
+
+    private void jButtonSoftware2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSoftware2ActionPerformed
+        String web = "https://www.bouncycastle.org"; 
+        callWeb(web);
+    }//GEN-LAST:event_jButtonSoftware2ActionPerformed
+
+    private void jButtonSoftware3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSoftware3MouseEntered
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
+    }//GEN-LAST:event_jButtonSoftware3MouseEntered
+
+    private void jButtonSoftware3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSoftware3MouseExited
+        this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
+    }//GEN-LAST:event_jButtonSoftware3MouseExited
+
+    private void jButtonSoftware3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSoftware3ActionPerformed
+        // TODO add your handling code here:
+        String web = "http://iharder.sourceforge.net/current/java/filedrop/";
+        callWeb(web);
+    }//GEN-LAST:event_jButtonSoftware3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -415,12 +630,25 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonClose;
-    private javax.swing.JEditorPane jEditorPaneCredits;
-    private javax.swing.JEditorPane jEditorPaneSafeLogic;
+    private javax.swing.JButton jButtonEmail;
+    private javax.swing.JButton jButtonSoftware1;
+    private javax.swing.JButton jButtonSoftware2;
+    private javax.swing.JButton jButtonSoftware3;
+    private javax.swing.JButton jButtonUrl;
+    private javax.swing.JLabel jLabelCopyRight;
     private javax.swing.JLabel jLabelLogo;
+    private javax.swing.JLabel jLabelSoftware;
+    private javax.swing.JLabel jLabelSupport;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanelAbout;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanelAbout1;
     private javax.swing.JPanel jPanelBorderLeft;
     private javax.swing.JPanel jPanelBorderRight;
     private javax.swing.JPanel jPanelButtons;
@@ -429,6 +657,8 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JPanel jPanelLogos;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelSep;
+    private javax.swing.JPanel jPanelSep1;
+    private javax.swing.JPanel jPanelSep2;
     // End of variables declaration//GEN-END:variables
 
 }

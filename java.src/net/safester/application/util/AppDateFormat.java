@@ -54,7 +54,7 @@ public class AppDateFormat {
     
     
     /**
-     * Return the date in shodrt format in dd/mm/yyyy hh:mm in French, etc.
+     * Return the date in short format in dd/mm/yyyy hh:mm in French, etc.
      * @param date      the date
      * @return  the formated date
      */

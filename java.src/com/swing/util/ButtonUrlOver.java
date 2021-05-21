@@ -33,12 +33,13 @@ import javax.swing.JButton;
  */
 public class ButtonUrlOver {
     
+    private static Color LIGHT_RED = new Color(255, 58,58);
     public static Color saveColor;
     
     public static void enter(MouseEvent evt) {
         JButton button = (JButton)evt.getSource();
         saveColor = button.getForeground();
-        button.setForeground(SwingColorUtil.LIGHT_RED);
+        button.setForeground(LIGHT_RED);
     }
     
     public static void exit(MouseEvent evt) {

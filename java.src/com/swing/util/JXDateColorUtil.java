@@ -21,57 +21,41 @@
  * Any modifications to this file must keep this entire header
  * intact.
  */
-package net.safester.application.wait.tools;
+package com.swing.util;
 
-// 18/06/01 12:15 GR - creation
-// 02/10/01 17:45 GR - WIP
-// 03/10/01 12:45 GR - WIP
-// 16/10/01 16:15 GR - remove useless old code related to animation/thread
-import com.swing.util.LookAndFeelHelper;
 import java.awt.Color;
-import java.awt.Label;
+import javax.swing.UIManager;
+import org.jdesktop.swingx.JXDatePicker;
 
-public class CmWaitPanel
-        extends Label {
+/**
+ *
+ * @author ndepo
+ */
+public class JXDateColorUtil {
 
-    private String m_sText;
-    private CmPalette m_cpPal;
+    public static void setCalendarColors(JXDatePicker jXDatePicker) {
 
-    public CmWaitPanel(String sText,
-            CmPalette cpPal) {
-        super();
-        super.setAlignment(super.CENTER);
-        setText(sText);
-        m_cpPal = cpPal;
-        if (m_cpPal == null) {
-            m_cpPal = CmPalette.getDefaultInstance();
+        if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_INTELLIJ_LAF)) {
+            return;
         }
 
-//        if (LookAndFeelHelper.isDarkMode()) {
-//            this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-//        } else {
-//            this.setBackground(m_cpPal.getColor("cm.comp.bgcolor"));
-//        }
-         
-//        this.setForeground(m_cpPal.getColor("cm.bar.fgcolor"));
+        Color backgroundMain = UIManager.getColor("Panel.background");
+        Color foregroundMain = UIManager.getColor("TextField.foreground");
+        Color selectedBackgroundMain = UIManager.getColor("TextField.selectionBackground");
 
-        this.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        this.setForeground(Color.RED);
-    }
+        // General Sertings
+        jXDatePicker.getMonthView().setBackground(backgroundMain);
+        jXDatePicker.getMonthView().setForeground(foregroundMain);
 
-    public void start() {
-        setText(m_sText);
-    }
+        // Top : the month
+        jXDatePicker.getMonthView().setMonthStringBackground(selectedBackgroundMain);
+        jXDatePicker.getMonthView().setMonthStringForeground(foregroundMain);
 
-    public void setText(String sText) {
-        m_sText = sText;
-        if (m_sText == null) {
-            throw new IllegalArgumentException("Wait Dialog text can't be null");
-        }
-        super.setText(m_sText);
-    }
+        // The list of months
+        jXDatePicker.getMonthView().setDaysOfTheWeekForeground(foregroundMain);
 
-    public void stop() {
-        //m_atAnim.stop() ;
+        // Today & selected day
+        jXDatePicker.getMonthView().setTodayBackground(Color.RED);
+        jXDatePicker.getMonthView().setSelectionBackground(selectedBackgroundMain);
     }
 }

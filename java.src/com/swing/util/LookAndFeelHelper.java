@@ -23,9 +23,11 @@
  */
 package com.swing.util;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.UIManager;
+
 import net.safester.application.util.UserPrefManager;
 
 /**
@@ -34,14 +36,17 @@ import net.safester.application.util.UserPrefManager;
  */
 public class LookAndFeelHelper {
 
+    //private static final Color SAFESTER_DARK_BG_COLOR = new Color(69, 73, 74);
+    //private static final Color SAFESTER_DARK_FG_COLOR = new Color(187, 187, 187);
+    
     /**
      * Analyses if the Theme is in Dark mode.
      * @return true if Dark Mode.
      */
     public static boolean isDarkMode() {
-        String lookAndFeel = UIManager.getLookAndFeel().toString();
-        List<String> themesArray = Arrays.asList(Themes.DARK_THEMES);
-        return themesArray.contains(lookAndFeel);
+        String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+        List<String> themesArray = Arrays.asList(Themes.LIGHT_THEMES);
+        return !themesArray.contains(lookAndFeel);
     }
     
     /**
@@ -52,4 +57,15 @@ public class LookAndFeelHelper {
         return UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
     }
     
+    /**
+     * @return Default background color for Dark / Ligth mode
+     */
+    public static Color getDefaultBackgroundColor() {
+    	return isDarkMode() ? UIManager.getColor("Panel.background") : Color.WHITE;
+    }
+    
+    public static Color getDefaultForegroundColor() {
+    	//return isDarkMode() ? UIManager.getColor(SAFESTER_DARK_FG_COLOR) : Color.BLACK;
+        return isDarkMode() ? UIManager.getColor("TextField.foreground") : Color.BLACK;
+    }
 }

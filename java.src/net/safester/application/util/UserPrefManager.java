@@ -102,6 +102,7 @@ public class UserPrefManager {
     public static String ASK_FOR_CONFIRM = "ASK_FOR_CONFIRM";
     
     public static String LOOK_AND_FEEL_THEME = "LOOK_AND_FEEL_THEME";
+    public static String SCALING = "SCALING";
     
     /**
       * Get a  preference

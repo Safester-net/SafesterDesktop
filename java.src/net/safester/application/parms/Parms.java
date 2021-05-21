@@ -47,6 +47,8 @@ public class Parms {
         Locale.FRENCH.getLanguage()
     };
     
+    public static final String [] arrayStarredNameI18n = {"starred", "suivis"};
+    
     public static final int NOTIFY_PERIOD = 20000;
     
     /** To use for background selection */
@@ -153,7 +155,7 @@ public class Parms {
      */
     public static boolean folderRemovable(int idFolder) {
         boolean removable = true;
-        if (idFolder == INBOX_ID || idFolder == OUTBOX_ID || idFolder == DRAFT_ID) {
+        if (idFolder == STARRED_ID || idFolder == INBOX_ID || idFolder == OUTBOX_ID || idFolder == DRAFT_ID) {
             removable = false;
         }
         return removable;
@@ -164,5 +166,9 @@ public class Parms {
     
     /** String displayed if a recipient is unknown */
     public static String UNKNOWN_RECIPIENT = "????";
+
+    public static boolean folderAddable(int folderId) {
+        return folderId == STARRED_ID ? false:true;
+    }
         
 }

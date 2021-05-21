@@ -48,6 +48,7 @@ import org.awakefw.file.api.client.AwakeFileSession;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.Base64;
+import com.swing.util.LookAndFeelHelper;
 import com.swing.util.SwingUtil;
 
 import net.safester.application.messages.MessagesManager;
@@ -129,8 +130,7 @@ public class SearchContactSelector extends javax.swing.JFrame {
         jButtonClose.setText(messages.getMessage("close_button"));
         jTextAreaHelp.setFont(jButtonClose.getFont());
         jTextAreaHelp.setText(messages.getMessage("double_click_to_select_contact"));
-       
-
+        
         this.jTextFieldSearch.addKeyListener(new KeyAdapter() {
 
             @Override
@@ -152,7 +152,6 @@ public class SearchContactSelector extends javax.swing.JFrame {
         jLabelIn.setVisible(false);
         jComboBoxSearch.setVisible(false);
 
-        jTextAreaHelp.setBackground(Color.WHITE);
         this.keyListenerAdder();
 
         clipboard1 = new ClipboardManager(jTextFieldSearch);

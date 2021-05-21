@@ -36,6 +36,8 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.swing.util.LookAndFeelHelper;
+
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.RendererParms;
@@ -181,10 +183,10 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
             }
         }
         else {
-            c.setBackground(Color.white);
+            c.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         }
         
-        c.setForeground(Color.black);
+        c.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         int[] selRows = table.getSelectedRows();
         if (selRows.length != 0) {
@@ -199,12 +201,12 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
 
         if (!isSearchTable) {
             if (TableUtil.selectedBoxLine > -1 && TableUtil.selectedBoxLine == row && !isSelected) {
-                c.setBackground(TableUtil.HOVER_COLOR);
+                c.setBackground(TableUtil.getMouseOverBackground());
                 c.setForeground(TableUtil.getMouseOverForeground());
             }
         } else {
             if (TableUtil.selectedSearchLine > -1 && TableUtil.selectedSearchLine == row && !isSelected) {
-                c.setBackground(TableUtil.HOVER_COLOR);
+                c.setBackground(TableUtil.getMouseOverBackground());
                 c.setForeground(TableUtil.getMouseOverForeground());
             }
         }

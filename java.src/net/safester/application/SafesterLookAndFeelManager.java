@@ -23,8 +23,6 @@
  */
 package net.safester.application;
 
-import com.formdev.flatlaf.FlatLightLaf;
-import com.swing.util.Themes;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
@@ -34,11 +32,13 @@ import javax.swing.JComponent;
 import javax.swing.Painter;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import net.safester.application.parms.Parms;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
+import com.swing.util.Themes;
+
+import net.safester.application.parms.Parms;
 import net.safester.application.tool.UI_Util;
 import net.safester.application.util.UserPrefManager;
 
@@ -65,7 +65,12 @@ public class SafesterLookAndFeelManager {
             return;
         }
 
-        System.setProperty("sun.java2d.uiScale", "1.0");
+        //-Dsun.java2d.uiScale=1.0
+        //System.setProperty("flatlaf.uiScale", "1.0");
+        
+        String scaling = UserPrefManager.getPreference(UserPrefManager.SCALING, "1.0");
+        System.setProperty("flatlaf.uiScale", scaling);
+        
         String lookAndFeel =  UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
         UIManager.setLookAndFeel(lookAndFeel);
         

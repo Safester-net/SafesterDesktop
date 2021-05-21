@@ -70,6 +70,7 @@ import org.awakefw.file.api.util.HtmlConverter;
 import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.safelogic.utilx.StringMgr;
+import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingColorUtil;
 import com.swing.util.SwingUtil;
 
@@ -118,7 +119,6 @@ public class MessageReader extends javax.swing.JFrame {
     private boolean displayDecrypted = true;
     private String decryptedBody = null;
     private String encryptedBody = null;
-    private Color COLOR_DISABLED = new Color(153, 153, 153);
 
     /**
      * Creates new form MessageReader
@@ -265,7 +265,7 @@ public class MessageReader extends javax.swing.JFrame {
         this.jEditorPaneBody.setContentType("text/html");
         this.jEditorPaneBody.setEditable(false);
 
-        this.jEditorPaneBody.setBackground(Color.WHITE);
+    //    this.jEditorPaneBody.setBackground(Color.WHITE);
 
         this.jEditorPaneBody.setText(text);
 
@@ -345,7 +345,7 @@ public class MessageReader extends javax.swing.JFrame {
         jScrollPaneAttach.remove(jListAttach);
 
         //  jPanelAttachSepRecipients.setBackground(Color.white);
-        jPanelAttach.setBackground(Color.white);
+        //jPanelAttach.setBackground(Color.white);
 
         buildJListAttachment();
 
@@ -899,7 +899,6 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelSep1 = new javax.swing.JPanel();
         jLabelDate = new javax.swing.JLabel();
         jTextFieldDate = new javax.swing.JTextField();
-        jPanelSep2 = new javax.swing.JPanel();
         jPanelTo = new javax.swing.JPanel();
         jPanelToLeft = new javax.swing.JPanel();
         jLabelTo = new javax.swing.JLabel();
@@ -1031,7 +1030,7 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelTop.setLayout(jPanelTopLayout);
         jPanelTopLayout.setHorizontalGroup(
             jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 528, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
         jPanelTopLayout.setVerticalGroup(
             jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1055,9 +1054,9 @@ public class MessageReader extends javax.swing.JFrame {
 
         jPanelInfoMessage.setLayout(new javax.swing.BoxLayout(jPanelInfoMessage, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelFromNew.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelFromNew.setMinimumSize(new java.awt.Dimension(39, 31));
-        jPanelFromNew.setPreferredSize(new java.awt.Dimension(465, 31));
+        jPanelFromNew.setMaximumSize(new java.awt.Dimension(32767, 28));
+        jPanelFromNew.setMinimumSize(new java.awt.Dimension(39, 28));
+        jPanelFromNew.setPreferredSize(new java.awt.Dimension(465, 28));
         jPanelFromNew.setLayout(new javax.swing.BoxLayout(jPanelFromNew, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelLeft5.setMaximumSize(new java.awt.Dimension(5, 5));
@@ -1081,9 +1080,9 @@ public class MessageReader extends javax.swing.JFrame {
 
         jPanelInfoMessage.add(jPanelFromNew);
 
-        jPanelDate.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelDate.setMinimumSize(new java.awt.Dimension(38, 31));
-        jPanelDate.setPreferredSize(new java.awt.Dimension(144, 31));
+        jPanelDate.setMaximumSize(new java.awt.Dimension(32767, 28));
+        jPanelDate.setMinimumSize(new java.awt.Dimension(38, 28));
+        jPanelDate.setPreferredSize(new java.awt.Dimension(144, 28));
         jPanelDate.setLayout(new javax.swing.BoxLayout(jPanelDate, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelSep1.setMaximumSize(new java.awt.Dimension(5, 5));
@@ -1101,15 +1100,10 @@ public class MessageReader extends javax.swing.JFrame {
         jTextFieldDate.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldDate.setText("jTextFieldDate");
         jTextFieldDate.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        jTextFieldDate.setMaximumSize(new java.awt.Dimension(2147483647, 22));
         jPanelDate.add(jTextFieldDate);
 
         jPanelInfoMessage.add(jPanelDate);
-
-        jPanelSep2.setMaximumSize(new java.awt.Dimension(32767, 5));
-        jPanelSep2.setMinimumSize(new java.awt.Dimension(0, 5));
-        jPanelSep2.setPreferredSize(new java.awt.Dimension(10, 5));
-        jPanelSep2.setLayout(new javax.swing.BoxLayout(jPanelSep2, javax.swing.BoxLayout.LINE_AXIS));
-        jPanelInfoMessage.add(jPanelSep2);
 
         jPanelTo.setLayout(new javax.swing.BoxLayout(jPanelTo, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1124,9 +1118,10 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelTo.add(jPanelToLeft);
 
         jPanelToRight.setAutoscrolls(true);
-        jPanelToRight.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanelToRight.setMinimumSize(new java.awt.Dimension(21, 30));
-        jPanelToRight.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanelToRight.setMaximumSize(new java.awt.Dimension(32767, 35));
+        jPanelToRight.setMinimumSize(new java.awt.Dimension(21, 35));
+        jPanelToRight.setPreferredSize(new java.awt.Dimension(100, 35));
+        jPanelToRight.setRequestFocusEnabled(false);
         jPanelToRight.setLayout(new javax.swing.BoxLayout(jPanelToRight, javax.swing.BoxLayout.PAGE_AXIS));
 
         jScrollPaneTo.setBorder(null);
@@ -1147,12 +1142,15 @@ public class MessageReader extends javax.swing.JFrame {
 
         jPanelInfoMessage.add(jPanelTo);
 
-        jPanelSep.setMaximumSize(new java.awt.Dimension(32767, 5));
-        jPanelSep.setMinimumSize(new java.awt.Dimension(0, 5));
-        jPanelSep.setPreferredSize(new java.awt.Dimension(10, 5));
+        jPanelSep.setMaximumSize(new java.awt.Dimension(32767, 2));
+        jPanelSep.setMinimumSize(new java.awt.Dimension(0, 2));
+        jPanelSep.setPreferredSize(new java.awt.Dimension(10, 2));
         jPanelSep.setLayout(new javax.swing.BoxLayout(jPanelSep, javax.swing.BoxLayout.LINE_AXIS));
         jPanelInfoMessage.add(jPanelSep);
 
+        jPanelCc.setMaximumSize(new java.awt.Dimension(32817, 35));
+        jPanelCc.setMinimumSize(new java.awt.Dimension(71, 35));
+        jPanelCc.setPreferredSize(new java.awt.Dimension(160, 35));
         jPanelCc.setLayout(new javax.swing.BoxLayout(jPanelCc, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelCcLeft.setMaximumSize(new java.awt.Dimension(50, 30));
@@ -1190,9 +1188,9 @@ public class MessageReader extends javax.swing.JFrame {
 
         jPanelInfoMessage.add(jPanelCc);
 
-        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 5));
-        jPanelSep3.setMinimumSize(new java.awt.Dimension(0, 5));
-        jPanelSep3.setPreferredSize(new java.awt.Dimension(10, 5));
+        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 2));
+        jPanelSep3.setMinimumSize(new java.awt.Dimension(0, 2));
+        jPanelSep3.setPreferredSize(new java.awt.Dimension(10, 2));
         jPanelSep3.setLayout(new javax.swing.BoxLayout(jPanelSep3, javax.swing.BoxLayout.LINE_AXIS));
         jPanelInfoMessage.add(jPanelSep3);
 
@@ -1264,6 +1262,7 @@ public class MessageReader extends javax.swing.JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         jListAttach.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
+        jListAttach.setOpaque(false);
         jListAttach.setVisibleRowCount(1);
         jScrollPaneAttach.setViewportView(jListAttach);
 
@@ -1497,10 +1496,12 @@ public class MessageReader extends javax.swing.JFrame {
 
     private void jButtonDisplayEncryptedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDisplayEncryptedMouseEntered
         this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
     }//GEN-LAST:event_jButtonDisplayEncryptedMouseEntered
 
     private void jButtonDisplayEncryptedMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDisplayEncryptedMouseExited
         this.setCursor(Cursor.getDefaultCursor());
+        ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonDisplayEncryptedMouseExited
 
     private void jButtonDisplayEncryptedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDisplayEncryptedActionPerformed
@@ -1604,7 +1605,6 @@ public class MessageReader extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelMessage;
     private javax.swing.JPanel jPanelSep;
     private javax.swing.JPanel jPanelSep1;
-    private javax.swing.JPanel jPanelSep2;
     private javax.swing.JPanel jPanelSep3;
     private javax.swing.JPanel jPanelSep4;
     private javax.swing.JPanel jPanelSepAttach;

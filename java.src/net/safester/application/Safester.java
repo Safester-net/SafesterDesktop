@@ -64,7 +64,10 @@ public class Safester {
      * @param args
      */
     public static void main(String[] args) {
+        mainCall();
+    }
 
+    public static void mainCall() throws HeadlessException {
         try {
             
             // take the menu bar off the jframe
@@ -78,7 +81,7 @@ public class Safester {
 
             // Must be done at each language change
             HTMLEditorPane.setLanguage(LanguageManager.getLanguage());
-
+            
             // Set User-Agent 
             System.setProperty("http.agent", SystemUtils.OS_NAME + " " + SystemUtils.OS_VERSION + " Safester " + Version.getVersionWithDate());
 
@@ -88,7 +91,7 @@ public class Safester {
                 LanguageManager.setLanguage("en");
                 languageManager.storeLanguage();
             }
-
+            
 
             AwakeFileSession.setUseBase64EncodingForCall();
 
@@ -106,6 +109,13 @@ public class Safester {
             // });
             SafesterLookAndFeelManager.setLookAndFeel();
             
+            if (! isJavaVersion11mini()) {
+                MessagesManager messagesManager = new MessagesManager();
+                String message = messagesManager.getMessage("safester_requires_java_11_minimum");
+                JOptionPane.showMessageDialog(null, message, "Safester", JOptionPane.WARNING_MESSAGE);
+                System.exit(0);
+            }
+                        
             if (SystemUtils.IS_OS_WINDOWS && ProcessUtil.countWindowsInstanceRunning("Safester.exe") > 1) {
                 MessagesManager messagesManager = new MessagesManager();
                 String message = messagesManager.getMessage("safester_already_running_use_task_bar");
@@ -113,7 +123,9 @@ public class Safester {
                 System.exit(0);
             }
             
-            doMain(args);
+            //doMain(args);
+            Login login = new Login();
+            login.setVisible(true);
         } catch (Throwable t) {
             t.printStackTrace();
 
@@ -130,28 +142,38 @@ public class Safester {
                     "An error has occured... ", JOptionPane.ERROR_MESSAGE);
             System.exit(-1);
         }
-
     }
-
     /**
-     * Safester main launcher
-     *
-     * @param args
+     * Says if Java current major version is > 11
+     * @return true if current major version is > 11
      */
-    public static void doMain(String[] args) {
-
-        /*
-	if (Parms.FEATURE_CACHE_PASSPHRASE) {
-	    // Start the socket server (if necessary if use wants to cache
-	    // passphrase)
-	    SocketClient socketClient = new SocketClient();
-	    socketClient.startSocketServerNoWait();
-	}
-         */
-        Login login = new Login();
-        login.setVisible(true);
-
+    public static boolean isJavaVersion11mini() {
+        String JAVA_11 = "11";
+        String currentVersion =  SystemUtils.JAVA_VERSION;
+        int compared = currentVersion.compareTo(JAVA_11);
+        
+        return compared >= 0;
     }
+    
+//    /**
+//     * Safester main launcher
+//     *
+//     * @param args
+//     */
+//    public static void doMain(String[] args) {
+//
+//        /*
+//	if (Parms.FEATURE_CACHE_PASSPHRASE) {
+//	    // Start the socket server (if necessary if use wants to cache
+//	    // passphrase)
+//	    SocketClient socketClient = new SocketClient();
+//	    socketClient.startSocketServerNoWait();
+//	}
+//         */
+//        Login login = new Login();
+//        login.setVisible(true);
+//
+//    }
 
     /**
      * Test if policy files can be copied if not display a detailed help message

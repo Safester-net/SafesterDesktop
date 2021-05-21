@@ -25,6 +25,7 @@ package com.swing.util.CustomJtree;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
@@ -48,7 +49,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
     private static Color BACKGROUND_COLOR_SELECTED = null;
     private static Color FOREGROUND_COLOR_SELECTED = null;
     private boolean exited = false;
-    
+
     Icon homeIcon;
     Icon inboxIcon;
     Icon outBoxIcon;
@@ -66,13 +67,13 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         this.expandedIcon = Parms.createImageIcon("images/files_2/16x16/folder_open.png");
         this.starredIcon = Parms.createImageIcon(Parms.STARRED_ICON);
 
-      // BEGIN FOR HIGHLIGHT HOVER LINE
+        // BEGIN FOR HIGHLIGHT HOVER LINE
         Color selectionColor = UIManager.getDefaults().getColor("Tree.selectionBackground");
         BACKGROUND_COLOR_SELECTED = new Color(selectionColor.getRed(), selectionColor.getGreen(), selectionColor.getBlue());
 
         selectionColor = UIManager.getDefaults().getColor("Tree.selectionForeground");
         FOREGROUND_COLOR_SELECTED = new Color(selectionColor.getRed(), selectionColor.getGreen(), selectionColor.getBlue());
-        
+
         tree.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -113,7 +114,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
                 tree.updateUI();
             }
         });
-        
+
         // END FOR HIGHLIGHT HOVER LINE        
     }
 
@@ -136,7 +137,17 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         this.setOpaque(true);
         boolean highlight = (oldSelectedPath != null) && (value == oldSelectedPath.getLastPathComponent());
 
-        this.setBackground(highlight ? TableUtil.HOVER_COLOR : tree.getBackground());
+        // BEGIN HACK FOR CUT OFF LEAF 
+        if (leaf) {
+            final Dimension size = this.getPreferredSize();
+            int theWidth = Math.min(200, size.width); // because on Search otw leaf takes very long size
+            int theHeight = size.height;
+            this.setMinimumSize(new Dimension(theWidth, theHeight));
+            this.setPreferredSize(new Dimension(theWidth, theHeight));
+            // END HACK FOR CUT OFF LEAF          
+        }
+
+        this.setBackground(highlight ? TableUtil.getMouseOverBackground() : tree.getBackground());
         this.setForeground(highlight ? Color.BLACK : tree.getForeground());
 
         if (exited) {
@@ -144,15 +155,14 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
             this.setForeground(tree.getForeground());
         }
 
-        this.setBorder(new EmptyBorder(2,2,2,2));
-        
+        this.setBorder(new EmptyBorder(2, 2, 2, 2));
+
         if (sel) {
             this.setBackground(BACKGROUND_COLOR_SELECTED);
             this.setForeground(FOREGROUND_COLOR_SELECTED);
         }
-        
-       // END FOR HIGHLIGHT HOVER LINE
-       
+
+        // END FOR HIGHLIGHT HOVER LINE
         int id = -1;
 
         //GEt current node
@@ -160,7 +170,7 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         if (value instanceof DefaultMutableTreeNode) {
             currentNode = (DefaultMutableTreeNode) value;
         }
-        
+
         if (currentNode != null && currentNode.getUserObject() instanceof FolderLocal) {
             //Get id of current folder
             id = ((FolderLocal) currentNode.getUserObject()).getFolderId();
@@ -169,8 +179,8 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
             setIcon(homeIcon);
             return this;
         }
-        if(id == Parms.STARRED_ID) {
-        	setIcon(starredIcon);
+        if (id == Parms.STARRED_ID) {
+            setIcon(starredIcon);
         } else if (id == Parms.INBOX_ID) {
             //Set inbox icon
             setIcon(inboxIcon);
@@ -183,15 +193,14 @@ public class FolderTreeCellRendererNew extends DefaultTreeCellRenderer {
         } else {
             //Default icon
             //setIcon(this.getClosedIcon());
-            
+
             if (expanded) {
-              setIcon(this.expandedIcon);              
-            }
-            else {
-               setIcon(this.closedIcon);                 
+                setIcon(this.expandedIcon);
+            } else {
+                setIcon(this.closedIcon);
             }
         }
-       
+
         return this;
     }
 }
