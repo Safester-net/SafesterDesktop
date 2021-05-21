@@ -34,8 +34,10 @@ import org.awakefw.sql.api.client.AwakeConnection;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.util.Iterator;
 import java.util.Locale;
 import net.safester.application.messages.LanguageManager;
+import net.safester.application.parms.Parms;
 
 import net.safester.clientserver.specs.ListTransfer;
 import net.safester.noobs.clientserver.FolderLocal;
@@ -110,6 +112,8 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
                 
         List<FolderLocal> folderLocalList = GsonUtil.gsonToList(jsonString);
 
+        removeStarredFromFolders(folderLocalList);
+                
         // Escape HTML in names
         for (FolderLocal folderLocal : folderLocalList) {
             String name = folderLocal.getName();
@@ -190,6 +194,8 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
         // Set HTML in names (we don't want any accents on host SQL UTF-8)
         toHtml(folderLocals);
         
+        removeStarredFromFolders(folderLocals);
+        
         String jsonString = GsonUtil.listToGson(folderLocals);
         
         //Put the list on the server, because of intricated SQL statements        
@@ -232,6 +238,8 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
      */
     public void putListAndDelete(List<FolderLocal> folderLocals, String keyId) throws SQLException
     {
+        removeStarredFromFolders(folderLocals);
+                
         // Set HTML in names (we don't want any accents on host SQL UTF-8)
         toHtml(folderLocals);
         
@@ -301,4 +309,14 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
         }
     }
 
+    private void removeStarredFromFolders(List<FolderLocal> folderLocals) {
+        Iterator itr = folderLocals.iterator();
+        while (itr.hasNext())
+        {
+            FolderLocal folderLocal = (FolderLocal)itr.next();
+            if (folderLocal.getFolderId() == Parms.STARRED_ID) {
+                itr.remove();  
+            }
+        }
+    }
 }
