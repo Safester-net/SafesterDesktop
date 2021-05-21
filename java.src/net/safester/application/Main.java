@@ -3288,8 +3288,10 @@ public class Main extends javax.swing.JFrame {
         jPanelSepRecip2.setLayout(new javax.swing.BoxLayout(jPanelSepRecip2, javax.swing.BoxLayout.LINE_AXIS));
         jPanelFromAndRecip.add(jPanelSepRecip2);
 
-        jPanelTo.setMinimumSize(new java.awt.Dimension(71, 0));
+        jPanelTo.setMaximumSize(new java.awt.Dimension(32817, 35));
+        jPanelTo.setMinimumSize(new java.awt.Dimension(71, 35));
         jPanelTo.setOpaque(false);
+        jPanelTo.setPreferredSize(new java.awt.Dimension(165, 35));
         jPanelTo.setLayout(new javax.swing.BoxLayout(jPanelTo, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelToLeft.setMaximumSize(new java.awt.Dimension(50, 30));
@@ -3322,6 +3324,9 @@ public class Main extends javax.swing.JFrame {
         jTextAreaRecipientsTo.setText("jTextAreaRecipientsTo");
         jTextAreaRecipientsTo.setWrapStyleWord(true);
         jTextAreaRecipientsTo.setBorder(null);
+        jTextAreaRecipientsTo.setMaximumSize(new java.awt.Dimension(2147483647, 22));
+        jTextAreaRecipientsTo.setMinimumSize(new java.awt.Dimension(109, 22));
+        jTextAreaRecipientsTo.setPreferredSize(new java.awt.Dimension(160, 22));
         jScrollPane3.setViewportView(jTextAreaRecipientsTo);
 
         jPanelToRight.add(jScrollPane3);
@@ -3337,8 +3342,10 @@ public class Main extends javax.swing.JFrame {
         jPanelSepRecip1.setLayout(new javax.swing.BoxLayout(jPanelSepRecip1, javax.swing.BoxLayout.LINE_AXIS));
         jPanelFromAndRecip.add(jPanelSepRecip1);
 
-        jPanelCc.setMinimumSize(new java.awt.Dimension(71, 0));
+        jPanelCc.setMaximumSize(new java.awt.Dimension(32817, 35));
+        jPanelCc.setMinimumSize(new java.awt.Dimension(71, 35));
         jPanelCc.setOpaque(false);
+        jPanelCc.setPreferredSize(new java.awt.Dimension(165, 35));
         jPanelCc.setLayout(new javax.swing.BoxLayout(jPanelCc, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelCcLeft.setMaximumSize(new java.awt.Dimension(50, 30));
