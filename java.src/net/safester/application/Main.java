@@ -3294,10 +3294,10 @@ public class Main extends javax.swing.JFrame {
         jPanelTo.setPreferredSize(new java.awt.Dimension(165, 35));
         jPanelTo.setLayout(new javax.swing.BoxLayout(jPanelTo, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelToLeft.setMaximumSize(new java.awt.Dimension(50, 30));
-        jPanelToLeft.setMinimumSize(new java.awt.Dimension(50, 30));
+        jPanelToLeft.setMaximumSize(new java.awt.Dimension(50, 35));
+        jPanelToLeft.setMinimumSize(new java.awt.Dimension(50, 35));
         jPanelToLeft.setOpaque(false);
-        jPanelToLeft.setPreferredSize(new java.awt.Dimension(65, 30));
+        jPanelToLeft.setPreferredSize(new java.awt.Dimension(65, 35));
         jPanelToLeft.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 0));
 
         jLabelTo.setText("To");
@@ -3306,10 +3306,10 @@ public class Main extends javax.swing.JFrame {
         jPanelTo.add(jPanelToLeft);
 
         jPanelToRight.setAutoscrolls(true);
-        jPanelToRight.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanelToRight.setMinimumSize(new java.awt.Dimension(21, 30));
+        jPanelToRight.setMaximumSize(new java.awt.Dimension(32767, 35));
+        jPanelToRight.setMinimumSize(new java.awt.Dimension(21, 35));
         jPanelToRight.setOpaque(false);
-        jPanelToRight.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanelToRight.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanelToRight.setLayout(new javax.swing.BoxLayout(jPanelToRight, javax.swing.BoxLayout.PAGE_AXIS));
 
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
@@ -3324,9 +3324,6 @@ public class Main extends javax.swing.JFrame {
         jTextAreaRecipientsTo.setText("jTextAreaRecipientsTo");
         jTextAreaRecipientsTo.setWrapStyleWord(true);
         jTextAreaRecipientsTo.setBorder(null);
-        jTextAreaRecipientsTo.setMaximumSize(new java.awt.Dimension(2147483647, 22));
-        jTextAreaRecipientsTo.setMinimumSize(new java.awt.Dimension(109, 22));
-        jTextAreaRecipientsTo.setPreferredSize(new java.awt.Dimension(160, 22));
         jScrollPane3.setViewportView(jTextAreaRecipientsTo);
 
         jPanelToRight.add(jScrollPane3);
@@ -3348,10 +3345,10 @@ public class Main extends javax.swing.JFrame {
         jPanelCc.setPreferredSize(new java.awt.Dimension(165, 35));
         jPanelCc.setLayout(new javax.swing.BoxLayout(jPanelCc, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelCcLeft.setMaximumSize(new java.awt.Dimension(50, 30));
-        jPanelCcLeft.setMinimumSize(new java.awt.Dimension(50, 30));
+        jPanelCcLeft.setMaximumSize(new java.awt.Dimension(50, 35));
+        jPanelCcLeft.setMinimumSize(new java.awt.Dimension(50, 35));
         jPanelCcLeft.setOpaque(false);
-        jPanelCcLeft.setPreferredSize(new java.awt.Dimension(65, 30));
+        jPanelCcLeft.setPreferredSize(new java.awt.Dimension(65, 35));
         jPanelCcLeft.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 0));
 
         jLabelCc.setText("Cc");
@@ -3360,10 +3357,10 @@ public class Main extends javax.swing.JFrame {
         jPanelCc.add(jPanelCcLeft);
 
         jPanelCcRight.setAutoscrolls(true);
-        jPanelCcRight.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanelCcRight.setMinimumSize(new java.awt.Dimension(21, 30));
+        jPanelCcRight.setMaximumSize(new java.awt.Dimension(32767, 35));
+        jPanelCcRight.setMinimumSize(new java.awt.Dimension(21, 35));
         jPanelCcRight.setOpaque(false);
-        jPanelCcRight.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanelCcRight.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanelCcRight.setLayout(new javax.swing.BoxLayout(jPanelCcRight, javax.swing.BoxLayout.PAGE_AXIS));
 
         jScrollPane5.setBorder(null);

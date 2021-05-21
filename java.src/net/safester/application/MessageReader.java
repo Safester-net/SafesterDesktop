@@ -1107,9 +1107,9 @@ public class MessageReader extends javax.swing.JFrame {
 
         jPanelTo.setLayout(new javax.swing.BoxLayout(jPanelTo, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelToLeft.setMaximumSize(new java.awt.Dimension(50, 30));
-        jPanelToLeft.setMinimumSize(new java.awt.Dimension(50, 30));
-        jPanelToLeft.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanelToLeft.setMaximumSize(new java.awt.Dimension(50, 35));
+        jPanelToLeft.setMinimumSize(new java.awt.Dimension(50, 35));
+        jPanelToLeft.setPreferredSize(new java.awt.Dimension(60, 35));
         jPanelToLeft.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
         jLabelTo.setText("To");
@@ -1153,9 +1153,9 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelCc.setPreferredSize(new java.awt.Dimension(160, 35));
         jPanelCc.setLayout(new javax.swing.BoxLayout(jPanelCc, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelCcLeft.setMaximumSize(new java.awt.Dimension(50, 30));
-        jPanelCcLeft.setMinimumSize(new java.awt.Dimension(50, 30));
-        jPanelCcLeft.setPreferredSize(new java.awt.Dimension(60, 30));
+        jPanelCcLeft.setMaximumSize(new java.awt.Dimension(50, 35));
+        jPanelCcLeft.setMinimumSize(new java.awt.Dimension(50, 35));
+        jPanelCcLeft.setPreferredSize(new java.awt.Dimension(60, 35));
         jPanelCcLeft.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
         jLabelCc.setText("Cc");
@@ -1164,10 +1164,10 @@ public class MessageReader extends javax.swing.JFrame {
         jPanelCc.add(jPanelCcLeft);
 
         jPanelCcRight.setAutoscrolls(true);
-        jPanelCcRight.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanelCcRight.setMinimumSize(new java.awt.Dimension(21, 30));
+        jPanelCcRight.setMaximumSize(new java.awt.Dimension(32767, 35));
+        jPanelCcRight.setMinimumSize(new java.awt.Dimension(21, 35));
         jPanelCcRight.setOpaque(false);
-        jPanelCcRight.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanelCcRight.setPreferredSize(new java.awt.Dimension(100, 35));
         jPanelCcRight.setLayout(new javax.swing.BoxLayout(jPanelCcRight, javax.swing.BoxLayout.PAGE_AXIS));
 
         jScrollPaneCc.setBorder(null);

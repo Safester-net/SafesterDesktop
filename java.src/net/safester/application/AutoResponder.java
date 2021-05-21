@@ -594,7 +594,6 @@ public class AutoResponder extends javax.swing.JDialog {
         jPanelSubject.setPreferredSize(new java.awt.Dimension(59, 40));
         jPanelSubject.setLayout(new javax.swing.BoxLayout(jPanelSubject, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTextFieldSubject.setText("jTextField1");
         jTextFieldSubject.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         jTextFieldSubject.setMinimumSize(new java.awt.Dimension(6, 30));
         jTextFieldSubject.setPreferredSize(new java.awt.Dimension(69, 30));
