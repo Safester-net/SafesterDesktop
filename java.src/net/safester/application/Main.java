@@ -371,7 +371,10 @@ public class Main extends javax.swing.JFrame {
         jMenuView.setText(messages.getMessage("view"));
         jMenuScaling.setText(messages.getMessage("scaling"));
         jRadioButtonMenuItemScale100.setText(messages.getMessage("scaling_100"));
-        jRadioButtonMenuItemScale110.setText(messages.getMessage("scaling_110"));
+        
+        String messageScaled = messages.getMessage("scaling_110");
+        messageScaled= MainUtil.addRecommanded(messageScaled);
+        jRadioButtonMenuItemScale110.setText(messageScaled);
         jMenuAppearance.setText(messages.getMessage("appearance"));
         
         this.jMenuItemPassphraseRecoverySettings.setText(messages.getMessage("passphrase_recovery_settings"));
@@ -5063,6 +5066,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+
 
 
 
