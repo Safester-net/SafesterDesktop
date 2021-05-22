@@ -23,23 +23,16 @@
  */
 package net.safester.application;
 
-import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-
-import javax.swing.JComponent;
-import javax.swing.Painter;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
-
 import com.swing.util.Themes;
-
+import javax.swing.JFrame;
 import net.safester.application.parms.Parms;
-import net.safester.application.tool.UI_Util;
 import net.safester.application.util.UserPrefManager;
 
 /**
@@ -53,6 +46,8 @@ public class SafesterLookAndFeelManager {
             throws IOException, ClassNotFoundException, InstantiationException,
             IllegalAccessException, UnsupportedLookAndFeelException {
 
+        JFrame.setDefaultLookAndFeelDecorated( true );
+        
         // Allows to define a specific look & feel for testss
         File fileLookAndFeel = new File(getLafPath() + File.separator + "safester_look_and_feel.txt");
 
@@ -61,7 +56,6 @@ public class SafesterLookAndFeelManager {
             className = className.trim();
                        
             UIManager.setLookAndFeel(className);
-            cleanNimbusBackground();
             return;
         }
 
@@ -74,20 +68,6 @@ public class SafesterLookAndFeelManager {
         String lookAndFeel =  UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
         UIManager.setLookAndFeel(lookAndFeel);
         
-        /*
-        if (SystemUtils.IS_OS_MAC) {
-            setSystemLookAndfeel();
-        } else if (SystemUtils.IS_OS_WINDOWS) {
-            //setJTatoolLookAndFeel();
-            //FlatDarculaLaf.install();
-        } else if (SystemUtils.IS_OS_LINUX) {
-            setNimbusLookAndFeel();
-        } else {
-            setSystemLookAndfeel();
-        }
-        */
-        
-        //cleanNimbusBackground();
     }
 
 
@@ -108,53 +88,4 @@ public class SafesterLookAndFeelManager {
         return filepath;
     }
     
-    public static void setSystemLookAndfeel() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
-    }
-
-    public static void setJTatoolLookAndFeel()
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, UnsupportedLookAndFeelException {
-    
-        
-        UIManager.setLookAndFeel(
-                "com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-       
-    }
-        
-    public static void setNimbusLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-        
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            return;
-        } catch (Exception e ) {
-            e.printStackTrace();
-
-        } 
-        
-        // Try another one 
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-    }
-    
-        public static void cleanNimbusBackground() {
-        if (UI_Util.isNimbus()) {
-            UIManager.put("EditorPane[Disabled].backgroundPainter",
-                    new Painter<JComponent>() {
-                @Override
-                public void paint(Graphics2D g, JComponent comp,
-                        int width, int height) {
-                    g.setColor(comp.getBackground());
-                    g.fillRect(0, 0, width, height);
-                }
-            });
-        }
-    }
-
-
 }

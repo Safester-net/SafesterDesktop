@@ -66,7 +66,6 @@ import com.swing.util.JXDateColorUtil;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
-import static net.safester.application.test.NewJFrame.setCalendarColors;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.SearchResultMessagesTableCreator;
 import net.safester.application.tool.WindowSettingManager;

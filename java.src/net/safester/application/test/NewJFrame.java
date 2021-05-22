@@ -1,23 +1,13 @@
-package net.safester.application.test;
-
-
-import com.swing.util.LookAndFeelHelper;
-import com.swing.util.Themes;
-import java.awt.Color;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import net.safester.application.SafesterLookAndFeelManager;
-import org.jdesktop.swingx.JXDatePicker;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package net.safester.application.test;
+
+import java.io.IOException;
+import javax.swing.UnsupportedLookAndFeelException;
+import net.safester.application.SafesterLookAndFeelManager;
 
 /**
  *
@@ -29,42 +19,12 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public NewJFrame() {
+        this.setUndecorated(true);
         initComponents();
-        
-         Calendar now = Calendar.getInstance();
-         jXDatePickerStart.setDate(now.getTime());
-         //now.add(Calendar.MONTH, -1);
-         //jXDatePickerStart.setDate(now.getTime());
-         setCalendarColors(jXDatePickerStart); 
 
     }
 
-    public static void setCalendarColors(JXDatePicker jXDatePicker) {
         
-        if (LookAndFeelHelper.getCurrentTheme().equals(Themes.FLAT_INTELLIJ_LAF)) {
-            return;
-        }
-        
-        Color backgroundMain = UIManager.getColor("Panel.background");
-        Color foregroundMain = UIManager.getColor("TextField.foreground");
-        Color selectedBackgroundMain = UIManager.getColor("TextField.selectionBackground");
-        
-        // General Sertings
-        jXDatePicker.getMonthView().setBackground(backgroundMain);
-        jXDatePicker.getMonthView().setForeground(foregroundMain);
-        
-        // Top : the month
-        jXDatePicker.getMonthView().setMonthStringBackground(selectedBackgroundMain);
-        jXDatePicker.getMonthView().setMonthStringForeground(foregroundMain);
-        
-        // The list of months
-        jXDatePicker.getMonthView().setDaysOfTheWeekForeground(foregroundMain);
-        
-        // Today & selected day
-        jXDatePicker.getMonthView().setTodayBackground(Color.RED);
-        jXDatePicker.getMonthView().setSelectionBackground(selectedBackgroundMain);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,12 +35,10 @@ public class NewJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jXDatePickerStart = new org.jdesktop.swingx.JXDatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-        jPanel1.add(jXDatePickerStart);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,34 +67,26 @@ public class NewJFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        try {
-            /* Set the Nimbus look and feel */
-            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-            SafesterLookAndFeelManager.setLookAndFeel();
-            //</editor-fold>
-            
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new NewJFrame().setVisible(true);
-                }
-            });
-        } catch (IOException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void main(String args[]) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        //JFrame.setDefaultLookAndFeelDecorated(false);
+        SafesterLookAndFeelManager.setLookAndFeel();
+
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new NewJFrame().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePickerStart;
     // End of variables declaration//GEN-END:variables
 }

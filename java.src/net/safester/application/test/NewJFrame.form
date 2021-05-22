@@ -50,10 +50,6 @@
     <Container class="javax.swing.JPanel" name="jPanel1">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-      <SubComponents>
-        <Component class="org.jdesktop.swingx.JXDatePicker" name="jXDatePickerStart">
-        </Component>
-      </SubComponents>
     </Container>
   </SubComponents>
 </Form>

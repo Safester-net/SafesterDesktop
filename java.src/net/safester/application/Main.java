@@ -232,7 +232,6 @@ public class Main extends javax.swing.JFrame {
     private AutoResponder autoResponder;
     private ChangePassphrase changePassphrase;
 
-    private final boolean DO_DELETE_MESSAGE_FILES = false;
     private NewsFrame newsFrame;
 
     /* The Set that contains all accounts when multi-accounts usage */
@@ -1432,44 +1431,17 @@ public class Main extends javax.swing.JFrame {
                 return;
             }
 
-            String messagesList = messagesId.toString();
-
-            // Do the delete on the server, because of security concerns
             AwakeConnection awakeConnection = (AwakeConnection) connection;
             AwakeFileSession awakeFileSession = awakeConnection.getAwakeFileSession();
 
-            if (DO_DELETE_MESSAGE_FILES) {
-                Set<Integer> messageIdset = new HashSet<>(messagesId);
-                String attachmentMapJson = GsonUtil.MessageIdSetToJson(messageIdset);
-                // 1) Extract my messages, the ones where I am the sender
-                String myMessageIdsJson = awakeFileSession.call(
-                        "net.safester.server.delete.FileDeletor.getMyMessageIds", userNumber, attachmentMapJson,
-                        connection);
+            KawanHttpClient kawanHttpClient = KawanHttpClientBuilder.buildFromAwakeConnection(awakeConnection);
+            ApiMessages apiMessages = new ApiMessages(kawanHttpClient, awakeFileSession.getUsername(),
+                    awakeFileSession.getAuthenticationToken());
 
-                Set<Integer> myMessageIdSet = GsonUtil.jsonToMessageIdSet(myMessageIdsJson);
-
-                if (myMessageIdSet != null && !myMessageIdSet.isEmpty()) {
-
-                    // 2) Get the file names to delete
-                    attachmentMapJson = awakeFileSession.call("net.safester.server.AttachmentSelect.selectAttachments",
-                            myMessageIdsJson, connection);
-                    Map<Integer, List<AttachmentLocal>> attachmentLocalMap = GsonUtil
-                            .attachmentLocalFromGson(attachmentMapJson);
-
-                    // 3) FIRST Delete the attachment files. First get the names from main server.
-                    // Delete but be done prior to SQL because of SQL commit
-                    List<String> attachFilenames = getAttachFilenames(attachmentLocalMap);
-                    String attachFilesnamesJson = GsonUtil.attachFilenamesToGson(attachFilenames);
-
-                    awakeFileSession.call("net.safester.server.delete.FileDeletor.deleteFilesOnHttpFileServer",
-                            userNumber, myMessageIdsJson, attachFilesnamesJson);
-                }
+            for (Integer messageId : messagesId) {
+                apiMessages.deleteMessage(messageId, folderId);
             }
-
-            // 4) Delete the SQL values. TO BE DONE IN LAST.
-            awakeFileSession.call("net.safester.server.MessageDeletor.deleteMessages", userNumber, keyId, folderId,
-                    messagesList, connection);
-
+            
             MessageLocalStoreCache.remove(folderId);
 
         } catch (Exception e) {

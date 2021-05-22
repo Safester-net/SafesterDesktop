@@ -259,11 +259,12 @@ public class ApiMessages {
     }
     /**
      * Deletes a message for an user. 
-     * @param messageId
+     * @param messageId     the message ID
+     * @param directoryId   the folder ID
      * @return true id the message is deleted, else false
      * @throws Exception
      */
-    public boolean deleteMessage(int messageId)
+    public boolean deleteMessage(int messageId, int directoryId)
 	    throws Exception {
 	
 	//NO! on Desktop there are many folders
@@ -276,7 +277,8 @@ public class ApiMessages {
 	parametersMap.put("username", username);
 	parametersMap.put("token", token);
 	parametersMap.put("messageId", messageId + "");
-
+	parametersMap.put("directoryId", directoryId + "");
+        
 	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
 	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);
 
