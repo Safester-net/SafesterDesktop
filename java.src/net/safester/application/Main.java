@@ -1865,7 +1865,7 @@ public class Main extends javax.swing.JFrame {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPaneNewCustom.showException(null, e);
+                    //JOptionPaneNewCustom.showException(null, e);
                 }
             }
         };
