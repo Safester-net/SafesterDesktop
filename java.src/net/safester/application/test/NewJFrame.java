@@ -6,6 +6,7 @@
 package net.safester.application.test;
 
 import java.io.IOException;
+import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 import net.safester.application.SafesterLookAndFeelManager;
 
@@ -19,7 +20,6 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public NewJFrame() {
-        this.setUndecorated(true);
         initComponents();
 
     }
@@ -35,10 +35,19 @@ public class NewJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,6 +73,20 @@ public class NewJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        JFrame.setDefaultLookAndFeelDecorated(false);
+        try {
+            SafesterLookAndFeelManager.setLookAndFeel();
+        } catch (Exception ex) {
+            ex.printStackTrace();;
+        }
+        
+        this.dispose();
+        new NewJFrame().setVisible(true);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -73,7 +96,7 @@ public class NewJFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        //JFrame.setDefaultLookAndFeelDecorated(false);
+        //JFrame.setDefaultLookAndFeelDecorated(true);
         SafesterLookAndFeelManager.setLookAndFeel();
 
         //</editor-fold>
@@ -87,6 +110,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

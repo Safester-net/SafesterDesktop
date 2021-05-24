@@ -46,7 +46,7 @@ public class SafesterLookAndFeelManager {
             throws IOException, ClassNotFoundException, InstantiationException,
             IllegalAccessException, UnsupportedLookAndFeelException {
 
-        JFrame.setDefaultLookAndFeelDecorated( true );
+        //JFrame.setDefaultLookAndFeelDecorated( true );
         
         // Allows to define a specific look & feel for testss
         File fileLookAndFeel = new File(getLafPath() + File.separator + "safester_look_and_feel.txt");
