@@ -151,7 +151,6 @@ import net.safester.clientserver.MessageStoreExtractor;
 import net.safester.clientserver.PgpKeyPairLocal;
 import net.safester.noobs.clientserver.AttachmentLocal;
 import net.safester.noobs.clientserver.FolderLocal;
-import net.safester.noobs.clientserver.GsonUtil;
 import net.safester.noobs.clientserver.MessageLocal;
 import net.safester.noobs.clientserver.RecipientLocal;
 import net.safester.noobs.clientserver.SubjectDecryptionClient;
@@ -1389,16 +1388,15 @@ public class Main extends javax.swing.JFrame {
     public void deleteSelectedMessage() {
         // Init selected message list
         int folderId = getSelectedFolderId();
-
-        String text;
-        String title = messages.getMessage("warning");
-
-        text = messages.getMessage("confirm_delete");
-        int result = JOptionPane.showConfirmDialog(this, text, title, JOptionPane.YES_NO_OPTION);
-
-        if (result == JOptionPane.NO_OPTION) {
+        
+        DialogMessagesDeletor dialogMessagesDeletor = new DialogMessagesDeletor(this);
+        dialogMessagesDeletor.setVisible(true);
+        boolean deleteForAll = dialogMessagesDeletor.doDeleteForAll();
+        
+        if (! dialogMessagesDeletor.doTheDelete()) {
             return;
         }
+        
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         setSelectedMessages();
@@ -1409,7 +1407,7 @@ public class Main extends javax.swing.JFrame {
         //
         // Refresh the table
         // createTable();
-        deleteMessages(selectedMessages, folderId);
+        deleteMessages(selectedMessages, folderId, deleteForAll);
 
         this.setCursor(Cursor.getDefaultCursor());
     }
@@ -1421,7 +1419,7 @@ public class Main extends javax.swing.JFrame {
      * @param messagesId The list of messages to delete
      * @param folderId the folder id of the messages to delete
      */
-    public void deleteMessages(List<Integer> messagesId, int folderId) {
+    public void deleteMessages(List<Integer> messagesId, int folderId, boolean deleteForAll) {
         try {
 
             if (folderId == Parms.DRAFT_ID) {
@@ -1439,7 +1437,7 @@ public class Main extends javax.swing.JFrame {
                     awakeFileSession.getAuthenticationToken());
 
             for (Integer messageId : messagesId) {
-                apiMessages.deleteMessage(messageId, folderId);
+                apiMessages.deleteMessage(messageId, folderId, deleteForAll);
             }
             
             MessageLocalStoreCache.remove(folderId);
@@ -1474,11 +1472,13 @@ public class Main extends javax.swing.JFrame {
      * @param messageId the Id of the message to delete
      * @param folderId the folder id of the message to delete
      */
-    public void deleteMessage(int messageId, int folderId) {
+    
+    public void deleteMessage(int messageId, int folderId, boolean deleteForAll) {
         List<Integer> messageIdList = new Vector<Integer>();
         messageIdList.add(messageId);
-        deleteMessages(messageIdList, folderId);
+        deleteMessages(messageIdList, folderId, deleteForAll);
     }
+    
 
     /**
      * Creates the table containing the messages. To be used when first display

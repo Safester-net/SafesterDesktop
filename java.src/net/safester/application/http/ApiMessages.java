@@ -264,7 +264,7 @@ public class ApiMessages {
      * @return true id the message is deleted, else false
      * @throws Exception
      */
-    public boolean deleteMessage(int messageId, int directoryId)
+    public boolean deleteMessage(int messageId, int directoryId, boolean deleteForAll)
 	    throws Exception {
 	
 	//NO! on Desktop there are many folders
@@ -278,6 +278,7 @@ public class ApiMessages {
 	parametersMap.put("token", token);
 	parametersMap.put("messageId", messageId + "");
 	parametersMap.put("directoryId", directoryId + "");
+        parametersMap.put("deleteForAll", deleteForAll + "");
         
 	String jsonResult = kawanHttpClient.callWithPost(new URL(url), parametersMap);
 	ResultAnalyzer resultAnalyzer = new ResultAnalyzer(jsonResult);

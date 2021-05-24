@@ -1437,26 +1437,17 @@ public class MessageReader extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonFowardActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        String text;
-        String title = messages.getMessage("warning");
-
-//        if(message.getFolderId() == Parms.OUTBOX_ID){
-//
-//            text = messages.getMessage("confirm_delete_permanent");
-//        }
-//        else{
-//            text = messages.getMessage("confirm_delete");
-//        }
-        text = messages.getMessage("confirm_delete");
-        int result = JOptionPane.showConfirmDialog(this, text, title, JOptionPane.YES_NO_OPTION);
-
-        if (result == JOptionPane.NO_OPTION) {
+        DialogMessagesDeletor dialogMessagesDeletor = new DialogMessagesDeletor(this);
+        dialogMessagesDeletor.setVisible(true);
+        boolean deleteForAll = dialogMessagesDeletor.doDeleteForAll();
+        
+        if (! dialogMessagesDeletor.doTheDelete()) {
             return;
         }
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         if (parent instanceof Main) {
-            ((Main) parent).deleteMessage(message.getMessageId(), folderId);
+            ((Main) parent).deleteMessage(message.getMessageId(), folderId, deleteForAll);
             this.setCursor(Cursor.getDefaultCursor());
             this.dispose();
 
