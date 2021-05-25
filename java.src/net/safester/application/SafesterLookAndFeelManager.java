@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.formdev.flatlaf.FlatLaf;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -31,7 +32,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import com.swing.util.Themes;
-import javax.swing.JFrame;
 import net.safester.application.parms.Parms;
 import net.safester.application.util.UserPrefManager;
 
@@ -59,8 +59,15 @@ public class SafesterLookAndFeelManager {
             return;
         }
 
+        // To be done in Wrapper Call, at Java Startup
         //-Dsun.java2d.uiScale=1.0
         //System.setProperty("flatlaf.uiScale", "1.0");
+        
+        //JFrame.setDefaultLookAndFeelDecorated( true );
+        //JDialog.setDefaultLookAndFeelDecorated( true );
+
+        FlatLaf.setUseNativeWindowDecorations( true );
+        UIManager.put( "TitlePane.menuBarEmbedded", false );
         
         String scaling = UserPrefManager.getPreference(UserPrefManager.SCALING, "1.0");
         System.setProperty("flatlaf.uiScale", scaling);

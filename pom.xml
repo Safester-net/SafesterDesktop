@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.safester</groupId>
     <artifactId>Safester</artifactId>
-    <version>6.0</version>
+    <version>6.1</version>
     <name>Safester</name>
     <description>Easy OpenPGP encryption for all</description>
     <build>
@@ -258,7 +258,7 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
 
         <dependency>
