@@ -601,10 +601,10 @@
             <Container class="javax.swing.JPanel" name="jPanelRight">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[2147483647, 31]"/>
+                  <Dimension value="[2147483647, 35]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[264, 31]"/>
+                  <Dimension value="[264, 35]"/>
                 </Property>
               </Properties>
 

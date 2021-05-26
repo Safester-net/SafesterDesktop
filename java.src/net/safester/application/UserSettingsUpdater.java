@@ -1052,8 +1052,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelNotificationOn.setMaximumSize(new java.awt.Dimension(2147483647, 33));
         jPanelNotificationOn.setLayout(new javax.swing.BoxLayout(jPanelNotificationOn, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelRight.setMaximumSize(new java.awt.Dimension(2147483647, 31));
-        jPanelRight.setPreferredSize(new java.awt.Dimension(264, 31));
+        jPanelRight.setMaximumSize(new java.awt.Dimension(2147483647, 35));
+        jPanelRight.setPreferredSize(new java.awt.Dimension(264, 35));
         jPanelRight.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
 
         jCheckBoxPopUpOnTaskbar.setText("jCheckBoxNotifyOnTaskbar");
