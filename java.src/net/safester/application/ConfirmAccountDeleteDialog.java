@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.swing.util.LookAndFeelHelper;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -93,9 +94,20 @@ public class ConfirmAccountDeleteDialog extends javax.swing.JDialog {
         this.jLabelConfirmDelete.setText(messages.getMessage("account_delete_yes_no"));
         this.jTextFieldConfirmDelete.setText(messages.getMessage("no"));
         
+        if (LookAndFeelHelper.isDarkMode()) {
+            jPanelEditorPane.setBackground(Color.BLACK);
+            jEditorPane.setBackground(Color.BLACK);
+            jPanelNorth1.setBackground(Color.BLACK);
+            jPanelSouth1.setBackground(Color.BLACK);
+            jPanelWest1.setBackground(Color.BLACK);
+            jPanelEast1.setBackground(Color.BLACK);
+        } else {
+            jEditorPane.setBackground(Color.WHITE);
+        }
+        
         jEditorPane.setContentType("text/html");
         jEditorPane.setEditable(false);
-        jEditorPane.setBackground(Color.WHITE);
+
         
         jLabelPassphrase.setText(messages.getMessage("passphrase"));
         jEditorPane.setText(HtmlTextUtil.getHtmlHelpContent("confirm_delete_account"));

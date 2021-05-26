@@ -310,6 +310,10 @@ public class FolderListTransfer implements ListTransfer<FolderLocal>
     }
 
     private void removeStarredFromFolders(List<FolderLocal> folderLocals) {
+        
+        if (folderLocals == null) {
+            return;
+        }
         Iterator itr = folderLocals.iterator();
         while (itr.hasNext())
         {

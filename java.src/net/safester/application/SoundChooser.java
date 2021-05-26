@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.swing.util.LookAndFeelHelper;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -47,6 +48,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import com.swing.util.SwingUtil;
+import java.awt.Color;
 
 import net.safester.application.addrbooknew.tools.CryptAppUtil;
 import net.safester.application.messages.MessagesManager;
@@ -83,6 +85,14 @@ public class SoundChooser extends javax.swing.JFrame {
     
     private void initCompany() {
 
+        if (LookAndFeelHelper.isDarkMode()) {
+            jLabelSound1.setBackground(Color.BLACK);
+            jLabelSound2.setBackground(Color.BLACK);
+            jLabelSound3.setBackground(Color.BLACK);
+            jLabelSound4.setBackground(Color.BLACK);
+            jLabelSound5.setBackground(Color.BLACK);
+        }
+        
         clipboardManager = new ClipboardManager(rootPane);
 
         this.jLabelTitle.setText(messages.getMessage("sound_picker"));
@@ -430,23 +440,23 @@ public class SoundChooser extends javax.swing.JFrame {
         jPanelSound1 = new javax.swing.JPanel();
         jPanelSep7 = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelSound1 = new javax.swing.JLabel();
         jPanelSound2 = new javax.swing.JPanel();
         jPanelSep6 = new javax.swing.JPanel();
         jRadioButton2 = new javax.swing.JRadioButton();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelSound2 = new javax.swing.JLabel();
         jPanelSound3 = new javax.swing.JPanel();
         jPanelSep5 = new javax.swing.JPanel();
         jRadioButton3 = new javax.swing.JRadioButton();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelSound3 = new javax.swing.JLabel();
         jPanelSound4 = new javax.swing.JPanel();
         jPanelSep4 = new javax.swing.JPanel();
         jRadioButton4 = new javax.swing.JRadioButton();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelSound4 = new javax.swing.JLabel();
         jPanelSound5 = new javax.swing.JPanel();
         jPanelSep3 = new javax.swing.JPanel();
         jRadioButton5 = new javax.swing.JRadioButton();
-        jLabel5 = new javax.swing.JLabel();
+        jLabelSound5 = new javax.swing.JLabel();
         jPanelSoundUser = new javax.swing.JPanel();
         jPanelSep = new javax.swing.JPanel();
         jRadioButtonUser = new javax.swing.JRadioButton();
@@ -531,10 +541,10 @@ public class SoundChooser extends javax.swing.JFrame {
         });
         jPanelSound1.add(jRadioButton1);
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_1.png"))); // NOI18N
-        jLabel1.setOpaque(true);
-        jPanelSound1.add(jLabel1);
+        jLabelSound1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelSound1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_1.png"))); // NOI18N
+        jLabelSound1.setOpaque(true);
+        jPanelSound1.add(jLabelSound1);
 
         jPanelMain.add(jPanelSound1);
 
@@ -560,10 +570,10 @@ public class SoundChooser extends javax.swing.JFrame {
         });
         jPanelSound2.add(jRadioButton2);
 
-        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_2.png"))); // NOI18N
-        jLabel2.setOpaque(true);
-        jPanelSound2.add(jLabel2);
+        jLabelSound2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelSound2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_2.png"))); // NOI18N
+        jLabelSound2.setOpaque(true);
+        jPanelSound2.add(jLabelSound2);
 
         jPanelMain.add(jPanelSound2);
 
@@ -590,10 +600,10 @@ public class SoundChooser extends javax.swing.JFrame {
         });
         jPanelSound3.add(jRadioButton3);
 
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_3.png"))); // NOI18N
-        jLabel3.setOpaque(true);
-        jPanelSound3.add(jLabel3);
+        jLabelSound3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelSound3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_3.png"))); // NOI18N
+        jLabelSound3.setOpaque(true);
+        jPanelSound3.add(jLabelSound3);
 
         jPanelMain.add(jPanelSound3);
 
@@ -620,10 +630,10 @@ public class SoundChooser extends javax.swing.JFrame {
         });
         jPanelSound4.add(jRadioButton4);
 
-        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_4.png"))); // NOI18N
-        jLabel4.setOpaque(true);
-        jPanelSound4.add(jLabel4);
+        jLabelSound4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelSound4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_4.png"))); // NOI18N
+        jLabelSound4.setOpaque(true);
+        jPanelSound4.add(jLabelSound4);
 
         jPanelMain.add(jPanelSound4);
 
@@ -650,10 +660,10 @@ public class SoundChooser extends javax.swing.JFrame {
         });
         jPanelSound5.add(jRadioButton5);
 
-        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_5.png"))); // NOI18N
-        jLabel5.setOpaque(true);
-        jPanelSound5.add(jLabel5);
+        jLabelSound5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelSound5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/notify_5.png"))); // NOI18N
+        jLabelSound5.setOpaque(true);
+        jPanelSound5.add(jLabelSound5);
 
         jPanelMain.add(jPanelSound5);
 
@@ -818,9 +828,9 @@ public class SoundChooser extends javax.swing.JFrame {
 
     private void jRadioButton1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton1ItemStateChanged
         if (jRadioButton1.isSelected()) {
-            jLabel1.setIcon(Parms.createImageIcon("images/files/notify_on_1.png"));
+            jLabelSound1.setIcon(Parms.createImageIcon("images/files/notify_on_1.png"));
         } else {
-            jLabel1.setIcon(Parms.createImageIcon("images/files/notify_1.png"));
+            jLabelSound1.setIcon(Parms.createImageIcon("images/files/notify_1.png"));
         }
         //this.repaint();
         //this.update(getGraphics());
@@ -828,33 +838,33 @@ public class SoundChooser extends javax.swing.JFrame {
 
     private void jRadioButton2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton2StateChanged
         if (jRadioButton2.isSelected()) {
-            jLabel2.setIcon(Parms.createImageIcon("images/files/notify_on_2.png"));
+            jLabelSound2.setIcon(Parms.createImageIcon("images/files/notify_on_2.png"));
         } else {
-            jLabel2.setIcon(Parms.createImageIcon("images/files/notify_2.png"));
+            jLabelSound2.setIcon(Parms.createImageIcon("images/files/notify_2.png"));
         }
     }//GEN-LAST:event_jRadioButton2StateChanged
 
     private void jRadioButton3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton3ItemStateChanged
        if (jRadioButton3.isSelected()) {
-            jLabel3.setIcon(Parms.createImageIcon("images/files/notify_on_3.png"));
+            jLabelSound3.setIcon(Parms.createImageIcon("images/files/notify_on_3.png"));
         } else {
-            jLabel3.setIcon(Parms.createImageIcon("images/files/notify_3.png"));
+            jLabelSound3.setIcon(Parms.createImageIcon("images/files/notify_3.png"));
         }
     }//GEN-LAST:event_jRadioButton3ItemStateChanged
 
     private void jRadioButton4ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton4ItemStateChanged
        if (jRadioButton4.isSelected()) {
-            jLabel4.setIcon(Parms.createImageIcon("images/files/notify_on_4.png"));
+            jLabelSound4.setIcon(Parms.createImageIcon("images/files/notify_on_4.png"));
         } else {
-            jLabel4.setIcon(Parms.createImageIcon("images/files/notify_4.png"));
+            jLabelSound4.setIcon(Parms.createImageIcon("images/files/notify_4.png"));
         }
     }//GEN-LAST:event_jRadioButton4ItemStateChanged
 
     private void jRadioButton5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton5ItemStateChanged
        if (jRadioButton5.isSelected()) {
-            jLabel5.setIcon(Parms.createImageIcon("images/files/notify_on_5.png"));
+            jLabelSound5.setIcon(Parms.createImageIcon("images/files/notify_on_5.png"));
         } else {
-            jLabel5.setIcon(Parms.createImageIcon("images/files/notify_5.png"));
+            jLabelSound5.setIcon(Parms.createImageIcon("images/files/notify_5.png"));
         }
     }//GEN-LAST:event_jRadioButton5ItemStateChanged
 
@@ -886,11 +896,11 @@ public class SoundChooser extends javax.swing.JFrame {
     private javax.swing.JButton jButtonChoose;
     private javax.swing.JButton jButtonOk;
     private javax.swing.JButton jButtonTest;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelSound1;
+    private javax.swing.JLabel jLabelSound2;
+    private javax.swing.JLabel jLabelSound3;
+    private javax.swing.JLabel jLabelSound4;
+    private javax.swing.JLabel jLabelSound5;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelCenter;
