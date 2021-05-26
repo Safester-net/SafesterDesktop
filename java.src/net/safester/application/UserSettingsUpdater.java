@@ -845,7 +845,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jTextFieldAccount.setEditable(false);
         jTextFieldAccount.setText("jTextFieldAccount");
-        jTextFieldAccount.setMinimumSize(new java.awt.Dimension(20, 22));
         jTextFieldAccount.setPreferredSize(new java.awt.Dimension(300, 22));
         jPanelAccountTop.add(jTextFieldAccount);
 
@@ -896,7 +895,6 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelNameNew.add(jLabelName);
 
         jTextFieldUserName.setText("jTextFieldUserName");
-        jTextFieldUserName.setMinimumSize(new java.awt.Dimension(20, 22));
         jTextFieldUserName.setPreferredSize(new java.awt.Dimension(300, 22));
         jPanelNameNew.add(jTextFieldUserName);
 

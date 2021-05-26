@@ -106,7 +106,7 @@ public class MessagesTableCreator {
                         messages.getMessage("folder"),
                         messages.getMessage(" "),
                         messages.getMessage(" "),
-                        "stared", // String not displayed
+                        "starred", // String not displayed
                         messages.getMessage("to_col"),
                         messages.getMessage("subject"),                        
                         messages.getMessage("sent"),
@@ -118,7 +118,7 @@ public class MessagesTableCreator {
                         messages.getMessage("folder"),
                         messages.getMessage(" "),
                         messages.getMessage(" "),
-                        "stared", // String not displayed
+                        "starred", // String not displayed
                         messages.getMessage("to_col"),
                         messages.getMessage("subject"),
                         messages.getMessage("saved"),                        
@@ -130,7 +130,7 @@ public class MessagesTableCreator {
                         messages.getMessage("folder"),
                         "read", // String Not displayed
                         "att",  // String Not displayed
-                        "stared", // String not displayed
+                        "starred", // String not displayed
                         messages.getMessage("from"),
                         messages.getMessage("subject"),                        
                         messages.getMessage("sent"),
@@ -208,6 +208,9 @@ public class MessagesTableCreator {
             renderedHeaderStarred.setIcon(headersIconStar);
             renderedHeaderStarred.setText("");
             headersIconStar.setImageObserver(new HeaderImageObserver(jTableHeader, 4));
+            
+            renderedHeaderStarred.setHorizontalAlignment(SwingConstants.CENTER);
+            
             jTable1.getColumn(colName[4]).setHeaderRenderer(tr);
             jTable1.getColumn(colName[4]).setHeaderValue(renderedHeaderStarred);
             

@@ -51,6 +51,7 @@ import com.safelogic.utilx.io.stream.LineInputStream;
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.UI_Util;
+import net.safester.application.util.UserPrefManager;
 
 /**
  * @author Nicolas de Pomereu
@@ -177,7 +178,7 @@ public class SwingUtil {
     }
 
     /**
-     * Resize jComponents for Nimbus look and feel
+     * Resize jComponents for Flatlaf
      *
      * @param container
      */
@@ -189,7 +190,11 @@ public class SwingUtil {
             int prefWidth = (int) component.getPreferredSize().getWidth();
 
             int newHeight = 26;
-
+            
+            if (UserPrefManager.getPreference(UserPrefManager.SCALING).equals("1.1")) {
+                newHeight = 28;    
+            }
+            
             if (component instanceof JTextField || component instanceof JPasswordField) {
                 component.setMaximumSize(new Dimension(maxWidth, newHeight));
                 component.setMinimumSize(new Dimension(minWidth, newHeight));
