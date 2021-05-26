@@ -173,19 +173,8 @@ public class MessageTableCellRenderer extends DefaultTableCellRenderer {
             this.setText(displaySize);
         }
 
-        // This is done to set alternate colors on table background
-        // Always set if no rows selected
-        if (RendererParms.ALTERNATE_LINES) {
-            if (row % 2 == 0) {
-                c.setBackground(Parms.LIGHT_BLUE);
-            } else {
-                c.setBackground(Color.white);
-            }
-        }
-        else {
-            c.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
-        }
-        
+        //EX ALTERNATE
+        c.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
         c.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         int[] selRows = table.getSelectedRows();

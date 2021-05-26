@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.apache.commons.lang3.StringUtils;
 
 import com.kawansoft.crypt.util.sms.PhoneCountryLookup;
+import com.swing.util.LookAndFeelHelper;
 
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.parms.Parms;
@@ -114,20 +115,10 @@ public class RecipientsImportTableCellRenderer extends DefaultTableCellRenderer 
                 setIcon(null);
             }
         }
-        
-        // This is done to set alternate colors on table background
-        // Always set if no rows rowSelected
-        if (RendererParms.ALTERNATE_LINES) {
-            if (row % 2 == 0) {
-                c.setBackground(TableUtil.LIGHT_BLUE);
-            } else {
-                c.setBackground(Color.white);
-            }
-        }
-        else {
-            c.setBackground(Color.white);
-        }
 
+        //EX ALTERNATE
+        c.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
+        c.setForeground(LookAndFeelHelper.getDefaultForegroundColor());
 
         boolean rowSelected = false;
         int[] selRows = table.getSelectedRows();
