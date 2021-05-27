@@ -494,9 +494,9 @@ public class FrameProxyParms extends javax.swing.JFrame {
         jPanelProxyAddressAndPort.add(jLabelProxyAddress);
 
         jTextFieldProxyAddress.setText("jTextFieldProxyAddress");
-        jTextFieldProxyAddress.setMaximumSize(new java.awt.Dimension(130, 22));
-        jTextFieldProxyAddress.setMinimumSize(new java.awt.Dimension(130, 22));
-        jTextFieldProxyAddress.setPreferredSize(new java.awt.Dimension(130, 22));
+        jTextFieldProxyAddress.setMaximumSize(new java.awt.Dimension(200, 22));
+        jTextFieldProxyAddress.setMinimumSize(new java.awt.Dimension(200, 200));
+        jTextFieldProxyAddress.setPreferredSize(new java.awt.Dimension(200, 22));
         jPanelProxyAddressAndPort.add(jTextFieldProxyAddress);
 
         jLabelProxyPort.setText("Port");

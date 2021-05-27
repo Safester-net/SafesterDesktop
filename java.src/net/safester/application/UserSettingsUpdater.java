@@ -284,7 +284,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.repaint();
         
         this.setLocationRelativeTo(parent);
-        this.setSize(new Dimension(611, 759));
+        this.setSize(new Dimension(637, 788));
        
         SwingUtil.applySwingUpdates(rootPane);
         
