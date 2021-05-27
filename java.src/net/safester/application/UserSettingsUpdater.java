@@ -833,9 +833,10 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelNameAndEmail.setPreferredSize(new java.awt.Dimension(422, 208));
         jPanelNameAndEmail.setLayout(new javax.swing.BoxLayout(jPanelNameAndEmail, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelAccountTop.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelAccountTop.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelAccountTop.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelAccountTop.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelAccountTop.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelAccountTop.setPreferredSize(new java.awt.Dimension(10, 33));
+        jPanelAccountTop.setRequestFocusEnabled(false);
         jPanelAccountTop.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelAccount.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -850,9 +851,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelNameAndEmail.add(jPanelAccountTop);
 
-        jPanelCryptoSettings.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelCryptoSettings.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelCryptoSettings.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelCryptoSettings.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelCryptoSettings.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelCryptoSettings.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelCryptoSettings.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelCryptoSettings.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -867,9 +868,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelNameAndEmail.add(jPanelCryptoSettings);
 
-        jPanelCryptoSettings1.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelCryptoSettings1.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelCryptoSettings1.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelCryptoSettings1.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelCryptoSettings1.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelCryptoSettings1.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelCryptoSettings1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelStorage.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -884,9 +885,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelNameAndEmail.add(jPanelCryptoSettings1);
 
-        jPanelNameNew.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelNameNew.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelNameNew.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelNameNew.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelNameNew.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelNameNew.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelNameNew.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelName.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -900,9 +901,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelNameAndEmail.add(jPanelNameNew);
 
-        jPanelCoupon.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelCoupon.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelCoupon.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelCoupon.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelCoupon.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelCoupon.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelCoupon.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelCoupon.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1021,9 +1022,9 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelCenter.add(jPaneSepNotify);
 
-        jPanelEmailNew.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelEmailNew.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelEmailNew.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelEmailNew.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelEmailNew.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelEmailNew.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelEmailNew.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
 
         jPanel4.setMaximumSize(new java.awt.Dimension(5, 10));

@@ -851,6 +851,11 @@ public class Register extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanelSep1 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jPanel27 = new javax.swing.JPanel();
+        jSeparator3 = new javax.swing.JSeparator();
+        jPanel31 = new javax.swing.JPanel();
         jPanelCenter = new javax.swing.JPanel();
         jPanelLogo = new javax.swing.JPanel();
         jPanelLogoLeft = new javax.swing.JPanel();
@@ -860,11 +865,6 @@ public class Register extends javax.swing.JFrame {
         jLabelTitle = new javax.swing.JLabel();
         jPanelLogoRight = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jPanelSep1 = new javax.swing.JPanel();
-        jPanel26 = new javax.swing.JPanel();
-        jPanel27 = new javax.swing.JPanel();
-        jSeparator3 = new javax.swing.JSeparator();
-        jPanel31 = new javax.swing.JPanel();
         jPanelHelpEmail = new javax.swing.JPanel();
         jPanelLeftHelp1 = new javax.swing.JPanel();
         jPanelEditorHelp1 = new javax.swing.JPanel();
@@ -936,6 +936,28 @@ public class Register extends javax.swing.JFrame {
         jButtonCancel = new javax.swing.JButton();
         jPanel30 = new javax.swing.JPanel();
 
+        jPanelSep1.setMaximumSize(new java.awt.Dimension(32767, 20));
+        jPanelSep1.setMinimumSize(new java.awt.Dimension(390, 20));
+        jPanelSep1.setPreferredSize(new java.awt.Dimension(20, 20));
+        jPanelSep1.setLayout(new javax.swing.BoxLayout(jPanelSep1, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel26.setMaximumSize(new java.awt.Dimension(32787, 10));
+        jPanel26.setMinimumSize(new java.awt.Dimension(390, 10));
+        jPanel26.setLayout(new javax.swing.BoxLayout(jPanel26, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel27.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel26.add(jPanel27);
+
+        jSeparator3.setMaximumSize(new java.awt.Dimension(32767, 6));
+        jSeparator3.setMinimumSize(new java.awt.Dimension(0, 6));
+        jSeparator3.setPreferredSize(new java.awt.Dimension(0, 6));
+        jPanel26.add(jSeparator3);
+
+        jPanel31.setMaximumSize(new java.awt.Dimension(10, 2));
+        jPanel26.add(jPanel31);
+
+        jPanelSep1.add(jPanel26);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
@@ -996,30 +1018,6 @@ public class Register extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelLogo);
 
-        jPanelSep1.setMaximumSize(new java.awt.Dimension(32767, 20));
-        jPanelSep1.setMinimumSize(new java.awt.Dimension(390, 20));
-        jPanelSep1.setPreferredSize(new java.awt.Dimension(20, 20));
-        jPanelSep1.setLayout(new javax.swing.BoxLayout(jPanelSep1, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel26.setMaximumSize(new java.awt.Dimension(32787, 10));
-        jPanel26.setMinimumSize(new java.awt.Dimension(390, 10));
-        jPanel26.setLayout(new javax.swing.BoxLayout(jPanel26, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanel27.setMaximumSize(new java.awt.Dimension(10, 2));
-        jPanel26.add(jPanel27);
-
-        jSeparator3.setMaximumSize(new java.awt.Dimension(32767, 6));
-        jSeparator3.setMinimumSize(new java.awt.Dimension(0, 6));
-        jSeparator3.setPreferredSize(new java.awt.Dimension(0, 6));
-        jPanel26.add(jSeparator3);
-
-        jPanel31.setMaximumSize(new java.awt.Dimension(10, 2));
-        jPanel26.add(jPanel31);
-
-        jPanelSep1.add(jPanel26);
-
-        jPanelCenter.add(jPanelSep1);
-
         jPanelHelpEmail.setLayout(new javax.swing.BoxLayout(jPanelHelpEmail, javax.swing.BoxLayout.X_AXIS));
 
         jPanelLeftHelp1.setMaximumSize(new java.awt.Dimension(40, 10));
@@ -1060,19 +1058,16 @@ public class Register extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelBlank3);
 
-        jPanelUserIdentification.setMinimumSize(new java.awt.Dimension(10, 90));
         jPanelUserIdentification.setRequestFocusEnabled(false);
         jPanelUserIdentification.setLayout(new javax.swing.BoxLayout(jPanelUserIdentification, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelUserInfo.setMinimumSize(new java.awt.Dimension(10, 93));
         jPanelUserInfo.setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel9.setMaximumSize(new java.awt.Dimension(32767, 105));
-        jPanel9.setPreferredSize(new java.awt.Dimension(445, 93));
         jPanel9.setLayout(new java.awt.GridLayout(3, 0));
 
-        jPanelName.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelName.setMinimumSize(new java.awt.Dimension(83, 31));
+        jPanelName.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelName.setMinimumSize(new java.awt.Dimension(83, 33));
+        jPanelName.setPreferredSize(new java.awt.Dimension(450, 33));
         jPanelName.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
 
         jLabelUserName.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1092,7 +1087,9 @@ public class Register extends javax.swing.JFrame {
 
         jPanel9.add(jPanelName);
 
-        jPanelEmail1.setMaximumSize(new java.awt.Dimension(32767, 31));
+        jPanelEmail1.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelEmail1.setMinimumSize(new java.awt.Dimension(448, 33));
+        jPanelEmail1.setPreferredSize(new java.awt.Dimension(527, 33));
         jPanelEmail1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
 
         jLabelUserEmail.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1144,9 +1141,9 @@ public class Register extends javax.swing.JFrame {
 
         jPanelPassphrase.add(jPanelSep2);
 
-        jPanelCryptographySettings.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelCryptographySettings.setMinimumSize(new java.awt.Dimension(427, 31));
-        jPanelCryptographySettings.setPreferredSize(new java.awt.Dimension(497, 31));
+        jPanelCryptographySettings.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelCryptographySettings.setMinimumSize(new java.awt.Dimension(427, 33));
+        jPanelCryptographySettings.setPreferredSize(new java.awt.Dimension(497, 33));
         jPanelCryptographySettings.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelCryptoSettings.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);

@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Container class="javax.swing.JPanel" name="jPanelSep1">
+      <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[32767, 20]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[390, 20]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[20, 20]"/>
+        </Property>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="jPanel26">
+          <Properties>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[32787, 10]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[390, 10]"/>
+            </Property>
+          </Properties>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel27">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 2]"/>
+                </Property>
+              </Properties>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+            </Container>
+            <Component class="javax.swing.JSeparator" name="jSeparator3">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[32767, 6]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 6]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 6]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JPanel" name="jPanel31">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 2]"/>
+                </Property>
+              </Properties>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+            </Container>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
   </Properties>
@@ -18,7 +82,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,56,0,0,2,120"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,82,0,0,2,120"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -136,68 +200,6 @@
             </Container>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanelSep1">
-          <Properties>
-            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[32767, 20]"/>
-            </Property>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[390, 20]"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[20, 20]"/>
-            </Property>
-          </Properties>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-          <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel26">
-              <Properties>
-                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32787, 10]"/>
-                </Property>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[390, 10]"/>
-                </Property>
-              </Properties>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="jPanel27">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[10, 2]"/>
-                    </Property>
-                  </Properties>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-                </Container>
-                <Component class="javax.swing.JSeparator" name="jSeparator3">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[32767, 6]"/>
-                    </Property>
-                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[0, 6]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[0, 6]"/>
-                    </Property>
-                  </Properties>
-                </Component>
-                <Container class="javax.swing.JPanel" name="jPanel31">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[10, 2]"/>
-                    </Property>
-                  </Properties>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-                </Container>
-              </SubComponents>
-            </Container>
-          </SubComponents>
-        </Container>
         <Container class="javax.swing.JPanel" name="jPanelHelpEmail">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
@@ -283,9 +285,6 @@
         </Container>
         <Container class="javax.swing.JPanel" name="jPanelUserIdentification">
           <Properties>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[10, 90]"/>
-            </Property>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
           </Properties>
 
@@ -294,11 +293,6 @@
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="jPanelUserInfo">
-              <Properties>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 93]"/>
-                </Property>
-              </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                 <Property name="columns" type="int" value="0"/>
@@ -306,14 +300,6 @@
               </Layout>
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="jPanel9">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[32767, 105]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[445, 93]"/>
-                    </Property>
-                  </Properties>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="0"/>
@@ -323,10 +309,13 @@
                     <Container class="javax.swing.JPanel" name="jPanelName">
                       <Properties>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[32767, 31]"/>
+                          <Dimension value="[32767, 33]"/>
                         </Property>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[83, 31]"/>
+                          <Dimension value="[83, 33]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[450, 33]"/>
                         </Property>
                       </Properties>
 
@@ -370,7 +359,13 @@
                     <Container class="javax.swing.JPanel" name="jPanelEmail1">
                       <Properties>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[32767, 31]"/>
+                          <Dimension value="[32767, 33]"/>
+                        </Property>
+                        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[448, 33]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[527, 33]"/>
                         </Property>
                       </Properties>
 
@@ -488,13 +483,13 @@
             <Container class="javax.swing.JPanel" name="jPanelCryptographySettings">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[427, 31]"/>
+                  <Dimension value="[427, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[497, 31]"/>
+                  <Dimension value="[497, 33]"/>
                 </Property>
               </Properties>
 

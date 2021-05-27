@@ -67,8 +67,14 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPanelCenter">
       <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[32767, 33]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[297, 33]"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[55, 30]"/>
+          <Dimension value="[55, 33]"/>
         </Property>
       </Properties>
       <Constraints>

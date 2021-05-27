@@ -878,7 +878,6 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jComboBoxSearch = new javax.swing.JComboBox();
         jPanelSep4 = new javax.swing.JPanel();
         jPanelAddRecipient = new javax.swing.JPanel();
-        jPanelTextFields1 = new javax.swing.JPanel();
         jPanelGrid3 = new javax.swing.JPanel();
         jPanelRecipientEmail = new javax.swing.JPanel();
         jTextFieldRecipientEmail1 = new javax.swing.JTextField();
@@ -1049,22 +1048,16 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         );
         jPanelSep4Layout.setVerticalGroup(
             jPanelSep4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 5, Short.MAX_VALUE)
         );
 
         jPanelCenter.add(jPanelSep4);
 
-        jPanelAddRecipient.setMinimumSize(new java.awt.Dimension(144, 26));
         jPanelAddRecipient.setLayout(new javax.swing.BoxLayout(jPanelAddRecipient, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelTextFields1.setMaximumSize(new java.awt.Dimension(32842, 26));
-        jPanelTextFields1.setMinimumSize(new java.awt.Dimension(114, 26));
-        jPanelTextFields1.setPreferredSize(new java.awt.Dimension(895, 26));
-        jPanelTextFields1.setLayout(new javax.swing.BoxLayout(jPanelTextFields1, javax.swing.BoxLayout.LINE_AXIS));
-
-        jPanelGrid3.setMaximumSize(new java.awt.Dimension(32767, 30));
-        jPanelGrid3.setMinimumSize(new java.awt.Dimension(39, 30));
-        jPanelGrid3.setPreferredSize(new java.awt.Dimension(820, 30));
+        jPanelGrid3.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelGrid3.setMinimumSize(new java.awt.Dimension(39, 33));
+        jPanelGrid3.setPreferredSize(new java.awt.Dimension(820, 33));
         jPanelGrid3.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         jPanelRecipientEmail.setLayout(new javax.swing.BoxLayout(jPanelRecipientEmail, javax.swing.BoxLayout.LINE_AXIS));
@@ -1095,7 +1088,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
 
         jPanelGrid3.add(jPanelRecipientMobile);
 
-        jPanelTextFields1.add(jPanelGrid3);
+        jPanelAddRecipient.add(jPanelGrid3);
 
         jPanelAddButton.setLayout(new javax.swing.BoxLayout(jPanelAddButton, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1113,9 +1106,7 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
         jPanelSep2.setMaximumSize(new java.awt.Dimension(10, 10));
         jPanelAddButton.add(jPanelSep2);
 
-        jPanelTextFields1.add(jPanelAddButton);
-
-        jPanelAddRecipient.add(jPanelTextFields1);
+        jPanelAddRecipient.add(jPanelAddButton);
 
         jPanelCenter.add(jPanelAddRecipient);
 
@@ -1361,7 +1352,6 @@ public class PhotoAddressBookUpdaterNew extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSep4;
     private javax.swing.JPanel jPanelSouth;
     private javax.swing.JPanel jPanelTextFieldCount;
-    private javax.swing.JPanel jPanelTextFields1;
     private javax.swing.JPanel jPanelToobar;
     private javax.swing.JPanel jPanelWest;
     private javax.swing.JScrollPane jScrollPane1;

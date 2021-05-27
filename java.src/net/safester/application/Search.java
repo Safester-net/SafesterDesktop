@@ -784,9 +784,9 @@ public class Search extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelSearchFolderAndDatesNew);
 
-        jPanelSearchFolderAndDates.setMaximumSize(new java.awt.Dimension(32767, 35));
-        jPanelSearchFolderAndDates.setMinimumSize(new java.awt.Dimension(426, 35));
-        jPanelSearchFolderAndDates.setPreferredSize(new java.awt.Dimension(10, 35));
+        jPanelSearchFolderAndDates.setMaximumSize(new java.awt.Dimension(32767, 40));
+        jPanelSearchFolderAndDates.setMinimumSize(new java.awt.Dimension(426, 40));
+        jPanelSearchFolderAndDates.setPreferredSize(new java.awt.Dimension(10, 40));
         jPanelSearchFolderAndDates.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelSearchDate.setText("jLabelSearchDate");

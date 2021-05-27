@@ -215,7 +215,9 @@ public class TreeNodeRenamer extends javax.swing.JDialog {
         jPanelWest.setMaximumSize(new java.awt.Dimension(32767, 10));
         getContentPane().add(jPanelWest, java.awt.BorderLayout.WEST);
 
-        jPanelCenter.setPreferredSize(new java.awt.Dimension(55, 30));
+        jPanelCenter.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelCenter.setMinimumSize(new java.awt.Dimension(297, 33));
+        jPanelCenter.setPreferredSize(new java.awt.Dimension(55, 33));
         jPanelCenter.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelFolderName.setText("Folder Name: ");

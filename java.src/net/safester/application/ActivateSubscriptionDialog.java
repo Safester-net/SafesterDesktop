@@ -255,18 +255,16 @@ public class ActivateSubscriptionDialog extends javax.swing.JDialog {
 
         jPanelCenter.add(jScrollPane1);
 
-        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 4));
-        jPanel2.setMinimumSize(new java.awt.Dimension(10, 4));
-        jPanel2.setPreferredSize(new java.awt.Dimension(10, 4));
+        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 10));
         jPanelCenter.add(jPanel2);
 
-        jPanelVoucher.setMaximumSize(new java.awt.Dimension(98301, 34));
-        jPanelVoucher.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10));
+        jPanelVoucher.setMaximumSize(new java.awt.Dimension(98301, 42));
 
         jLabelVoucherCode.setText("jLabelVoucherCode");
         jPanelVoucher.add(jLabelVoucherCode);
 
         jTextFieldVoucherCode.setText("jTextFieldVoucherCode");
+        jTextFieldVoucherCode.setMaximumSize(new java.awt.Dimension(2147483647, 22));
         jTextFieldVoucherCode.setMinimumSize(new java.awt.Dimension(220, 22));
         jTextFieldVoucherCode.setPreferredSize(new java.awt.Dimension(320, 22));
         jPanelVoucher.add(jTextFieldVoucherCode);

@@ -153,14 +153,15 @@
             <Container class="javax.swing.JPanel" name="jPanelAccountTop">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
+                <Property name="requestFocusEnabled" type="boolean" value="false"/>
               </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
@@ -190,13 +191,13 @@
             <Container class="javax.swing.JPanel" name="jPanelCryptoSettings">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 
@@ -227,13 +228,13 @@
             <Container class="javax.swing.JPanel" name="jPanelCryptoSettings1">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 
@@ -264,13 +265,13 @@
             <Container class="javax.swing.JPanel" name="jPanelNameNew">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 
@@ -300,13 +301,13 @@
             <Container class="javax.swing.JPanel" name="jPanelCoupon">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 
@@ -532,13 +533,13 @@
         <Container class="javax.swing.JPanel" name="jPanelEmailNew">
           <Properties>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[32767, 31]"/>
+              <Dimension value="[32767, 33]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[10, 31]"/>
+              <Dimension value="[10, 33]"/>
             </Property>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[10, 31]"/>
+              <Dimension value="[10, 33]"/>
             </Property>
           </Properties>
 

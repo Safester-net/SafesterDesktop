@@ -705,9 +705,9 @@ public class SoundChooser extends javax.swing.JFrame {
 
         jPanelMain.add(jPanelSoundUser);
 
-        jPanelSound6.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelSound6.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelSound6.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelSound6.setMaximumSize(new java.awt.Dimension(32767, 35));
+        jPanelSound6.setMinimumSize(new java.awt.Dimension(10, 35));
+        jPanelSound6.setPreferredSize(new java.awt.Dimension(10, 35));
         jPanelSound6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 2, 5));
 
         jPanelSep2.setMaximumSize(new java.awt.Dimension(5, 5));

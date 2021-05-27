@@ -189,16 +189,33 @@ public class SwingUtil {
             int minWidth = (int) component.getMinimumSize().getWidth();
             int prefWidth = (int) component.getPreferredSize().getWidth();
 
-            int newHeight = 26;
+            int newHeightTextField = 26;
             
-            if (UserPrefManager.getPreference(UserPrefManager.SCALING).equals("1.1")) {
-                newHeight = 28;    
+            if (UserPrefManager.getPreference(UserPrefManager.SCALING, "1.0").equals("1.1")) {
+                newHeightTextField = 28;    
             }
             
             if (component instanceof JTextField || component instanceof JPasswordField) {
-                component.setMaximumSize(new Dimension(maxWidth, newHeight));
-                component.setMinimumSize(new Dimension(minWidth, newHeight));
-                component.setPreferredSize(new Dimension(prefWidth, newHeight));
+                component.setMaximumSize(new Dimension(maxWidth, newHeightTextField));
+                component.setMinimumSize(new Dimension(minWidth, newHeightTextField));
+                component.setPreferredSize(new Dimension(prefWidth, newHeightTextField));
+                
+                /* NO! Do it manually on each JPanel
+                if (UserPrefManager.getPreference(UserPrefManager.SCALING).equals("1.1")) {
+                    // Update height of JPanel of parent to 33 if sclaing is 1.1
+                    JTextField jTextField = (JTextField) component;
+                    Container containerParent = jTextField.getParent();
+                    int newHeightContainer = 33;
+                    maxWidth = (int) component.getMaximumSize().getWidth();
+                    minWidth = (int) component.getMinimumSize().getWidth();
+                    prefWidth = (int) component.getPreferredSize().getWidth();
+
+                    containerParent.setMaximumSize(new Dimension(maxWidth, newHeightContainer));
+                    containerParent.setMinimumSize(new Dimension(minWidth, newHeightContainer));
+                    containerParent.setPreferredSize(new Dimension(prefWidth, newHeightContainer));
+                }
+                */
+               
             } else if (component instanceof JLabel) {
 
                 int maxHeigth = (int) component.getMaximumSize().getHeight();

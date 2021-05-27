@@ -1020,10 +1020,10 @@ public class Login extends javax.swing.JFrame {
 
         jPanelMain.add(jPanelErrorMessage);
 
-        jPanelLabelLogin.setMaximumSize(new java.awt.Dimension(2147483647, 31));
-        jPanelLabelLogin.setMinimumSize(new java.awt.Dimension(121, 31));
+        jPanelLabelLogin.setMaximumSize(new java.awt.Dimension(2147483647, 33));
+        jPanelLabelLogin.setMinimumSize(new java.awt.Dimension(121, 33));
         jPanelLabelLogin.setName(""); // NOI18N
-        jPanelLabelLogin.setPreferredSize(new java.awt.Dimension(395, 31));
+        jPanelLabelLogin.setPreferredSize(new java.awt.Dimension(395, 33));
         jPanelLabelLogin.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelLogin.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -1043,9 +1043,9 @@ public class Login extends javax.swing.JFrame {
 
         jPanelMain.add(jPanelLabelLogin);
 
-        jPanelPassword.setMaximumSize(new java.awt.Dimension(2147483647, 31));
-        jPanelPassword.setMinimumSize(new java.awt.Dimension(121, 31));
-        jPanelPassword.setPreferredSize(new java.awt.Dimension(415, 31));
+        jPanelPassword.setMaximumSize(new java.awt.Dimension(2147483647, 33));
+        jPanelPassword.setMinimumSize(new java.awt.Dimension(121, 33));
+        jPanelPassword.setPreferredSize(new java.awt.Dimension(415, 33));
         jPanelPassword.setRequestFocusEnabled(false);
         jPanelPassword.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 

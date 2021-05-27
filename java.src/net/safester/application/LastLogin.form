@@ -147,13 +147,13 @@
             <Container class="javax.swing.JPanel" name="jPanelDateTime">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 
@@ -190,13 +190,13 @@
             <Container class="javax.swing.JPanel" name="jPanelIP">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 
@@ -230,13 +230,13 @@
             <Container class="javax.swing.JPanel" name="jPanelHostname">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[32767, 31]"/>
+                  <Dimension value="[32767, 33]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[10, 31]"/>
+                  <Dimension value="[10, 33]"/>
                 </Property>
               </Properties>
 

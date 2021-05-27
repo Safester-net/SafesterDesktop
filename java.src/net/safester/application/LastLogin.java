@@ -298,9 +298,9 @@ public class LastLogin extends javax.swing.JFrame {
         jPanelNameAndEmail.setPreferredSize(new java.awt.Dimension(422, 208));
         jPanelNameAndEmail.setLayout(new javax.swing.BoxLayout(jPanelNameAndEmail, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanelDateTime.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelDateTime.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelDateTime.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelDateTime.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelDateTime.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelDateTime.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelDateTime.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelDateTime.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -317,9 +317,9 @@ public class LastLogin extends javax.swing.JFrame {
 
         jPanelNameAndEmail.add(jPanelDateTime);
 
-        jPanelIP.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelIP.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelIP.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelIP.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelIP.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelIP.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelIP.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelIp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -335,9 +335,9 @@ public class LastLogin extends javax.swing.JFrame {
 
         jPanelNameAndEmail.add(jPanelIP);
 
-        jPanelHostname.setMaximumSize(new java.awt.Dimension(32767, 31));
-        jPanelHostname.setMinimumSize(new java.awt.Dimension(10, 31));
-        jPanelHostname.setPreferredSize(new java.awt.Dimension(10, 31));
+        jPanelHostname.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelHostname.setMinimumSize(new java.awt.Dimension(10, 33));
+        jPanelHostname.setPreferredSize(new java.awt.Dimension(10, 33));
         jPanelHostname.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelHostname.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
