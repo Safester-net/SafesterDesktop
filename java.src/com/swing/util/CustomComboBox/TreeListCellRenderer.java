@@ -37,13 +37,14 @@ import javax.swing.tree.TreeModel;
  *
  * @author Alexandre Becquereau
  */
-public class TreeListCellRenderer extends JPanel implements ListCellRenderer{
+public class TreeListCellRenderer extends JPanel implements ListCellRenderer {
+
     private static final JTree tree = new JTree();
     TreeModel treeModel;
     TreeCellRenderer treeRenderer;
     IndentBorder indentBorder = new IndentBorder();
 
-    public TreeListCellRenderer(TreeModel treeModel, TreeCellRenderer treeRenderer){
+    public TreeListCellRenderer(TreeModel treeModel, TreeCellRenderer treeRenderer) {
         this.treeModel = treeModel;
         this.treeRenderer = treeRenderer;
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -51,8 +52,8 @@ public class TreeListCellRenderer extends JPanel implements ListCellRenderer{
         setOpaque(false);
     }
 
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
-        if(value==null){ //if selected value is null
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        if (value == null) { //if selected value is null
             removeAll();
             return this;
         }
@@ -62,11 +63,11 @@ public class TreeListCellRenderer extends JPanel implements ListCellRenderer{
         removeAll();
         add(comp);
 
-                PreorderEnumeration enumer = new PreorderEnumeration(treeModel);
-        for(int i = 0; i<=index; i++)
+        PreorderEnumeration enumer = new PreorderEnumeration(treeModel);
+        for (int i = 0; i <= index; i++) {
             enumer.nextElement();
+        }
         indentBorder.setDepth(enumer.getDepth());
-        
 
         return this;
     }

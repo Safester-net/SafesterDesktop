@@ -62,7 +62,10 @@ import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 import com.swing.util.CustomComboBox.TreeListCellRenderer;
 import com.swing.util.CustomComboBox.TreeListModel;
+import com.swing.util.CustomJtree.dragdrop.TreeDataExtractor;
 import com.swing.util.JXDateColorUtil;
+import javax.swing.ComboBoxModel;
+import javax.swing.tree.DefaultTreeModel;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -70,6 +73,7 @@ import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.SearchResultMessagesTableCreator;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.clientserver.FolderListTransfer;
 import net.safester.clientserver.search.MessageSearch;
 import net.safester.noobs.clientserver.FolderLocal;
 import net.safester.noobs.clientserver.MessageLocal;
@@ -298,14 +302,43 @@ public class Search extends javax.swing.JFrame {
         if (folderTree != null) {
             jPanelSearchFolderAndDatesNew.remove(jComboBoxFolder);
             jPanelSearchFolderAndDatesNew.remove(jCheckBoxRecurse);
-            TreeModel treeModel = folderTree.getModel();
-            this.jComboBoxFolder = new JComboBox(new TreeListModel(treeModel));
+            
+            TreeModel treeModel = folderTree.getModel();            
+            ComboBoxModel comboBoxModel= new TreeListModel(treeModel);
+
+            this.jComboBoxFolder = new JComboBox(comboBoxModel);
             TreeCellRenderer treeCellRenderer = folderTree.getCellRenderer();
             jComboBoxFolder.setRenderer(new TreeListCellRenderer(treeModel, treeCellRenderer));
             jPanelSearchFolderAndDatesNew.add(jComboBoxFolder);
             jPanelSearchFolderAndDatesNew.add(jCheckBoxRecurse);
-            jComboBoxFolder.setSelectedIndex(1);
+            
+            jComboBoxFolder.setSelectedIndex(2); // Starred is Index 1
         }
+    }
+
+    public TreeModel getTreeModel() {
+        TreeModel treeModel = folderTree.getModel();
+
+        //Rebuild list and save it
+
+//        DefaultMutableTreeNode rootTreeNode = (DefaultMutableTreeNode) treeModel.getRoot();
+//
+//        TreeDataExtractor treeDataExtractor = new TreeDataExtractor(rootTreeNode);
+//        List<FolderLocal> folderLocals = treeDataExtractor.getFolderLocalList();
+//
+//        
+//        FolderListTransfer folderListTransfer = new FolderListTransfer(connection, userNumber);
+//        folderListTransfer.putList(folderLocals);
+//        
+        FolderLocal folderLocal = new FolderLocal();   
+        folderLocal.setFolderId(Parms.STARRED_ID);
+        //folderLocal.setName(dirName);
+        
+        folderTree.remove(0);
+        
+        //treeModel.removeNodeFromParent(currentNode);
+
+        return treeModel;
     }
 
     /**
