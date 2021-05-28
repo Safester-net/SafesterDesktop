@@ -645,7 +645,9 @@ public class Search extends javax.swing.JFrame {
 
         jPanelSearchContentNew.setLayout(new javax.swing.BoxLayout(jPanelSearchContentNew, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelSearchContentLeft.setMaximumSize(new java.awt.Dimension(32767, 32));
+        jPanelSearchContentLeft.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelSearchContentLeft.setMinimumSize(new java.awt.Dimension(158, 34));
+        jPanelSearchContentLeft.setPreferredSize(new java.awt.Dimension(592, 33));
         jPanelSearchContentLeft.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelSearchContent.setText("Search");
@@ -681,7 +683,9 @@ public class Search extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelSearchContentNew);
 
-        jPanelSearchSender.setMaximumSize(new java.awt.Dimension(32767, 32));
+        jPanelSearchSender.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelSearchSender.setMinimumSize(new java.awt.Dimension(192, 33));
+        jPanelSearchSender.setPreferredSize(new java.awt.Dimension(536, 33));
         jPanelSearchSender.setLayout(new javax.swing.BoxLayout(jPanelSearchSender, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelSearchSenderLeft.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
@@ -732,7 +736,9 @@ public class Search extends javax.swing.JFrame {
 
         jPanelCenter.add(jPanelSearchSender);
 
-        jPanelSearchRecipient.setMaximumSize(new java.awt.Dimension(32767, 32));
+        jPanelSearchRecipient.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelSearchRecipient.setMinimumSize(new java.awt.Dimension(91, 33));
+        jPanelSearchRecipient.setPreferredSize(new java.awt.Dimension(435, 33));
         jPanelSearchRecipient.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jButtonSearchRecipient.setForeground(new java.awt.Color(0, 0, 255));
