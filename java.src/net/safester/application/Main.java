@@ -229,7 +229,7 @@ public class Main extends javax.swing.JFrame {
     private SslCertificateDisplayer sslCertificateDisplayer;
     private Search search;
     private AutoResponder autoResponder;
-    private ChangePassphrase changePassphrase;
+    private PassphraseChanger changePassphrase;
 
     private NewsFrame newsFrame;
 
@@ -716,8 +716,10 @@ public class Main extends javax.swing.JFrame {
                 jLabelSep.setText(null);
             }
 
-            this.jLabelLastLogin.setText(mainStatusBarUpdater.getLastLoginAgo());
-
+            //this.jLabelLastLogin.setText(mainStatusBarUpdater.getLastLoginAgo());
+            this.jLabelLastLogin.setText(messages.getMessage("last_login"));
+            this.jButtonDetail.setText(mainStatusBarUpdater.getLastLoginAgo());
+            
             if (mainStatusBarUpdater.getLastLoginAgo().isEmpty()) {
                 this.jButtonDetail.setVisible(false);
                 jPanelSepVerticalLastLogin.setVisible(false);
@@ -4426,7 +4428,7 @@ public class Main extends javax.swing.JFrame {
             changePassphrase.dispose();
         }
 
-        changePassphrase = new ChangePassphrase(this, connection, userNumber, false);
+        changePassphrase = new PassphraseChanger(this, connection, userNumber, false);
         changePassphrase.setVisible(true);
 
     }// GEN-LAST:event_jMenuItemChangePassphraseActionPerformed

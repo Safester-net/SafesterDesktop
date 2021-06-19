@@ -82,6 +82,7 @@ import java.util.Vector;
 import net.safester.application.Help;
 import net.safester.application.Login;
 import net.safester.application.NewsFrame;
+import net.safester.application.PassphraseCopier;
 import net.safester.application.http.ApiRegister;
 import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.messages.MessagesManager;
@@ -683,6 +684,13 @@ public class Register extends javax.swing.JFrame {
             return false;
         }
 
+        char[] passphrase = this.jPassword.getPassword();
+        PassphraseCopier passphraseCopier = new PassphraseCopier(parent, passphrase);
+        passphraseCopier.setVisible(true);
+        if (! passphraseCopier.doCreate()) {
+            return false;
+        }
+        
         // start wait dialog with "server contacted" message
         cmWaitDialog = new CmWaitDialog(this,
                 this.messages.getMessage("in_progress"),
@@ -733,7 +741,7 @@ public class Register extends javax.swing.JFrame {
         String lastname = jTextFieldUserName.getText();
         String lifeName = firstname + " " + lastname;
 
-        char[] passphrase = this.jPassword.getPassword();
+        //char[] passphrase = this.jPassword.getPassword();
 
         //  String userId = firstname + " " + lastname + " <" + email + ">";
         try {
@@ -1444,9 +1452,9 @@ public class Register extends javax.swing.JFrame {
 
         getContentPane().add(jPanelCenter, java.awt.BorderLayout.CENTER);
 
-        jPanelSouth.setMaximumSize(new java.awt.Dimension(32767, 43));
-        jPanelSouth.setMinimumSize(new java.awt.Dimension(319, 43));
-        jPanelSouth.setPreferredSize(new java.awt.Dimension(319, 43));
+        jPanelSouth.setMaximumSize(new java.awt.Dimension(32767, 48));
+        jPanelSouth.setMinimumSize(new java.awt.Dimension(319, 48));
+        jPanelSouth.setPreferredSize(new java.awt.Dimension(319, 48));
         jPanelSouth.setLayout(new javax.swing.BoxLayout(jPanelSouth, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 5, 10));
@@ -1497,6 +1505,7 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
+                        
         boolean okDone = doIt();
         if (okDone) {
             parent.setVisible(true);

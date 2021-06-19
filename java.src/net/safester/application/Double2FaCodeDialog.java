@@ -308,7 +308,7 @@ public class Double2FaCodeDialog extends javax.swing.JDialog {
         jPanelBlank3.setLayout(jPanelBlank3Layout);
         jPanelBlank3Layout.setHorizontalGroup(
             jPanelBlank3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGap(0, 448, Short.MAX_VALUE)
         );
         jPanelBlank3Layout.setVerticalGroup(
             jPanelBlank3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

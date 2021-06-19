@@ -199,11 +199,11 @@ public class MainStatusBarUpdater {
     public String getLastLoginAgo() throws SQLException
     {
         
-        if (textLastLoginAgo != null)
-        {
-            return textLastLoginAgo;
-        }
-        
+//        if (textLastLoginAgo != null)
+//        {
+//            return textLastLoginAgo;
+//        }
+//        
         Timestamp now = new Timestamp(System.currentTimeMillis());
         
         AwakeConnection awakeConnection = (AwakeConnection) connection;

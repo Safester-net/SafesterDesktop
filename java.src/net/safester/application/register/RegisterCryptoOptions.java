@@ -33,6 +33,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import com.swing.util.SwingUtil;
+import net.safester.application.PassphraseCopier;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.CryptoParms;
@@ -219,7 +220,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
 
     private void doIt()
-    {
+    {        
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
         
         this.algoAsym = (String)this.jComboBoxAlgoAsym.getSelectedItem();

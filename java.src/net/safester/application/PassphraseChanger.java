@@ -68,7 +68,7 @@ import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.crypto.PassphraseUtil;
 import net.safester.clientserver.PgpKeyPairLocal;
 
-public class ChangePassphrase extends javax.swing.JDialog {
+public class PassphraseChanger extends javax.swing.JDialog {
 
     /**
      * 
@@ -82,7 +82,7 @@ public class ChangePassphrase extends javax.swing.JDialog {
     private Connection connection;
 
     /** Creates new form SafeShareItChangePassphrase */
-    public ChangePassphrase(java.awt.Frame parent, Connection theConnection, int theUserNumber, boolean modal) {
+    public PassphraseChanger(java.awt.Frame parent, Connection theConnection, int theUserNumber, boolean modal) {
         super(parent, modal);
         caller = parent;
 
@@ -374,7 +374,7 @@ public class ChangePassphrase extends javax.swing.JDialog {
                     connection.rollback();
                     connection.setAutoCommit(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ChangePassphrase.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PassphraseChanger.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 this.setCursor(Cursor.getDefaultCursor());
@@ -658,11 +658,6 @@ public class ChangePassphrase extends javax.swing.JDialog {
                 jCheckBoxHideTypingItemStateChanged(evt);
             }
         });
-        jCheckBoxHideTyping.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jCheckBoxHideTypingStateChanged(evt);
-            }
-        });
         jPanelHideTypingNew.add(jCheckBoxHideTyping);
 
         jLabelKeyboardWarning.setText("jLabelKeyboardWarning");
@@ -787,14 +782,6 @@ public class ChangePassphrase extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
-    private void jPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordKeyPressed
-        passwordKeyPressed(evt);
-    }//GEN-LAST:event_jPasswordKeyPressed
-
-    private void jCheckBoxHideTypingStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxHideTypingStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBoxHideTypingStateChanged
-
     private void jCheckBoxHideTypingItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxHideTypingItemStateChanged
         if ((evt.getStateChange() == ItemEvent.SELECTED)) {
             this.jPasswordOld.setEchoChar(this.defaultEchocar);
@@ -808,21 +795,25 @@ public class ChangePassphrase extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jCheckBoxHideTypingItemStateChanged
 
-    private void jButtonPassphraseQualityMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityMouseEntered
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        ButtonUrlOver.enter(evt);
-    }//GEN-LAST:event_jButtonPassphraseQualityMouseEntered
+    private void jPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordKeyPressed
+        passwordKeyPressed(evt);
+    }//GEN-LAST:event_jPasswordKeyPressed
+
+    private void jButtonPassphraseQualityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityActionPerformed
+
+        String content = HtmlTextUtil.getHtmlHelpContent("help_register_4");
+        new NewsFrame((JFrame) this.caller, content, messages.getMessage("change_passphrase"));
+    }//GEN-LAST:event_jButtonPassphraseQualityActionPerformed
 
     private void jButtonPassphraseQualityMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityMouseExited
         this.setCursor(Cursor.getDefaultCursor());
         ButtonUrlOver.exit(evt);
     }//GEN-LAST:event_jButtonPassphraseQualityMouseExited
 
-    private void jButtonPassphraseQualityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityActionPerformed
-        
-        String content = HtmlTextUtil.getHtmlHelpContent("help_register_4");
-        new NewsFrame((JFrame) this.caller, content, messages.getMessage("change_passphrase"));
-    }//GEN-LAST:event_jButtonPassphraseQualityActionPerformed
+    private void jButtonPassphraseQualityMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPassphraseQualityMouseEntered
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ButtonUrlOver.enter(evt);
+    }//GEN-LAST:event_jButtonPassphraseQualityMouseEntered
 
     /**
      * @param args the command line arguments
@@ -843,7 +834,7 @@ public class ChangePassphrase extends javax.swing.JDialog {
                 System.out.println(ex);
             }
 
-                ChangePassphrase dialog = new ChangePassphrase(new javax.swing.JFrame(), null, -1, false);
+                PassphraseChanger dialog = new PassphraseChanger(new javax.swing.JFrame(), null, -1, false);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     public void windowClosing(java.awt.event.WindowEvent e) {
