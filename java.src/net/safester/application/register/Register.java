@@ -934,6 +934,7 @@ public class Register extends javax.swing.JFrame {
         jPanel23 = new javax.swing.JPanel();
         jLabelPassphraseQuality = new javax.swing.JLabel();
         jLabelQualityText = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jPanelSep = new javax.swing.JPanel();
         jPanelSepLeft = new javax.swing.JPanel();
         jSeparator5 = new javax.swing.JSeparator();
@@ -1427,6 +1428,23 @@ public class Register extends javax.swing.JFrame {
 
         jPanelPassphrase.add(jPanel22);
 
+        jPanel1.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanel1.setMinimumSize(new java.awt.Dimension(10, 10));
+        jPanel1.setPreferredSize(new java.awt.Dimension(10, 10));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        jPanelPassphrase.add(jPanel1);
+
         jPanelSep.setMinimumSize(new java.awt.Dimension(10, 6));
         jPanelSep.setPreferredSize(new java.awt.Dimension(10, 6));
         jPanelSep.setLayout(new javax.swing.BoxLayout(jPanelSep, javax.swing.BoxLayout.LINE_AXIS));
@@ -1640,6 +1658,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLabelUserEmail;
     private javax.swing.JLabel jLabelUserName;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel19;
