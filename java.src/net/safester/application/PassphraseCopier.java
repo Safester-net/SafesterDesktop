@@ -261,6 +261,8 @@ public class PassphraseCopier extends javax.swing.JDialog {
         jPanelSepBlank2.setLayout(new javax.swing.BoxLayout(jPanelSepBlank2, javax.swing.BoxLayout.LINE_AXIS));
         jPanelCenter.add(jPanelSepBlank2);
 
+        jPanelHelpEmail.setLayout(new javax.swing.BoxLayout(jPanelHelpEmail, javax.swing.BoxLayout.LINE_AXIS));
+
         jPanelLeftHelp1.setMaximumSize(new java.awt.Dimension(40, 32767));
         jPanelLeftHelp1.setMinimumSize(new java.awt.Dimension(40, 10));
         jPanelLeftHelp1.setPreferredSize(new java.awt.Dimension(40, 10));

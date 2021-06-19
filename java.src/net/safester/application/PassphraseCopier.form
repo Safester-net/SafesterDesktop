@@ -142,7 +142,7 @@
         </Container>
         <Container class="javax.swing.JPanel" name="jPanelHelpEmail">
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="jPanelLeftHelp1">
               <Properties>
