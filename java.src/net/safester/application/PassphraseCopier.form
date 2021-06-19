@@ -254,13 +254,13 @@
             <Container class="javax.swing.JPanel" name="jPanelLeft2">
               <Properties>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[140, 31]"/>
+                  <Dimension value="[170, 31]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[140, 31]"/>
+                  <Dimension value="[170, 31]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[140, 31]"/>
+                  <Dimension value="[170, 31]"/>
                 </Property>
               </Properties>
 
@@ -364,13 +364,13 @@
                 <Property name="horizontalAlignment" type="int" value="11"/>
                 <Property name="text" type="java.lang.String" value="displayThePassphrase"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[140, 16]"/>
+                  <Dimension value="[170, 16]"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[140, 16]"/>
+                  <Dimension value="[170, 16]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[140, 16]"/>
+                  <Dimension value="[170, 16]"/>
                 </Property>
               </Properties>
             </Component>

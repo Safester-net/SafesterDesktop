@@ -308,9 +308,9 @@ public class PassphraseCopier extends javax.swing.JDialog {
         jPanelPassphrase.setRequestFocusEnabled(false);
         jPanelPassphrase.setLayout(new javax.swing.BoxLayout(jPanelPassphrase, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanelLeft2.setMaximumSize(new java.awt.Dimension(140, 31));
-        jPanelLeft2.setMinimumSize(new java.awt.Dimension(140, 31));
-        jPanelLeft2.setPreferredSize(new java.awt.Dimension(140, 31));
+        jPanelLeft2.setMaximumSize(new java.awt.Dimension(170, 31));
+        jPanelLeft2.setMinimumSize(new java.awt.Dimension(170, 31));
+        jPanelLeft2.setPreferredSize(new java.awt.Dimension(170, 31));
         jPanelLeft2.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabelPassphrase.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -352,9 +352,9 @@ public class PassphraseCopier extends javax.swing.JDialog {
 
         displayThePassphrase.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         displayThePassphrase.setText("displayThePassphrase");
-        displayThePassphrase.setMaximumSize(new java.awt.Dimension(140, 16));
-        displayThePassphrase.setMinimumSize(new java.awt.Dimension(140, 16));
-        displayThePassphrase.setPreferredSize(new java.awt.Dimension(140, 16));
+        displayThePassphrase.setMaximumSize(new java.awt.Dimension(170, 16));
+        displayThePassphrase.setMinimumSize(new java.awt.Dimension(170, 16));
+        displayThePassphrase.setPreferredSize(new java.awt.Dimension(170, 16));
         jPanelHideTypingNew.add(displayThePassphrase);
 
         jPanelSep3.setMaximumSize(new java.awt.Dimension(5, 31));
