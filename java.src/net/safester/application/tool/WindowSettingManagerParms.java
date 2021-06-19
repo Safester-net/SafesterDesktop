@@ -30,6 +30,6 @@ package net.safester.application.tool;
 public class WindowSettingManagerParms {
     
     /** The DEBUG flag */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
  
 }

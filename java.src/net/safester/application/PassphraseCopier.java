@@ -222,6 +222,7 @@ public class PassphraseCopier extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setModal(true);
 
         jPanelNorth.setMaximumSize(new java.awt.Dimension(32767, 10));
         getContentPane().add(jPanelNorth, java.awt.BorderLayout.NORTH);
@@ -438,7 +439,7 @@ public class PassphraseCopier extends javax.swing.JDialog {
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
         dispose();
-        this.doCreate = true;
+        this.doCreate = false;
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jCheckBoxDisplayPassphraseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxDisplayPassphraseItemStateChanged
@@ -483,6 +484,7 @@ public class PassphraseCopier extends javax.swing.JDialog {
                     }
                 });
                 dialog.setVisible(true);
+                System.out.println("dialog.doCreate(): " + dialog.doCreate());
             }
         });
     }
