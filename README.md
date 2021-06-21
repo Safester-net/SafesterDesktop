@@ -1,6 +1,6 @@
 # SafesterDesktop
 
-## Safester Client Java Code - v6.1.1 - May 28, 2021
+## Safester Client Java Code - v6.2 - June 19, 2021
 
 
 
