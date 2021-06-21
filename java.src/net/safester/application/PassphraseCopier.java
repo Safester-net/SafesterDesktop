@@ -36,8 +36,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 
 import com.swing.util.SwingUtil;
-import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import javax.swing.JOptionPane;
@@ -57,15 +57,17 @@ public class PassphraseCopier extends javax.swing.JDialog {
     private char defaultEchocar;
     private JDialog thisOne;
     private boolean doCreate;
-    private final Frame theParent;
+    private final Window theParent;
     private final char[] passphrase;
+    private final boolean isAccountCreation;
 
     /** Creates new form SafeShareItChangePassphrase
      * @param parent */
-    public PassphraseCopier(java.awt.Frame parent, char [] passphrase) {
+    public PassphraseCopier(java.awt.Window parent, char[] passphrase, boolean isAccountCreation) {
         this.theParent = parent;
         thisOne = this;
         this.passphrase = passphrase;
+        this.isAccountCreation = isAccountCreation;
         initComponents();
         initCompany();
     }
@@ -90,10 +92,17 @@ public class PassphraseCopier extends javax.swing.JDialog {
 
         jEditorPaneCode.setContentType("text/html");
         jEditorPaneCode.setEditable(false);
-        jEditorPaneCode.setText(Help.getHtmlHelpContent("save_your_passphrase"));
-        
+
+        if (isAccountCreation) {
+            jEditorPaneCode.setText(Help.getHtmlHelpContent("save_your_passphrase"));
+            jButtonCreate.setText(messages.getMessage("create"));
+        }
+        else {
+            jEditorPaneCode.setText(Help.getHtmlHelpContent("save_your_passphrase_before_change"));
+            jButtonCreate.setText(messages.getMessage("ok"));          
+        }
+
         jButtonCancel.setText(messages.getMessage("cancel"));
-        jButtonCreate.setText(messages.getMessage("create"));
         
         ButtonResizer br = new ButtonResizer(jPanelSouth);
         br.setWidthToMax();
@@ -478,7 +487,7 @@ public class PassphraseCopier extends javax.swing.JDialog {
                 System.out.println(ex);
             }
 
-                PassphraseCopier dialog = new PassphraseCopier(new javax.swing.JFrame(), "the passphrase".toCharArray());
+                PassphraseCopier dialog = new PassphraseCopier(new javax.swing.JFrame(), "the passphrase".toCharArray(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     public void windowClosing(java.awt.event.WindowEvent e) {

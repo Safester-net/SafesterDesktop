@@ -685,7 +685,7 @@ public class Register extends javax.swing.JFrame {
         }
 
         char[] passphrase = this.jPassword.getPassword();
-        PassphraseCopier passphraseCopier = new PassphraseCopier(parent, passphrase);
+        PassphraseCopier passphraseCopier = new PassphraseCopier(parent, passphrase, true);
         passphraseCopier.setVisible(true);
         if (! passphraseCopier.doCreate()) {
             return false;

@@ -61,6 +61,7 @@ import com.swing.util.SwingUtil;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.register.Register;
+import static net.safester.application.socket.server.MultiServer.passphrase;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.HtmlTextUtil;
@@ -302,6 +303,12 @@ public class PassphraseChanger extends javax.swing.JDialog {
 
                 char[] newPassphrase = jPassword.getPassword();
 
+                PassphraseCopier passphraseCopier = new PassphraseCopier(this, newPassphrase, false);
+                passphraseCopier.setVisible(true);
+                if (! passphraseCopier.doCreate()) {
+                    return false;
+                }
+                
                 Main safeShareMain = (Main) caller;
                 char[] passphrase = safeShareMain.getUserPassphrase();
 
