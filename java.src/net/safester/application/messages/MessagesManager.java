@@ -24,6 +24,7 @@
 package net.safester.application.messages;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -48,14 +49,26 @@ public class MessagesManager
     /** Resource Bundle instance */
     private ResourceBundle resourceBundle;
     
+        /**
+     * Constructor
+     */
+    public MessagesManager(String language)
+    {
+        Objects.requireNonNull(language, "language can not be null!");
+        Locale locale = new  Locale(language);
+        setResourcesBundle(locale);   
+    }
     /**
      * Constructor
      */
     public MessagesManager()
     {
-        
         Locale locale = new  Locale(LanguageManager.getLanguage());
+        setResourcesBundle(locale);
         
+    }
+
+    public void setResourcesBundle(Locale locale) {
         // Messages are contained in:
         // com.safelogic.pgp.msg.files.Messages_fr.properties
         // com.safelogic.pgp.msg.files.Messages_en.properties
@@ -77,7 +90,6 @@ public class MessagesManager
             e.printStackTrace();
             JOptionPaneNewCustom.showException(null, e);
         }
-        
     }
         
     /**
