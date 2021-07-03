@@ -49,8 +49,9 @@ public class MessagesManager
     /** Resource Bundle instance */
     private ResourceBundle resourceBundle;
     
-        /**
+    /**
      * Constructor
+     * @param language 
      */
     public MessagesManager(String language)
     {
