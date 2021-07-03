@@ -49,16 +49,17 @@ public class MessagesManager
     /** Resource Bundle instance */
     private ResourceBundle resourceBundle;
     
-    /**
-     * Constructor
-     * @param language 
-     */
-    public MessagesManager(String language)
-    {
-        Objects.requireNonNull(language, "language can not be null!");
-        Locale locale = new  Locale(language);
-        setResourcesBundle(locale);   
-    }
+//    /**
+//     * Constructor
+//     * @param language 
+//     */
+//    public MessagesManager(String language)
+//    {
+//        Objects.requireNonNull(language, "language can not be null!");
+//        Locale locale = new  Locale(language);
+//        setResourcesBundle(locale);   
+//    }
+    
     /**
      * Constructor
      */
