@@ -41,6 +41,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import com.swing.util.SwingUtil;
+import java.awt.Toolkit;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
@@ -116,6 +117,8 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         jButtonApply.setText(messages.getMessage("ok"));
         jButtonClose.setText(messages.getMessage("cancel"));
 
+        hide300ifLowResolution();
+        
         // Set the Send preferences for user Preferences
         setStoredPreferences();
         
@@ -154,7 +157,13 @@ public class SunUiScalingParms extends javax.swing.JFrame {
 
     }    
     
-
+    private void hide300ifLowResolution() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if (screenSize.width < 2400) {
+            jRadioButtonScale300.setEnabled(false);
+        }
+    }
+    
     /**
      * Set the Send Preferences found in User Preferences (Registry)
      */
@@ -166,7 +175,7 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         jRadioButtonScale250.setSelected(false);
         jRadioButtonScale300.setSelected(false);
                 
-        String scaling = SunUiScalingUtil.getPreferenceScaling();
+        String scaling = UserPrefManager.getPreference(UserPrefManager.SUN_SCALING, SunUiScalingUtil.SCALING_100);
 
         if (scaling.equals(SunUiScalingUtil.SCALING_100))
         {
@@ -282,9 +291,9 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         SunUiScalingUtil.setPreferenceScaling(scaling);
         
         MessagesManager messages = new MessagesManager();
-        JOptionPane.showMessageDialog(null, messages.getMessage("safester_has_been_updated"));
-        
+        JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed"));
         close();
+        System.exit(0);
     }
 
     
@@ -578,5 +587,7 @@ public static void main(String args[]) {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables
+
+
 
 }

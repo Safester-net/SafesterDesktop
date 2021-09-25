@@ -125,6 +125,11 @@ public class Login extends javax.swing.JFrame {
     Main main = null;
     /* The Set that contains all accounts when multi accounts usage */
     private Set<UserAccount> userAccounts = new TreeSet<>();
+    
+    private FrameProxyParms frameProxyParms;
+    private Register register;
+    private NewsFrame newsFrame;
+    private SunUiScalingParms sunUiScalingParms;
 
     /**
      * Creates new form at first login time
@@ -170,7 +175,8 @@ public class Login extends javax.swing.JFrame {
 
         this.jMenuSettings.setText(messages.getMessage("settings"));
         this.jMenuItemProxySettings.setText(messages.getMessage("proxy_settings"));
-
+        this.jMenuItemScaling.setText(messages.getMessage("scaling"));
+        
         this.jMenuHelp.setText(messages.getMessage("help"));
         this.jMenuItemHelp.setText(messages.getMessage("new_user_help"));
         this.jMenuItemSystemInfo.setText(messages.getMessage("system_info"));
@@ -902,6 +908,7 @@ public class Login extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuSettings = new javax.swing.JMenu();
+        jMenuItemScaling = new javax.swing.JMenuItem();
         jMenuItemProxySettings = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
@@ -1181,6 +1188,16 @@ public class Login extends javax.swing.JFrame {
 
         jMenuSettings.setText("jMenuSettings");
 
+        jMenuItemScaling.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
+        jMenuItemScaling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/server_network.png"))); // NOI18N
+        jMenuItemScaling.setText("jMenuItemScaling");
+        jMenuItemScaling.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemScalingActionPerformed(evt);
+            }
+        });
+        jMenuSettings.add(jMenuItemScaling);
+
         jMenuItemProxySettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         jMenuItemProxySettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/server_network.png"))); // NOI18N
         jMenuItemProxySettings.setText("jMenuItemProxySettings");
@@ -1353,6 +1370,16 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemWhatsNewActionPerformed
 
+    private void jMenuItemScalingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemScalingActionPerformed
+        if (sunUiScalingParms != null) {
+            sunUiScalingParms.dispose();
+        }
+
+        sunUiScalingParms = new SunUiScalingParms(this);
+        sunUiScalingParms.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItemScalingActionPerformed
+
     /**
      * debug tool
      */
@@ -1400,6 +1427,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemProxySettings;
+    private javax.swing.JMenuItem jMenuItemScaling;
     private javax.swing.JMenuItem jMenuItemSystemInfo;
     private javax.swing.JMenuItem jMenuItemWhatsNew;
     private javax.swing.JMenu jMenuSettings;
@@ -1437,8 +1465,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField jTextFieldLogin;
     // End of variables declaration//GEN-END:variables
-    private FrameProxyParms frameProxyParms;
-    private Register register;
-    private NewsFrame newsFrame;
+    
+
 
 }
