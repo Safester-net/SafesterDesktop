@@ -2592,7 +2592,7 @@ public class Main extends javax.swing.JFrame {
 
     
     private void setSelectedScaleRadioButton() {
-        String scaling = UserPrefManager.getPreference(UserPrefManager.SCALING, "1.0");
+        String scaling = UserPrefManager.getPreference(UserPrefManager.FLATLAF_SCALING, "1.0");
         if (scaling.equals("1.0")) {
             this.jRadioButtonMenuItemScale100.setSelected(true);
         } else if (scaling.equals("1.1")) {
@@ -2612,7 +2612,7 @@ public class Main extends javax.swing.JFrame {
             scaling = "1.1";
         }
         
-        UserPrefManager.setPreference(UserPrefManager.SCALING, scaling);
+        UserPrefManager.setPreference(UserPrefManager.FLATLAF_SCALING, scaling);
         System.setProperty("flatlaf.uiScale", scaling);
         updateLookAndFeel();
     }

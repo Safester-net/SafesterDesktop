@@ -45,6 +45,7 @@ import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.tool.JOptionPaneHtml;
 import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.application.util.SunUiScalingUtil;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
 
@@ -69,6 +70,13 @@ public class Safester {
 
     public static void mainCall() throws HeadlessException {
         try {
+            
+            //-Dsun.java2d.uiScale=1.0
+            //System.setProperty("sun.java2d.uiScale", "1.0");
+            String scaling = SunUiScalingUtil.getPreferenceScaling();
+            SunUiScalingUtil.setScalingForSession(scaling);
+            
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
             
             // take the menu bar off the jframe
             System.setProperty("apple.laf.useScreenMenuBar", "true");

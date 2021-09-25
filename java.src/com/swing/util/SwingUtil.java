@@ -191,7 +191,7 @@ public class SwingUtil {
 
             int newHeightTextField = 26;
             
-            if (UserPrefManager.getPreference(UserPrefManager.SCALING, "1.0").equals("1.1")) {
+            if (UserPrefManager.getPreference(UserPrefManager.FLATLAF_SCALING, "1.0").equals("1.1")) {
                 newHeightTextField = 28;    
             }
             

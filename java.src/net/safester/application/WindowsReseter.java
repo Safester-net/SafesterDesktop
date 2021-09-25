@@ -51,7 +51,7 @@ public class WindowsReseter {
         UserPrefManager.removePreference(UserPrefManager.USER_LOGIN);
         UserPrefManager.removePreference(UserPrefManager.ACCOUNTS_LIST);
         UserPrefManager.removePreference(UserPrefManager.LOOK_AND_FEEL_THEME);
-        UserPrefManager.removePreference(UserPrefManager.SCALING);
+        UserPrefManager.removePreference(UserPrefManager.FLATLAF_SCALING);
         
         try {
             WindowSettingManager.resetAll();
