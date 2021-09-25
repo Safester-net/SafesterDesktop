@@ -13,6 +13,12 @@ import java.util.Objects;
  */
 public class SunUiScalingUtil {
 
+    public static String SCALING_100 = "1.0";
+    public static String SCALING_150 = "1.5";
+    public static String SCALING_200 = "2.0";
+    public static String SCALING_250 = "2.5";
+    public static String SCALING_300 = "3.0";
+        
     /**
      * Sets the Sun UI Scaling for the session, aka the sun.java2d.uiScale property
      * @param scaling the Sun UI scaling, between 1.0 and 2.5.

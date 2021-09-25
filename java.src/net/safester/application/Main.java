@@ -367,7 +367,7 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemDeleteAccount.setText(messages.getMessage("menu_delete_account"));
 
         jMenuView.setText(messages.getMessage("view"));
-        jMenuScaling.setText(messages.getMessage("scaling"));
+        jMenuScaling.setText(messages.getMessage("laf_scaling"));
         jRadioButtonMenuItemScale100.setText(messages.getMessage("scaling_100"));
         
         String messageScaled = messages.getMessage("scaling_110");
