@@ -86,7 +86,7 @@ public class SunUiScalingParms extends javax.swing.JFrame {
     {
         clipboardManager = new ClipboardManager(rootPane);
         
-        Dimension dim = new Dimension(426, 354);
+        Dimension dim = new Dimension(457, 378);
         this.setSize(dim);
         this.setPreferredSize(dim);
 
@@ -95,11 +95,11 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         this.jPanelProxyContainer.setBorder(titledBorder);
         
         buttonGroup1.add(jRadioButtonScale100);
+        buttonGroup1.add(jRadioButtonScale125);
         buttonGroup1.add(jRadioButtonScale150);
         buttonGroup1.add(jRadioButtonScale200);
         buttonGroup1.add(jRadioButtonScale250);
-        buttonGroup1.add(jRadioButtonScale300);
-                
+        
         try
         {
             this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
@@ -117,7 +117,7 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         jButtonApply.setText(messages.getMessage("ok"));
         jButtonClose.setText(messages.getMessage("cancel"));
 
-        hide300ifLowResolution();
+        hideUpperSizeIfLowResolution();
         
         // Set the Send preferences for user Preferences
         setStoredPreferences();
@@ -157,10 +157,10 @@ public class SunUiScalingParms extends javax.swing.JFrame {
 
     }    
     
-    private void hide300ifLowResolution() {
+    private void hideUpperSizeIfLowResolution() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        if (screenSize.width < 2400) {
-            jRadioButtonScale300.setEnabled(false);
+        if (screenSize.width < 2200) {
+            jRadioButtonScale250.setEnabled(false);
         }
     }
     
@@ -170,37 +170,29 @@ public class SunUiScalingParms extends javax.swing.JFrame {
     private void setStoredPreferences()
     {
         jRadioButtonScale100.setSelected(false);
+        jRadioButtonScale110.setSelected(false);
+        jRadioButtonScale125.setSelected(false);
         jRadioButtonScale150.setSelected(false);
         jRadioButtonScale200.setSelected(false);
         jRadioButtonScale250.setSelected(false);
-        jRadioButtonScale300.setSelected(false);
-                
+
         String scaling = UserPrefManager.getPreference(UserPrefManager.SUN_SCALING, SunUiScalingUtil.SCALING_100);
 
-        if (scaling.equals(SunUiScalingUtil.SCALING_100))
-        {
+        if (scaling.equals(SunUiScalingUtil.SCALING_100)) {
             jRadioButtonScale100.setSelected(true);
-        }
-        else if (scaling.equals(SunUiScalingUtil.SCALING_150))
-        {
+        } else if (scaling.equals(SunUiScalingUtil.SCALING_110)) {
+            jRadioButtonScale110.setSelected(true);
+        } else if (scaling.equals(SunUiScalingUtil.SCALING_125)) {
+            jRadioButtonScale125.setSelected(true);
+        } else if (scaling.equals(SunUiScalingUtil.SCALING_150)) {
             jRadioButtonScale150.setSelected(true);
-        }
-        else if (scaling.equals(SunUiScalingUtil.SCALING_200))
-        {
+        } else if (scaling.equals(SunUiScalingUtil.SCALING_200)) {
             jRadioButtonScale200.setSelected(true);
-        }
-        else if (scaling.equals(SunUiScalingUtil.SCALING_250))
-        {
+        } else if (scaling.equals(SunUiScalingUtil.SCALING_250)) {
             jRadioButtonScale250.setSelected(true);
-        }
-         else if (scaling.equals(SunUiScalingUtil.SCALING_300))
-        {
-            jRadioButtonScale300.setSelected(true);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Scaling is invalid: " + scaling);
-        }        
+        }     
 
 
     }
@@ -266,28 +258,21 @@ public class SunUiScalingParms extends javax.swing.JFrame {
     private void actionOk()
     {
         String scaling = null;
-        
-        if (jRadioButtonScale100.isSelected())
-        {
+
+        if (jRadioButtonScale100.isSelected()) {
             scaling = SunUiScalingUtil.SCALING_100;
-        }
-        else if (jRadioButtonScale150.isSelected())
-        {
+        } else if (jRadioButtonScale110.isSelected()) {
+            scaling = SunUiScalingUtil.SCALING_110;
+        } else if (jRadioButtonScale125.isSelected()) {
+            scaling = SunUiScalingUtil.SCALING_125;
+        } else if (jRadioButtonScale150.isSelected()) {
             scaling = SunUiScalingUtil.SCALING_150;
-        }
-        else if (jRadioButtonScale200.isSelected())
-        {
+        } else if (jRadioButtonScale200.isSelected()) {
             scaling = SunUiScalingUtil.SCALING_200;
-        }        
-        else if (jRadioButtonScale250.isSelected())
-        {
+        } else if (jRadioButtonScale250.isSelected()) {
             scaling = SunUiScalingUtil.SCALING_250;
-        }  
-        else if (jRadioButtonScale300.isSelected())
-        {
-            scaling = SunUiScalingUtil.SCALING_300;
-        }  
-        
+        }
+
         SunUiScalingUtil.setPreferenceScaling(scaling);
         
         MessagesManager messages = new MessagesManager();
@@ -340,14 +325,16 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         jPaneProxyOptions = new javax.swing.JPanel();
         jPanelBrowserDef = new javax.swing.JPanel();
         jRadioButtonScale100 = new javax.swing.JRadioButton();
+        jPanelBrowserDef1 = new javax.swing.JPanel();
+        jRadioButtonScale110 = new javax.swing.JRadioButton();
+        jPanelUserDef3 = new javax.swing.JPanel();
+        jRadioButtonScale125 = new javax.swing.JRadioButton();
         jPanelUserDef = new javax.swing.JPanel();
         jRadioButtonScale150 = new javax.swing.JRadioButton();
         jPanelUserDef1 = new javax.swing.JPanel();
         jRadioButtonScale200 = new javax.swing.JRadioButton();
         jPanelUserDef2 = new javax.swing.JPanel();
         jRadioButtonScale250 = new javax.swing.JRadioButton();
-        jPanelUserDef3 = new javax.swing.JPanel();
-        jRadioButtonScale300 = new javax.swing.JRadioButton();
         jPanelRight2 = new javax.swing.JPanel();
         jPanelSep3 = new javax.swing.JPanel();
         jPanelSepLine = new javax.swing.JPanel();
@@ -427,6 +414,24 @@ public class SunUiScalingParms extends javax.swing.JFrame {
 
         jPaneProxyOptions.add(jPanelBrowserDef);
 
+        jPanelBrowserDef1.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelBrowserDef1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        buttonGroup1.add(jRadioButtonScale110);
+        jRadioButtonScale110.setText("110%");
+        jPanelBrowserDef1.add(jRadioButtonScale110);
+
+        jPaneProxyOptions.add(jPanelBrowserDef1);
+
+        jPanelUserDef3.setMaximumSize(new java.awt.Dimension(32767, 33));
+        jPanelUserDef3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        buttonGroup1.add(jRadioButtonScale125);
+        jRadioButtonScale125.setText("125");
+        jPanelUserDef3.add(jRadioButtonScale125);
+
+        jPaneProxyOptions.add(jPanelUserDef3);
+
         jPanelUserDef.setMaximumSize(new java.awt.Dimension(32767, 33));
         jPanelUserDef.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -453,15 +458,6 @@ public class SunUiScalingParms extends javax.swing.JFrame {
         jPanelUserDef2.add(jRadioButtonScale250);
 
         jPaneProxyOptions.add(jPanelUserDef2);
-
-        jPanelUserDef3.setMaximumSize(new java.awt.Dimension(32767, 33));
-        jPanelUserDef3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        buttonGroup1.add(jRadioButtonScale300);
-        jRadioButtonScale300.setText("300%");
-        jPanelUserDef3.add(jRadioButtonScale300);
-
-        jPaneProxyOptions.add(jPanelUserDef3);
 
         jPanelProxyContainer.add(jPaneProxyOptions);
 
@@ -565,6 +561,7 @@ public static void main(String args[]) {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanelBorderTop;
     private javax.swing.JPanel jPanelBrowserDef;
+    private javax.swing.JPanel jPanelBrowserDef1;
     private javax.swing.JPanel jPanelButtons;
     private javax.swing.JPanel jPanelLetf2;
     private javax.swing.JPanel jPanelProxy;
@@ -580,10 +577,11 @@ public static void main(String args[]) {
     private javax.swing.JPanel jPanelUserDef2;
     private javax.swing.JPanel jPanelUserDef3;
     private javax.swing.JRadioButton jRadioButtonScale100;
+    private javax.swing.JRadioButton jRadioButtonScale110;
+    private javax.swing.JRadioButton jRadioButtonScale125;
     private javax.swing.JRadioButton jRadioButtonScale150;
     private javax.swing.JRadioButton jRadioButtonScale200;
     private javax.swing.JRadioButton jRadioButtonScale250;
-    private javax.swing.JRadioButton jRadioButtonScale300;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables

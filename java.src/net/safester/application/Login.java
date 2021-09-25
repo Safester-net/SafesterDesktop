@@ -1189,7 +1189,7 @@ public class Login extends javax.swing.JFrame {
         jMenuSettings.setText("jMenuSettings");
 
         jMenuItemScaling.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
-        jMenuItemScaling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/server_network.png"))); // NOI18N
+        jMenuItemScaling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/window_size.png"))); // NOI18N
         jMenuItemScaling.setText("jMenuItemScaling");
         jMenuItemScaling.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
