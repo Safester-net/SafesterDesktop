@@ -86,7 +86,7 @@ public class SunUiScalingParms extends javax.swing.JFrame {
     {
         clipboardManager = new ClipboardManager(rootPane);
         
-        Dimension dim = new Dimension(457, 378);
+        Dimension dim = new Dimension(469, 390);
         this.setSize(dim);
         this.setPreferredSize(dim);
 
