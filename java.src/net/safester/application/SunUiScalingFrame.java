@@ -86,7 +86,7 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
     {
         clipboardManager = new ClipboardManager(rootPane);
         
-        Dimension dim = new Dimension(514, 394);
+        Dimension dim = new Dimension(477, 365);
         this.setSize(dim);
         this.setPreferredSize(dim);
 
@@ -385,7 +385,7 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanelSepLine1);
 
-        jPanelSep4.setMaximumSize(new java.awt.Dimension(32767, 5000));
+        jPanelSep4.setMaximumSize(new java.awt.Dimension(32767, 5));
         jPanelSep4.setMinimumSize(new java.awt.Dimension(10, 5));
         jPanelSep4.setPreferredSize(new java.awt.Dimension(1000, 5));
         getContentPane().add(jPanelSep4);
@@ -454,9 +454,9 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanelMain);
 
-        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 10));
-        jPanelSep3.setMinimumSize(new java.awt.Dimension(10, 100));
-        jPanelSep3.setPreferredSize(new java.awt.Dimension(1000, 10));
+        jPanelSep3.setMaximumSize(new java.awt.Dimension(32767, 11));
+        jPanelSep3.setMinimumSize(new java.awt.Dimension(10, 11));
+        jPanelSep3.setPreferredSize(new java.awt.Dimension(1000, 11));
         getContentPane().add(jPanelSep3);
 
         jPanelSepLine.setMaximumSize(new java.awt.Dimension(32767, 10));
