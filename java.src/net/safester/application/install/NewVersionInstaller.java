@@ -43,6 +43,7 @@ import net.safester.application.parms.Parms;
 import net.safester.application.util.UserPrefManager;
 import net.safester.application.util.proxy.ProxyDetector;
 import net.safester.clientserver.ServerParms;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  *
@@ -77,8 +78,17 @@ public class NewVersionInstaller {
         
         System.out.println("proxy                 : " + proxy + ":");
         System.out.println("passwordAuthentication: " + passwordAuthentication + ":");
-                 
-        UrlContent urlContent = new UrlContent(new URL(ServerParms.getHOST() + "/download/version.txt"), proxy, passwordAuthentication);
+
+        String versionTxt = null;
+        if (SystemUtils.IS_OS_MAC) {
+            versionTxt = "version_mac_os.txt";
+        } else if (SystemUtils.IS_OS_WINDOWS) {
+            versionTxt = "version_windows.txt";
+        } else {
+             versionTxt = "version_linux.txt";
+        }
+   
+        UrlContent urlContent = new UrlContent(new URL(ServerParms.getHOST() + "/download/" + versionTxt), proxy, passwordAuthentication);
         String serverVersion = urlContent.download();
 
         System.out.println("currentVersion: " + currentVersion + ":");

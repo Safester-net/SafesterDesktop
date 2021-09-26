@@ -238,7 +238,7 @@ public class Main extends javax.swing.JFrame {
 
     private int typeSubscription;
     private boolean alreadyAccountMenuBuilt;
-    private SunUiScalingParms sunUiScalingParms;
+    private SunUiScalingFrame sunUiScalingParms;
 
     /**
      * Creates new form SafeShareMain
@@ -333,6 +333,10 @@ public class Main extends javax.swing.JFrame {
         jMenuItemQuit.setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
+        if (SystemUtils.IS_OS_MAC) {
+            jMenuItemScaling.setVisible(false);
+        }
+                
         if (SystemUtils.IS_OS_MAC_OSX) {
             jMenuItemQuit.setVisible(false); // Quit is already in default left menu
             jMenuItemClose.setAccelerator(
@@ -4286,7 +4290,7 @@ public class Main extends javax.swing.JFrame {
             sunUiScalingParms.dispose();
         }
 
-        sunUiScalingParms = new SunUiScalingParms(this);
+        sunUiScalingParms = new SunUiScalingFrame(this);
         sunUiScalingParms.setVisible(true);
 
     }//GEN-LAST:event_jMenuItemScalingActionPerformed

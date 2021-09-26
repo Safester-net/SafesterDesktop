@@ -129,7 +129,7 @@ public class Login extends javax.swing.JFrame {
     private FrameProxyParms frameProxyParms;
     private Register register;
     private NewsFrame newsFrame;
-    private SunUiScalingParms sunUiScalingParms;
+    private SunUiScalingFrame sunUiScalingParms;
 
     /**
      * Creates new form at first login time
@@ -183,6 +183,10 @@ public class Login extends javax.swing.JFrame {
         this.jMenuItemAbout.setText(messages.getMessage("about"));
         this.jMenuItemWhatsNew.setText(messages.getMessage("whats_new"));
 
+        if (SystemUtils.IS_OS_MAC) {
+            jMenuItemScaling.setVisible(false);
+        }
+        
         // First time, display the defaults last login
         if (this.main == null) {
             this.jTextFieldLogin.setText(email);
@@ -1375,7 +1379,7 @@ public class Login extends javax.swing.JFrame {
             sunUiScalingParms.dispose();
         }
 
-        sunUiScalingParms = new SunUiScalingParms(this);
+        sunUiScalingParms = new SunUiScalingFrame(this);
         sunUiScalingParms.setVisible(true);
         
     }//GEN-LAST:event_jMenuItemScalingActionPerformed

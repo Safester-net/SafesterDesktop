@@ -16,13 +16,12 @@ import java.util.Objects;
 public class SunUiScalingUtil {
 
     public static final String SCALING_100 = "1.0";
-    public static final String SCALING_110 = "1.10";
     public static final String SCALING_125 = "1.25";
     public static final String SCALING_150 = "1.5";
     public static final String SCALING_200 = "2.0";
     public static final String SCALING_250 = "2.5";
 
-    private static final double MIN_WIDTH_FOR_SCALING_150 = 2600;        
+    private static final double MIN_WIDTH_FOR_SCALING_150 = 2400;        
 
     
     /**
