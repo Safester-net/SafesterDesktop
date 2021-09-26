@@ -86,7 +86,7 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
     {
         clipboardManager = new ClipboardManager(rootPane);
         
-        Dimension dim = new Dimension(436, 361);
+        Dimension dim = new Dimension(514, 394);
         this.setSize(dim);
         this.setPreferredSize(dim);
 
@@ -472,7 +472,10 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanelSepLine);
 
-        jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 10));
+        jPanelButtons.setMaximumSize(new java.awt.Dimension(32767, 40));
+        jPanelButtons.setMinimumSize(new java.awt.Dimension(150, 40));
+        jPanelButtons.setPreferredSize(new java.awt.Dimension(141, 40));
+        jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         jButtonApply.setText("OK");
         jButtonApply.addActionListener(new java.awt.event.ActionListener() {
