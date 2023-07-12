@@ -302,6 +302,7 @@ public class CustomJTree extends JPanel
             theTree.setSelectionRow(row);
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) theTree.getSelectionPath().getLastPathComponent();
             Object userObject = selectedNode.getUserObject();
+            
             if (userObject instanceof FolderLocal) {
                 int folderId = ((FolderLocal) userObject).getFolderId();
 

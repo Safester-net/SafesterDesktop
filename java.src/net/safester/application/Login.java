@@ -1095,6 +1095,11 @@ public class Login extends javax.swing.JFrame {
                 jCheckBoxHideTypingItemStateChanged(evt);
             }
         });
+        jCheckBoxHideTyping.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxHideTypingActionPerformed(evt);
+            }
+        });
         jPanelRememberPassphrase.add(jCheckBoxHideTyping);
 
         jButtonLostPassphrase.setForeground(new java.awt.Color(0, 0, 255));
@@ -1383,6 +1388,10 @@ public class Login extends javax.swing.JFrame {
         sunUiScalingParms.setVisible(true);
         
     }//GEN-LAST:event_jMenuItemScalingActionPerformed
+
+    private void jCheckBoxHideTypingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxHideTypingActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxHideTypingActionPerformed
 
     /**
      * debug tool

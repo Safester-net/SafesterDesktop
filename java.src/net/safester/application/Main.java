@@ -3006,6 +3006,7 @@ public class Main extends javax.swing.JFrame {
         jToolBar1.add(jSeparator4);
 
         jButtonNewFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/folder_open_plus.png"))); // NOI18N
+        jButtonNewFolder.setToolTipText("");
         jButtonNewFolder.setFocusable(false);
         jButtonNewFolder.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonNewFolder.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -3076,8 +3077,6 @@ public class Main extends javax.swing.JFrame {
         jPanelSeparator.setBackground(new java.awt.Color(255, 255, 255));
         jPanelSeparator.setLayout(new javax.swing.BoxLayout(jPanelSeparator, javax.swing.BoxLayout.LINE_AXIS));
 
-        jSplitPaneFolders.setBorder(null);
-
         jPanelFolders.setBackground(new java.awt.Color(255, 255, 255));
         jPanelFolders.setLayout(new javax.swing.BoxLayout(jPanelFolders, javax.swing.BoxLayout.Y_AXIS));
 
@@ -3094,7 +3093,6 @@ public class Main extends javax.swing.JFrame {
         jSplitPaneFolders.setLeftComponent(jPanelFolders);
 
         jSplitPaneMessage.setBackground(new java.awt.Color(255, 255, 255));
-        jSplitPaneMessage.setBorder(null);
         jSplitPaneMessage.setDividerLocation(120);
         jSplitPaneMessage.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPaneMessage.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -3115,8 +3113,6 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setShowHorizontalLines(false);
-        jTable1.setShowVerticalLines(false);
         jScrollPane1.setViewportView(jTable1);
 
         jSplitPaneMessage.setLeftComponent(jScrollPane1);
@@ -3221,7 +3217,6 @@ public class Main extends javax.swing.JFrame {
         jTextFieldUserFrom.setEditable(false);
         jTextFieldUserFrom.setText("jTextFieldUserFrom");
         jTextFieldUserFrom.setBorder(null);
-        jTextFieldUserFrom.setOpaque(false);
         jPanelFromNew.add(jTextFieldUserFrom);
 
         jPanelNorth.add(jPanelFromNew);
@@ -3254,7 +3249,6 @@ public class Main extends javax.swing.JFrame {
         jTextFieldDate.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldDate.setText("jTextFieldDate");
         jTextFieldDate.setBorder(null);
-        jTextFieldDate.setOpaque(false);
         jTextFieldDate.setPreferredSize(new java.awt.Dimension(120, 14));
         jPanel20.add(jTextFieldDate);
 

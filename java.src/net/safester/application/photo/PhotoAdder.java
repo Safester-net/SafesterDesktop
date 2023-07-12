@@ -370,117 +370,116 @@ public class PhotoAdder extends javax.swing.JDialog {
      */
     @SuppressWarnings("ujPanelDefaultPhotonchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-	jPanelUp = new javax.swing.JPanel();
-	jLabelPicture = new javax.swing.JLabel();
-	jPanelDragDrop = new javax.swing.JPanel();
-	jLabelDragAndDrop = new javax.swing.JLabel();
-	jPanelPhotoMain = new javax.swing.JPanel();
-	jPanelLeft = new javax.swing.JPanel();
-	jPanelPhoto = new javax.swing.JPanel();
-	jPanelDefaultPhoto = new javax.swing.JPanel();
-	jPanelButtonSelect = new javax.swing.JPanel();
-	jButtonSelect = new javax.swing.JButton();
-	jPanelRight = new javax.swing.JPanel();
-	jPanel14 = new javax.swing.JPanel();
-	jPanelSepBottom = new javax.swing.JPanel();
-	jPanelButtons = new javax.swing.JPanel();
-	jButtonOk = new javax.swing.JButton();
-	jButtonCancel = new javax.swing.JButton();
-	jPanel4 = new javax.swing.JPanel();
+        jPanelUp = new javax.swing.JPanel();
+        jLabelPicture = new javax.swing.JLabel();
+        jPanelDragDrop = new javax.swing.JPanel();
+        jLabelDragAndDrop = new javax.swing.JLabel();
+        jPanelPhotoMain = new javax.swing.JPanel();
+        jPanelLeft = new javax.swing.JPanel();
+        jPanelPhoto = new javax.swing.JPanel();
+        jPanelDefaultPhoto = new javax.swing.JPanel();
+        jPanelButtonSelect = new javax.swing.JPanel();
+        jButtonSelect = new javax.swing.JButton();
+        jPanelRight = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jPanelSepBottom = new javax.swing.JPanel();
+        jPanelButtons = new javax.swing.JPanel();
+        jButtonOk = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
 
-	setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-	getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
-	jPanelUp.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
+        jPanelUp.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
-	jLabelPicture.setIcon(new javax.swing.ImageIcon(
-		getClass().getResource("/net/safester/application/images/files_2/32x32/photo_portrait.png"))); // NOI18N
-	jLabelPicture.setText("jLabelPicture");
-	jPanelUp.add(jLabelPicture);
+        jLabelPicture.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/32x32/photo_portrait.png"))); // NOI18N
+        jLabelPicture.setText("jLabelPicture");
+        jPanelUp.add(jLabelPicture);
 
-	getContentPane().add(jPanelUp);
+        getContentPane().add(jPanelUp);
 
-	jPanelDragDrop.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 9));
+        jPanelDragDrop.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 9));
 
-	jLabelDragAndDrop.setText("jLabelDragAndDrop");
-	jPanelDragDrop.add(jLabelDragAndDrop);
+        jLabelDragAndDrop.setText("jLabelDragAndDrop");
+        jPanelDragDrop.add(jLabelDragAndDrop);
 
-	getContentPane().add(jPanelDragDrop);
+        getContentPane().add(jPanelDragDrop);
 
-	jPanelPhotoMain.setLayout(new javax.swing.BoxLayout(jPanelPhotoMain, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelPhotoMain.setLayout(new javax.swing.BoxLayout(jPanelPhotoMain, javax.swing.BoxLayout.LINE_AXIS));
 
-	jPanelLeft.setMaximumSize(new java.awt.Dimension(12, 12));
-	jPanelLeft.setMinimumSize(new java.awt.Dimension(12, 12));
-	jPanelLeft.setPreferredSize(new java.awt.Dimension(12, 12));
-	jPanelLeft.setLayout(new javax.swing.BoxLayout(jPanelLeft, javax.swing.BoxLayout.LINE_AXIS));
-	jPanelPhotoMain.add(jPanelLeft);
+        jPanelLeft.setMaximumSize(new java.awt.Dimension(12, 12));
+        jPanelLeft.setMinimumSize(new java.awt.Dimension(12, 12));
+        jPanelLeft.setPreferredSize(new java.awt.Dimension(12, 12));
+        jPanelLeft.setLayout(new javax.swing.BoxLayout(jPanelLeft, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelPhotoMain.add(jPanelLeft);
 
-	jPanelPhoto.setLayout(new java.awt.BorderLayout());
+        jPanelPhoto.setLayout(new java.awt.BorderLayout());
 
-	jPanelDefaultPhoto.setBackground(new java.awt.Color(255, 255, 255));
-	jPanelDefaultPhoto.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-	jPanelPhoto.add(jPanelDefaultPhoto, java.awt.BorderLayout.CENTER);
+        jPanelDefaultPhoto.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelDefaultPhoto.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanelPhoto.add(jPanelDefaultPhoto, java.awt.BorderLayout.CENTER);
 
-	jPanelPhotoMain.add(jPanelPhoto);
+        jPanelPhotoMain.add(jPanelPhoto);
 
-	jPanelButtonSelect.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 0));
+        jPanelButtonSelect.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 0));
 
-	jButtonSelect.setText("jButtonSelect");
-	jButtonSelect.addActionListener(new java.awt.event.ActionListener() {
-	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		jButtonSelectActionPerformed(evt);
-	    }
-	});
-	jPanelButtonSelect.add(jButtonSelect);
+        jButtonSelect.setText("jButtonSelect");
+        jButtonSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelectActionPerformed(evt);
+            }
+        });
+        jPanelButtonSelect.add(jButtonSelect);
 
-	jPanelPhotoMain.add(jPanelButtonSelect);
+        jPanelPhotoMain.add(jPanelButtonSelect);
 
-	jPanelRight.setMaximumSize(new java.awt.Dimension(12, 12));
-	jPanelRight.setMinimumSize(new java.awt.Dimension(12, 12));
-	jPanelRight.setPreferredSize(new java.awt.Dimension(12, 12));
-	jPanelRight.setRequestFocusEnabled(false);
-	jPanelRight.setLayout(new javax.swing.BoxLayout(jPanelRight, javax.swing.BoxLayout.LINE_AXIS));
-	jPanelPhotoMain.add(jPanelRight);
+        jPanelRight.setMaximumSize(new java.awt.Dimension(12, 12));
+        jPanelRight.setMinimumSize(new java.awt.Dimension(12, 12));
+        jPanelRight.setPreferredSize(new java.awt.Dimension(12, 12));
+        jPanelRight.setRequestFocusEnabled(false);
+        jPanelRight.setLayout(new javax.swing.BoxLayout(jPanelRight, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelPhotoMain.add(jPanelRight);
 
-	getContentPane().add(jPanelPhotoMain);
+        getContentPane().add(jPanelPhotoMain);
 
-	jPanel14.setMaximumSize(new java.awt.Dimension(10, 10));
-	jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.LINE_AXIS));
-	getContentPane().add(jPanel14);
+        jPanel14.setMaximumSize(new java.awt.Dimension(10, 10));
+        jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.LINE_AXIS));
+        getContentPane().add(jPanel14);
 
-	jPanelSepBottom.setMaximumSize(new java.awt.Dimension(32767, 8));
-	jPanelSepBottom.setMinimumSize(new java.awt.Dimension(10, 8));
-	jPanelSepBottom.setPreferredSize(new java.awt.Dimension(10, 8));
-	getContentPane().add(jPanelSepBottom);
+        jPanelSepBottom.setMaximumSize(new java.awt.Dimension(32767, 8));
+        jPanelSepBottom.setMinimumSize(new java.awt.Dimension(10, 8));
+        jPanelSepBottom.setPreferredSize(new java.awt.Dimension(10, 8));
+        getContentPane().add(jPanelSepBottom);
 
-	jPanelButtons.setMaximumSize(new java.awt.Dimension(32767, 43));
-	jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 10));
+        jPanelButtons.setMaximumSize(new java.awt.Dimension(32767, 43));
+        jPanelButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 10));
 
-	jButtonOk.setText("jButtonOk");
-	jButtonOk.addActionListener(new java.awt.event.ActionListener() {
-	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		jButtonOkActionPerformed(evt);
-	    }
-	});
-	jPanelButtons.add(jButtonOk);
+        jButtonOk.setText("jButtonOk");
+        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOkActionPerformed(evt);
+            }
+        });
+        jPanelButtons.add(jButtonOk);
 
-	jButtonCancel.setText("jButtonCancel");
-	jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
-	    public void actionPerformed(java.awt.event.ActionEvent evt) {
-		jButtonCancelActionPerformed(evt);
-	    }
-	});
-	jPanelButtons.add(jButtonCancel);
+        jButtonCancel.setText("jButtonCancel");
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
+        jPanelButtons.add(jButtonCancel);
 
-	jPanel4.setPreferredSize(new java.awt.Dimension(1, 10));
-	jPanelButtons.add(jPanel4);
+        jPanel4.setPreferredSize(new java.awt.Dimension(1, 10));
+        jPanelButtons.add(jPanel4);
 
-	getContentPane().add(jPanelButtons);
+        getContentPane().add(jPanelButtons);
 
-	pack();
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonOkActionPerformed
