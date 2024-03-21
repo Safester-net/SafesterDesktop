@@ -127,6 +127,28 @@ public class Parms {
     }
 
     /**
+     * Return the user.home/.safester directory
+     */
+    public static String getSafesterUserHomeDir()
+    {
+        String userHome =  System.getProperty("user.home");
+        if (! userHome.endsWith(File.separator))
+        {
+            userHome += File.separator;
+        }
+
+        String safesterTemp = userHome += ".safester" + File.separator;
+
+        File safesterTempDir = new File(safesterTemp);
+        if (!safesterTempDir.exists()) {
+            safesterTempDir.mkdirs();
+        }
+
+        return safesterTemp;
+            
+    }
+    
+    /**
      * Return the temp directory
      */
     public static String getSafesterTempDir()
