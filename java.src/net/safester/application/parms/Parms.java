@@ -30,6 +30,7 @@ import java.util.Locale;
 import javax.swing.ImageIcon;
 
 import net.safester.application.Main;
+import org.apache.commons.lang3.SystemUtils;
 
 
 public class Parms {
@@ -126,6 +127,19 @@ public class Parms {
         }
     }
 
+    /**
+     * Special code. Remove the Print and Buy Button if
+     * user.home/RemovePrintAndBuy.txt exists
+     *
+     * @return true
+     */
+    public static boolean removePrintAndBuy() {
+        String userHome = SystemUtils.USER_HOME;
+        File file = new File(userHome + File.separator + "RemovePrintAndBuy.txt");
+        return file.exists();
+
+    }
+    
     /**
      * Return the user.home/.safester directory
      */
