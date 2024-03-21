@@ -720,6 +720,7 @@ public class Main extends javax.swing.JFrame {
             jMenuItemActivateSubscription.setVisible(false);
             jButtonPrint.setVisible(false);
             jButtonBuy.setVisible(false);
+            jMenuItemActivateSubscription.setVisible(false);
         }
     }
         
