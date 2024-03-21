@@ -134,10 +134,9 @@ public class Parms {
      * @return true
      */
     public static boolean removePrintAndBuy() {
-        String userHome = SystemUtils.USER_HOME;
-        File file = new File(userHome + File.separator + "RemovePrintAndBuy.txt");
+        String userHomeSafester = getSafesterUserHomeDir();
+        File file = new File(userHomeSafester + File.separator + "RemovePrintAndBuy.txt");
         return file.exists();
-
     }
     
     /**
