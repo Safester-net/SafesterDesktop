@@ -131,6 +131,9 @@ public class Login extends javax.swing.JFrame {
     private NewsFrame newsFrame;
     private SunUiScalingFrame sunUiScalingParms;
 
+    // A static store if this instace of the wakeup call
+    public static Login LOGIN = null;
+    
     /**
      * Creates new form at first login time
      */
@@ -138,9 +141,18 @@ public class Login extends javax.swing.JFrame {
         this.thisOne = this;
         initComponents();
         initCompany(null, null);
-
+        storeInstance(this);
     }
 
+    private void storeInstance(Login aThis) {
+       Login.LOGIN = aThis;
+    }
+        
+    public void deiconify() {
+        // Deiconify (restore) the frame
+        setExtendedState(getExtendedState() & (~JFrame.ICONIFIED));
+    }
+        
     /**
      * To be used when multi login
      * @param main 

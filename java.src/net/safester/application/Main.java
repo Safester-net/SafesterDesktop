@@ -175,6 +175,9 @@ public class Main extends javax.swing.JFrame {
     public static final Color COLOR_MSG_INFO = new Color(132, 192, 252);
 
     public static final boolean NOTIFY_ON = true;
+    
+    // A static store if this instace of the wakeup call
+    public static Main MAIN = null;
 
     private Connection connection;
     private CustomJTree customJtree;
@@ -270,8 +273,18 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         initCompany();
         thisOne = this;
+        
+        storeInstance(this);
     }
 
+    private void storeInstance(Main aThis) {
+       Main.MAIN = aThis;
+    }
+    
+    public void deiconify() {
+        // Deiconify (restore) the frame
+        setExtendedState(getExtendedState() & (~JFrame.ICONIFIED));
+    }
     /* Init a secondary connection for list messages */
     /**
      * Out initialisation method
@@ -5079,6 +5092,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUserFrom;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
 
 
 

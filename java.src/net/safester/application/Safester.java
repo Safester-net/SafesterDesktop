@@ -23,10 +23,14 @@
  */
 package net.safester.application;
 
+import net.safester.application.wakeup.WakeupCallSender;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +54,8 @@ import net.safester.application.util.UserPrefManager;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
 
+import net.safester.application.wakeup.*;
+
 public class Safester {
 
     public static boolean DEBUG = false;
@@ -60,16 +66,35 @@ public class Safester {
     // Change to to true to suport Franch
     public static final boolean LANGUAGE_ENABLED = true;
 
+    // Wakeup stuff
+    public static final String PORT_FILE = Parms.getSafesterUserHomeDir() + File.separator +  "app_port.txt";
+    public static ServerSocket serverSocket = null;
+    
     /**
-     * SafeShareIt main launcher
+     * Safester main launcher
      *
      * @param args
      */
-    public static void main(String[] args) {
-        mainCall();
+   
+    
+   public static void main(String[] args) {
+        if (TestAnotherInstance.isAnotherInstanceRunning()) {
+            System.out.println("Safester Start - Another instance running ==> endWakeUpCall()");
+            WakeupCallSender.sendWakeUpCall();
+            System.exit(0); // Exit the second instance
+        } else {
+            System.out.println("Safester Start - First start!");
+            ServerSockerSetup.setupServerSocket();
+            startWakeupListener();
+            runApplication(); // This is where your app's main functionality starts
+        }
+    }
+    
+   private static void startWakeupListener() {
+        new Thread(new WakeupListener()).start();
     }
 
-    public static void mainCall() throws HeadlessException {
+    public static void runApplication() throws HeadlessException {
         try {
             String scaling = UserPrefManager.getPreference(UserPrefManager.SUN_SCALING, SunUiScalingUtil.SCALING_100);
             System.setProperty("sun.java2d.uiScale",  scaling); 
@@ -161,26 +186,6 @@ public class Safester {
         return compared >= 0;
     }
     
-//    /**
-//     * Safester main launcher
-//     *
-//     * @param args
-//     */
-//    public static void doMain(String[] args) {
-//
-//        /*
-//	if (Parms.FEATURE_CACHE_PASSPHRASE) {
-//	    // Start the socket server (if necessary if use wants to cache
-//	    // passphrase)
-//	    SocketClient socketClient = new SocketClient();
-//	    socketClient.startSocketServerNoWait();
-//	}
-//         */
-//        Login login = new Login();
-//        login.setVisible(true);
-//
-//    }
-
     /**
      * Test if policy files can be copied if not display a detailed help message
      *
