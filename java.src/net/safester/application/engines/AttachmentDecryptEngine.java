@@ -36,7 +36,6 @@ import javax.swing.JFrame;
 
 import org.bouncycastle.openpgp.PGPPublicKey;
 
-import com.safelogic.pgp.api.PgpActionsOne;
 import com.safelogic.pgp.api.PgpFileStatusOne;
 import com.safelogic.pgp.api.engines.CryptoEngine;
 import com.safelogic.pgp.api.util.msg.MessagesManager;
@@ -46,6 +45,7 @@ import com.safelogic.pgp.apispecs.PgpFileStatus;
 import com.safelogic.utilx.Hex;
 
 import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.application.util.crypto.PgpActionsOnePdf;
 
 /**
  * A DecryptEngine is an decryption Thread, because of Progression Monitor
@@ -58,7 +58,7 @@ public class AttachmentDecryptEngine extends Thread implements CryptoEngine {
      * The debug flag
      */
     //  protected boolean DEBUG = Debug.isSet(this);
-    protected boolean DEBUG = false;
+    protected boolean DEBUG = true;
 
     /* National language messages */
     private MessagesManager messages = new MessagesManager();
@@ -124,7 +124,7 @@ public class AttachmentDecryptEngine extends Thread implements CryptoEngine {
     /**
      * Action!
      */
-    private PgpActionsOne pgpActions = null;
+    private PgpActionsOnePdf pgpActions = null;
 
     //Passphrase
     private char[] passphrase = null;
@@ -175,7 +175,7 @@ public class AttachmentDecryptEngine extends Thread implements CryptoEngine {
         try {
             debug(new Date() + " DecryptEngine Begin 1");
 
-            pgpActions = new PgpActionsOne(this);
+            pgpActions = new PgpActionsOnePdf(this);
 
             m_waiterEngine.setWaiterStop(true);
 
@@ -227,6 +227,9 @@ public class AttachmentDecryptEngine extends Thread implements CryptoEngine {
                         //keyBloc = FileUtils.readFileToString(new File("c:\\temp\\safeshareit\\nico@safelogic.com_PRIVATE.asc"));
                         //Thread.sleep(2000);
                         //Reset integrityCheck before each file
+                        
+                        debug("Decrypting file: " + fileIn.getName());
+                        
                         pgpActions.setIntegrityCheck(false);
                         returnCode = pgpActions.decryptPgpFromAscKey(fileIn, fileOut, keyBloc, passphrase);
                         //System.out.println("Integrity check : " + pgpActions.isIntegrityCheck());

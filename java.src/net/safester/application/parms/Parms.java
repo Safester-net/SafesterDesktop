@@ -131,13 +131,26 @@ public class Parms {
      * Special code. Remove the Print and Buy Button if
      * user.home/RemovePrintAndBuy.txt exists
      *
-     * @return true
+     * @return true if  user.home/RemovePrintAndBuy.txt exists
      */
     public static boolean removePrintAndBuy() {
         String userHomeSafester = getSafesterUserHomeDir();
         File file = new File(userHomeSafester + File.separator + "RemovePrintAndBuy.txt");
         return file.exists();
     }
+    
+    /**
+     * Special code. Says if the PDF must be encrypted with the passphrase before file creation if 
+     * user.home/EncryptPdfWithPassphrase.txt exists
+     *
+     * @return true if user.home/EncryptPdfWithPassphrase.txt exists
+     */
+    public static boolean encryptPdfWithPassphrase() {
+        String userHomeSafester = getSafesterUserHomeDir();
+        File file = new File(userHomeSafester + File.separator + "EncryptPdfWithPassphrase.txt");
+        return file.exists();
+    }
+    
     
     /**
      * Return the user.home/.safester directory

@@ -8,7 +8,8 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
-import net.safester.application.util.PdfEncryptor;
+
+import net.safester.application.util.crypto.PdfEncryptor;
 
 /**
  *
