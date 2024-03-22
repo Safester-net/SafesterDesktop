@@ -16,7 +16,7 @@ public class WakeupCallSender {
     
    public static void sendWakeUpCall() {
         try {
-            int port = PortFile.readPortFromFile();
+            int port = AppPortFile.readPortFromFile();
             try (Socket clientSocket = new Socket("localhost", port)) {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 out.println("WAKEUP");

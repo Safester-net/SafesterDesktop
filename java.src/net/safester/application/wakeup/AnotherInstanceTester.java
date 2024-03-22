@@ -10,15 +10,22 @@ import java.net.Socket;
  *
  * @author ndepo
  */
-public class TestAnotherInstance {
-    
-        public static boolean isAnotherInstanceRunning() {
+public class AnotherInstanceTester {
+
+    private int port;
+
+    public boolean isAnotherInstanceRunning() {
         try {
-            int port = PortFile.readPortFromFile();
+            port = AppPortFile.readPortFromFile();
             new Socket("localhost", port).close(); // Try connecting to the port
             return true; // Connection successful, another instance is running
         } catch (Exception e) {
             return false; // No other instance is running
         }
     }
+
+    public int getPort() {
+        return port;
+    }
+   
 }

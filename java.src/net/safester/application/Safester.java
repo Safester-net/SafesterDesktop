@@ -27,8 +27,6 @@ import net.safester.application.wakeup.WakeupCallSender;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.util.logging.Level;
@@ -67,7 +65,6 @@ public class Safester {
     public static final boolean LANGUAGE_ENABLED = true;
 
     // Wakeup stuff
-    public static final String PORT_FILE = Parms.getSafesterUserHomeDir() + File.separator +  "app_port.txt";
     public static ServerSocket serverSocket = null;
     
     /**
@@ -78,13 +75,15 @@ public class Safester {
    
     
    public static void main(String[] args) {
-        if (TestAnotherInstance.isAnotherInstanceRunning()) {
-            System.out.println("Safester Start - Another instance running ==> endWakeUpCall()");
+        AnotherInstanceTester anotherInstanceTester = new AnotherInstanceTester();
+        if (anotherInstanceTester.isAnotherInstanceRunning()) {
+            System.out.println("Safester Start - Another instance running ==> endWakeUpCall() Port: " + anotherInstanceTester.getPort());
             WakeupCallSender.sendWakeUpCall();
             System.exit(0); // Exit the second instance
         } else {
-            System.out.println("Safester Start - First start!");
-            ServerSockerSetup.setupServerSocket();
+            ServerSockerSetuper serverSockerSetuper =  new ServerSockerSetuper();
+            serverSockerSetuper.setupServerSocket();
+            System.out.println("Safester Start - First start! Port: " +  serverSockerSetuper.getPort());
             startWakeupListener();
             runApplication(); // This is where your app's main functionality starts
         }

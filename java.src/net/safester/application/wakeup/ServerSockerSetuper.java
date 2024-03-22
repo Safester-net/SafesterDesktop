@@ -8,20 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import net.safester.application.Safester;
-import static net.safester.application.Safester.PORT_FILE;
 import static net.safester.application.Safester.serverSocket;
 
 /**
  *
  * @author ndepo
  */
-public class ServerSockerSetup {
- 
-       public static void setupServerSocket() {
+public class ServerSockerSetuper {
+
+    private int port;
+
+    public void setupServerSocket() {
         try {
             Safester.serverSocket = new ServerSocket(0); // Bind to any available port
-            int port = serverSocket.getLocalPort();
-            try (FileWriter writer = new FileWriter(PORT_FILE)) {
+            port = serverSocket.getLocalPort();
+            try (FileWriter writer = new FileWriter(AppPortFile.APP_PORT_FILE)) {
                 writer.write(Integer.toString(port));
             }
         } catch (IOException e) {
@@ -30,5 +31,9 @@ public class ServerSockerSetup {
             System.exit(1);
         }
     }
-       
+
+    public int getPort() {
+        return port;
+    }
+
 }
