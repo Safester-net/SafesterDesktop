@@ -389,9 +389,17 @@ public class MessageReader extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, messages.getMessage("integrity_check_failed"));
         }
 
+        removePrintAndBuyIfnecessary();
         jButtonDisplayEncrypted.putClientProperty("JButton.buttonType", "square");
     }
 
+     private void removePrintAndBuyIfnecessary() {
+        if (Parms.removePrintAndBuy()) {
+            jMenuItemPrint.setVisible(false);
+            jButtonPrint.setVisible(false);
+        }
+    }
+        
     private void setLabelBackgroundToFields() {
 
         jTextFieldUserFrom.setEditable(false);
