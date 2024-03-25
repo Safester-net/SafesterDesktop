@@ -97,14 +97,18 @@ public class AttachmentDecryptEngineListener {
                 AttachmentDecryptEngine decryptEngine = (AttachmentDecryptEngine) cryptoEngine;
                 List<String> failedIntegrityCheck = decryptEngine.getFailedIntegrityFileList();
                 if (failedIntegrityCheck != null && failedIntegrityCheck.size() > 0) {
-                    MessagesManager messages = new MessagesManager();
-                    String msg = messages.getMessage("file_integrity_failed");
-                    String listFile = "";
-                    for (String fileName : failedIntegrityCheck) {
-                        listFile += fileName + System.getProperty("line.separator");
+                    boolean ignoreIntegrityCheck = true;
+                    if (!ignoreIntegrityCheck) {
+                        MessagesManager messages = new MessagesManager();
+                        String msg = messages.getMessage("file_integrity_failed");
+                        String listFile = "";
+                        for (String fileName : failedIntegrityCheck) {
+                            listFile += fileName + System.getProperty("line.separator");
+                        }
+                        msg = MessageFormat.format(msg, listFile);
+                        JOptionPane.showMessageDialog(jframe, msg);
                     }
-                    msg = MessageFormat.format(msg, listFile);
-                    JOptionPane.showMessageDialog(jframe, msg);
+
                 }
             }
 
