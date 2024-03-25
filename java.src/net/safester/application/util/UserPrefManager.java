@@ -106,6 +106,8 @@ public class UserPrefManager {
     
     public static String SUN_SCALING = "SUN_SCALING";
     
+    public static String DO_NOT_ENCRYPT_PDF = "DO_NOT_ENCRYPT_PDF";
+    
     /**
       * Get a  preference
       * @param prefName  the preference name

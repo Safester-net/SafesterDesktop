@@ -30,7 +30,7 @@ import java.util.Locale;
 import javax.swing.ImageIcon;
 
 import net.safester.application.Main;
-import org.apache.commons.lang3.SystemUtils;
+import net.safester.application.util.UserPrefManager;
 
 
 public class Parms {
@@ -116,7 +116,8 @@ public class Parms {
         
     // default charset to use to load & write text files
     public static final String DEFAULT_CHARSET = "ISO-8859-1";
-
+    
+    
     public static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = Main.class.getResource(path);
         if (imgURL != null) {
@@ -129,26 +130,25 @@ public class Parms {
 
     /**
      * Special code. Remove the Print and Buy Button if
-     * user.home/RemovePrintAndBuy.txt exists
+     * Parms.REMOVE_PRINT_AND_BUY = true;
      *
-     * @return true if  user.home/RemovePrintAndBuy.txt exists
+     * @return true if Parms.REMOVE_PRINT_AND_BUY = true;
      */
+    private static boolean REMOVE_PRINT_AND_BUY = true;
+        
     public static boolean removePrintAndBuy() {
-        String userHomeSafester = getSafesterUserHomeDir();
-        File file = new File(userHomeSafester + File.separator + "RemovePrintAndBuy.txt");
-        return file.exists();
+        return REMOVE_PRINT_AND_BUY;
     }
     
     /**
-     * Special code. Says if the PDF must be encrypted with the passphrase before file creation if 
-     * user.home/EncryptPdfWithPassphrase.txt exists
+     * Special code. Says if the PDF must be encrypted with the passphrase before file creation.
+     * Will be done if UserPrefManager.getBooleanPreference(UserPrefManager.DO_NOT_ENCRYPT_PDF) return false;
      *
-     * @return true if user.home/EncryptPdfWithPassphrase.txt exists
+     * @return true if UserPrefManager.getBooleanPreference(UserPrefManager.DO_NOT_ENCRYPT_PDF) return false;
      */
     public static boolean encryptPdfWithPassphrase() {
-        String userHomeSafester = getSafesterUserHomeDir();
-        File file = new File(userHomeSafester + File.separator + "EncryptPdfWithPassphrase.txt");
-        return file.exists();
+         boolean doNotEncryptPdf = UserPrefManager.getBooleanPreference(UserPrefManager.DO_NOT_ENCRYPT_PDF);
+         return !doNotEncryptPdf;
     }
     
     
