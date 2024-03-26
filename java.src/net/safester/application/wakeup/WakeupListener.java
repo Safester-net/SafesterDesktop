@@ -9,9 +9,13 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.safester.application.CryptTray;
 import net.safester.application.Login;
 import net.safester.application.Main;
 import net.safester.application.Safester;
+import org.apache.commons.lang3.SystemUtils;
 
 public class WakeupListener implements Runnable {
     @Override
@@ -35,6 +39,26 @@ public class WakeupListener implements Runnable {
                         if (login != null) {
                             login.deiconify();
                         }
+                    }
+                    
+                    if (SystemUtils.IS_OS_MAC_OSX) {
+                        main.setVisible(false);
+                        main.setAlwaysOnTop(false);
+                        main.setAlwaysOnTop(true);
+                        main.setVisible(true);
+
+                        Thread t = new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                    main.setAlwaysOnTop(false);
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(CryptTray.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        };
+                        t.start();
                     }
                 }
 
