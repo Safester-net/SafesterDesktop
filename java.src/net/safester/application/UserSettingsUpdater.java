@@ -234,6 +234,10 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jButtonSpellCheckOptions.putClientProperty( "JButton.buttonType", "square" );
                 
+        jCheckBoxEncryptPdfWithPassphrase.setText(messages.getMessage("encrypt_downlaoded_pdf_with_passphrase"));
+        boolean encryptDownloadePdf = UserPrefManager.getBooleanPreference(UserPrefManager.ENCRYPT_PDF);        
+        jCheckBoxEncryptPdfWithPassphrase.setSelected(encryptDownloadePdf);
+        
         jButtonOk.setText(messages.getMessage("ok"));
         jButtonCancel.setText(messages.getMessage("cancel"));
 
@@ -284,7 +288,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         this.repaint();
         
         this.setLocationRelativeTo(parent);
-        this.setSize(new Dimension(637, 788));
+        this.setSize(new Dimension(656, 821));
        
         SwingUtil.applySwingUpdates(rootPane);
         
@@ -594,6 +598,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         }
         UserPrefManager.setPreference(UserPrefManager.SPELL_CHECK_LANGUAGE, "" + languageSpellCheck);
         
+        UserPrefManager.setPreference(UserPrefManager.ENCRYPT_PDF, jCheckBoxEncryptPdfWithPassphrase.isSelected()); 
+        
         String hashMessage = null;
         Sha1 hashcode = new Sha1();
         MessagesManager messagesManager = new MessagesManager();
@@ -773,6 +779,8 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         jPanelSep1 = new javax.swing.JPanel();
         jLabelFontSizeBody = new javax.swing.JLabel();
         jComboFontSizeBody = new javax.swing.JComboBox();
+        jPanelHidensertSignature1 = new javax.swing.JPanel();
+        jCheckBoxEncryptPdfWithPassphrase = new javax.swing.JCheckBox();
         jPanelSepBlanc6 = new javax.swing.JPanel();
         jPanelSpellCheck = new javax.swing.JPanel();
         jPanelSep2 = new javax.swing.JPanel();
@@ -1177,6 +1185,18 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
         jPanelCheckBox.add(jPanelNbMessagesPerPage);
 
+        jPanelHidensertSignature1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jCheckBoxEncryptPdfWithPassphrase.setText("jCheckBoxEncryptPdfWithPassphrase");
+        jCheckBoxEncryptPdfWithPassphrase.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxEncryptPdfWithPassphraseItemStateChanged(evt);
+            }
+        });
+        jPanelHidensertSignature1.add(jCheckBoxEncryptPdfWithPassphrase);
+
+        jPanelCheckBox.add(jPanelHidensertSignature1);
+
         jPanelCenter.add(jPanelCheckBox);
 
         jPanelSepBlanc6.setMaximumSize(new java.awt.Dimension(32767, 8));
@@ -1364,6 +1384,10 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_jCheckBoxAskForConfirmActionPerformed
 
+    private void jCheckBoxEncryptPdfWithPassphraseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxEncryptPdfWithPassphraseItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxEncryptPdfWithPassphraseItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -1391,6 +1415,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSignature;
     private javax.swing.JButton jButtonSpellCheckOptions;
     private javax.swing.JCheckBox jCheckBoxAskForConfirm;
+    private javax.swing.JCheckBox jCheckBoxEncryptPdfWithPassphrase;
     private javax.swing.JCheckBox jCheckBoxHideDecrypDialog;
     private javax.swing.JCheckBox jCheckBoxHideEncryptionDiscardableWindow;
     private javax.swing.JCheckBox jCheckBoxInsertSignature;
@@ -1441,6 +1466,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelHideAndAnon;
     private javax.swing.JPanel jPanelHideEncryptDiscard;
     private javax.swing.JPanel jPanelHidensertSignature;
+    private javax.swing.JPanel jPanelHidensertSignature1;
     private javax.swing.JPanel jPanelLanguage;
     private javax.swing.JPanel jPanelNameAndEmail;
     private javax.swing.JPanel jPanelNameNew;

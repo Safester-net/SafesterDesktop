@@ -134,7 +134,7 @@ public class Parms {
      *
      * @return true if Parms.REMOVE_PRINT_AND_BUY = true;
      */
-    private static boolean REMOVE_PRINT_AND_BUY = true;
+    private static boolean REMOVE_PRINT_AND_BUY = false;
         
     public static boolean removePrintAndBuy() {
         return REMOVE_PRINT_AND_BUY;
@@ -147,8 +147,8 @@ public class Parms {
      * @return true if UserPrefManager.getBooleanPreference(UserPrefManager.DO_NOT_ENCRYPT_PDF) return false;
      */
     public static boolean encryptPdfWithPassphrase() {
-         boolean doNotEncryptPdf = UserPrefManager.getBooleanPreference(UserPrefManager.DO_NOT_ENCRYPT_PDF);
-         return !doNotEncryptPdf;
+         boolean doEncryptPdf = UserPrefManager.getBooleanPreference(UserPrefManager.ENCRYPT_PDF);
+         return doEncryptPdf;
     }
     
     
