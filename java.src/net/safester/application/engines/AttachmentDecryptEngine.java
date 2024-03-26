@@ -42,6 +42,7 @@ import com.safelogic.pgp.api.util.msg.MessagesManager;
 import com.safelogic.pgp.api.util.parms.CmPgpCodes;
 import com.safelogic.pgp.api.util.parms.PgpExtensions;
 import com.safelogic.pgp.apispecs.PgpFileStatus;
+import com.safelogic.utilx.Debug;
 import com.safelogic.utilx.Hex;
 
 import net.safester.application.util.JOptionPaneNewCustom;
@@ -57,8 +58,7 @@ public class AttachmentDecryptEngine extends Thread implements CryptoEngine {
     /**
      * The debug flag
      */
-    //  protected boolean DEBUG = Debug.isSet(this);
-    protected boolean DEBUG = true;
+    protected boolean DEBUG = Debug.isSet(this);
 
     /* National language messages */
     private MessagesManager messages = new MessagesManager();

@@ -23,6 +23,7 @@
  */
 package net.safester.application;
 
+import com.safelogic.utilx.Debug;
 import net.safester.application.wakeup.WakeupCallSender;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
@@ -56,7 +57,7 @@ import net.safester.application.wakeup.*;
 
 public class Safester {
 
-    public static boolean DEBUG = false;
+    protected static boolean DEBUG = Debug.isSet(Safester.class);
 
     public static final String CR_LF = System.getProperty("line.separator");
     private static boolean USE_SYNTHETICA = false;
@@ -77,13 +78,13 @@ public class Safester {
    public static void main(String[] args) {
         AnotherInstanceTester anotherInstanceTester = new AnotherInstanceTester();
         if (anotherInstanceTester.isAnotherInstanceRunning()) {
-            System.out.println("Safester Start - Another instance running ==> endWakeUpCall() Port: " + anotherInstanceTester.getPort());
+            debug("Safester Start - Another instance running ==> endWakeUpCall() Port: " + anotherInstanceTester.getPort());
             WakeupCallSender.sendWakeUpCall();
             System.exit(0); // Exit the second instance
         } else {
             ServerSockerSetuper serverSockerSetuper =  new ServerSockerSetuper();
             serverSockerSetuper.setupServerSocket();
-            System.out.println("Safester Start - First start! Port: " +  serverSockerSetuper.getPort());
+            debug("Safester Start - First start! Port: " +  serverSockerSetuper.getPort());
             startWakeupListener();
             runApplication(); // This is where your app's main functionality starts
         }
@@ -122,10 +123,9 @@ public class Safester {
                 languageManager.storeLanguage();
             }
             
-
             AwakeFileSession.setUseBase64EncodingForCall();
 
-            System.out.println(System.getProperty("user.dir"));
+            debug(System.getProperty("user.dir"));
 
             if (!System.getProperty("user.dir").startsWith("I:\\")) {
                 SystemInit.redirectOutAndErr();
@@ -268,4 +268,13 @@ public class Safester {
         return true;
     }
 
+    /**
+     * debug tool
+     */
+    private static void debug(String s) {
+        if (DEBUG) {
+            System.out.println(s);
+        }
+    }
+    
 }

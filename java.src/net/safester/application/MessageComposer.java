@@ -163,7 +163,7 @@ public class MessageComposer extends javax.swing.JFrame {
     /**
      * The debug flag
      */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * The visual debug flag, if we want to see tthe html content

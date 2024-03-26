@@ -663,7 +663,7 @@ public class Main extends javax.swing.JFrame {
             jMenuSettings.remove(jMenuItemForgetPassphrase);
         }
 
-        System.out.println(new Date() + " SafeShareItMain... initCompany end...");
+        debug(new Date() + " SafeShareItMain... initCompany end...");
 
         SwingUtil.applySwingUpdates(rootPane);
 
