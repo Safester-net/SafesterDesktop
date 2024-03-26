@@ -42,6 +42,11 @@ public class WakeupListener implements Runnable {
                     }
                     
                     if (SystemUtils.IS_OS_MAC_OSX) {
+                        
+                        if (main == null) {
+                            return;
+                        }
+                        
                         main.setVisible(false);
                         main.setAlwaysOnTop(false);
                         main.setAlwaysOnTop(true);
