@@ -284,6 +284,8 @@ public class Main extends javax.swing.JFrame {
     public void deiconify() {
         // Deiconify (restore) the frame
         setExtendedState(getExtendedState() & (~JFrame.ICONIFIED));
+        requestFocus();
+        toFront();
     }
     /* Init a secondary connection for list messages */
     /**
@@ -572,12 +574,24 @@ public class Main extends javax.swing.JFrame {
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Handle the close attempt
+                // e.g., show a message, minimize the window, etc.
+                setExtendedState(getExtendedState() | JFrame.ICONIFIED);
+            }
+        });
+
+        /*
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 close();
             }
         });
+        */
 
         this.addComponentListener(new ComponentAdapter() {
 
