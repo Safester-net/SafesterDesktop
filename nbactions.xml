@@ -12,7 +12,7 @@
             <properties>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.vmArgs>--add-opens java.base/javax.crypto=ALL-UNNAMED</exec.vmArgs>
+                <exec.vmArgs>--add-opens java.base/javax.crypto=ALL-UNNAMED -Djava.net.preferIPv4Stack=true</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>net.safester.application.Safester</exec.mainClass>
             </properties>
@@ -30,7 +30,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.vmArgs>--add-opens java.base/javax.crypto=ALL-UNNAMED -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.vmArgs>--add-opens java.base/javax.crypto=ALL-UNNAMED -Djava.net.preferIPv4Stack=true -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>net.safester.application.Safester</exec.mainClass>
             </properties>
@@ -47,7 +47,7 @@
             <properties>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.vmArgs>--add-opens java.base/javax.crypto=ALL-UNNAMED</exec.vmArgs>
+                <exec.vmArgs>--add-opens java.base/javax.crypto=ALL-UNNAMED -Djava.net.preferIPv4Stack=true</exec.vmArgs>
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>net.safester.application.Safester</exec.mainClass>
             </properties>
