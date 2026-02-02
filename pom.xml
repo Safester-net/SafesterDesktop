@@ -158,6 +158,7 @@
             <version>2.7</version>
         </dependency>
 
+<!--
         <dependency>
             <groupId>cgeep_api</groupId>
             <artifactId>cgeep_api</artifactId>
@@ -175,7 +176,7 @@
             <artifactId>cgeep_provider</artifactId>
             <version>1.x</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>filedrop</groupId>
             <artifactId>filedrop</artifactId>
