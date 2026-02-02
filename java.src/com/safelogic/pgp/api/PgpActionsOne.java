@@ -77,6 +77,14 @@ import org.bouncycastle.openpgp.PGPSignatureGenerator;
 import org.bouncycastle.openpgp.PGPSignatureList;
 import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator;
 import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPublicKeyDataDecryptorFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPublicKeyKeyEncryptionMethodGenerator;
 
 import com.safelogic.pgp.api.engines.CryptoEngine;
 import com.safelogic.pgp.api.util.crypto.CgeepTagArmoredOutputStream;
@@ -141,6 +149,14 @@ public class PgpActionsOne implements PgpActions
 	public boolean stringSignatureVerified = false;
 
 	private boolean integrityCheck = false;
+
+	private static PBESecretKeyDecryptor buildPbeSecretKeyDecryptor(char[] passphrase) throws PGPException {
+		if (passphrase == null) {
+			throw new IllegalArgumentException("passphrase cannot be null");
+		}
+		return new BcPBESecretKeyDecryptorBuilder(new BcPGPDigestCalculatorProvider()).build(passphrase);
+	}
+
 	/**
 	 * Defaut constructor.
 	 */
@@ -337,13 +353,10 @@ public class PgpActionsOne implements PgpActions
 		// No integrity check for now
 		boolean withIntegrityCheck = this.integrityCheck;
 
-		PGPEncryptedDataGenerator   cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5, 
-				withIntegrityCheck, 
-				new SecureRandom(), 
-				"BC");
+		PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5).setWithIntegrityPacket(withIntegrityCheck).setSecureRandom(new SecureRandom()));
 		for(PGPPublicKey pgpPublicKey : pgpPublicKeys)
 		{
-			cPk.addMethod(pgpPublicKey);
+			cPk.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPublicKey));
 		}
 		OutputStream fOut = new FileOutputStream(outFile);
 
@@ -627,7 +640,7 @@ public class PgpActionsOne implements PgpActions
 
 		try
 		{
-			clear = pbe.getDataStream(pgpPrivKey, "BC");            
+			clear = pbe.getDataStream(new BcPublicKeyDataDecryptorFactory(pgpPrivKey));            
 			plainFact = new PGPObjectFactory(clear);            
 			message = plainFact.nextObject();
 		}
@@ -678,7 +691,7 @@ public class PgpActionsOne implements PgpActions
 
 			if (ops != null && key != null)
 			{
-				ops.initVerify(key, "BC");
+				ops.init(new BcPGPContentVerifierBuilderProvider(), key);
 			}            
 			else
 			{
@@ -850,7 +863,7 @@ public class PgpActionsOne implements PgpActions
 		// Add a try/catch block anyway
 		try
 		{
-			pGPPrivateKey = pgpSecKey.extractPrivateKey(passphrase, "BC");
+			pGPPrivateKey = pgpSecKey.extractPrivateKey(buildPbeSecretKeyDecryptor(passphrase));
 		}
 		catch (Exception e)
 		{
@@ -900,13 +913,12 @@ public class PgpActionsOne implements PgpActions
 		PgeepPrivateKey pgeepPrivKey 
 		= (PgeepPrivateKey) kh.getPgpPrivateKey(privKeyId, null, passphrase);
 		PGPSecretKey  pgpSec = pgeepPrivKey.getPGPSecretKey();
-		PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(passphrase, "BC");  
+		PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(buildPbeSecretKeyDecryptor(passphrase));  
 
 		PGPSignatureGenerator sGen 
-		= new PGPSignatureGenerator(pgpSec.getPublicKey().getAlgorithm(), 
-				PGPUtil.SHA1, "BC");
+		= new PGPSignatureGenerator(new BcPGPContentSignerBuilder(pgpSec.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-		sGen.initSign(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
+		sGen.init(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
 
 		Iterator    it = pgpSec.getPublicKey().getUserIDs();
 		if (it.hasNext())
@@ -1116,7 +1128,7 @@ public class PgpActionsOne implements PgpActions
 		//OutputStream  out = new BufferedOutputStream( new FileOutputStream(p2.getFileName()));
 		OutputStream  out = new BufferedOutputStream( new FileOutputStream(fileOut));
 
-		ops.initVerify(key, "BC");
+		ops.init(new BcPGPContentVerifierBuilderProvider(), key);
 
 
 		byte[]                  buf = new byte[BUFFER_SIZE];
@@ -1237,7 +1249,7 @@ public class PgpActionsOne implements PgpActions
 
 		PGPSecretKey  signingKey = pgeepPrivKey.getPGPSecretKey();
 
-		PGPPrivateKey signingPrivateKey = signingKey.extractPrivateKey(passphrase, "BC");
+		PGPPrivateKey signingPrivateKey = signingKey.extractPrivateKey(buildPbeSecretKeyDecryptor(passphrase));
 
 		int symmetricKeyAlgorithm = PGPEncryptedData.CAST5;
 		int signingKeyAlgorithm = signingKey.getPublicKey().getAlgorithm();
@@ -1245,9 +1257,7 @@ public class PgpActionsOne implements PgpActions
 		Iterator it = signingKey.getPublicKey().getUserIDs();
 
 		// Init encrypted data generator
-		PGPEncryptedDataGenerator encryptedDataGenerator 
-		= new PGPEncryptedDataGenerator(
-				symmetricKeyAlgorithm, true, new SecureRandom(), "BC");        
+		PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(new BcPGPDataEncryptorBuilder(symmetricKeyAlgorithm).setWithIntegrityPacket(true).setSecureRandom(new SecureRandom()));        
 
 		for(int i = 0; i < publicKeysId.size(); i++)
 		{
@@ -1265,7 +1275,7 @@ public class PgpActionsOne implements PgpActions
             }
 			 */
 
-			encryptedDataGenerator.addMethod(pgpPubkey);
+			encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPubkey));
 		}
 
 		OutputStream finalOut = new BufferedOutputStream(new
@@ -1283,9 +1293,8 @@ public class PgpActionsOne implements PgpActions
 		BufferedOutputStream(compressedDataGenerator.open(encOut));
 
 		// Init signature
-		PGPSignatureGenerator signatureGenerator = new PGPSignatureGenerator(
-				signingKeyAlgorithm, HashAlgorithmTags.SHA1, "BC");
-		signatureGenerator.initSign(PGPSignature.BINARY_DOCUMENT, signingPrivateKey);
+		PGPSignatureGenerator signatureGenerator = new PGPSignatureGenerator(new BcPGPContentSignerBuilder(signingKeyAlgorithm, HashAlgorithmTags.SHA1));
+		signatureGenerator.init(PGPSignature.BINARY_DOCUMENT, signingPrivateKey);
 		PGPSignatureSubpacketGenerator subpacketGenerator = new
 		PGPSignatureSubpacketGenerator();
 		subpacketGenerator.setSignerUserID(false, userid);
@@ -1404,12 +1413,11 @@ public class PgpActionsOne implements PgpActions
 		= (PgeepPrivateKey) kh.getPgpPrivateKey(privKeyId, null, passphrase);
 		PGPSecretKey  pgpSec = pgeepPrivKey.getPGPSecretKey();
 
-		PGPPrivateKey            pgpPrivKey = pgpSec.extractPrivateKey(passphrase, "BC");        
+		PGPPrivateKey            pgpPrivKey = pgpSec.extractPrivateKey(buildPbeSecretKeyDecryptor(passphrase));        
 		PGPSignatureGenerator    sGen 
-		= new PGPSignatureGenerator(pgpSec.getPublicKey().getAlgorithm(), 
-				PGPUtil.SHA1, "BC");
+		= new PGPSignatureGenerator(new BcPGPContentSignerBuilder(pgpSec.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-		sGen.initSign(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
+		sGen.init(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
 
 		BCPGOutputStream         bOut = new BCPGOutputStream(out);
 
@@ -1546,7 +1554,7 @@ public class PgpActionsOne implements PgpActions
 			return CmPgpCodes.KEY_NOT_FOUND;   
 		}
 
-		sig.initVerify(key, "BC");
+		sig.init(new BcPGPContentVerifierBuilderProvider(), key);
 
 		byte[]                  buf = new byte[BUFFER_SIZE];
 		int                     len;
@@ -1660,12 +1668,11 @@ public class PgpActionsOne implements PgpActions
 		= (PgeepPrivateKey) kh.getPgpPrivateKey(privKeyId, privKeyring, null, passphrase);
 		PGPSecretKey  pgpSec = pgeepPrivKey.getPGPSecretKey();
 
-		PGPPrivateKey            pgpPrivKey = pgpSec.extractPrivateKey(passphrase, "BC");        
+		PGPPrivateKey            pgpPrivKey = pgpSec.extractPrivateKey(buildPbeSecretKeyDecryptor(passphrase));        
 		PGPSignatureGenerator    sGen 
-		= new PGPSignatureGenerator(pgpSec.getPublicKey().getAlgorithm(), 
-				PGPUtil.SHA1, "BC");
+		= new PGPSignatureGenerator(new BcPGPContentSignerBuilder(pgpSec.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-		sGen.initSign(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
+		sGen.init(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
 
 		BCPGOutputStream         bOut = new BCPGOutputStream(out);
 
@@ -1843,7 +1850,7 @@ public class PgpActionsOne implements PgpActions
 			return CmPgpCodes.KEY_NOT_FOUND;   
 		}
 
-		sig.initVerify(key, "BC");
+		sig.init(new BcPGPContentVerifierBuilderProvider(), key);
 
 		while ((ch = dIn.read()) >= 0)
 		{
@@ -1933,13 +1940,10 @@ public class PgpActionsOne implements PgpActions
 		// No integrity check for now
 		boolean withIntegrityCheck = this.integrityCheck;
 
-		PGPEncryptedDataGenerator   cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5, 
-				withIntegrityCheck, 
-				new SecureRandom(), 
-				"BC");                
+		PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5).setWithIntegrityPacket(withIntegrityCheck).setSecureRandom(new SecureRandom()));                
 		for(PGPPublicKey pgpPubkey : publicKeys)
 		{
-			cPk.addMethod(pgpPubkey);
+			cPk.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPubkey));
 		}
 
 		OutputStream fOut = new ByteArrayOutputStream();
@@ -2152,7 +2156,7 @@ public class PgpActionsOne implements PgpActions
 
 		try
 		{
-			clear = pbe.getDataStream(pgpPrivKey, "BC");
+			clear = pbe.getDataStream(new BcPublicKeyDataDecryptorFactory(pgpPrivKey));
 
 			plainFact = new PGPObjectFactory(clear);
 
@@ -2205,7 +2209,7 @@ public class PgpActionsOne implements PgpActions
 			}
 			else
 			{
-				calculatedSignature.initVerify(pgpPubKey, "BC");
+				calculatedSignature.init(new BcPGPContentVerifierBuilderProvider(), pgpPubKey);
 			}
 
 			message = pgpFact.nextObject();
@@ -2504,10 +2508,7 @@ public class PgpActionsOne implements PgpActions
 		boolean withIntegrityCheck = this.integrityCheck;
 
 		
-		PGPEncryptedDataGenerator   cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5, 
-				withIntegrityCheck, 
-				new SecureRandom(), 
-				"BC");                
+		PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5).setWithIntegrityPacket(withIntegrityCheck).setSecureRandom(new SecureRandom()));                
 
 		PGPPublicKeyRing pubKeyRing =  KeyHandlerOne.readPublicKeyRing(keyStream);
 		Iterator it = pubKeyRing.getPublicKeys();
@@ -2517,7 +2518,7 @@ public class PgpActionsOne implements PgpActions
 			PGPPublicKey pubKey = (PGPPublicKey)it.next();
 			if(pubKey.isEncryptionKey())
 			{
-				cPk.addMethod(pubKey);
+				cPk.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pubKey));
 				break;
 			}    
 

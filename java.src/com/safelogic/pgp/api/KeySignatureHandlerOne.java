@@ -46,6 +46,7 @@ import java.util.Vector;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.bcpg.BCPGOutputStream;
+import org.bouncycastle.bcpg.HashAlgorithmTags;
 import org.bouncycastle.bcpg.PublicKeyAlgorithmTags;
 import org.bouncycastle.bcpg.SignatureSubpacket;
 import org.bouncycastle.bcpg.SignatureSubpacketTags;
@@ -63,6 +64,12 @@ import org.bouncycastle.openpgp.PGPSignatureGenerator;
 import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator;
 import org.bouncycastle.openpgp.PGPSignatureSubpacketVector;
 import org.bouncycastle.openpgp.PGPUtil;
+
+import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
 
 import com.safelogic.pgp.api.util.crypto.PgpUserId;
 import com.safelogic.pgp.api.util.parms.Parms;
@@ -88,6 +95,15 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
     public KeySignatureHandlerOne()
     {
         Security.addProvider(new BouncyCastleProvider());
+    }
+
+    private static PGPPrivateKey extractPrivateKey(PGPSecretKey secretKey, char[] passphrase) throws PGPException
+    {
+        PBESecretKeyDecryptor decryptor =
+                new BcPBESecretKeyDecryptorBuilder(new BcPGPDigestCalculatorProvider())
+                        .build(passphrase);
+
+        return secretKey.extractPrivateKey(decryptor);
     }
 
     public static void main(
@@ -808,14 +824,13 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
         try
         {
 
-            PGPPrivateKey pgpPrivKey = secretKey.extractPrivateKey(secretKeyPass, "BC");
+            PGPPrivateKey pgpPrivKey = extractPrivateKey(secretKey, secretKeyPass);
 
-            PGPSignatureGenerator       sGen = new PGPSignatureGenerator(secretKey.getPublicKey().getAlgorithm(), 
-                                                                         PGPUtil.SHA1, 
-                                                                         "BC");
+            PGPSignatureGenerator sGen = new PGPSignatureGenerator(
+                    new BcPGPContentSignerBuilder(secretKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-            //sGen.initSign(PGPSignature.DEFAULT_CERTIFICATION, pgpPrivKey);
-            sGen.initSign(PGPSignature.KEY_REVOCATION, pgpPrivKey);
+            //sGen.init(PGPSignature.DEFAULT_CERTIFICATION, pgpPrivKey);
+            sGen.init(PGPSignature.KEY_REVOCATION, pgpPrivKey);
             
             PGPSignature sig = sGen.generateCertification(keyToBeSigned);
 
@@ -862,11 +877,10 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
             
             out = new ArmoredOutputStream(out);
 
-            PGPPrivateKey pgpPrivKey = secretKey.extractPrivateKey(secretKeyPass, "BC");
+            PGPPrivateKey pgpPrivKey = extractPrivateKey(secretKey, secretKeyPass);
 
-            PGPSignatureGenerator       sGen = new PGPSignatureGenerator(secretKey.getPublicKey().getAlgorithm(), 
-                                                                         PGPUtil.SHA1, 
-                                                                         "BC");
+            PGPSignatureGenerator sGen = new PGPSignatureGenerator(
+                    new BcPGPContentSignerBuilder(secretKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
             //sGen.initSign(PGPSignature.DEFAULT_CERTIFICATION, pgpPrivKey);
             
@@ -881,7 +895,7 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
                 signatureType = PGPSignature.SUBKEY_BINDING;
             }
             
-            sGen.initSign(signatureType, pgpPrivKey);
+            sGen.init(signatureType, pgpPrivKey);
             
             BCPGOutputStream            bOut = new BCPGOutputStream(out);
 
@@ -1133,11 +1147,10 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
             
             out = new ArmoredOutputStream(out);
 
-            PGPPrivateKey pgpPrivKey = secretKey.extractPrivateKey(secretKeyPass, "BC");
+            PGPPrivateKey pgpPrivKey = extractPrivateKey(secretKey, secretKeyPass);
 
-            PGPSignatureGenerator       sGen = new PGPSignatureGenerator(secretKey.getPublicKey().getAlgorithm(), 
-                                                                         PGPUtil.SHA1, 
-                                                                         "BC");
+            PGPSignatureGenerator sGen = new PGPSignatureGenerator(
+                    new BcPGPContentSignerBuilder(secretKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
             
             int signatureType = 0;
@@ -1151,7 +1164,7 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
                 signatureType = PGPSignature.SUBKEY_BINDING;
             }
             
-            sGen.initSign(signatureType, pgpPrivKey);
+            sGen.init(signatureType, pgpPrivKey);
             
             BCPGOutputStream            bOut = new BCPGOutputStream(out);
 
@@ -1246,7 +1259,7 @@ public class KeySignatureHandlerOne implements KeySignatureHandler
             	continue;
             }
             
-            s.initVerify(pubKeyMaster, "BC");
+            s.init(new BcPGPContentVerifierBuilderProvider(), pubKeyMaster);
 
               
                 if ( s.getSignatureType() == PGPSignature.POSITIVE_CERTIFICATION)

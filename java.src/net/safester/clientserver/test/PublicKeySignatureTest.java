@@ -103,9 +103,9 @@ public class PublicKeySignatureTest {
             	continue;
             }
             
-            s.initVerify(pubKeyMaster, "BC");
+            if (true) new Exception("Not supported signature type: s.initVerify(pubKeyMaster, \"BC\" does not compile with BC 1.51!");
+            //s.initVerify(pubKeyMaster, "BC");
 
-              
                 if ( s.getSignatureType() == PGPSignature.POSITIVE_CERTIFICATION)
                 {
                     if (s.verifyCertification(userIdToVerify, pubKeyMaster))
