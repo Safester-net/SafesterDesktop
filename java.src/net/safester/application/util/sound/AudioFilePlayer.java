@@ -23,9 +23,6 @@
  */
 package net.safester.application.util.sound;
 
-import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
-import static javax.sound.sampled.AudioSystem.getAudioInputStream;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

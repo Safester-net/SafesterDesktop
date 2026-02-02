@@ -24,9 +24,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/cgeep_api.jar"/>
-	<classpathentry kind="lib" path="lib/cgeep_crypto.jar"/>
-	<classpathentry kind="lib" path="lib/cgeep_provider.jar"/>
 	<classpathentry kind="lib" path="lib/filedrop.jar"/>
 	<classpathentry kind="lib" path="lib/joc-v3.0.4-basic.jar"/>
 	<classpathentry kind="lib" path="lib/JTattooKawan.jar"/>

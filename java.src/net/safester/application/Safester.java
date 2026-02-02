@@ -24,6 +24,8 @@
 package net.safester.application;
 
 import com.safelogic.utilx.Debug;
+import java.security.Provider;
+import java.security.Security;
 import net.safester.application.wakeup.WakeupCallSender;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
@@ -75,7 +77,25 @@ public class Safester {
      */
    
     
+    public static void debugBc() {
+        Provider p = Security.getProvider("BC");
+        System.out.println("BC provider = " + p);
+        if (p != null) {
+            System.out.println("BC provider loaded from = " +
+                    p.getClass().getProtectionDomain().getCodeSource().getLocation());
+        }
+        System.out.println("BouncyCastleProvider class loaded from = " +
+                org.bouncycastle.jce.provider.BouncyCastleProvider.class
+                        .getProtectionDomain().getCodeSource().getLocation());
+    }
+    
+    
    public static void main(String[] args) {
+       
+       CryptoBootstrap.ensureBcInstalled();
+       debugBc();
+
+
         AnotherInstanceTester anotherInstanceTester = new AnotherInstanceTester();
         if (anotherInstanceTester.isAnotherInstanceRunning()) {
             debug("Safester Start - Another instance running ==> endWakeUpCall() Port: " + anotherInstanceTester.getPort());
