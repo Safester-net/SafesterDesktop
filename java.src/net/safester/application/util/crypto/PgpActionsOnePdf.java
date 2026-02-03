@@ -78,6 +78,15 @@ import org.bouncycastle.openpgp.PGPSignatureList;
 import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator;
 import org.bouncycastle.openpgp.PGPUtil;
 
+import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPublicKeyDataDecryptorFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPublicKeyKeyEncryptionMethodGenerator;
+
 import com.safelogic.pgp.api.BooleanContainer;
 import com.safelogic.pgp.api.KeyHandlerOne;
 import com.safelogic.pgp.api.PgeepPrivateKey;
@@ -336,12 +345,12 @@ public class PgpActionsOnePdf implements PgpActions {
         // No integrity check for now
         boolean withIntegrityCheck = this.integrityCheck;
 
-        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5,
-                withIntegrityCheck,
-                new SecureRandom(),
-                "BC");
+        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(
+                new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5)
+                        .setWithIntegrityPacket(withIntegrityCheck)
+                        .setSecureRandom(new SecureRandom()));
         for (PGPPublicKey pgpPublicKey : pgpPublicKeys) {
-            cPk.addMethod(pgpPublicKey);
+            cPk.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPublicKey));
         }
         OutputStream fOut = new FileOutputStream(outFile);
 
@@ -591,7 +600,7 @@ public class PgpActionsOnePdf implements PgpActions {
         Object message = null;
 
         try {
-            clear = pbe.getDataStream(pgpPrivKey, "BC");
+            clear = pbe.getDataStream(new BcPublicKeyDataDecryptorFactory(pgpPrivKey));
             plainFact = new PGPObjectFactory(clear);
             message = plainFact.nextObject();
         } catch (Exception e) {
@@ -631,7 +640,7 @@ public class PgpActionsOnePdf implements PgpActions {
             key = pgpRing.getPublicKey(ops.getKeyID());
 
             if (ops != null && key != null) {
-                ops.initVerify(key, "BC");
+                ops.init(new BcPGPContentVerifierBuilderProvider(), key);
             } else {
                 // SAY NOTHING FOR NOW!
                 // TODO
@@ -814,7 +823,7 @@ public class PgpActionsOnePdf implements PgpActions {
 
         // Add a try/catch block anyway
         try {
-            pGPPrivateKey = pgpSecKey.extractPrivateKey(passphrase, "BC");
+            pGPPrivateKey = pgpSecKey.extractPrivateKey(buildPBESecretKeyDecryptor(passphrase));
         } catch (Exception e) {
             System.out.println("NORMAL: " + e.toString());
             return null;
@@ -853,13 +862,12 @@ public class PgpActionsOnePdf implements PgpActions {
         PgeepPrivateKey pgeepPrivKey
                 = (PgeepPrivateKey) kh.getPgpPrivateKey(privKeyId, null, passphrase);
         PGPSecretKey pgpSec = pgeepPrivKey.getPGPSecretKey();
-        PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(passphrase, "BC");
+        PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(buildPBESecretKeyDecryptor(passphrase));
 
         PGPSignatureGenerator sGen
-                = new PGPSignatureGenerator(pgpSec.getPublicKey().getAlgorithm(),
-                        PGPUtil.SHA1, "BC");
+                = new PGPSignatureGenerator(new BcPGPContentSignerBuilder(pgpSec.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-        sGen.initSign(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
+        sGen.init(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
 
         Iterator it = pgpSec.getPublicKey().getUserIDs();
         if (it.hasNext()) {
@@ -1040,7 +1048,7 @@ public class PgpActionsOnePdf implements PgpActions {
         //OutputStream  out = new BufferedOutputStream( new FileOutputStream(p2.getFileName()));
         OutputStream out = new BufferedOutputStream(new FileOutputStream(fileOut));
 
-        ops.initVerify(key, "BC");
+        ops.init(new BcPGPContentVerifierBuilderProvider(), key);
 
         byte[] buf = new byte[BUFFER_SIZE];
         int len;
@@ -1148,7 +1156,7 @@ public class PgpActionsOnePdf implements PgpActions {
 
         PGPSecretKey signingKey = pgeepPrivKey.getPGPSecretKey();
 
-        PGPPrivateKey signingPrivateKey = signingKey.extractPrivateKey(passphrase, "BC");
+        PGPPrivateKey signingPrivateKey = signingKey.extractPrivateKey(buildPBESecretKeyDecryptor(passphrase));
 
         int symmetricKeyAlgorithm = PGPEncryptedData.CAST5;
         int signingKeyAlgorithm = signingKey.getPublicKey().getAlgorithm();
@@ -1158,7 +1166,9 @@ public class PgpActionsOnePdf implements PgpActions {
         // Init encrypted data generator
         PGPEncryptedDataGenerator encryptedDataGenerator
                 = new PGPEncryptedDataGenerator(
-                        symmetricKeyAlgorithm, true, new SecureRandom(), "BC");
+                        new BcPGPDataEncryptorBuilder(symmetricKeyAlgorithm)
+                                .setWithIntegrityPacket(true)
+                                .setSecureRandom(new SecureRandom()));
 
         for (int i = 0; i < publicKeysId.size(); i++) {
             String publicKeyid = (String) publicKeysId.get(i);
@@ -1174,7 +1184,7 @@ public class PgpActionsOnePdf implements PgpActions {
                 JOptionPaneCustom.showMessageDialog(null, publicKeyid);
             }
              */
-            encryptedDataGenerator.addMethod(pgpPubkey);
+            encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPubkey));
         }
 
         OutputStream finalOut = new BufferedOutputStream(new FileOutputStream(fileOut),
@@ -1188,9 +1198,8 @@ public class PgpActionsOnePdf implements PgpActions {
         OutputStream compressedOut = new BufferedOutputStream(compressedDataGenerator.open(encOut));
 
         // Init signature
-        PGPSignatureGenerator signatureGenerator = new PGPSignatureGenerator(
-                signingKeyAlgorithm, HashAlgorithmTags.SHA1, "BC");
-        signatureGenerator.initSign(PGPSignature.BINARY_DOCUMENT, signingPrivateKey);
+        PGPSignatureGenerator signatureGenerator = new PGPSignatureGenerator(new BcPGPContentSignerBuilder(signingKeyAlgorithm, HashAlgorithmTags.SHA1));
+        signatureGenerator.init(PGPSignature.BINARY_DOCUMENT, signingPrivateKey);
         PGPSignatureSubpacketGenerator subpacketGenerator = new PGPSignatureSubpacketGenerator();
         subpacketGenerator.setSignerUserID(false, userid);
         signatureGenerator.setHashedSubpackets(subpacketGenerator.generate());
@@ -1296,12 +1305,11 @@ public class PgpActionsOnePdf implements PgpActions {
                 = (PgeepPrivateKey) kh.getPgpPrivateKey(privKeyId, null, passphrase);
         PGPSecretKey pgpSec = pgeepPrivKey.getPGPSecretKey();
 
-        PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(passphrase, "BC");
+        PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(buildPBESecretKeyDecryptor(passphrase));
         PGPSignatureGenerator sGen
-                = new PGPSignatureGenerator(pgpSec.getPublicKey().getAlgorithm(),
-                        PGPUtil.SHA1, "BC");
+                = new PGPSignatureGenerator(new BcPGPContentSignerBuilder(pgpSec.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-        sGen.initSign(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
+        sGen.init(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
 
         BCPGOutputStream bOut = new BCPGOutputStream(out);
 
@@ -1417,7 +1425,7 @@ public class PgpActionsOnePdf implements PgpActions {
             return CmPgpCodes.KEY_NOT_FOUND;
         }
 
-        sig.initVerify(key, "BC");
+        sig.init(new BcPGPContentVerifierBuilderProvider(), key);
 
         byte[] buf = new byte[BUFFER_SIZE];
         int len;
@@ -1517,12 +1525,11 @@ public class PgpActionsOnePdf implements PgpActions {
                 = (PgeepPrivateKey) kh.getPgpPrivateKey(privKeyId, privKeyring, null, passphrase);
         PGPSecretKey pgpSec = pgeepPrivKey.getPGPSecretKey();
 
-        PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(passphrase, "BC");
+        PGPPrivateKey pgpPrivKey = pgpSec.extractPrivateKey(buildPBESecretKeyDecryptor(passphrase));
         PGPSignatureGenerator sGen
-                = new PGPSignatureGenerator(pgpSec.getPublicKey().getAlgorithm(),
-                        PGPUtil.SHA1, "BC");
+                = new PGPSignatureGenerator(new BcPGPContentSignerBuilder(pgpSec.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1));
 
-        sGen.initSign(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
+        sGen.init(PGPSignature.BINARY_DOCUMENT, pgpPrivKey);
 
         BCPGOutputStream bOut = new BCPGOutputStream(out);
 
@@ -1669,7 +1676,7 @@ public class PgpActionsOnePdf implements PgpActions {
             return CmPgpCodes.KEY_NOT_FOUND;
         }
 
-        sig.initVerify(key, "BC");
+        sig.init(new BcPGPContentVerifierBuilderProvider(), key);
 
         while ((ch = dIn.read()) >= 0) {
             sig.update((byte) ch);
@@ -1744,12 +1751,12 @@ public class PgpActionsOnePdf implements PgpActions {
         // No integrity check for now
         boolean withIntegrityCheck = this.integrityCheck;
 
-        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5,
-                withIntegrityCheck,
-                new SecureRandom(),
-                "BC");
+        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(
+                new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5)
+                        .setWithIntegrityPacket(withIntegrityCheck)
+                        .setSecureRandom(new SecureRandom()));
         for (PGPPublicKey pgpPubkey : publicKeys) {
-            cPk.addMethod(pgpPubkey);
+            cPk.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPubkey));
         }
 
         OutputStream fOut = new ByteArrayOutputStream();
@@ -1935,7 +1942,7 @@ public class PgpActionsOnePdf implements PgpActions {
         }
 
         try {
-            clear = pbe.getDataStream(pgpPrivKey, "BC");
+            clear = pbe.getDataStream(new BcPublicKeyDataDecryptorFactory(pgpPrivKey));
 
             plainFact = new PGPObjectFactory(clear);
 
@@ -1980,7 +1987,7 @@ public class PgpActionsOnePdf implements PgpActions {
                 // FUTUR USAGE: Say we can not verify the signature because of the signing key.                
                 calculatedSignature = null;
             } else {
-                calculatedSignature.initVerify(pgpPubKey, "BC");
+                calculatedSignature.init(new BcPGPContentVerifierBuilderProvider(), pgpPubKey);
             }
 
             message = pgpFact.nextObject();
@@ -2216,10 +2223,10 @@ public class PgpActionsOnePdf implements PgpActions {
         // No integrity check for now
         boolean withIntegrityCheck = this.integrityCheck;
 
-        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedData.CAST5,
-                withIntegrityCheck,
-                new SecureRandom(),
-                "BC");
+        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(
+                new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5)
+                        .setWithIntegrityPacket(withIntegrityCheck)
+                        .setSecureRandom(new SecureRandom()));
 
         PGPPublicKeyRing pubKeyRing = KeyHandlerOne.readPublicKeyRing(keyStream);
         Iterator it = pubKeyRing.getPublicKeys();
@@ -2227,7 +2234,7 @@ public class PgpActionsOnePdf implements PgpActions {
         while (it.hasNext()) {
             PGPPublicKey pubKey = (PGPPublicKey) it.next();
             if (pubKey.isEncryptionKey()) {
-                cPk.addMethod(pubKey);
+                cPk.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pubKey));
                 break;
             }
 
@@ -2411,6 +2418,11 @@ public class PgpActionsOnePdf implements PgpActions {
     }
 
 
+
+
+    private static PBESecretKeyDecryptor buildPBESecretKeyDecryptor(char[] passphrase) throws PGPException {
+        return new BcPBESecretKeyDecryptorBuilder(new BcPGPDigestCalculatorProvider()).build(passphrase);
+    }
 
 }
 
