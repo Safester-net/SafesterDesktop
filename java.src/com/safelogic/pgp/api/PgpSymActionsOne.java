@@ -57,11 +57,12 @@ import org.bouncycastle.openpgp.PGPObjectFactory;
 import org.bouncycastle.openpgp.PGPPBEEncryptedData;
 import org.bouncycastle.openpgp.PGPUtil;
 import org.bouncycastle.openpgp.operator.PBEDataDecryptorFactory;
-import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
-import org.bouncycastle.openpgp.operator.jcajce.JcaPGPDigestCalculatorProviderBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcePBEDataDecryptorFactoryBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcePBEKeyEncryptionMethodGenerator;
-import org.bouncycastle.openpgp.operator.jcajce.JcePGPDataEncryptorBuilder;
+
+import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPBEDataDecryptorFactory;
+import org.bouncycastle.openpgp.operator.bc.BcPBEKeyEncryptionMethodGenerator;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
 
 import com.safelogic.pgp.api.engines.CryptoEngine;
 import com.safelogic.pgp.api.util.crypto.CgeepTagArmoredOutputStream;
@@ -207,14 +208,12 @@ public class PgpSymActionsOne implements PgpSymActions
 
     private static PGPObjectFactory newPgpObjectFactory(InputStream in)
     {
-        return new PGPObjectFactory(in, new JcaKeyFingerprintCalculator());
+        return new PGPObjectFactory(in, new BcKeyFingerprintCalculator());
     }
 
     private static PBEDataDecryptorFactory buildPbeDecryptorFactory(char[] passPhrase) throws PGPException
     {
-        return new JcePBEDataDecryptorFactoryBuilder(
-                new JcaPGPDigestCalculatorProviderBuilder().setProvider(PROVIDER).build()
-        ).setProvider(PROVIDER).build(passPhrase);
+        return new BcPBEDataDecryptorFactory(passPhrase, new BcPGPDigestCalculatorProvider());
     }
 
     /**
@@ -251,13 +250,12 @@ public class PgpSymActionsOne implements PgpSymActions
         comData.close();
 
         PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(
-                new JcePGPDataEncryptorBuilder(algorithm)
-                        .setWithIntegrityPacket(false)
-                        .setSecureRandom(new SecureRandom())
-                        .setProvider(PROVIDER)
-        );
+                    new BcPGPDataEncryptorBuilder(algorithm)
+                            .setWithIntegrityPacket(false)
+                            .setSecureRandom(new SecureRandom())
+            );
 
-        cPk.addMethod(new JcePBEKeyEncryptionMethodGenerator(passPhrase).setProvider(PROVIDER));
+        cPk.addMethod(new BcPBEKeyEncryptionMethodGenerator(passPhrase));
 
         byte[] bytes = bOut.toByteArray();
 
@@ -357,13 +355,12 @@ public class PgpSymActionsOne implements PgpSymActions
         try
         {
             PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(
-                    new JcePGPDataEncryptorBuilder(PGPEncryptedData.CAST5)
+                    new BcPGPDataEncryptorBuilder(PGPEncryptedData.CAST5)
                             .setWithIntegrityPacket(withIntegrityCheck)
                             .setSecureRandom(new SecureRandom())
-                            .setProvider(PROVIDER)
             );
 
-            cPk.addMethod(new JcePBEKeyEncryptionMethodGenerator(passphrase).setProvider(PROVIDER));
+            cPk.addMethod(new BcPBEKeyEncryptionMethodGenerator(passphrase));
 
             OutputStream cOut = cPk.open(out, new byte[1 << 16]);
 
