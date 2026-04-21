@@ -27,7 +27,7 @@ package net.safester.application.version;
 public class Version
 {
     /** Version value to increment */    
-    public static String VERSION    = "v6.7";
+    public static String VERSION    = "v6.8";
 
     /** Version date to increment */
     public static String DATE       = "21-Apr-26";
