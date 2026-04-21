@@ -988,7 +988,7 @@ public class Login extends javax.swing.JFrame {
         jPanel8.setPreferredSize(new java.awt.Dimension(289, 122));
         jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 8, 8));
 
-        jLabelLogo.setFont(new java.awt.Font("Arial", 1, 54)); // NOI18N
+        jLabelLogo.setFont(new java.awt.Font("Arial", 1, 64)); // NOI18N
         jLabelLogo.setForeground(new java.awt.Color(3, 86, 179));
         jLabelLogo.setText("Safester");
         jPanel8.add(jLabelLogo);
