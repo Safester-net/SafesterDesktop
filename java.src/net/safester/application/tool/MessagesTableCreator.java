@@ -42,6 +42,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.awakefw.file.api.util.HtmlConverter;
@@ -63,6 +64,18 @@ import net.safester.noobs.clientserver.RecipientLocal;
 public class MessagesTableCreator {
 
     public static boolean DEBUG = false;
+    private static final int ICON_COLUMN_WIDTH = 25;
+    private static final int ADDRESS_COLUMN_MIN_WIDTH = 160;
+    private static final int ADDRESS_COLUMN_PREFERRED_WIDTH = 240;
+    private static final int ADDRESS_COLUMN_MAX_WIDTH = 420;
+    private static final int SUBJECT_COLUMN_MIN_WIDTH = 260;
+    private static final int SUBJECT_COLUMN_PREFERRED_WIDTH = 520;
+    private static final int DATE_COLUMN_MIN_WIDTH = 130;
+    private static final int DATE_COLUMN_PREFERRED_WIDTH = 160;
+    private static final int DATE_COLUMN_MAX_WIDTH = 210;
+    private static final int SIZE_COLUMN_MIN_WIDTH = 70;
+    private static final int SIZE_COLUMN_PREFERRED_WIDTH = 90;
+    private static final int SIZE_COLUMN_MAX_WIDTH = 130;
         
     private JFrame parent;
     
@@ -226,29 +239,27 @@ public class MessagesTableCreator {
             jTable1.setShowVerticalLines(false);
 
 
-            jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+            jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
             
             jTable1.setRowHeight(jTable1.getRowHeight() + 5);
             //jTable1.setIntercellSpacing(new Dimension(3, 1));
             
 
             //Hide id column & read/unread column
-            jTable1.getColumnModel().getColumn(0).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
-            jTable1.getColumnModel().getColumn(1).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
+            setColumnWidth(columnModel, 0, 0, 0, 0);
+            setColumnWidth(columnModel, 1, 0, 0, 0);
 
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(25);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(25);
+            setColumnWidth(columnModel, 2, ICON_COLUMN_WIDTH, ICON_COLUMN_WIDTH, ICON_COLUMN_WIDTH);
+            setColumnWidth(columnModel, 3, ICON_COLUMN_WIDTH, ICON_COLUMN_WIDTH, ICON_COLUMN_WIDTH);
+            setColumnWidth(columnModel, 4, ICON_COLUMN_WIDTH, ICON_COLUMN_WIDTH, ICON_COLUMN_WIDTH);
 
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setMinWidth(25);
-            jTable1.getColumnModel().getColumn(3).setMaxWidth(25);
-
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setMinWidth(25);
-            jTable1.getColumnModel().getColumn(4).setMaxWidth(25);
+            setColumnWidth(columnModel, 5, ADDRESS_COLUMN_MIN_WIDTH, ADDRESS_COLUMN_PREFERRED_WIDTH,
+                    ADDRESS_COLUMN_MAX_WIDTH);
+            setColumnWidth(columnModel, 6, SUBJECT_COLUMN_MIN_WIDTH, SUBJECT_COLUMN_PREFERRED_WIDTH,
+                    Integer.MAX_VALUE);
+            setColumnWidth(columnModel, 7, DATE_COLUMN_MIN_WIDTH, DATE_COLUMN_PREFERRED_WIDTH,
+                    DATE_COLUMN_MAX_WIDTH);
+            setColumnWidth(columnModel, 8, SIZE_COLUMN_MIN_WIDTH, SIZE_COLUMN_PREFERRED_WIDTH, SIZE_COLUMN_MAX_WIDTH);
             
             ListSelectionModel rowSM = jTable1.getSelectionModel();
             rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -306,6 +317,17 @@ public class MessagesTableCreator {
             JOptionPaneNewCustom.showException(null, e);
         }
         return null;
+    }
+
+    private static void setColumnWidth(TableColumnModel columnModel, int columnIndex, int minWidth, int preferredWidth,
+            int maxWidth) {
+        TableColumn column = columnModel.getColumn(columnIndex);
+        column.setMinWidth(minWidth);
+        column.setPreferredWidth(preferredWidth);
+        column.setMaxWidth(maxWidth);
+        if (minWidth == maxWidth) {
+            column.setResizable(false);
+        }
     }
 
     private Object[][] initData(int nbCols) {

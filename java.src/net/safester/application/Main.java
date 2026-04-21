@@ -175,6 +175,11 @@ public class Main extends javax.swing.JFrame {
 
     public static final int DEFAULT_SPLIT_PANE_FOLDERS_LOC = 140;
     public static final int MIN_LOCATION_MESSAGE = 120;
+    private static final int DEFAULT_MESSAGE_LIST_WIDTH_RATIO = 65;
+    private static final int DEFAULT_MESSAGE_LIST_HEIGHT_RATIO = 45;
+    private static final int MIN_MESSAGE_LIST_WIDTH = 520;
+    private static final int MIN_MESSAGE_PREVIEW_WIDTH = 260;
+    private static final int MIN_MESSAGE_PREVIEW_HEIGHT = 220;
 
     public static final Color COLOR_MSG_INFO = new Color(132, 192, 252);
     private static final int BRAND_LOCK_LOGICAL_SIZE = 32;
@@ -274,6 +279,7 @@ public class Main extends javax.swing.JFrame {
         this.typeSubscription = typeSubscription;
         this.userAccounts = userAccounts;
         initComponents();
+        configureMessageListLayout();
         initCompany();
         thisOne = this;
         
@@ -633,6 +639,12 @@ public class Main extends javax.swing.JFrame {
         }
 
         WindowSettingManager.load(this);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setSplitPanePositions();
+            }
+        });
 
         jSplitPaneMessage.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
             @Override
@@ -738,6 +750,10 @@ public class Main extends javax.swing.JFrame {
 
     private void installBrandHeaderVisuals() {
         UiVisualsInstaller.applyIcon(jLabelLogoLockMain, AppIconId.LOCK, BRAND_LOCK_LOGICAL_SIZE);
+    }
+
+    private void configureMessageListLayout() {
+        jSplitPaneMessage.setResizeWeight(1.0d);
     }
 
     private void removePrintAndBuyIfnecessary() {
@@ -942,10 +958,12 @@ public class Main extends javax.swing.JFrame {
         int orientation = jSplitPaneMessage.getOrientation();
         if (orientation == JSplitPane.VERTICAL_SPLIT) {
             loc = UserPrefManager.getIntegerPreference(UserPrefManager.SPLIT_PANE_MESSAGE_LOC_VERTICAL_SPLIT);
-            loc = Math.max(loc, MIN_LOCATION_MESSAGE);
+            loc = normalizeMessageSplitLocation(loc, jSplitPaneMessage.getHeight(),
+                    DEFAULT_MESSAGE_LIST_HEIGHT_RATIO, MIN_LOCATION_MESSAGE, MIN_MESSAGE_PREVIEW_HEIGHT);
         } else {
             loc = UserPrefManager.getIntegerPreference(UserPrefManager.SPLIT_PANE_MESSAGE_LOC_HORIZONTAL_SPLIT);
-            loc = Math.max(loc, MIN_LOCATION_MESSAGE);
+            loc = normalizeMessageSplitLocation(loc, jSplitPaneMessage.getWidth(),
+                    DEFAULT_MESSAGE_LIST_WIDTH_RATIO, getMinimumMessageListWidth(), MIN_MESSAGE_PREVIEW_WIDTH);
         }
 
         // System.out.println("orientation (0=Vertical): " + orientation);
@@ -954,6 +972,38 @@ public class Main extends javax.swing.JFrame {
         jSplitPaneMessage.setLastDividerLocation(loc);
 
         this.repaint();
+    }
+
+    private int normalizeMessageSplitLocation(int storedLocation, int splitSize, int defaultRatio, int minimumLocation,
+            int minimumRemainingSize) {
+        int location = storedLocation;
+        if (splitSize > 0) {
+            int defaultLocation = splitSize * defaultRatio / 100;
+            if (location <= 0 || location < minimumLocation) {
+                location = defaultLocation;
+            }
+        }
+
+        location = Math.max(location, minimumLocation);
+
+        if (splitSize > 0) {
+            int maximumLocation = splitSize - minimumRemainingSize;
+            if (maximumLocation >= minimumLocation) {
+                location = Math.min(location, maximumLocation);
+            }
+        }
+
+        return location;
+    }
+
+    private int getMinimumMessageListWidth() {
+        int splitWidth = jSplitPaneMessage.getWidth();
+        if (splitWidth <= 0) {
+            return MIN_MESSAGE_LIST_WIDTH;
+        }
+
+        int proportionalMinimum = splitWidth * 55 / 100;
+        return Math.min(MIN_MESSAGE_LIST_WIDTH, Math.max(MIN_LOCATION_MESSAGE, proportionalMinimum));
     }
 
     private void saveSplitPanesLocation() {
