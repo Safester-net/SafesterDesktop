@@ -56,6 +56,11 @@ public final class AppIconManager {
         "/net/safester/application/images/files/icon-64x64.png",
         "/net/safester/application/images/files/safester-icon-80.png"
     };
+    private static final String[] LOGIN_LOGO_PATHS = {
+        "/net/safester/application/images/files/logo-blue-on-white-300x99.png",
+        "/net/safester/application/images/files/logo-blue-on-white-350x116.png",
+        "/net/safester/application/images/files/logo-blue-on-white-2019.png"
+    };
     private static final int[] SOURCE_SIZES = {16, 24, 32, 48, 64};
     private static final Pattern FILES_2_PATH_PATTERN = Pattern.compile(
             "(?:^|.*/)(?:net/safester/application/)?images/files_2/(\\d+)x(\\d+)/([^/]+)\\.png$");
@@ -109,6 +114,10 @@ public final class AppIconManager {
      * @return a replacement icon, or null when the path is not managed here
      */
     public static ImageIcon getIconFromPath(String resourcePath) {
+        if (isLoginLogoPath(resourcePath)) {
+            return getLoginLogoIcon();
+        }
+
         IconResource iconResource = parseIconResource(resourcePath);
         if (iconResource == null) {
             return null;
@@ -128,6 +137,11 @@ public final class AppIconManager {
     public static ImageIcon getApplicationIcon() {
         String cacheKey = "APPLICATION_ICON|" + DisplayScaleManager.getCurrentLevel().getStoredValue();
         return ICON_CACHE.computeIfAbsent(cacheKey, key -> buildApplicationIcon());
+    }
+
+    public static ImageIcon getLoginLogoIcon() {
+        String cacheKey = "LOGIN_LOGO|" + DisplayScaleManager.getCurrentLevel().getStoredValue();
+        return ICON_CACHE.computeIfAbsent(cacheKey, key -> buildMultiResolutionIcon(LOGIN_LOGO_PATHS));
     }
 
     /**
@@ -161,24 +175,28 @@ public final class AppIconManager {
     }
 
     private static ImageIcon buildApplicationIcon() {
+        return buildMultiResolutionIcon(APPLICATION_ICON_PATHS);
+    }
+
+    private static ImageIcon buildMultiResolutionIcon(String[] imagePaths) {
         List<Image> variants = new ArrayList<>();
-        for (String applicationIconPath : APPLICATION_ICON_PATHS) {
-            URL resource = AppIconManager.class.getResource(applicationIconPath);
+        for (String imagePath : imagePaths) {
+            URL resource = AppIconManager.class.getResource(imagePath);
             if (resource != null) {
-                variants.add(loadRawImage(applicationIconPath));
+                variants.add(loadRawImage(imagePath));
             }
         }
 
         if (variants.isEmpty()) {
-            throw new IllegalArgumentException("No application icon resource found!");
+            throw new IllegalArgumentException("No image resource found!");
         }
 
         if (variants.size() == 1) {
-            return new ImageIcon(variants.get(0), APPLICATION_ICON_PATHS[0]);
+            return new ImageIcon(variants.get(0), imagePaths[0]);
         }
 
         Image multiResolutionImage = new BaseMultiResolutionImage(variants.toArray(new Image[variants.size()]));
-        return new ImageIcon(multiResolutionImage, APPLICATION_ICON_PATHS[0]);
+        return new ImageIcon(multiResolutionImage, imagePaths[0]);
     }
 
     private static BufferedImage loadBestSource(String baseName, int requestedSize) {
@@ -281,6 +299,17 @@ public final class AppIconManager {
         }
 
         return new IconResource(matcher.group(3), width);
+    }
+
+    private static boolean isLoginLogoPath(String resourcePath) {
+        if (resourcePath == null || resourcePath.trim().isEmpty()) {
+            return false;
+        }
+
+        String normalizedPath = resourcePath.replace('\\', '/');
+        return normalizedPath.endsWith("/images/files/logo-blue-on-white-300x99.png")
+                || normalizedPath.endsWith("/images/files/logo-blue-on-white-350x116.png")
+                || normalizedPath.endsWith("/images/files/logo-blue-on-white-2019.png");
     }
 
     private static String buildDescription(String baseName, int logicalSize) {

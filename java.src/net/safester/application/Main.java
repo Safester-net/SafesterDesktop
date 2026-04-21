@@ -385,11 +385,12 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemDeleteAccount.setText(messages.getMessage("menu_delete_account"));
         this.jMenuItemScaling.setText(messages.getMessage("scaling"));
         jMenuView.setText(messages.getMessage("view"));
-        jMenuScaling.setText(messages.getMessage("laf_scaling"));
-        jMenuScaling.setVisible(false);
+        jMenuScaling.setText("Display Size");
         jRadioButtonMenuItemScale100.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.NORMAL));
         jRadioButtonMenuItemScale110.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.COMFORTABLE));
+        jRadioButtonMenuItemScale150.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.LARGE));
         jMenuAppearance.setText(messages.getMessage("appearance"));
+        jMenuSettings.remove(jMenuItemScaling);
         
         this.jMenuItemPassphraseRecoverySettings.setText(messages.getMessage("passphrase_recovery_settings"));
         this.jMenuItemForgetPassphrase.setText(messages.getMessage("remove_passphrase_from_memory"));
@@ -2635,15 +2636,14 @@ public class Main extends javax.swing.JFrame {
     
     private void setSelectedScaleRadioButton() {
         DisplayScaleLevel level = DisplayScaleManager.getStoredLevel();
-        if (level == DisplayScaleLevel.NORMAL) {
-            this.jRadioButtonMenuItemScale100.setSelected(true);
-        } else {
-            this.jRadioButtonMenuItemScale110.setSelected(true);
-        }
+        this.jRadioButtonMenuItemScale100.setSelected(level == DisplayScaleLevel.NORMAL);
+        this.jRadioButtonMenuItemScale110.setSelected(level == DisplayScaleLevel.COMFORTABLE);
+        this.jRadioButtonMenuItemScale150.setSelected(level == DisplayScaleLevel.LARGE);
     }
     
     private void updateScaling() {
         
+        DisplayScaleLevel currentLevel = DisplayScaleManager.getStoredLevel();
         DisplayScaleLevel level = DisplayScaleLevel.NORMAL;
         if (jRadioButtonMenuItemScale100.isSelected()) {
             level = DisplayScaleLevel.NORMAL;
@@ -2651,9 +2651,17 @@ public class Main extends javax.swing.JFrame {
         else if (jRadioButtonMenuItemScale110.isSelected()) {
             level = DisplayScaleLevel.COMFORTABLE;
         }
+        else if (jRadioButtonMenuItemScale150.isSelected()) {
+            level = DisplayScaleLevel.LARGE;
+        }
+
+        if (level == currentLevel) {
+            return;
+        }
         
         DisplayScaleManager.storeLevel(level);
         JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed"));
+        WindowSettingManager.save(this);
         System.exit(0);
     }
 
@@ -2885,6 +2893,7 @@ public class Main extends javax.swing.JFrame {
         jMenuScaling = new javax.swing.JMenu();
         jRadioButtonMenuItemScale100 = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItemScale110 = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemScale150 = new javax.swing.JRadioButtonMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemUserSettings = new javax.swing.JMenuItem();
         jSeparator23 = new javax.swing.JPopupMenu.Separator();
@@ -3995,6 +4004,15 @@ public class Main extends javax.swing.JFrame {
         });
         jMenuScaling.add(jRadioButtonMenuItemScale110);
 
+        buttonGroupScaling.add(jRadioButtonMenuItemScale150);
+        jRadioButtonMenuItemScale150.setText("jRadioButtonMenuItemScale150");
+        jRadioButtonMenuItemScale150.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale150ActionPerformed(evt);
+            }
+        });
+        jMenuScaling.add(jRadioButtonMenuItemScale150);
+
         jMenuView.add(jMenuScaling);
 
         jMenuBar1.add(jMenuView);
@@ -4313,6 +4331,10 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButtonMenuItemScale110ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale110ActionPerformed
         updateScaling();
     }//GEN-LAST:event_jRadioButtonMenuItemScale110ActionPerformed
+
+    private void jRadioButtonMenuItemScale150ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale150ActionPerformed
+        updateScaling();
+    }//GEN-LAST:event_jRadioButtonMenuItemScale150ActionPerformed
 
     private void jMenuItemScalingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemScalingActionPerformed
         if (sunUiScalingParms != null) {
@@ -5059,6 +5081,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemRight;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale100;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale110;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale150;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
