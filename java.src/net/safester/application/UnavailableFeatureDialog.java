@@ -115,6 +115,7 @@ public class UnavailableFeatureDialog extends javax.swing.JDialog {
         
         ButtonResizer br = new ButtonResizer(jPanelSouth);
         br.setWidthToMax();
+        com.swing.util.SwingUtil.applySwingUpdates(rootPane);
         this.setSize(450, 450);
 
         WindowSettingManager.load(this);

@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.scale.DisplayScaleManager;
 import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.UserPrefManager;
 
@@ -52,6 +53,8 @@ public class WindowsReseter {
         UserPrefManager.removePreference(UserPrefManager.ACCOUNTS_LIST);
         UserPrefManager.removePreference(UserPrefManager.LOOK_AND_FEEL_THEME);
         UserPrefManager.removePreference(UserPrefManager.FLATLAF_SCALING);
+        UserPrefManager.removePreference(DisplayScaleManager.DISPLAY_SIZE_LEVEL);
+        DisplayScaleManager.removeLegacyScalingPreferences();
         
         try {
             WindowSettingManager.resetAll();

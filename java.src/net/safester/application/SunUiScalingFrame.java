@@ -41,15 +41,14 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import com.swing.util.SwingUtil;
-import java.awt.Toolkit;
 
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.scale.DisplayScaleLevel;
+import net.safester.application.scale.DisplayScaleManager;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.WindowSettingManager;
-import net.safester.application.util.SunUiScalingUtil;
-import net.safester.application.util.UserPrefManager;
 
 
 /**
@@ -86,7 +85,7 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
     {
         clipboardManager = new ClipboardManager(rootPane);
         
-        Dimension dim = new Dimension(477, 365);
+        Dimension dim = new Dimension(477, 305);
         this.setSize(dim);
         this.setPreferredSize(dim);
 
@@ -117,7 +116,7 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
         jButtonApply.setText(messages.getMessage("ok"));
         jButtonClose.setText(messages.getMessage("cancel"));
 
-        hideUpperSizeIfLowResolution();
+        hideUnsupportedScaleOptions();
         
         // Set the Send preferences for user Preferences
         setStoredPreferences();
@@ -157,11 +156,15 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
 
     }    
     
-    private void hideUpperSizeIfLowResolution() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        if (screenSize.width < 2200) {
-            jRadioButtonScale250.setEnabled(false);
-        }
+    private void hideUnsupportedScaleOptions() {
+        jRadioButtonScale100.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.NORMAL));
+        jRadioButtonScale125.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.COMFORTABLE));
+        jRadioButtonScale150.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.LARGE));
+
+        jRadioButtonScale200.setVisible(false);
+        jPanelUserDef1.setVisible(false);
+        jRadioButtonScale250.setVisible(false);
+        jPanelUserDef2.setVisible(false);
     }
     
     /**
@@ -175,21 +178,14 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
         jRadioButtonScale200.setSelected(false);
         jRadioButtonScale250.setSelected(false);
 
-        String scaling = UserPrefManager.getPreference(UserPrefManager.SUN_SCALING, SunUiScalingUtil.SCALING_100);
-
-        if (scaling.equals(SunUiScalingUtil.SCALING_100)) {
+        DisplayScaleLevel level = DisplayScaleManager.getStoredLevel();
+        if (level == DisplayScaleLevel.NORMAL) {
             jRadioButtonScale100.setSelected(true);
         }
-        else if (scaling.equals(SunUiScalingUtil.SCALING_125)) {
+        else if (level == DisplayScaleLevel.COMFORTABLE) {
             jRadioButtonScale125.setSelected(true);
-        } else if (scaling.equals(SunUiScalingUtil.SCALING_150)) {
-            jRadioButtonScale150.setSelected(true);
-        } else if (scaling.equals(SunUiScalingUtil.SCALING_200)) {
-            jRadioButtonScale200.setSelected(true);
-        } else if (scaling.equals(SunUiScalingUtil.SCALING_250)) {
-            jRadioButtonScale250.setSelected(true);
         } else {
-            throw new IllegalArgumentException("Scaling is invalid: " + scaling);
+            jRadioButtonScale150.setSelected(true);
         }     
 
 
@@ -255,22 +251,18 @@ public class SunUiScalingFrame extends javax.swing.JFrame {
      */
     private void actionOk()
     {
-        String scaling = null;
+        DisplayScaleLevel level = DisplayScaleLevel.COMFORTABLE;
 
         if (jRadioButtonScale100.isSelected()) {
-            scaling = SunUiScalingUtil.SCALING_100;
+            level = DisplayScaleLevel.NORMAL;
         }
         else if (jRadioButtonScale125.isSelected()) {
-            scaling = SunUiScalingUtil.SCALING_125;
+            level = DisplayScaleLevel.COMFORTABLE;
         } else if (jRadioButtonScale150.isSelected()) {
-            scaling = SunUiScalingUtil.SCALING_150;
-        } else if (jRadioButtonScale200.isSelected()) {
-            scaling = SunUiScalingUtil.SCALING_200;
-        } else if (jRadioButtonScale250.isSelected()) {
-            scaling = SunUiScalingUtil.SCALING_250;
+            level = DisplayScaleLevel.LARGE;
         }
 
-        SunUiScalingUtil.setPreferenceScaling(scaling);
+        DisplayScaleManager.storeLevel(level);
         
         MessagesManager messages = new MessagesManager();
         JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed"));

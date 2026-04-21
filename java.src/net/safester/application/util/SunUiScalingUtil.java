@@ -5,9 +5,9 @@
  */
 package net.safester.application.util;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.Objects;
+import net.safester.application.scale.DisplayScaleLevel;
+import net.safester.application.scale.DisplayScaleManager;
 
 /**
  * Allows to easely scale the UI for the sun.java2d.uiScale
@@ -21,26 +21,13 @@ public class SunUiScalingUtil {
     public static final String SCALING_200 = "2.0";
     public static final String SCALING_250 = "2.5";
 
-    private static final double MIN_WIDTH_FOR_SCALING_150 = 2400;        
-
-    
     /**
      * Gest the Sun UI scaling stored in the preferences.
      * Will automatically fit for bigger screens
      * @return the Sun UI scaling stored in the preference
      */
     private static String getPreferenceScaling() {
-        
-        String defaultScaling = SCALING_100;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        
-        if (width > MIN_WIDTH_FOR_SCALING_150) {
-            defaultScaling = SCALING_150;
-        }
-        
-        String scaling = UserPrefManager.getPreference(UserPrefManager.SUN_SCALING, defaultScaling);
-        return scaling;
+        return DisplayScaleManager.getStoredLevel().getSunUiScale();
     }    
 
     /**
@@ -49,16 +36,8 @@ public class SunUiScalingUtil {
      */
     public static void setPreferenceScaling(String scaling) {
         Objects.requireNonNull(scaling, "scaling cannot be null!");
-                 
-        if (scaling.compareTo(SCALING_100) < 0) {
-            throw new IllegalArgumentException("Scaling can not be less than 1.0");
-        }
-        
-        if (scaling.compareTo(SCALING_250) > 0) {
-            throw new IllegalArgumentException("Scaling can not be more than 2.5");
-        }
-        
-        UserPrefManager.setPreference(UserPrefManager.SUN_SCALING, scaling);
+        DisplayScaleLevel level = DisplayScaleLevel.fromSunUiScale(scaling);
+        DisplayScaleManager.storeLevel(level);
     }
     
     

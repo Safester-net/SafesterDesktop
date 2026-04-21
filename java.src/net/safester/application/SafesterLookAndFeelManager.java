@@ -33,6 +33,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import com.swing.util.Themes;
 import net.safester.application.parms.Parms;
+import net.safester.application.scale.DisplayScaleManager;
 import net.safester.application.util.UserPrefManager;
 
 /**
@@ -69,8 +70,9 @@ public class SafesterLookAndFeelManager {
         FlatLaf.setUseNativeWindowDecorations( true );
         UIManager.put( "TitlePane.menuBarEmbedded", false );
         
-        String scaling = UserPrefManager.getPreference(UserPrefManager.FLATLAF_SCALING, "1.0");
-        System.setProperty("flatlaf.uiScale", scaling);
+        DisplayScaleManager.applyStartupScale();
+        DisplayScaleManager.removeLegacyScalingPreferences();
+        System.clearProperty("flatlaf.uiScale");
         
         String lookAndFeel =  UserPrefManager.getPreference(UserPrefManager.LOOK_AND_FEEL_THEME, Themes.DEFAULT_THEME);
         UIManager.setLookAndFeel(lookAndFeel);

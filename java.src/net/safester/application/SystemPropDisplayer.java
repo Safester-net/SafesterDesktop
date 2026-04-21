@@ -102,6 +102,8 @@ public class SystemPropDisplayer extends javax.swing.JFrame {
             }
         });
 
+        SwingUtil.applySwingUpdates(rootPane);
+
         this.setLocationRelativeTo(parentJframe);
         WindowSettingManager.load(this);
 

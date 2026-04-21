@@ -30,6 +30,7 @@ import java.util.Locale;
 import javax.swing.ImageIcon;
 
 import net.safester.application.Main;
+import net.safester.application.icons.AppIconManager;
 import net.safester.application.util.UserPrefManager;
 
 
@@ -119,6 +120,19 @@ public class Parms {
     
     
     public static ImageIcon createImageIcon(String path) {
+        if (ICON_PATH.equals(path)) {
+            return AppIconManager.getApplicationIcon();
+        }
+
+        try {
+            ImageIcon managedIcon = AppIconManager.getIconFromPath(path);
+            if (managedIcon != null) {
+                return managedIcon;
+            }
+        } catch (IllegalArgumentException exception) {
+            // Keep legacy behavior for missing or invalid resources.
+        }
+
         java.net.URL imgURL = Main.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);

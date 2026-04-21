@@ -124,6 +124,7 @@ public class RegisterCryptoOptions extends javax.swing.JDialog {
 
         addHyperLinkListener();
         keyListenerAdder();
+        SwingUtil.applySwingUpdates(rootPane);
         
 //        jPanelSouth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());
 //        jPanelNorth1.setBackground(LookAndFeelHelper.getDefaultBackgroundColor());

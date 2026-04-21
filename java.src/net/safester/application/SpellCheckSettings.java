@@ -106,7 +106,9 @@ public class SpellCheckSettings extends javax.swing.JDialog {
                  WindowSettingManager.save(thisOne);
             }
         });
-        
+
+        SwingUtil.applySwingUpdates(rootPane);
+
         this.setLocationRelativeTo(parent);
 
         this.setSize(new Dimension(489, 271));

@@ -121,6 +121,8 @@ import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.photo.PhotoAdder;
 import net.safester.application.photo.PhotoAddressBookUpdaterNew;
 import net.safester.application.photo.PhotoUtil;
+import net.safester.application.scale.DisplayScaleLevel;
+import net.safester.application.scale.DisplayScaleManager;
 import net.safester.application.socket.client.SocketClient;
 import net.safester.application.tool.AttachmentListHandler;
 import net.safester.application.tool.ClipboardManager;
@@ -348,10 +350,6 @@ public class Main extends javax.swing.JFrame {
         jMenuItemQuit.setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_Q, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-        if (SystemUtils.IS_OS_MAC) {
-            jMenuItemScaling.setVisible(false);
-        }
-                
         if (SystemUtils.IS_OS_MAC_OSX) {
             jMenuItemQuit.setVisible(false); // Quit is already in default left menu
             jMenuItemClose.setAccelerator(
@@ -388,11 +386,9 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemScaling.setText(messages.getMessage("scaling"));
         jMenuView.setText(messages.getMessage("view"));
         jMenuScaling.setText(messages.getMessage("laf_scaling"));
-        jRadioButtonMenuItemScale100.setText(messages.getMessage("scaling_100"));
-        
-        String messageScaled = messages.getMessage("scaling_110");
-        messageScaled= MainUtil.addRecommanded(messageScaled);
-        jRadioButtonMenuItemScale110.setText(messageScaled);
+        jMenuScaling.setVisible(false);
+        jRadioButtonMenuItemScale100.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.NORMAL));
+        jRadioButtonMenuItemScale110.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.COMFORTABLE));
         jMenuAppearance.setText(messages.getMessage("appearance"));
         
         this.jMenuItemPassphraseRecoverySettings.setText(messages.getMessage("passphrase_recovery_settings"));
@@ -2638,29 +2634,27 @@ public class Main extends javax.swing.JFrame {
 
     
     private void setSelectedScaleRadioButton() {
-        String scaling = UserPrefManager.getPreference(UserPrefManager.FLATLAF_SCALING, "1.0");
-        if (scaling.equals("1.0")) {
+        DisplayScaleLevel level = DisplayScaleManager.getStoredLevel();
+        if (level == DisplayScaleLevel.NORMAL) {
             this.jRadioButtonMenuItemScale100.setSelected(true);
-        } else if (scaling.equals("1.1")) {
-            this.jRadioButtonMenuItemScale110.setSelected(true);
         } else {
-            //ignore
+            this.jRadioButtonMenuItemScale110.setSelected(true);
         }
     }
     
     private void updateScaling() {
         
-        String scaling = "1.0";
+        DisplayScaleLevel level = DisplayScaleLevel.NORMAL;
         if (jRadioButtonMenuItemScale100.isSelected()) {
-            scaling = "1.0";
+            level = DisplayScaleLevel.NORMAL;
         }
         else if (jRadioButtonMenuItemScale110.isSelected()) {
-            scaling = "1.1";
+            level = DisplayScaleLevel.COMFORTABLE;
         }
         
-        UserPrefManager.setPreference(UserPrefManager.FLATLAF_SCALING, scaling);
-        System.setProperty("flatlaf.uiScale", scaling);
-        updateLookAndFeel();
+        DisplayScaleManager.storeLevel(level);
+        JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed"));
+        System.exit(0);
     }
 
         

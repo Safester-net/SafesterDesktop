@@ -51,6 +51,7 @@ import com.safelogic.utilx.io.stream.LineInputStream;
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.tool.UI_Util;
+import net.safester.application.util.UiVisualsInstaller;
 import net.safester.application.util.UserPrefManager;
 
 /**
@@ -172,6 +173,7 @@ public class SwingUtil {
      * @param container
      */
     public static void applySwingUpdates(Container container) {
+        UiVisualsInstaller.refreshComponentTreeIcons(container);
         resizeJComponentsFlatlaf(container);
         // Set URL button Foreground Color
         SwingColorUtil.setHyperLinkButtonsTextColor(container);
@@ -190,10 +192,6 @@ public class SwingUtil {
             int prefWidth = (int) component.getPreferredSize().getWidth();
 
             int newHeightTextField = 26;
-            
-            if (UserPrefManager.getPreference(UserPrefManager.FLATLAF_SCALING, "1.0").equals("1.1")) {
-                newHeightTextField = 28;    
-            }
             
             if (component instanceof JTextField || component instanceof JPasswordField) {
                 component.setMaximumSize(new Dimension(maxWidth, newHeightTextField));

@@ -48,10 +48,9 @@ import net.safester.application.mac.MacOsXFullPolicyFiles;
 import net.safester.application.messages.LanguageManager;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
+import net.safester.application.scale.DisplayScaleManager;
 import net.safester.application.tool.JOptionPaneHtml;
 import net.safester.application.util.JOptionPaneNewCustom;
-import net.safester.application.util.SunUiScalingUtil;
-import net.safester.application.util.UserPrefManager;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
 
@@ -116,8 +115,7 @@ public class Safester {
 
     public static void runApplication() throws HeadlessException {
         try {
-            String scaling = UserPrefManager.getPreference(UserPrefManager.SUN_SCALING, SunUiScalingUtil.SCALING_100);
-            System.setProperty("sun.java2d.uiScale",  scaling); 
+            DisplayScaleManager.applyStartupScale();
             
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             

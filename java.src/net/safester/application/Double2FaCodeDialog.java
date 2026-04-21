@@ -135,6 +135,8 @@ public class Double2FaCodeDialog extends javax.swing.JDialog {
         ButtonResizer buttonResizer = new ButtonResizer(jPanelSouth);
         buttonResizer.setWidthToMax();
 
+        SwingUtil.applySwingUpdates(rootPane);
+
         this.setLocationRelativeTo(caller);
         //pack();
         this.setSize(390, 390);

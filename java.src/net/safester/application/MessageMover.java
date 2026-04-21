@@ -111,6 +111,7 @@ public class MessageMover extends javax.swing.JDialog {
                 thisOne.dispose();
             }
         });
+        SwingUtil.applySwingUpdates(rootPane);
         this.setLocationRelativeTo(caller);
         WindowSettingManager.load(this);
     }

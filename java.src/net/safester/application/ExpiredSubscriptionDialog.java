@@ -127,6 +127,7 @@ public class ExpiredSubscriptionDialog extends javax.swing.JDialog {
         
         ButtonResizer br = new ButtonResizer(jPanelButton);
         br.setWidthToMax();
+        com.swing.util.SwingUtil.applySwingUpdates(rootPane);
         this.setSize(430, 430);
 
         WindowSettingManager.load(this);
