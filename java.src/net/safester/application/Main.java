@@ -2703,7 +2703,7 @@ public class Main extends javax.swing.JFrame {
         
         if (userSettingsUpdater != null) {
             userSettingsUpdater.dispose();
-            userSettingsUpdater = new UserSettingsUpdater(this, connection, userNumber, keyId);
+            userSettingsUpdater = new UserSettingsUpdater(this, connection, userNumber, keyId, passphrase);
             userSettingsUpdater.setVisible(true);
         }
         
@@ -4494,7 +4494,7 @@ public class Main extends javax.swing.JFrame {
             userSettingsUpdater.dispose();
         }
 
-        userSettingsUpdater = new UserSettingsUpdater(thisOne, connection, userNumber, getKeyId());
+        userSettingsUpdater = new UserSettingsUpdater(thisOne, connection, userNumber, getKeyId(), passphrase);
         userSettingsUpdater.setVisible(true);
 
     }// GEN-LAST:event_jMenuItemUserSettingsActionPerformed

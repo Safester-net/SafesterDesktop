@@ -40,6 +40,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.prefs.Preferences;
 
 import javax.swing.DefaultComboBoxModel;
@@ -100,6 +101,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
     private JFrame thisOne;
     private int userNumber;
     private String keyId;
+    private char[] passphrase;
 
     private String accountTypeName = null;
     private SignatureFrame signatureFrame = null;
@@ -108,7 +110,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
 
     /** Creates new form SafeShareItSettings */
-    public UserSettingsUpdater(JFrame theParent, Connection theConnection, int theUserNumber, String theKeyId) {
+    public UserSettingsUpdater(JFrame theParent, Connection theConnection, int theUserNumber, String theKeyId, char[] thePassphrase) {
         initComponents();
         parent = theParent;
         
@@ -117,6 +119,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         
         userNumber = theUserNumber;
         this.keyId = theKeyId;
+        this.passphrase = Objects.requireNonNull(thePassphrase, "passphrase cannot be null!");
         thisOne = this;
         initCompany();
     }
@@ -477,7 +480,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
         InputStream privKeyRing = new ByteArrayInputStream(privateKeyPgpBlock.getBytes());
         KeyHandlerOne kh = new KeyHandlerOne();
         PgeepPrivateKey pgeepPrivateKey = (PgeepPrivateKey) kh.getPgpPrivateKey(
-                                            privKeyRing, this.keyId, null);
+                                            privKeyRing, this.keyId, passphrase);
         int keyEncryptionAlgorithm = pgeepPrivateKey.getPGPSecretKey().getKeyEncryptionAlgorithm();
         String symmetricAlgorithmName = getSymmetricCipherName(keyEncryptionAlgorithm);
         return symmetricAlgorithmName;
@@ -646,7 +649,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
 //    private void restart() {
 //        this.setVisible(false);
-//        UserSettingsUpdater userSettingsUpdater = new UserSettingsUpdater(parent, connection, userNumber, keyId);
+//        UserSettingsUpdater userSettingsUpdater = new UserSettingsUpdater(parent, connection, userNumber, keyId, passphrase);
 //        userSettingsUpdater.setVisible(true);
 //    }
 
@@ -1404,7 +1407,7 @@ public class UserSettingsUpdater extends javax.swing.JFrame {
 
             @Override
             public void run() {
-                new UserSettingsUpdater(null, null, -1, "keyId").setVisible(true);
+                new UserSettingsUpdater(null, null, -1, "keyId", "passphrase".toCharArray()).setVisible(true);
             }
         });
     }
