@@ -47,12 +47,14 @@ import java.awt.HeadlessException;
 import java.net.URI;
 import javax.swing.JOptionPane;
 
+import net.safester.application.icons.AppIconId;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.Parms;
 import net.safester.application.parms.StoreParms;
 import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.WindowSettingManager;
+import net.safester.application.util.UiVisualsInstaller;
 import net.safester.application.version.Version;
 import net.safester.clientserver.ServerParms;
 
@@ -61,6 +63,8 @@ import net.safester.clientserver.ServerParms;
  * @author Nicolas de Pomereu
  */
 public class About extends javax.swing.JFrame {
+
+    private static final int BRAND_LOCK_LOGICAL_SIZE = 32;
 
     public static final String CR_LF = System.getProperty("line.separator");
 
@@ -121,6 +125,7 @@ public class About extends javax.swing.JFrame {
     public void initializeCompany() {
         this.setSize(new Dimension(434, 522));
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
+        installBrandHeaderVisuals();
 
         ButtonResizer buttonResizer = new ButtonResizer(jPanelButtons);
         buttonResizer.setWidthToMax();
@@ -184,6 +189,10 @@ public class About extends javax.swing.JFrame {
         //pack();
     }
 
+    private void installBrandHeaderVisuals() {
+        UiVisualsInstaller.applyIcon(jLabelLogoLock, AppIconId.LOCK, BRAND_LOCK_LOGICAL_SIZE);
+    }
+
     private void save() {
         WindowSettingManager.save(this);
     }
@@ -240,6 +249,7 @@ public class About extends javax.swing.JFrame {
         jPanelLogos = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabelLogo = new javax.swing.JLabel();
+        jLabelLogoLock = new javax.swing.JLabel();
         jPanelAbout1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabelCopyRight = new javax.swing.JLabel();
@@ -278,13 +288,22 @@ public class About extends javax.swing.JFrame {
         jPanelCenter.setLayout(new javax.swing.BoxLayout(jPanelCenter, javax.swing.BoxLayout.Y_AXIS));
 
         jPanelLogos.setMaximumSize(new java.awt.Dimension(32767, 133));
+        jPanelLogos.setOpaque(false);
         jPanelLogos.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 12, 12));
 
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 0, 5));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING, 8, 5));
 
-        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-blue-on-white-300x99.png"))); // NOI18N
-        jLabelLogo.setOpaque(true);
+        jLabelLogo.setFont(new java.awt.Font("Arial", 1, 54)); // NOI18N
+        jLabelLogo.setForeground(new java.awt.Color(3, 86, 179));
+        jLabelLogo.setText("Safester");
         jPanel1.add(jLabelLogo);
+
+        jLabelLogoLock.setMaximumSize(new java.awt.Dimension(32, 54));
+        jLabelLogoLock.setMinimumSize(new java.awt.Dimension(32, 54));
+        jLabelLogoLock.setPreferredSize(new java.awt.Dimension(32, 54));
+        jLabelLogoLock.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel1.add(jLabelLogoLock);
 
         jPanelLogos.add(jPanel1);
 
@@ -298,7 +317,7 @@ public class About extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(51, 22));
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jLabelCopyRight.setText("Safester v5.9 - 18-May-21 Copyright © 2021 Safester");
+        jLabelCopyRight.setText("Safester v5.9 - 18-May-21 Copyright \u00a9 2021 Safester");
         jPanel2.add(jLabelCopyRight);
 
         jPanelAbout1.add(jPanel2);
@@ -380,7 +399,7 @@ public class About extends javax.swing.JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(51, 22));
         jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jLabelSoftware.setText("Ce produit inclut des logiciels développés par : ");
+        jLabelSoftware.setText("Ce produit inclut des logiciels d\u00e9velopp\u00e9s par : ");
         jPanel6.add(jLabelSoftware);
 
         jPanelCredits.add(jPanel6);
@@ -637,6 +656,7 @@ private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JButton jButtonUrl;
     private javax.swing.JLabel jLabelCopyRight;
     private javax.swing.JLabel jLabelLogo;
+    private javax.swing.JLabel jLabelLogoLock;
     private javax.swing.JLabel jLabelSoftware;
     private javax.swing.JLabel jLabelSupport;
     private javax.swing.JPanel jPanel1;
