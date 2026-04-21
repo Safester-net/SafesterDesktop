@@ -26,9 +26,8 @@ package com.safelogic.pgp.api;
 import java.security.PublicKey;
 import java.util.Objects;
 
-import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.bcpg.PublicKeyAlgorithmTags;
 import org.bouncycastle.openpgp.PGPPublicKey;
-import org.bouncycastle.openpgp.operator.jcajce.JcaPGPKeyConverter;
 
 /**
  * PGP Public Key Holder
@@ -40,8 +39,6 @@ import org.bouncycastle.openpgp.operator.jcajce.JcaPGPKeyConverter;
  */
 public class PgeepPublicKey implements PublicKey
 {
-    private static final String PROVIDER = "BC";
-
     private final PGPPublicKey m_pgpKey;
 
     /**
@@ -60,23 +57,37 @@ public class PgeepPublicKey implements PublicKey
         return m_pgpKey;
     }
 
-    private PublicKey toJavaPublicKey() throws PGPException
+    private static String getAlgorithmName(int algorithm)
     {
-        return new JcaPGPKeyConverter().setProvider(PROVIDER).getPublicKey(m_pgpKey);
+        switch (algorithm)
+        {
+            case PublicKeyAlgorithmTags.RSA_GENERAL:
+            case PublicKeyAlgorithmTags.RSA_ENCRYPT:
+            case PublicKeyAlgorithmTags.RSA_SIGN:
+                return "RSA";
+
+            case PublicKeyAlgorithmTags.DSA:
+                return "DSA";
+
+            case PublicKeyAlgorithmTags.ECDSA:
+                return "ECDSA";
+
+            case PublicKeyAlgorithmTags.ECDH:
+                return "ECDH";
+
+            case PublicKeyAlgorithmTags.ELGAMAL_ENCRYPT:
+            case PublicKeyAlgorithmTags.ELGAMAL_GENERAL:
+                return "ELGAMAL";
+
+            default:
+                return "PGP";
+        }
     }
 
     @Override
     public String getAlgorithm()
     {
-        try
-        {
-            PublicKey k = toJavaPublicKey();
-            return (k != null) ? k.getAlgorithm() : null;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        return getAlgorithmName(m_pgpKey.getAlgorithm());
     }
 
     @Override
@@ -84,8 +95,7 @@ public class PgeepPublicKey implements PublicKey
     {
         try
         {
-            PublicKey k = toJavaPublicKey();
-            return (k != null) ? k.getEncoded() : null;
+            return m_pgpKey.getEncoded();
         }
         catch (Exception e)
         {
@@ -96,14 +106,6 @@ public class PgeepPublicKey implements PublicKey
     @Override
     public String getFormat()
     {
-        try
-        {
-            PublicKey k = toJavaPublicKey();
-            return (k != null) ? k.getFormat() : null;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        return "PGP";
     }
 }

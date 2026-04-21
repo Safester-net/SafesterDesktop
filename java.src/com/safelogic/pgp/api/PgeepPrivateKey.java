@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.PrivateKey;
-import java.security.Security;
 
 import org.bouncycastle.bcpg.PublicKeyAlgorithmTags;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPSecretKey;
 import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
-import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
 
 /**
  * PGP Private Key Holder
@@ -39,7 +38,6 @@ public class PgeepPrivateKey implements PrivateKey {
         }
         this.m_pgpKey = pgpKey;
         this.pass = passphrase;
-        ensureBcInstalled();
     }
 
     /**
@@ -93,17 +91,10 @@ public class PgeepPrivateKey implements PrivateKey {
     }
 
     private PGPPrivateKey extractPgpPrivateKey() throws PGPException {
-        PBESecretKeyDecryptor decryptor = new JcePBESecretKeyDecryptorBuilder()
-                .setProvider("BC")
+        PBESecretKeyDecryptor decryptor = new BcPBESecretKeyDecryptorBuilder(new BcPGPDigestCalculatorProvider())
                 .build(pass);
 
         return m_pgpKey.extractPrivateKey(decryptor);
-    }
-
-    private static void ensureBcInstalled() {
-        if (Security.getProvider("BC") == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
     }
 
     // Rule 8: Make your classes noncloneable

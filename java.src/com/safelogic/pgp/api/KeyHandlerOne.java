@@ -37,8 +37,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -62,8 +60,17 @@ import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.bcpg.CompressionAlgorithmTags;
 import org.bouncycastle.bcpg.HashAlgorithmTags;
+import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.generators.DSAKeyPairGenerator;
+import org.bouncycastle.crypto.generators.DSAParametersGenerator;
+import org.bouncycastle.crypto.generators.ElGamalKeyPairGenerator;
+import org.bouncycastle.crypto.generators.RSAKeyPairGenerator;
+import org.bouncycastle.crypto.params.DSAKeyGenerationParameters;
+import org.bouncycastle.crypto.params.DSAParameters;
+import org.bouncycastle.crypto.params.ElGamalKeyGenerationParameters;
+import org.bouncycastle.crypto.params.ElGamalParameters;
+import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.ElGamalParameterSpec;
 import org.bouncycastle.openpgp.PGPEncryptedData;
 import org.bouncycastle.openpgp.PGPEncryptedDataList;
 import org.bouncycastle.openpgp.PGPException;
@@ -86,11 +93,11 @@ import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
 import org.bouncycastle.openpgp.operator.PBESecretKeyEncryptor;
 import org.bouncycastle.openpgp.operator.PGPContentSignerBuilder;
 import org.bouncycastle.openpgp.operator.PGPDigestCalculator;
-import org.bouncycastle.openpgp.operator.jcajce.JcaPGPContentSignerBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcaPGPDigestCalculatorProviderBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcaPGPKeyPair;
-import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
+import org.bouncycastle.openpgp.operator.bc.BcPGPKeyPair;
 
 import com.safelogic.pgp.api.util.crypto.PgpUserId;
 import com.safelogic.pgp.api.util.crypto.elgamal.Group;
@@ -120,8 +127,55 @@ public class KeyHandlerOne implements KeyHandler {
 
     public static boolean isSet = false;
 
-    private static PGPKeyPair toPgpKeyPair(int algorithm, KeyPair keyPair) throws PGPException {
-    	return new JcaPGPKeyPair(algorithm, keyPair, new Date());
+    private static final BigInteger RSA_PUBLIC_EXPONENT = BigInteger.valueOf(0x10001L);
+
+    private static final int PRIME_CERTAINTY = 12;
+
+    private static PGPKeyPair toPgpKeyPair(int algorithm, AsymmetricCipherKeyPair keyPair) throws PGPException {
+	return new BcPGPKeyPair(algorithm, keyPair, new Date());
+    }
+
+    private static PGPDigestCalculator buildSha1DigestCalculator() throws PGPException {
+	return new BcPGPDigestCalculatorProvider().get(HashAlgorithmTags.SHA1);
+    }
+
+    private static PBESecretKeyDecryptor buildPBESecretKeyDecryptor(char[] passphrase) throws PGPException {
+	return new BcPBESecretKeyDecryptorBuilder(new BcPGPDigestCalculatorProvider()).build(passphrase);
+    }
+
+    private static PBESecretKeyEncryptor buildPBESecretKeyEncryptor(int algorithm, char[] passphrase)
+	    throws PGPException {
+	return new BcPBESecretKeyEncryptorBuilder(algorithm, buildSha1DigestCalculator())
+		.setSecureRandom(new SecureRandom())
+		.build(passphrase);
+    }
+
+    private static AsymmetricCipherKeyPair generateRsaKeyPair(int keyLength, SecureRandom random) {
+	RSAKeyPairGenerator generator = new RSAKeyPairGenerator();
+	generator.init(new RSAKeyGenerationParameters(RSA_PUBLIC_EXPONENT, random, keyLength, PRIME_CERTAINTY));
+	return generator.generateKeyPair();
+    }
+
+    private static AsymmetricCipherKeyPair generateDsaKeyPair(SecureRandom random) {
+	DSAParametersGenerator parametersGenerator = new DSAParametersGenerator();
+	parametersGenerator.init(1024, PRIME_CERTAINTY, random);
+	DSAParameters parameters = parametersGenerator.generateParameters();
+	DSAKeyPairGenerator generator = new DSAKeyPairGenerator();
+	generator.init(new DSAKeyGenerationParameters(random, parameters));
+	return generator.generateKeyPair();
+    }
+
+    private static AsymmetricCipherKeyPair generateElGamalKeyPair(int keyLength, SecureRandom random) {
+	Group elgamalGroup = Precomputed.getElGamalGroup(keyLength);
+
+	if (elgamalGroup == null) {
+	    throw new IllegalArgumentException("Group elgamalGroup can not be null!");
+	}
+
+	ElGamalParameters parameters = new ElGamalParameters(elgamalGroup.getP(), elgamalGroup.getG());
+	ElGamalKeyPairGenerator generator = new ElGamalKeyPairGenerator();
+	generator.init(new ElGamalKeyGenerationParameters(random, parameters));
+	return generator.generateKeyPair();
     }
 
     /**
@@ -322,22 +376,16 @@ public class KeyHandlerOne implements KeyHandler {
 	    throw new IllegalArgumentException("Invalid Symmetric Algorithm: " + algoSym);
 	}
 
-	KeyPair keyPairSign = null;
-	KeyPair keyPairCrypt = null;
+	AsymmetricCipherKeyPair keyPairSign = null;
+	AsymmetricCipherKeyPair keyPairCrypt = null;
 
 	PGPKeyPair pgpKeyPairSign = null;
 	PGPKeyPair pgpKeyPairCrypt = null;
 
 	if (algoAsym.equals(PgpCryptoParms.RSA)) {
-	    KeyPairGenerator kpg = null;
-
-	    kpg = KeyPairGenerator.getInstance("RSA", "BC");
-	    kpg.initialize(keyLengthAsym);
-	    keyPairSign = kpg.generateKeyPair();
-
-	    kpg = KeyPairGenerator.getInstance("RSA", "BC");
-	    kpg.initialize(keyLengthAsym);
-	    keyPairCrypt = kpg.generateKeyPair();
+	    SecureRandom random = new SecureRandom(seed);
+	    keyPairSign = generateRsaKeyPair(keyLengthAsym, random);
+	    keyPairCrypt = generateRsaKeyPair(keyLengthAsym, random);
 
 	    //pgpKeyPairSign = new PGPKeyPair(PGPPublicKey.RSA_SIGN, keyPairSign, new Date());
 	    //pgpKeyPairCrypt = new PGPKeyPair(PGPPublicKey.RSA_ENCRYPT, keyPairCrypt, new Date());
@@ -346,25 +394,9 @@ public class KeyHandlerOne implements KeyHandler {
 	    
 	    
 	} else if (algoAsym.equals(PgpCryptoParms.DSA_ELGAMAL)) {
-	    KeyPairGenerator dsaKpg = KeyPairGenerator.getInstance("DSA", "BC");
-	    dsaKpg.initialize(1024);
-	    keyPairSign = dsaKpg.generateKeyPair();
-
-	    KeyPairGenerator elgKpg = KeyPairGenerator.getInstance("ELGAMAL", "BC");
-
-	    Group elgamalGroup = Precomputed.getElGamalGroup(keyLengthAsym);
-
-	    if (elgamalGroup == null) {
-		throw new IllegalArgumentException("Group elgamalGroup can not be null!");
-	    }
-
-	    BigInteger g = elgamalGroup.getG();
-	    BigInteger p = elgamalGroup.getP();
-
-	    ElGamalParameterSpec elParams = new ElGamalParameterSpec(p, g);
-
-	    elgKpg.initialize(elParams);
-	    keyPairCrypt = elgKpg.generateKeyPair();
+	    SecureRandom random = new SecureRandom(seed);
+	    keyPairSign = generateDsaKeyPair(random);
+	    keyPairCrypt = generateElGamalKeyPair(keyLengthAsym, random);
 
 	    //pgpKeyPairSign = new PGPKeyPair(PGPPublicKey.DSA, keyPairSign, new Date());
 	    //pgpKeyPairCrypt = new PGPKeyPair(PGPPublicKey.ELGAMAL_ENCRYPT, keyPairCrypt, new Date());
@@ -398,13 +430,10 @@ public class KeyHandlerOne implements KeyHandler {
 
 	PGPKeyRingGenerator keyRingGen = null;
 
-	PGPDigestCalculator sha1Calc = new JcaPGPDigestCalculatorProviderBuilder().build().get(HashAlgorithmTags.SHA1);
-	PBESecretKeyEncryptor keyEncryptor = new JcePBESecretKeyEncryptorBuilder(pgpSymAlgorihtm, sha1Calc)
-		.setProvider("BC")
-		.setSecureRandom(new SecureRandom())
-		.build(passphrase);
-	PGPContentSignerBuilder signerBuilder = new JcaPGPContentSignerBuilder(
-		pgpKeyPairSign.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1).setProvider("BC");
+	PGPDigestCalculator sha1Calc = buildSha1DigestCalculator();
+	PBESecretKeyEncryptor keyEncryptor = buildPBESecretKeyEncryptor(pgpSymAlgorihtm, passphrase);
+	PGPContentSignerBuilder signerBuilder = new BcPGPContentSignerBuilder(
+		pgpKeyPairSign.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1);
 
 	keyRingGen = new PGPKeyRingGenerator(
 		PGPSignature.POSITIVE_CERTIFICATION,
@@ -1227,8 +1256,7 @@ public class KeyHandlerOne implements KeyHandler {
 		    // Add a try/catch block anyway
 		    try {
 
-			PBESecretKeyDecryptor decryptor = new JcePBESecretKeyDecryptorBuilder().setProvider("BC")
-				.build(passphrase);
+			PBESecretKeyDecryptor decryptor = buildPBESecretKeyDecryptor(passphrase);
 			pGPPrivateKey = pgpSecretKey.extractPrivateKey(decryptor);
 			break;
 		    } catch (Exception e) {
@@ -1506,7 +1534,7 @@ public class KeyHandlerOne implements KeyHandler {
 	    PgeepPrivateKey pgeepPrivKey = (PgeepPrivateKey) this.getPgpPrivateKey(userId, null, passphrase);
 	    PGPSecretKey pgpSecretKey = pgeepPrivKey.getPGPSecretKey();
 
-	    PBESecretKeyDecryptor decryptor = new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(passphrase);
+	    PBESecretKeyDecryptor decryptor = buildPBESecretKeyDecryptor(passphrase);
 	    PGPPrivateKey pgpPrivKey = pgpSecretKey.extractPrivateKey(decryptor);
 //	} catch (NoSuchProviderException e) {
 //	    throw new KeyException(e);
@@ -1758,13 +1786,9 @@ public class KeyHandlerOne implements KeyHandler {
 	    while (it.hasNext()) {
 		PGPSecretKey pgpKey = (PGPSecretKey) it.next();
 		try {
-		    PGPDigestCalculator sha1Calc = new JcaPGPDigestCalculatorProviderBuilder().build()
-			    .get(HashAlgorithmTags.SHA1);
-		    PBESecretKeyDecryptor decryptor = new JcePBESecretKeyDecryptorBuilder().setProvider("BC")
-			    .build(old_passphrase);
-		    PBESecretKeyEncryptor encryptor = new JcePBESecretKeyEncryptorBuilder(
-			    pgpKey.getKeyEncryptionAlgorithm(), sha1Calc).setProvider("BC")
-			    .setSecureRandom(new SecureRandom()).build(new_passphrase);
+		    PBESecretKeyDecryptor decryptor = buildPBESecretKeyDecryptor(old_passphrase);
+		    PBESecretKeyEncryptor encryptor = buildPBESecretKeyEncryptor(
+			    pgpKey.getKeyEncryptionAlgorithm(), new_passphrase);
 		    pgpKey = PGPSecretKey.copyWithNewPassword(pgpKey, decryptor, encryptor);
 		} catch (Exception e) {
 		    // Wrong key ==> do not change the key and try the next one!
