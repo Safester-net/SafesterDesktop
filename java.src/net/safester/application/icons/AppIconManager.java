@@ -51,9 +51,7 @@ public final class AppIconManager {
 
     private static final String FILES_2_ROOT = "/net/safester/application/images/files_2";
     private static final String[] APPLICATION_ICON_PATHS = {
-        "/net/safester/application/images/files/safester_icon.png",
-        "/net/safester/application/images/files/safester_icon-26x26.png",
-        "/net/safester/application/images/files/icon-64x64.png",
+        "/net/safester/application/images/files/safester-icon-60.png",
         "/net/safester/application/images/files/safester-icon-80.png"
     };
     private static final String[] LOGIN_LOGO_PATHS = {
