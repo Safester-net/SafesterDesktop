@@ -57,8 +57,9 @@ public class Parms {
     public static Color LIGHT_BLUE = new Color(243, 243, 255);
     public static Color URL_COLOR = new Color(51, 0, 255);
     
-    public static String ICON_PATH  = "images/files/safester_icon.png";
+    //public static String ICON_PATH  = "images/files/safester_icon.png";
     public static String ICON_PATH_BIG  = "images/files/safester-icon-80.png";
+    public static String ICON_PATH  = Parms.ICON_PATH_BIG;
         
     public static String ABOUT_ICON = "images/files_2/24x24/speech_balloon_answer.png";
     public static String PRINT_ICON = "images/files_2/16x16/printer.png";

@@ -246,8 +246,6 @@ public class Main extends javax.swing.JFrame {
 
     private int typeSubscription;
     private boolean alreadyAccountMenuBuilt;
-    private SunUiScalingFrame sunUiScalingParms;
-
     /**
      * Creates new form SafeShareMain
      *
@@ -387,15 +385,12 @@ public class Main extends javax.swing.JFrame {
         this.jMenuItemImportAddrBook.setText(messages.getMessage("importing_contacts"));
         this.jMenuItemSearch.setText(messages.getMessage("search_message"));
         this.jMenuItemDeleteAccount.setText(messages.getMessage("menu_delete_account"));
-        this.jMenuItemScaling.setText(messages.getMessage("scaling"));
         jMenuView.setText(messages.getMessage("view"));
         jMenuScaling.setText("Display Size");
         jRadioButtonMenuItemScale100.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.NORMAL));
         jRadioButtonMenuItemScale110.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.COMFORTABLE));
         jRadioButtonMenuItemScale150.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.LARGE));
         jMenuAppearance.setText(messages.getMessage("appearance"));
-        jMenuSettings.remove(jMenuItemScaling);
-        
         this.jMenuItemPassphraseRecoverySettings.setText(messages.getMessage("passphrase_recovery_settings"));
         this.jMenuItemForgetPassphrase.setText(messages.getMessage("remove_passphrase_from_memory"));
 
@@ -2894,7 +2889,6 @@ public class Main extends javax.swing.JFrame {
         jSeparator15 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSearch = new javax.swing.JMenuItem();
         jMenuView = new javax.swing.JMenu();
-        jMenuItemScaling = new javax.swing.JMenuItem();
         jMenuAppearance = new javax.swing.JMenu();
         jMenuItemThemeFlatIntelliJLaf = new javax.swing.JRadioButtonMenuItem();
         jMenuItemThemeFlatArcOrangeIJTheme = new javax.swing.JRadioButtonMenuItem();
@@ -3941,16 +3935,6 @@ public class Main extends javax.swing.JFrame {
 
         jMenuView.setText("jMenuView");
 
-        jMenuItemScaling.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
-        jMenuItemScaling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files_2/16x16/window_size.png"))); // NOI18N
-        jMenuItemScaling.setText("jMenuItemScaling");
-        jMenuItemScaling.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemScalingActionPerformed(evt);
-            }
-        });
-        jMenuView.add(jMenuItemScaling);
-
         jMenuAppearance.setText("jMenuAppearance");
 
         buttonGroupAppearance.add(jMenuItemThemeFlatIntelliJLaf);
@@ -4365,16 +4349,6 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButtonMenuItemScale150ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale150ActionPerformed
         updateScaling();
     }//GEN-LAST:event_jRadioButtonMenuItemScale150ActionPerformed
-
-    private void jMenuItemScalingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemScalingActionPerformed
-        if (sunUiScalingParms != null) {
-            sunUiScalingParms.dispose();
-        }
-
-        sunUiScalingParms = new SunUiScalingFrame(this);
-        sunUiScalingParms.setVisible(true);
-
-    }//GEN-LAST:event_jMenuItemScalingActionPerformed
 
     private void jButtonNewMessageActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonNewMessageActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -5026,7 +5000,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemReply;
     private javax.swing.JMenuItem jMenuItemReplyAll;
     private javax.swing.JMenuItem jMenuItemReset;
-    private javax.swing.JMenuItem jMenuItemScaling;
     private javax.swing.JMenuItem jMenuItemSearch;
     private javax.swing.JMenuItem jMenuItemSystemInfo;
     private javax.swing.JRadioButtonMenuItem jMenuItemThemeFlatArcOrangeIJTheme;
