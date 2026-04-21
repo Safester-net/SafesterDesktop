@@ -112,6 +112,7 @@ import net.safester.application.engines.BackgroundDownloaderEngine;
 import net.safester.application.http.ApiMessages;
 import net.safester.application.http.KawanHttpClientBuilder;
 import net.safester.application.http.dto.SystemInfoDTO;
+import net.safester.application.icons.AppIconId;
 import net.safester.application.install.AskForDownloadJframe;
 import net.safester.application.install.NewVersionInstaller;
 import net.safester.application.messages.MessagesManager;
@@ -143,6 +144,7 @@ import net.safester.application.util.JDialogDiscardableMessage;
 import net.safester.application.util.JEditorPaneLinkDetector;
 import net.safester.application.util.JListUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
+import net.safester.application.util.UiVisualsInstaller;
 import net.safester.application.util.UserPrefManager;
 import net.safester.application.util.Util;
 import net.safester.application.version.Version;
@@ -175,6 +177,7 @@ public class Main extends javax.swing.JFrame {
     public static final int MIN_LOCATION_MESSAGE = 120;
 
     public static final Color COLOR_MSG_INFO = new Color(132, 192, 252);
+    private static final int BRAND_LOCK_LOGICAL_SIZE = 32;
 
     public static final boolean NOTIFY_ON = true;
     
@@ -312,6 +315,7 @@ public class Main extends javax.swing.JFrame {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
+        installBrandHeaderVisuals();
         this.setTitle(Version.NAME + " " + this.getKeyId());
 
         // Be sure messagePane is clear
@@ -735,6 +739,10 @@ public class Main extends javax.swing.JFrame {
         
         applyTheme();
         
+    }
+
+    private void installBrandHeaderVisuals() {
+        UiVisualsInstaller.applyIcon(jLabelLogoLockMain, AppIconId.LOCK, BRAND_LOCK_LOGICAL_SIZE);
     }
 
     private void removePrintAndBuyIfnecessary() {
@@ -2762,6 +2770,9 @@ public class Main extends javax.swing.JFrame {
         jPanelPush = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jPanelEndProgress = new javax.swing.JPanel();
+        jPanelToolbarBrand = new javax.swing.JPanel();
+        jLabelLogoMain = new javax.swing.JLabel();
+        jLabelLogoLockMain = new javax.swing.JLabel();
         jPanelLogout = new javax.swing.JPanel();
         jPanelSeparator = new javax.swing.JPanel();
         jSplitPaneFolders = new javax.swing.JSplitPane();
@@ -3111,6 +3122,25 @@ public class Main extends javax.swing.JFrame {
         jPanelToolbarMain.add(jToolBar1);
 
         jPanelToolbar.add(jPanelToolbarMain);
+
+        jPanelToolbarBrand.setMaximumSize(new java.awt.Dimension(220, 54));
+        jPanelToolbarBrand.setMinimumSize(new java.awt.Dimension(180, 54));
+        jPanelToolbarBrand.setOpaque(false);
+        jPanelToolbarBrand.setPreferredSize(new java.awt.Dimension(220, 54));
+        jPanelToolbarBrand.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 8, 0));
+
+        jLabelLogoMain.setFont(new java.awt.Font("Arial", 1, 26)); // NOI18N
+        jLabelLogoMain.setForeground(new java.awt.Color(3, 86, 179));
+        jLabelLogoMain.setText("Safester");
+        jPanelToolbarBrand.add(jLabelLogoMain);
+
+        jLabelLogoLockMain.setMaximumSize(new java.awt.Dimension(32, 32));
+        jLabelLogoLockMain.setMinimumSize(new java.awt.Dimension(32, 32));
+        jLabelLogoLockMain.setPreferredSize(new java.awt.Dimension(32, 32));
+        jLabelLogoLockMain.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanelToolbarBrand.add(jLabelLogoLockMain);
+
+        jPanelToolbar.add(jPanelToolbarBrand);
 
         jPanelLogout.setMaximumSize(new java.awt.Dimension(10, 10));
         jPanelLogout.setLayout(new javax.swing.BoxLayout(jPanelLogout, javax.swing.BoxLayout.LINE_AXIS));
@@ -4948,6 +4978,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelDate;
     private javax.swing.JLabel jLabelFrom;
     private javax.swing.JLabel jLabelLastLogin;
+    private javax.swing.JLabel jLabelLogoLockMain;
+    private javax.swing.JLabel jLabelLogoMain;
     private javax.swing.JLabel jLabelNbElements;
     private javax.swing.JLabel jLabelPlan;
     private javax.swing.JLabel jLabelSep;
@@ -5070,6 +5102,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelToLeft;
     private javax.swing.JPanel jPanelToRight;
     private javax.swing.JPanel jPanelToolbar;
+    private javax.swing.JPanel jPanelToolbarBrand;
     private javax.swing.JPanel jPanelToolbarMain;
     private javax.swing.JPanel jPanelTop;
     private javax.swing.JPanel jPanelTopButtons;

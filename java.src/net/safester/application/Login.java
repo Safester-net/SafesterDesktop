@@ -70,6 +70,7 @@ import com.safelogic.utilx.syntax.EmailChecker;
 import com.swing.util.ButtonUrlOver;
 import com.swing.util.SwingUtil;
 
+import net.safester.application.icons.AppIconId;
 import net.safester.application.install.AskForDownloadJframe;
 import net.safester.application.messages.MessagesManager;
 import net.safester.application.parms.ConnectionParms;
@@ -88,6 +89,7 @@ import net.safester.application.tool.WindowSettingManager;
 import net.safester.application.util.HtmlTextUtil;
 import net.safester.application.util.JOptionPaneNewCustom;
 import net.safester.application.util.PolicyInstaller;
+import net.safester.application.util.UiVisualsInstaller;
 import net.safester.application.util.UserPrefManager;
 import net.safester.application.util.proxy.ProxySessionCheckerNew;
 import net.safester.application.wait.tools.CmWaitDialog;
@@ -103,6 +105,7 @@ public class Login extends javax.swing.JFrame {
 
     public static boolean DEBUG  = false;
     public static int MAX_SIZE = 425;
+    private static final int BRAND_LOCK_LOGICAL_SIZE = 32;
     /**
      * Called windows instances
      */
@@ -179,6 +182,7 @@ public class Login extends javax.swing.JFrame {
         clipboardManager = new ClipboardManager(rootPane);
         
         this.setIconImage(Parms.createImageIcon(Parms.ICON_PATH).getImage());
+        installBrandHeaderVisuals();
 
         this.jButtonVersion.setText(net.safester.application.version.Version.VERSION + " ");
         this.jButtonVersion.setForeground(Parms.COLOR_URL);
@@ -303,6 +307,10 @@ public class Login extends javax.swing.JFrame {
 
         pack();
 
+    }
+
+    private void installBrandHeaderVisuals() {
+        UiVisualsInstaller.applyIcon(jLabelLogoLock, AppIconId.LOCK, BRAND_LOCK_LOGICAL_SIZE);
     }
 
     private void setSelectedDisplaySizeRadioButton() {
@@ -914,6 +922,7 @@ public class Login extends javax.swing.JFrame {
         buttonGroupDisplaySize = new javax.swing.ButtonGroup();
         jPanel8 = new javax.swing.JPanel();
         jLabelLogo = new javax.swing.JLabel();
+        jLabelLogoLock = new javax.swing.JLabel();
         jPanelSep1 = new javax.swing.JPanel();
         jPanelNewAccount = new javax.swing.JPanel();
         jButtonCreateAccount = new javax.swing.JButton();
@@ -979,8 +988,16 @@ public class Login extends javax.swing.JFrame {
         jPanel8.setPreferredSize(new java.awt.Dimension(289, 122));
         jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 8, 8));
 
-        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/safester/application/images/files/logo-blue-on-white-300x99.png"))); // NOI18N
+        jLabelLogo.setFont(new java.awt.Font("Arial", 1, 54)); // NOI18N
+        jLabelLogo.setForeground(new java.awt.Color(3, 86, 179));
+        jLabelLogo.setText("Safester");
         jPanel8.add(jLabelLogo);
+
+        jLabelLogoLock.setMaximumSize(new java.awt.Dimension(32, 54));
+        jLabelLogoLock.setMinimumSize(new java.awt.Dimension(32, 54));
+        jLabelLogoLock.setPreferredSize(new java.awt.Dimension(32, 54));
+        jLabelLogoLock.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel8.add(jLabelLogoLock);
 
         getContentPane().add(jPanel8);
 
@@ -1534,6 +1551,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelKeyboardWarning;
     private javax.swing.JLabel jLabelLogin;
     private javax.swing.JLabel jLabelLogo;
+    private javax.swing.JLabel jLabelLogoLock;
     private javax.swing.JLabel jLabelPwd;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuDisplaySize;
