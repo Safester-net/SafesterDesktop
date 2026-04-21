@@ -78,6 +78,8 @@ import net.safester.application.parms.StoreParms;
 import net.safester.application.parms.SubscriptionLocalManager;
 import net.safester.application.parms.SubscriptionLocalStore;
 import net.safester.application.register.Register;
+import net.safester.application.scale.DisplayScaleLevel;
+import net.safester.application.scale.DisplayScaleManager;
 import net.safester.application.tool.ButtonResizer;
 import net.safester.application.tool.ClipboardManager;
 import net.safester.application.tool.FrameShaker;
@@ -188,6 +190,13 @@ public class Login extends javax.swing.JFrame {
         this.jMenuSettings.setText(messages.getMessage("settings"));
         this.jMenuItemProxySettings.setText(messages.getMessage("proxy_settings"));
         this.jMenuItemScaling.setText(messages.getMessage("scaling"));
+        this.jMenuSettings.remove(jMenuItemScaling);
+        this.jMenuView.setText(messages.getMessage("view"));
+        this.jMenuDisplaySize.setText("Display Size");
+        this.jRadioButtonMenuItemScale100.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.NORMAL));
+        this.jRadioButtonMenuItemScale125.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.COMFORTABLE));
+        this.jRadioButtonMenuItemScale150.setText(DisplayScaleManager.getMenuLabel(DisplayScaleLevel.LARGE));
+        setSelectedDisplaySizeRadioButton();
         
         this.jMenuHelp.setText(messages.getMessage("help"));
         this.jMenuItemHelp.setText(messages.getMessage("new_user_help"));
@@ -294,6 +303,34 @@ public class Login extends javax.swing.JFrame {
 
         pack();
 
+    }
+
+    private void setSelectedDisplaySizeRadioButton() {
+        DisplayScaleLevel level = DisplayScaleManager.getStoredLevel();
+        this.jRadioButtonMenuItemScale100.setSelected(level == DisplayScaleLevel.NORMAL);
+        this.jRadioButtonMenuItemScale125.setSelected(level == DisplayScaleLevel.COMFORTABLE);
+        this.jRadioButtonMenuItemScale150.setSelected(level == DisplayScaleLevel.LARGE);
+    }
+
+    private void updateDisplaySize() {
+        DisplayScaleLevel currentLevel = DisplayScaleManager.getStoredLevel();
+        DisplayScaleLevel level = DisplayScaleLevel.NORMAL;
+        if (jRadioButtonMenuItemScale100.isSelected()) {
+            level = DisplayScaleLevel.NORMAL;
+        } else if (jRadioButtonMenuItemScale125.isSelected()) {
+            level = DisplayScaleLevel.COMFORTABLE;
+        } else if (jRadioButtonMenuItemScale150.isSelected()) {
+            level = DisplayScaleLevel.LARGE;
+        }
+
+        if (level == currentLevel) {
+            return;
+        }
+
+        DisplayScaleManager.storeLevel(level);
+        JOptionPane.showMessageDialog(this, messages.getMessage("safester_will_be_closed"));
+        WindowSettingManager.save(this);
+        System.exit(0);
     }
 
     private void resizeToMax() {
@@ -874,6 +911,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupDisplaySize = new javax.swing.ButtonGroup();
         jPanel8 = new javax.swing.JPanel();
         jLabelLogo = new javax.swing.JLabel();
         jPanelSep1 = new javax.swing.JPanel();
@@ -922,6 +960,11 @@ public class Login extends javax.swing.JFrame {
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemScaling = new javax.swing.JMenuItem();
         jMenuItemProxySettings = new javax.swing.JMenuItem();
+        jMenuView = new javax.swing.JMenu();
+        jMenuDisplaySize = new javax.swing.JMenu();
+        jRadioButtonMenuItemScale100 = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemScale125 = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemScale150 = new javax.swing.JRadioButtonMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jMenuItemSystemInfo = new javax.swing.JMenuItem();
@@ -1227,6 +1270,42 @@ public class Login extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuSettings);
 
+        jMenuView.setText("jMenuView");
+
+        jMenuDisplaySize.setText("jMenuDisplaySize");
+
+        buttonGroupDisplaySize.add(jRadioButtonMenuItemScale100);
+        jRadioButtonMenuItemScale100.setSelected(true);
+        jRadioButtonMenuItemScale100.setText("jRadioButtonMenuItemScale100");
+        jRadioButtonMenuItemScale100.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale100ActionPerformed(evt);
+            }
+        });
+        jMenuDisplaySize.add(jRadioButtonMenuItemScale100);
+
+        buttonGroupDisplaySize.add(jRadioButtonMenuItemScale125);
+        jRadioButtonMenuItemScale125.setText("jRadioButtonMenuItemScale125");
+        jRadioButtonMenuItemScale125.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale125ActionPerformed(evt);
+            }
+        });
+        jMenuDisplaySize.add(jRadioButtonMenuItemScale125);
+
+        buttonGroupDisplaySize.add(jRadioButtonMenuItemScale150);
+        jRadioButtonMenuItemScale150.setText("jRadioButtonMenuItemScale150");
+        jRadioButtonMenuItemScale150.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemScale150ActionPerformed(evt);
+            }
+        });
+        jMenuDisplaySize.add(jRadioButtonMenuItemScale150);
+
+        jMenuView.add(jMenuDisplaySize);
+
+        jMenuBar1.add(jMenuView);
+
         jMenuHelp.setText("jMenuHelp");
 
         jMenuItemHelp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
@@ -1279,6 +1358,18 @@ public class Login extends javax.swing.JFrame {
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         doIt();
     }//GEN-LAST:event_jButtonLoginActionPerformed
+
+    private void jRadioButtonMenuItemScale100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale100ActionPerformed
+        updateDisplaySize();
+    }//GEN-LAST:event_jRadioButtonMenuItemScale100ActionPerformed
+
+    private void jRadioButtonMenuItemScale125ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale125ActionPerformed
+        updateDisplaySize();
+    }//GEN-LAST:event_jRadioButtonMenuItemScale125ActionPerformed
+
+    private void jRadioButtonMenuItemScale150ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemScale150ActionPerformed
+        updateDisplaySize();
+    }//GEN-LAST:event_jRadioButtonMenuItemScale150ActionPerformed
 
     private void jCheckBoxHideTypingItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxHideTypingItemStateChanged
         if ((evt.getStateChange() == ItemEvent.SELECTED)) {
@@ -1432,6 +1523,7 @@ public class Login extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupDisplaySize;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonCreateAccount;
     private javax.swing.JButton jButtonLogin;
@@ -1444,6 +1536,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JLabel jLabelPwd;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuDisplaySize;
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemHelp;
@@ -1452,6 +1545,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSystemInfo;
     private javax.swing.JMenuItem jMenuItemWhatsNew;
     private javax.swing.JMenu jMenuSettings;
+    private javax.swing.JMenu jMenuView;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1482,6 +1576,9 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSepWithSeparator;
     private javax.swing.JPanel jPanelVersion;
     private javax.swing.JPasswordField jPasswordField;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale100;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale125;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemScale150;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField jTextFieldLogin;
