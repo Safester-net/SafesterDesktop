@@ -164,7 +164,7 @@ public class Safester {
                 System.exit(0);
             }
                         
-            if (SystemUtils.IS_OS_WINDOWS && ProcessUtil.countWindowsInstanceRunning("Safester.exe") > 1) {
+            if (SystemUtils.IS_OS_WINDOWS && ProcessUtil.countWindowsInstanceRunning("Safester.exe") > 2) {
                 MessagesManager messagesManager = new MessagesManager();
                 String message = messagesManager.getMessage("safester_already_running_use_task_bar");
                 JOptionPane.showMessageDialog(null, message, "Safester", JOptionPane.INFORMATION_MESSAGE);
