@@ -22,11 +22,10 @@ The unsigned DMG is generated under the jpackage output folder and copied to the
 ~/SafesterBuild/Safester-6.10.dmg
 ```
 
-## Prerequisites
+## Prerequisites for the Mac target
 
 - macOS 10.13 High Sierra on Intel x64.
 - OpenJDK 16.0.2 x64 with `jpackage`.
-- Maven.
 
 Install OpenJDK 16.0.2:
 
@@ -48,7 +47,6 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 java -version
 jpackage --version
-mvn -version
 ```
 
 The packaging script expects:
@@ -58,7 +56,41 @@ openjdk version "16.0.2"
 jpackage 16.0.2
 ```
 
-## Unsigned DMG
+## Recommended flow: no Maven on the Mac
+
+Prepare the jpackage input on Windows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File I:\Safester\packaging\macos\prepare-jpackage-input.ps1
+```
+
+Copy this Windows folder to the Mac:
+
+```text
+C:\MacOsX\SafesterMacPayload
+```
+
+Put it on the Mac as:
+
+```text
+~/SafesterMacPayload
+```
+
+Then run on the Mac from a copy of the Safester repository:
+
+```bash
+bash packaging/macos/build-unsigned-dmg-from-prepared-input.sh \
+  --app-version 6.10 \
+  --launcher-icon-path "$HOME/SafesterMacPayload/resources/safester-icon-80.png"
+```
+
+Output:
+
+```text
+~/SafesterBuild/Safester-6.10.dmg
+```
+
+## Optional flow: full build on a Mac with Maven
 
 From the repository root:
 
@@ -83,3 +115,4 @@ bash packaging/macos/build-installer.sh \
 - You can pass a custom `.icns` or `.png` with `--launcher-icon-path`.
 - The package is unsigned and not notarized. On macOS, use right click, then Open, if Gatekeeper blocks first launch.
 - The build must run on macOS. `jpackage` does not cross-compile macOS packages from Windows.
+- Maven is not required on the Mac when using `build-unsigned-dmg-from-prepared-input.sh`.

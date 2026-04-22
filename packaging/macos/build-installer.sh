@@ -7,6 +7,7 @@ JDK_HOME="${SAFESTER_JDK_HOME:-}"
 APP_VERSION=""
 MAVEN_REPO_LOCAL=""
 LAUNCHER_ICON_PATH=""
+PREPARED_INPUT_DIR=""
 
 usage() {
   cat <<'EOF'
@@ -19,6 +20,7 @@ Options:
   --app-version VERSION     Package version. Default: version from pom.xml.
   --maven-repo-local DIR    Optional Maven local repository path.
   --launcher-icon-path PATH Optional .icns or .png icon. Default: Safester 80 px icon.
+  --prepared-input-dir DIR  Existing jpackage input with Safester.jar and dependencies.
   -h, --help                Show this help.
 EOF
 }
@@ -49,6 +51,10 @@ while [[ $# -gt 0 ]]; do
       LAUNCHER_ICON_PATH="$2"
       shift 2
       ;;
+    --prepared-input-dir)
+      PREPARED_INPUT_DIR="$2"
+      shift 2
+      ;;
     -h|--help)
       usage
       exit 0
@@ -76,11 +82,6 @@ INSTALLER_DIR="${TARGET_DIR}/installer"
 GENERATED_RESOURCE_DIR="${TARGET_DIR}/generated-resources"
 DEFAULT_ICON_80="${REPO_ROOT}/java.src/net/safester/application/images/files/safester-icon-80.png"
 DEFAULT_ICON_60="${REPO_ROOT}/java.src/net/safester/application/images/files/safester-icon-60.png"
-
-if [[ ! -f "$POM_PATH" ]]; then
-  echo "Unable to find pom.xml: $POM_PATH" >&2
-  exit 1
-fi
 
 if [[ -z "$JDK_HOME" ]]; then
   JDK_HOME="$(/usr/libexec/java_home -v 16)"
@@ -115,6 +116,12 @@ if ! grep -q 'openjdk version "16.0.2"' <<<"$JAVA_VERSION_OUTPUT"; then
 fi
 
 if [[ -z "$APP_VERSION" ]]; then
+  if [[ ! -f "$POM_PATH" ]]; then
+    echo "Unable to find pom.xml for version detection: $POM_PATH" >&2
+    echo "Pass --app-version when using this script outside the Safester repository." >&2
+    exit 1
+  fi
+
   APP_VERSION="$(awk '
     /<version>/ {
       line = $0
@@ -160,6 +167,12 @@ reset_dir() {
   mkdir -p "$path"
 }
 
+absolute_path() {
+  local path="$1"
+  mkdir -p "$(dirname "$path")"
+  (cd "$(dirname "$path")" && printf '%s/%s\n' "$(pwd)" "$(basename "$path")")
+}
+
 resolve_launcher_icon() {
   local source_path="$1"
   local extension="${source_path##*.}"
@@ -203,35 +216,33 @@ resolve_launcher_icon() {
   echo "$icon_output"
 }
 
-require_command mvn
-
 export JAVA_HOME="$JDK_HOME"
 export PATH="${JDK_HOME}/bin:${PATH}"
 
 mkdir -p "$TARGET_DIR"
-reset_dir "$DEPENDENCY_DIR"
-reset_dir "$INPUT_DIR"
 mkdir -p "$INSTALLER_DIR"
 mkdir -p "$GENERATED_RESOURCE_DIR"
 
-MAVEN_ARGS=(
-  -q
-  -f "$POM_PATH"
-  -Dmaven.clean.failOnError=false
-  -DskipTests
-  clean
-  package
-  dependency:copy-dependencies
-  -DincludeScope=runtime
-  "-DoutputDirectory=${DEPENDENCY_DIR}"
-)
+if [[ -n "$PREPARED_INPUT_DIR" ]]; then
+  INPUT_DIR="$(cd "$PREPARED_INPUT_DIR" && pwd)"
+  if [[ ! -f "${INPUT_DIR}/Safester.jar" ]]; then
+    echo "Prepared input directory must contain Safester.jar: $INPUT_DIR" >&2
+    exit 1
+  fi
+else
+  if [[ ! -f "$POM_PATH" ]]; then
+    echo "Unable to find pom.xml for Maven build: $POM_PATH" >&2
+    exit 1
+  fi
 
-if [[ -n "$MAVEN_REPO_LOCAL" ]]; then
+  require_command mvn
+  reset_dir "$DEPENDENCY_DIR"
+  reset_dir "$INPUT_DIR"
+
   MAVEN_ARGS=(
     -q
     -f "$POM_PATH"
     -Dmaven.clean.failOnError=false
-    "-Dmaven.repo.local=${MAVEN_REPO_LOCAL}"
     -DskipTests
     clean
     package
@@ -239,24 +250,39 @@ if [[ -n "$MAVEN_REPO_LOCAL" ]]; then
     -DincludeScope=runtime
     "-DoutputDirectory=${DEPENDENCY_DIR}"
   )
+
+  if [[ -n "$MAVEN_REPO_LOCAL" ]]; then
+    MAVEN_ARGS=(
+      -q
+      -f "$POM_PATH"
+      -Dmaven.clean.failOnError=false
+      "-Dmaven.repo.local=${MAVEN_REPO_LOCAL}"
+      -DskipTests
+      clean
+      package
+      dependency:copy-dependencies
+      -DincludeScope=runtime
+      "-DoutputDirectory=${DEPENDENCY_DIR}"
+    )
+  fi
+
+  echo ""
+  printf '> mvn'
+  printf ' %q' "${MAVEN_ARGS[@]}"
+  echo ""
+  mvn "${MAVEN_ARGS[@]}"
+
+  MAIN_JAR="$(find "$WORKSPACE_TARGET_DIR" -maxdepth 1 -type f -name 'Safester-*.jar' ! -name 'original-*' -print | sort | tail -n 1)"
+  if [[ -z "$MAIN_JAR" ]]; then
+    echo "Unable to find Safester application jar under $WORKSPACE_TARGET_DIR" >&2
+    exit 1
+  fi
+
+  cp "$MAIN_JAR" "${INPUT_DIR}/Safester.jar"
+  find "$DEPENDENCY_DIR" -maxdepth 1 -type f -name '*.jar' -print0 | while IFS= read -r -d '' dependency_jar; do
+    cp "$dependency_jar" "$INPUT_DIR/"
+  done
 fi
-
-echo ""
-printf '> mvn'
-printf ' %q' "${MAVEN_ARGS[@]}"
-echo ""
-mvn "${MAVEN_ARGS[@]}"
-
-MAIN_JAR="$(find "$WORKSPACE_TARGET_DIR" -maxdepth 1 -type f -name 'Safester-*.jar' ! -name 'original-*' -print | sort | tail -n 1)"
-if [[ -z "$MAIN_JAR" ]]; then
-  echo "Unable to find Safester application jar under $WORKSPACE_TARGET_DIR" >&2
-  exit 1
-fi
-
-cp "$MAIN_JAR" "${INPUT_DIR}/Safester.jar"
-find "$DEPENDENCY_DIR" -maxdepth 1 -type f -name '*.jar' -print0 | while IFS= read -r -d '' dependency_jar; do
-  cp "$dependency_jar" "$INPUT_DIR/"
-done
 
 LAUNCHER_ICON_FILE="$(resolve_launcher_icon "$LAUNCHER_ICON_PATH")"
 
