@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$TargetDir = "C:\MacOsX\SafesterBuild",
-    [string]$JdkHome = "C:\Program Files\Apache NetBeans\jdk"
+    [string]$JdkHome = "C:\Program Files\Apache NetBeans\jdk",
+    [string]$AppVersion = "6.10.1"
 )
 
 Set-StrictMode -Version Latest
@@ -13,4 +14,5 @@ $buildScript = Join-Path $scriptRoot "build-installer.ps1"
 & $buildScript `
     -TargetDir $TargetDir `
     -JdkHome $JdkHome `
-    -PackageType "msi"
+    -PackageType "msi" `
+    -AppVersion $AppVersion

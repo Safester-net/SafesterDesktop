@@ -598,7 +598,8 @@ function Update-AppImageClasspath {
         }
     }
 
-    Set-Content -LiteralPath $configPath -Value $lines -Encoding UTF8
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllLines($configPath, [string[]]$lines, $utf8NoBom)
 }
 
 if (-not $TargetDir) {

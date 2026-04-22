@@ -50,11 +50,13 @@ Equivalent direct command:
 powershell -ExecutionPolicy Bypass -File .\packaging\windows\build-installer.ps1 `
   -TargetDir 'C:\MacOsX\SafesterBuild' `
   -JdkHome 'C:\Program Files\Apache NetBeans\jdk' `
-  -PackageType exe
+  -PackageType exe `
+  -AppVersion 6.10.1
 ```
 
 ## Notes
 
+- The unsigned wrapper currently defaults to package version `6.10.1` so Windows upgrades earlier `6.10` test installers.
 - The Windows launcher icon is generated automatically from `java.src\net\safester\application\images\files\safester-icon-80.png`.
 - If the 80 px icon is missing, the script falls back to `safester-icon-60.png`.
 - You can pass a custom `.ico` or `.png` with `-LauncherIconPath`.
