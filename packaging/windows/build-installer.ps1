@@ -558,29 +558,35 @@ function Update-AppImageClasspath {
         return
     }
 
-    $classpathEntries = @('$APPDIR\Safester.jar')
+    $classpathLines = [System.Collections.Generic.List[string]]::new()
+    $classpathLines.Add('app.classpath=$APPDIR\Safester.jar')
     foreach ($dependencyJarFile in $DependencyJarFiles) {
-        $classpathEntries += ('$APPDIR\' + $dependencyJarFile.Name)
+        $classpathLines.Add('app.classpath=$APPDIR\' + $dependencyJarFile.Name)
     }
 
-    $classpathLine = "app.classpath=" + ($classpathEntries -join ";")
+    $originalLines = [string[]](Get-Content -LiteralPath $configPath)
     $lines = [System.Collections.Generic.List[string]]::new()
-    $lines.AddRange([string[]](Get-Content -LiteralPath $configPath))
+    $classpathInserted = $false
 
-    $updated = $false
-    for ($i = 0; $i -lt $lines.Count; $i++) {
-        if ($lines[$i] -match '^app\.classpath=') {
-            $lines[$i] = $classpathLine
-            $updated = $true
-            break
+    foreach ($line in $originalLines) {
+        if ($line -match '^app\.classpath=') {
+            if (-not $classpathInserted) {
+                $lines.AddRange([string[]]$classpathLines)
+                $classpathInserted = $true
+            }
+            continue
         }
+
+        $lines.Add($line)
     }
 
-    if (-not $updated) {
+    if (-not $classpathInserted) {
         $inserted = $false
         for ($i = 0; $i -lt $lines.Count; $i++) {
             if ($lines[$i] -eq "[Application]") {
-                $lines.Insert($i + 1, $classpathLine)
+                for ($j = $classpathLines.Count - 1; $j -ge 0; $j--) {
+                    $lines.Insert($i + 1, $classpathLines[$j])
+                }
                 $inserted = $true
                 break
             }
@@ -588,7 +594,7 @@ function Update-AppImageClasspath {
 
         if (-not $inserted) {
             $lines.Add("[Application]")
-            $lines.Add($classpathLine)
+            $lines.AddRange([string[]]$classpathLines)
         }
     }
 
