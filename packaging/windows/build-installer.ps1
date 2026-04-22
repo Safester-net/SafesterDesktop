@@ -14,6 +14,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+$pomPath = Join-Path $repoRoot "pom.xml"
 $workspaceTargetDir = Join-Path $repoRoot "target"
 $dependencyDir = Join-Path $TargetDir "dependencies"
 $inputDir = Join-Path $TargetDir "jpackage-input"
@@ -537,7 +538,6 @@ function Resolve-LauncherIconFile {
 }
 
 function Resolve-PomVersion {
-    $pomPath = Join-Path $repoRoot "pom.xml"
     if (-not (Test-Path -LiteralPath $pomPath)) {
         return $null
     }
@@ -602,6 +602,35 @@ function Update-AppImageClasspath {
     [System.IO.File]::WriteAllLines($configPath, [string[]]$lines, $utf8NoBom)
 }
 
+function Copy-PackageToTargetRoot {
+    param([System.IO.FileInfo]$PackageFile)
+
+    $publishedPackagePath = Join-Path $TargetDir $PackageFile.Name
+    if ($PackageFile.FullName -eq $publishedPackagePath) {
+        return $publishedPackagePath
+    }
+
+    $lastError = $null
+    for ($attempt = 1; $attempt -le 6; $attempt++) {
+        try {
+            Copy-Item -LiteralPath $PackageFile.FullName -Destination $publishedPackagePath -Force -ErrorAction Stop
+            return $publishedPackagePath
+        } catch {
+            $lastError = $_
+            Start-Sleep -Seconds 2
+        }
+    }
+
+    $baseName = [System.IO.Path]::GetFileNameWithoutExtension($PackageFile.Name)
+    $extension = [System.IO.Path]::GetExtension($PackageFile.Name)
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $fallbackPackagePath = Join-Path $TargetDir ("{0}-{1}{2}" -f $baseName, $timestamp, $extension)
+
+    Write-Warning ("Unable to overwrite {0}. It may still be open or locked by Windows. Last error: {1}" -f $publishedPackagePath, $lastError.Exception.Message)
+    Copy-Item -LiteralPath $PackageFile.FullName -Destination $fallbackPackagePath -Force -ErrorAction Stop
+    return $fallbackPackagePath
+}
+
 if (-not $TargetDir) {
     throw "TargetDir cannot be empty."
 }
@@ -655,6 +684,7 @@ Reset-Directory -Path $dependencyDir
 
 $mavenArguments = @(
     "-q",
+    "-f", $pomPath,
     "-Dmaven.clean.failOnError=false",
     "-DskipTests",
     "clean",
@@ -667,6 +697,7 @@ $mavenArguments = @(
 if ($MavenRepoLocal) {
     $mavenArguments = @(
         "-q",
+        "-f", $pomPath,
         "-Dmaven.clean.failOnError=false",
         "-Dmaven.repo.local=$MavenRepoLocal",
         "-DskipTests",
@@ -801,10 +832,7 @@ if (-not $generatedPackage) {
     throw "Unable to find the generated $PackageType package in $installerDir."
 }
 
-$publishedPackagePath = Join-Path $TargetDir $generatedPackage.Name
-if ($generatedPackage.FullName -ne $publishedPackagePath) {
-    Copy-Item -LiteralPath $generatedPackage.FullName -Destination $publishedPackagePath -Force
-}
+$publishedPackagePath = Copy-PackageToTargetRoot -PackageFile $generatedPackage
 
 Write-Host ""
 Write-Host ("Package ready: {0}" -f $publishedPackagePath)
