@@ -1,6 +1,6 @@
 # SafesterDesktop
 
-## Safester Client Java Code - v6.2.1 - June 21, 2021
+## Safester Client Java Code - v7.0 - April 23, 2026
 
 
 
@@ -10,7 +10,7 @@
 
 SafesterDesktop is the Java project of [Safester email encryption service](https://www.safester.net).
 
-It contains all source code of both [Safester for Windows](https://safester.net/install_windows/), [Safester for macOS](https://safester.net/install_macos/) and [Safester for Linux](https://safester.net/install_linux/) editions. 
+It contains all source code of both [Safester for Windows](https://www.safester.net/), [Safester for macOS](https://www.safester.net/) and [Safester for Linux](https://www.safester.ent/) editions. 
 
 ## Cryptography & OpenPGP
 
