@@ -8,6 +8,7 @@ Ce guide permet de :
 
 - preparer le payload `jpackage` sur Windows ;
 - copier les fichiers necessaires sur le Mac ;
+- tester Safester avant la fabrication finale de l'installeur ;
 - construire un DMG macOS non signe depuis le Mac ;
 - tester l'application et le DMG generes.
 
@@ -142,6 +143,41 @@ bash /Users/nicolasdepomereu/Safester/packaging/macos/build-unsigned-dmg-from-pr
   --app-version 6.10 \
   --launcher-icon-path /Users/nicolasdepomereu/SafesterMacPayload/resources/safester-icon-80.png
 ```
+
+## 5 bis. Tester Safester avant de fabriquer le DMG
+
+Si tu veux verifier que l'application fonctionne avant d'aller jusqu'au package final, tu peux demander uniquement la creation de l'app macOS, sans generer le `dmg`.
+
+Dans le Terminal macOS :
+
+```bash
+bash /Users/nicolasdepomereu/Safester/packaging/macos/build-installer.sh \
+  --package-type app-image \
+  --target-dir /Users/nicolasdepomereu/SafesterBuild \
+  --prepared-input-dir /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input \
+  --jdk-home /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home \
+  --app-version 6.10 \
+  --launcher-icon-path /Users/nicolasdepomereu/SafesterMacPayload/resources/safester-icon-80.png
+```
+
+L'application est alors generee ici :
+
+```text
+/Users/nicolasdepomereu/SafesterBuild/installer/Safester.app
+```
+
+Tu peux la lancer tout de suite :
+
+```bash
+open /Users/nicolasdepomereu/SafesterBuild/installer/Safester.app
+```
+
+Ce test permet de valider :
+
+- que l'application se lance correctement ;
+- que le packaging de base fonctionne ;
+- que l'icone et le bundle macOS sont bien generes ;
+- sans attendre la fabrication finale du `dmg`.
 
 ## 6. Resultat attendu
 
