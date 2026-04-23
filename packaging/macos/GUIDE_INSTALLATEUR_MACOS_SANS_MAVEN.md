@@ -17,8 +17,8 @@ Le principe est le suivant :
 Ce guide permet de :
 
 - preparer le payload `jpackage` sur Windows ;
-- copier uniquement les fichiers necessaires sur le Mac ;
-- tester Safester avant la fabrication finale de l'installeur ;
+- utiliser directement le volume partage monte sur le Mac, sans copie manuelle ;
+- tester obligatoirement Safester avant la fabrication finale du `dmg` ;
 - construire un DMG macOS non signe depuis le Mac ;
 - tester l'application et le DMG generes.
 
@@ -35,8 +35,7 @@ C:\MacOsX\SafesterMacPayload
 
 ```text
 /Users/nicolasdepomereu/Downloads
-/Users/nicolasdepomereu/SafesterMacPayload
-/Users/nicolasdepomereu/SafesterPackaging/macos
+/Volumes/MacOsX/SafesterMacPayload
 /Users/nicolasdepomereu/SafesterBuild
 /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home
 ```
@@ -93,96 +92,57 @@ Le script cree le dossier :
 C:\MacOsX\SafesterMacPayload
 ```
 
-## 3. Copier uniquement le necessaire vers le Mac
-
-Copier ce dossier :
+Le script exporte aussi les scripts macOS ici :
 
 ```text
-C:\MacOsX\SafesterMacPayload
+C:\MacOsX\SafesterMacPayload\scripts\macos
 ```
 
-vers :
+## 3. Si le volume MacOsX est monte sur le Mac, ne rien copier
+
+Si le disque partage est deja monte sur le Mac sous :
 
 ```text
-/Users/nicolasdepomereu/SafesterMacPayload
+/Volumes/MacOsX
 ```
 
-Copier aussi seulement ce dossier du repository Windows :
+alors tu peux travailler directement dessus, sans recopier manuellement :
 
 ```text
-I:\Safester\packaging\macos
+/Volumes/MacOsX/SafesterMacPayload
 ```
 
-vers :
+Verifier sur le Mac :
 
 ```text
-/Users/nicolasdepomereu/SafesterPackaging/macos
+/Volumes/MacOsX/SafesterMacPayload/jpackage-input/Safester.jar
+/Volumes/MacOsX/SafesterMacPayload/resources/safester-icon-80.png
+/Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh
 ```
-
-Pourquoi cela suffit :
-
-- le payload prepare contient deja `Safester.jar` et les dependances ;
-- le build sur Mac se fait avec `jpackage`, jamais avec Maven ;
-- si tu passes `--app-version` et `--launcher-icon-path`, le script n'a pas besoin du reste du repository.
-
-## 4. Verifier les fichiers sur le Mac
 
 Dans le Terminal macOS :
 
 ```bash
-ls -l /Users/nicolasdepomereu/SafesterPackaging/macos/build-installer.sh
+ls -l /Volumes/MacOsX/SafesterMacPayload/jpackage-input/Safester.jar
 
-ls -l /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input/Safester.jar
+ls -l /Volumes/MacOsX/SafesterMacPayload/resources/safester-icon-80.png
 
-ls -l /Users/nicolasdepomereu/SafesterMacPayload/resources/safester-icon-80.png
+ls -l /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh
 ```
 
-L'idee est de confirmer que :
+## 4. Etape obligatoire : tester Safester.app avant de fabriquer le DMG
 
-- le script de build est bien present ;
-- le `Safester.jar` a bien ete copie dans `jpackage-input` ;
-- l'icone `safester-icon-80.png` est disponible pour le lanceur macOS.
+Tu peux demander uniquement la creation de l'app macOS, sans generer le `dmg`.
 
-## 5. Construire le DMG sur le Mac
-
-Toujours dans le Terminal macOS :
-
-```bash
-cd /Users/nicolasdepomereu/SafesterPackaging/macos
-```
-
-Puis lancer :
-
-```bash
-bash /Users/nicolasdepomereu/SafesterPackaging/macos/build-installer.sh \
-  --package-type dmg \
-  --target-dir /Users/nicolasdepomereu/SafesterBuild \
-  --prepared-input-dir /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input \
-  --jdk-home /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home \
-  --app-version 6.10 \
-  --launcher-icon-path /Users/nicolasdepomereu/SafesterMacPayload/resources/safester-icon-80.png
-```
-
-Important :
-
-- la presence de `--prepared-input-dir` force l'utilisation du payload deja prepare ;
-- dans ce mode, le Mac ne reconstruit pas l'application avec Maven ;
-- le Mac fabrique seulement `Safester.app`, puis le `dmg`.
-
-## 5 bis. Tester Safester avant de fabriquer le DMG
-
-Si tu veux verifier que l'application fonctionne avant d'aller jusqu'au package final, tu peux demander uniquement la creation de l'app macOS, sans generer le `dmg`.
+Ne passe pas a l'etape suivante tant que ce test n'est pas valide.
 
 Dans le Terminal macOS :
 
 ```bash
-bash /Users/nicolasdepomereu/SafesterPackaging/macos/build-installer.sh \
+bash /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh \
   --package-type app-image \
   --target-dir /Users/nicolasdepomereu/SafesterBuild \
-  --prepared-input-dir /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input \
-  --jdk-home /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home \
-  --app-version 6.10 \
-  --launcher-icon-path /Users/nicolasdepomereu/SafesterMacPayload/resources/safester-icon-80.png
+  --jdk-home /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home
 ```
 
 L'application est alors generee ici :
@@ -203,6 +163,27 @@ Ce test permet de valider :
 - que le packaging de base fonctionne ;
 - que l'icone et le bundle macOS sont bien generes ;
 - sans attendre la fabrication finale du `dmg`.
+
+Si ce test n'est pas bon, il ne faut pas fabriquer le `dmg`.
+
+## 5. Construire le DMG depuis le volume monte
+
+Cette etape ne doit etre lancee qu'apres validation complete de `Safester.app`.
+
+```bash
+bash /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh \
+  --package-type dmg \
+  --target-dir /Users/nicolasdepomereu/SafesterBuild \
+  --jdk-home /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home \
+  --open
+```
+
+Important :
+
+- ce script relit directement le payload deja prepare sur `/Volumes/MacOsX` ;
+- la version est lue automatiquement dans `README-payload.txt` ;
+- le Mac ne reconstruit jamais l'application avec Maven ;
+- le Mac fabrique seulement `Safester.app`, puis le `dmg`.
 
 ## 6. Resultat attendu
 
@@ -242,5 +223,6 @@ Si macOS bloque l'application :
 - Le build macOS doit etre lance depuis un Mac.
 - Ce flow ne necessite pas Maven sur le Mac.
 - Maven ne doit etre utilise que sur Windows pour preparer le payload.
+- Si le volume `MacOsX` est monte, il n'y a rien a copier manuellement sur le Mac.
 - Le DMG produit est non signe et non notarise.
 - Les chemins de ce guide sont absolus et correspondent au poste de travail cible.

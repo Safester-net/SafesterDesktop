@@ -15,6 +15,7 @@ $workspaceTargetDir = Join-Path $repoRoot "target"
 $dependencyDir = Join-Path $TargetDir "dependencies"
 $inputDir = Join-Path $TargetDir "jpackage-input"
 $resourceDir = Join-Path $TargetDir "resources"
+$macScriptDir = Join-Path $TargetDir "scripts\macos"
 
 if (-not $JdkHome) {
     $defaultNetBeansJdk = "C:\Program Files\Apache NetBeans\jdk"
@@ -74,6 +75,7 @@ if (-not (Test-Path -LiteralPath $TargetDir)) {
 Reset-Directory -Path $dependencyDir
 Reset-Directory -Path $inputDir
 Reset-Directory -Path $resourceDir
+Reset-Directory -Path $macScriptDir
 
 $mavenArguments = @(
     "-q",
@@ -152,16 +154,41 @@ if (Test-Path -LiteralPath $icon60) {
     Copy-Item -LiteralPath $icon60 -Destination (Join-Path $resourceDir "safester-icon-60.png") -Force
 }
 
+$macScriptNames = @(
+    "build-installer.sh",
+    "build-unsigned-dmg-from-prepared-input.sh",
+    "build-unsigned-dmg.sh",
+    "build-from-mounted-volume.sh",
+    "GUIDE_INSTALLATEUR_MACOS_SANS_MAVEN.md",
+    "README.md"
+)
+
+foreach ($macScriptName in $macScriptNames) {
+    $sourceFile = Join-Path $repoRoot ("packaging\macos\" + $macScriptName)
+    if (-not (Test-Path -LiteralPath $sourceFile)) {
+        throw "Unable to find macOS packaging file: $sourceFile"
+    }
+
+    Copy-Item -LiteralPath $sourceFile -Destination (Join-Path $macScriptDir $macScriptName) -Force
+}
+
 $metadata = @"
 Safester macOS jpackage payload
 AppVersion=$AppVersion
 Created=$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-Copy this folder to the Mac as:
-~/SafesterMacPayload
+If the shared disk is mounted on macOS as /Volumes/MacOsX, you can build directly from:
+/Volumes/MacOsX/SafesterMacPayload
 
-Then run from the Safester repository copy:
-bash packaging/macos/build-unsigned-dmg-from-prepared-input.sh --app-version $AppVersion --launcher-icon-path "`$HOME/SafesterMacPayload/resources/safester-icon-80.png"
+Example:
+bash /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh --package-type app-image
+bash /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh --package-type dmg
+
+This flow does not use Maven on the Mac.
+
+Fallback copy-based flow:
+copy this folder to the Mac as ~/SafesterMacPayload,
+then run build-installer.sh with --prepared-input-dir and --launcher-icon-path.
 "@
 
 Set-Content -LiteralPath (Join-Path $TargetDir "README-payload.txt") -Value $metadata -Encoding UTF8
