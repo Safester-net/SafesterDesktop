@@ -2,7 +2,7 @@
 param(
     [string]$TargetDir = "C:\MacOsX\SafesterBuild",
     [string]$JdkHome = "C:\Program Files\Apache NetBeans\jdk",
-    [string]$AppVersion = "6.10.1"
+    [string]$AppVersion = "7.0"
 )
 
 Set-StrictMode -Version Latest
