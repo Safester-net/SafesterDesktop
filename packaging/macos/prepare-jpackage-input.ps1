@@ -16,6 +16,7 @@ $dependencyDir = Join-Path $TargetDir "dependencies"
 $inputDir = Join-Path $TargetDir "jpackage-input"
 $resourceDir = Join-Path $TargetDir "resources"
 $macScriptDir = Join-Path $TargetDir "scripts\macos"
+$iconIcns = Join-Path $repoRoot "java.src\net\safester\application\images\files\Safester.icns"
 
 if (-not $JdkHome) {
     $defaultNetBeansJdk = "C:\Program Files\Apache NetBeans\jdk"
@@ -146,6 +147,10 @@ Get-ChildItem -LiteralPath $dependencyDir -Filter "*.jar" -File |
 $icon80 = Join-Path $repoRoot "java.src\net\safester\application\images\files\safester-icon-80.png"
 $icon60 = Join-Path $repoRoot "java.src\net\safester\application\images\files\safester-icon-60.png"
 
+if (Test-Path -LiteralPath $iconIcns) {
+    Copy-Item -LiteralPath $iconIcns -Destination (Join-Path $resourceDir "Safester.icns") -Force
+}
+
 if (Test-Path -LiteralPath $icon80) {
     Copy-Item -LiteralPath $icon80 -Destination (Join-Path $resourceDir "safester-icon-80.png") -Force
 }
@@ -185,6 +190,7 @@ bash /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.
 bash /Volumes/MacOsX/SafesterMacPayload/scripts/macos/build-from-mounted-volume.sh --package-type dmg
 
 This flow does not use Maven on the Mac.
+If resources/Safester.icns exists, it is used as the preferred macOS launcher icon.
 
 Fallback copy-based flow:
 copy this folder to the Mac as ~/SafesterMacPayload,

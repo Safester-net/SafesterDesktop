@@ -98,6 +98,8 @@ Le script exporte aussi les scripts macOS ici :
 C:\MacOsX\SafesterMacPayload\scripts\macos
 ```
 
+Si `I:\Safester\java.src\net\safester\application\images\files\Safester.icns` existe, il est exporte aussi dans le payload et devient l'icone macOS prioritaire.
+
 ## 3. Si le volume MacOsX est monte sur le Mac, ne rien copier
 
 Si le disque partage est deja monte sur le Mac sous :

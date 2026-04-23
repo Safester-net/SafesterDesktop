@@ -125,7 +125,9 @@ if [[ -z "$APP_VERSION" ]]; then
 fi
 
 if [[ -z "$LAUNCHER_ICON_PATH" ]]; then
-  if [[ -f "${PAYLOAD_DIR}/resources/safester-icon-80.png" ]]; then
+  if [[ -f "${PAYLOAD_DIR}/resources/Safester.icns" ]]; then
+    LAUNCHER_ICON_PATH="${PAYLOAD_DIR}/resources/Safester.icns"
+  elif [[ -f "${PAYLOAD_DIR}/resources/safester-icon-80.png" ]]; then
     LAUNCHER_ICON_PATH="${PAYLOAD_DIR}/resources/safester-icon-80.png"
   elif [[ -f "${PAYLOAD_DIR}/resources/safester-icon-60.png" ]]; then
     LAUNCHER_ICON_PATH="${PAYLOAD_DIR}/resources/safester-icon-60.png"

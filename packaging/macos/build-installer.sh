@@ -80,6 +80,7 @@ DEPENDENCY_DIR="${TARGET_DIR}/dependencies"
 INPUT_DIR="${TARGET_DIR}/jpackage-input"
 INSTALLER_DIR="${TARGET_DIR}/installer"
 GENERATED_RESOURCE_DIR="${TARGET_DIR}/generated-resources"
+DEFAULT_ICON_ICNS="${REPO_ROOT}/java.src/net/safester/application/images/files/Safester.icns"
 DEFAULT_ICON_80="${REPO_ROOT}/java.src/net/safester/application/images/files/safester-icon-80.png"
 DEFAULT_ICON_60="${REPO_ROOT}/java.src/net/safester/application/images/files/safester-icon-60.png"
 
@@ -139,7 +140,9 @@ if [[ -z "$APP_VERSION" ]]; then
 fi
 
 if [[ -z "$LAUNCHER_ICON_PATH" ]]; then
-  if [[ -f "$DEFAULT_ICON_80" ]]; then
+  if [[ -f "$DEFAULT_ICON_ICNS" ]]; then
+    LAUNCHER_ICON_PATH="$DEFAULT_ICON_ICNS"
+  elif [[ -f "$DEFAULT_ICON_80" ]]; then
     LAUNCHER_ICON_PATH="$DEFAULT_ICON_80"
   else
     LAUNCHER_ICON_PATH="$DEFAULT_ICON_60"
@@ -177,11 +180,24 @@ resolve_launcher_icon() {
   local source_path="$1"
   local extension="${source_path##*.}"
   local icon_output="${GENERATED_RESOURCE_DIR}/Safester.icns"
+  local normalized_source="${GENERATED_RESOURCE_DIR}/Safester-icon-source.png"
+  local iconset="${GENERATED_RESOURCE_DIR}/Safester.iconset"
+
+  warn_icon_fallback() {
+    echo "Warning: Unable to generate macOS icon from: $source_path" >&2
+    echo "Warning: Continuing without a custom launcher icon." >&2
+    rm -rf "$iconset"
+    rm -f "$icon_output" "$normalized_source"
+    echo ""
+    return 0
+  }
 
   if [[ ! -f "$source_path" ]]; then
     echo ""
     return
   fi
+
+  extension="$(printf '%s' "$extension" | tr '[:upper:]' '[:lower:]')"
 
   if [[ "$extension" == "icns" ]]; then
     echo "$source_path"
@@ -197,22 +213,40 @@ resolve_launcher_icon() {
   require_command iconutil
 
   mkdir -p "$GENERATED_RESOURCE_DIR"
-  local iconset="${GENERATED_RESOURCE_DIR}/Safester.iconset"
   rm -rf "$iconset"
   mkdir -p "$iconset"
 
-  sips -z 16 16 "$source_path" --out "$iconset/icon_16x16.png" >/dev/null
-  sips -z 32 32 "$source_path" --out "$iconset/icon_16x16@2x.png" >/dev/null
-  sips -z 32 32 "$source_path" --out "$iconset/icon_32x32.png" >/dev/null
-  sips -z 64 64 "$source_path" --out "$iconset/icon_32x32@2x.png" >/dev/null
-  sips -z 128 128 "$source_path" --out "$iconset/icon_128x128.png" >/dev/null
-  sips -z 256 256 "$source_path" --out "$iconset/icon_128x128@2x.png" >/dev/null
-  sips -z 256 256 "$source_path" --out "$iconset/icon_256x256.png" >/dev/null
-  sips -z 512 512 "$source_path" --out "$iconset/icon_256x256@2x.png" >/dev/null
-  sips -z 512 512 "$source_path" --out "$iconset/icon_512x512.png" >/dev/null
-  sips -z 1024 1024 "$source_path" --out "$iconset/icon_512x512@2x.png" >/dev/null
+  if ! cp -f "$source_path" "$normalized_source" 2>/dev/null; then
+    warn_icon_fallback
+    return 0
+  fi
 
-  iconutil -c icns "$iconset" -o "$icon_output"
+  if ! sips -s format png "$normalized_source" --out "$normalized_source" >/dev/null 2>&1; then
+    warn_icon_fallback
+    return 0
+  fi
+
+  if ! sips -z 16 16 "$normalized_source" --out "$iconset/icon_16x16.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 32 32 "$normalized_source" --out "$iconset/icon_16x16@2x.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 32 32 "$normalized_source" --out "$iconset/icon_32x32.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 64 64 "$normalized_source" --out "$iconset/icon_32x32@2x.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 128 128 "$normalized_source" --out "$iconset/icon_128x128.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 256 256 "$normalized_source" --out "$iconset/icon_128x128@2x.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 256 256 "$normalized_source" --out "$iconset/icon_256x256.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 512 512 "$normalized_source" --out "$iconset/icon_256x256@2x.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 512 512 "$normalized_source" --out "$iconset/icon_512x512.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+  if ! sips -z 1024 1024 "$normalized_source" --out "$iconset/icon_512x512@2x.png" >/dev/null 2>&1; then warn_icon_fallback; return 0; fi
+
+  if ! iconutil -c icns "$iconset" -o "$icon_output" >/dev/null 2>&1; then
+    warn_icon_fallback
+    return 0
+  fi
+
+  if [[ ! -f "$icon_output" ]]; then
+    warn_icon_fallback
+    return 0
+  fi
+
   echo "$icon_output"
 }
 
