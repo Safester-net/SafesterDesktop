@@ -2,12 +2,22 @@
 
 Flow complet pour generer un DMG macOS de Safester avec des chemins absolus, sans Maven sur le Mac.
 
+## Regle principale
+
+Sur le Mac, ce flow ne doit jamais utiliser Maven.
+
+Le principe est le suivant :
+
+- Maven tourne uniquement sur Windows pour preparer `C:\MacOsX\SafesterMacPayload` ;
+- sur le Mac, on reutilise directement ce payload prepare ;
+- sur le Mac, on lance uniquement `jpackage` via le script `build-installer.sh`.
+
 ## Objectif
 
 Ce guide permet de :
 
 - preparer le payload `jpackage` sur Windows ;
-- copier les fichiers necessaires sur le Mac ;
+- copier uniquement les fichiers necessaires sur le Mac ;
 - tester Safester avant la fabrication finale de l'installeur ;
 - construire un DMG macOS non signe depuis le Mac ;
 - tester l'application et le DMG generes.
@@ -25,8 +35,8 @@ C:\MacOsX\SafesterMacPayload
 
 ```text
 /Users/nicolasdepomereu/Downloads
-/Users/nicolasdepomereu/Safester
 /Users/nicolasdepomereu/SafesterMacPayload
+/Users/nicolasdepomereu/SafesterPackaging/macos
 /Users/nicolasdepomereu/SafesterBuild
 /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home
 ```
@@ -83,7 +93,7 @@ Le script cree le dossier :
 C:\MacOsX\SafesterMacPayload
 ```
 
-## 3. Copier les dossiers Windows vers le Mac
+## 3. Copier uniquement le necessaire vers le Mac
 
 Copier ce dossier :
 
@@ -97,24 +107,30 @@ vers :
 /Users/nicolasdepomereu/SafesterMacPayload
 ```
 
-Copier aussi le repository :
+Copier aussi seulement ce dossier du repository Windows :
 
 ```text
-I:\Safester
+I:\Safester\packaging\macos
 ```
 
 vers :
 
 ```text
-/Users/nicolasdepomereu/Safester
+/Users/nicolasdepomereu/SafesterPackaging/macos
 ```
+
+Pourquoi cela suffit :
+
+- le payload prepare contient deja `Safester.jar` et les dependances ;
+- le build sur Mac se fait avec `jpackage`, jamais avec Maven ;
+- si tu passes `--app-version` et `--launcher-icon-path`, le script n'a pas besoin du reste du repository.
 
 ## 4. Verifier les fichiers sur le Mac
 
 Dans le Terminal macOS :
 
 ```bash
-ls -l /Users/nicolasdepomereu/Safester/packaging/macos/build-unsigned-dmg-from-prepared-input.sh
+ls -l /Users/nicolasdepomereu/SafesterPackaging/macos/build-installer.sh
 
 ls -l /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input/Safester.jar
 
@@ -132,17 +148,26 @@ L'idee est de confirmer que :
 Toujours dans le Terminal macOS :
 
 ```bash
-cd /Users/nicolasdepomereu/Safester
+cd /Users/nicolasdepomereu/SafesterPackaging/macos
 ```
 
 Puis lancer :
 
 ```bash
-bash /Users/nicolasdepomereu/Safester/packaging/macos/build-unsigned-dmg-from-prepared-input.sh \
+bash /Users/nicolasdepomereu/SafesterPackaging/macos/build-installer.sh \
+  --package-type dmg \
+  --target-dir /Users/nicolasdepomereu/SafesterBuild \
+  --prepared-input-dir /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input \
   --jdk-home /Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home \
   --app-version 6.10 \
   --launcher-icon-path /Users/nicolasdepomereu/SafesterMacPayload/resources/safester-icon-80.png
 ```
+
+Important :
+
+- la presence de `--prepared-input-dir` force l'utilisation du payload deja prepare ;
+- dans ce mode, le Mac ne reconstruit pas l'application avec Maven ;
+- le Mac fabrique seulement `Safester.app`, puis le `dmg`.
 
 ## 5 bis. Tester Safester avant de fabriquer le DMG
 
@@ -151,7 +176,7 @@ Si tu veux verifier que l'application fonctionne avant d'aller jusqu'au package 
 Dans le Terminal macOS :
 
 ```bash
-bash /Users/nicolasdepomereu/Safester/packaging/macos/build-installer.sh \
+bash /Users/nicolasdepomereu/SafesterPackaging/macos/build-installer.sh \
   --package-type app-image \
   --target-dir /Users/nicolasdepomereu/SafesterBuild \
   --prepared-input-dir /Users/nicolasdepomereu/SafesterMacPayload/jpackage-input \
@@ -216,5 +241,6 @@ Si macOS bloque l'application :
 
 - Le build macOS doit etre lance depuis un Mac.
 - Ce flow ne necessite pas Maven sur le Mac.
+- Maven ne doit etre utilise que sur Windows pour preparer le payload.
 - Le DMG produit est non signe et non notarise.
 - Les chemins de ce guide sont absolus et correspondent au poste de travail cible.
